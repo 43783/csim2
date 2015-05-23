@@ -110,13 +110,13 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuNewConcept) {
-			view.createNewConcept();
+//			view.createNewConcept();
 		}
 		else if (e.getSource() == mnuDeleteConcept) {
 			view.deleteCurrentConcept();
 		}
 		else if (e.getSource() == mnuNewLink) {
-			view.startDraggingLink();
+//			view.startDraggingLink();
 		}
 		else if (e.getSource() == mnuDeleteLink) {
 			view.deleteCurrentLink();
