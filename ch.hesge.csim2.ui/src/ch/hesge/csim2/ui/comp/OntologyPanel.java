@@ -33,6 +33,8 @@ public class OntologyPanel extends JPanel {
 
 	// This a test merge
 	// This another work on branch
+	// this another modify
+	
 	
 	// Private attributes
 	private Ontology ontology;
