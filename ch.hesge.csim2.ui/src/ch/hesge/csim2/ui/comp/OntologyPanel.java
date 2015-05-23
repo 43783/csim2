@@ -31,8 +31,6 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 @SuppressWarnings("serial")
 public class OntologyPanel extends JPanel {
 
-	// Test
-	
 	// Private attributes
 	private Ontology ontology;
 	private Concept selectedConcept;
