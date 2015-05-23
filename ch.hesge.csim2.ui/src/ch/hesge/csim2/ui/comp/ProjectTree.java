@@ -63,7 +63,7 @@ public class ProjectTree extends JTree {
 	public void setProject(Project project) {
 
 		this.project = project;
-
+ 
 		if (project == null) {
 			setModel(null);
 			setEnabled(false);
