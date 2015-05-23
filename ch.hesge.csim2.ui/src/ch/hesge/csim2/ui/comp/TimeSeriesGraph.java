@@ -110,8 +110,8 @@ public class TimeSeriesGraph extends JPanel {
 			// Draw the chart
 	        int x = getInsets().left;
 	        int y = getInsets().top;
-	        int w = getSize().width - getInsets().left - getInsets().right;
-	        int h = getSize().height - getInsets().top - getInsets().bottom;
+	        int w = getSize().width - getInsets().left - getInsets().right - 1;
+	        int h = getSize().height - getInsets().top - getInsets().bottom - 1;
 			Rectangle bounds = new Rectangle(x, y, w, h);
 			chart.draw((Graphics2D) g, bounds);
 		}

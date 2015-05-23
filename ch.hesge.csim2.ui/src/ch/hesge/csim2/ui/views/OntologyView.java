@@ -1,28 +1,12 @@
 package ch.hesge.csim2.ui.views;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -31,10 +15,7 @@ import java.util.concurrent.Executors;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 
@@ -44,9 +25,7 @@ import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.ui.comp.ConceptPopup;
 import ch.hesge.csim2.ui.comp.OntologyPanel;
-import ch.hesge.csim2.ui.dialogs.ConceptPropertiesDialog;
 import ch.hesge.csim2.ui.utils.Line;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -57,17 +36,14 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 
 	// Private attributes
 	private Ontology ontology;
-	private Concept currentConcept;
 
-	private ExecutorService dynamicPositionner;
 	private boolean isDynamicPosition;
-	
-	private JScrollPane scrollPanel;
-	private JPanel ontologyPanel;
+	private ExecutorService dynamicPositionner;
+
+	private OntologyPanel ontologyPanel;
 	private JCheckBox btnDynamic;
 	private JButton btnShake;
 	private JButton btnSave;
-
 
 	/**
 	 * Default constructor
@@ -75,9 +51,8 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	public OntologyView(Ontology ontology) {
 
 		this.ontology = ontology;
-				
-		isDynamicPosition = false;
-		
+		this.isDynamicPosition = false;
+
 		// Retrieve concepts associated to the ontology
 		List<Concept> concepts = ApplicationLogic.getConceptsWithDependencies(ontology);
 		ontology.getConcepts().clear();
@@ -85,7 +60,7 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 
 		initComponent();
 	}
-	
+
 	/**
 	 * Initialize the component
 	 */
@@ -94,8 +69,9 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 		setBorder(new TitledBorder(null, ontology.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
-		ontologyPanel = new OntologyPanel();
-		scrollPanel = new JScrollPane();
+		JScrollPane scrollPanel = new JScrollPane();
+		ontologyPanel = new OntologyPanel(ontology, scrollPanel);
+		ontologyPanel.addActionListener(this);
 		scrollPanel.setViewportView(ontologyPanel);
 		add(scrollPanel, BorderLayout.CENTER);
 
@@ -117,7 +93,7 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 		btnSave.setPreferredSize(new Dimension(80, 25));
 		btnSave.addActionListener(this);
 		btnPanel.add(btnSave);
-		
+
 		initListeners();
 	}
 
@@ -152,10 +128,10 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	 */
 	public void showConceptProperties() {
 
-//		if (selectedConcept != null) {
-//			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
-//			new ConceptPropertiesDialog(mainView, selectedConcept).setVisible(true);
-//		}
+		//		if (selectedConcept != null) {
+		//			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
+		//			new ConceptPropertiesDialog(mainView, selectedConcept).setVisible(true);
+		//		}
 	}
 
 	/**
@@ -163,15 +139,15 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	 */
 	public void deleteCurrentConcept() {
 
-//		// Remove the concept from the ontology
-//		ApplicationLogic.removeConcept(ontology, selectedConcept);
-//		selectedConcept = null;
-//
-//		// Clear current state
-//		stopDraggingConcept();
-//		stopDraggingLink();
-//		cancelEditing();
-//		ontologyPanel.repaint();
+		//		// Remove the concept from the ontology
+		//		ApplicationLogic.removeConcept(ontology, selectedConcept);
+		//		selectedConcept = null;
+		//
+		//		// Clear current state
+		//		stopDraggingConcept();
+		//		stopDraggingLink();
+		//		cancelEditing();
+		//		ontologyPanel.repaint();
 	}
 
 	/**
@@ -179,40 +155,39 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	 */
 	public void deleteCurrentLink() {
 
-//		ApplicationLogic.removeConceptLink(ontology, selectedLink.getSourceConcept(), selectedLink);
-//		selectedLink = null;
-//
-//		// Clear current state
-//		stopDraggingConcept();
-//		stopDraggingLink();
-//		cancelEditing();
-//		ontologyPanel.repaint();
+		//		ApplicationLogic.removeConceptLink(ontology, selectedLink.getSourceConcept(), selectedLink);
+		//		selectedLink = null;
+		//
+		//		// Clear current state
+		//		stopDraggingConcept();
+		//		stopDraggingLink();
+		//		cancelEditing();
+		//		ontologyPanel.repaint();
 	}
-
 
 	/**
 	 * Move randomly all concepts
 	 */
 	private void shakeConcepts() {
 
-//		List<Concept> concepts = Collections.synchronizedList(ontology.getConcepts());
-//
-//		// Randomize all concept location
-//		for (Concept concept : concepts) {
-//
-//			// Retrieve adjusted concept coordinates
-//			Rectangle conceptBounds = SwingUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
-//
-//			// Recompute random position
-//			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();
-//			double newY = (ontologyPanel.getPreferredSize().height - conceptBounds.height) * Math.random();
-//
-//			// Update concept position
-//			concept.getBounds().x = Double.valueOf(newX).intValue();
-//			concept.getBounds().y = Double.valueOf(newY).intValue();
-//		}
-//
-//		refreshOntology();
+		//		List<Concept> concepts = Collections.synchronizedList(ontology.getConcepts());
+		//
+		//		// Randomize all concept location
+		//		for (Concept concept : concepts) {
+		//
+		//			// Retrieve adjusted concept coordinates
+		//			Rectangle conceptBounds = SwingUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
+		//
+		//			// Recompute random position
+		//			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();
+		//			double newY = (ontologyPanel.getPreferredSize().height - conceptBounds.height) * Math.random();
+		//
+		//			// Update concept position
+		//			concept.getBounds().x = Double.valueOf(newX).intValue();
+		//			concept.getBounds().y = Double.valueOf(newY).intValue();
+		//		}
+		//
+		//		refreshOntology();
 	}
 
 	/**
@@ -233,7 +208,8 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Scan all concepts and recompute their position to each other. This method is used internally in a separate thread.
+	 * Scan all concepts and recompute their position to each other. This method
+	 * is used internally in a separate thread.
 	 */
 	public void run() {
 
@@ -247,9 +223,9 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 				for (Concept sourceConcept : concepts) {
 					for (Concept targetConcept : concepts) {
 
-//						if (selectedConcept == targetConcept) {
-//							continue;
-//						}
+						//						if (selectedConcept == targetConcept) {
+						//							continue;
+						//						}
 
 						Line linkLine;
 
@@ -336,7 +312,8 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Handle button event This method is used internally to respond to button click.
+	 * Handle button event This method is used internally to respond to button
+	 * click.
 	 */
 	public void actionPerformed(ActionEvent e) {
 
@@ -362,6 +339,22 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 			}
 			else {
 				stopDynamicPositioning();
+			}
+		}
+		else {
+
+			// Handle context menu selection
+			if (e.getActionCommand().equals("NEW_CONCEPT")) {
+				// view.createNewConcept();
+			}
+			else if (e.getActionCommand().equals("DELETE_CONCEPT")) {
+				// view.deleteCurrentConcept();
+			}
+			else if (e.getActionCommand().equals("DELETE_LINK")) {
+				// view.deleteCurrentLink();
+			}
+			else if (e.getActionCommand().equals("CONCEPT_PROPERTIES")) {
+				// view.showConceptProperties();
 			}
 		}
 
