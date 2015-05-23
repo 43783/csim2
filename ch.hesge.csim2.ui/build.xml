@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="csim2 swing app script builder" basedir="." default="create-distrib">
+	
+    <!-- script properties -->
+
+    <property name="version" value="1.3.12"/>
+	<property name="scripts-dir" value="scripts"/>
+	<property name="distrib-dir" value="../../csim2-v${version}"/>
+
+    <!-- delete old files -->
+
+    <target name="clean">
+		<echo>Cleaning target files</echo>
+	   	<delete dir="${distrib-dir}" />
+		<echo>Preparing target folders</echo>
+	   	<mkdir dir="${distrib-dir}/bin" />
+	   	<mkdir dir="${distrib-dir}/lib" />
+	   	<mkdir dir="${distrib-dir}/conf" />
+	   	<mkdir dir="${distrib-dir}/data" />
+	   	<mkdir dir="${distrib-dir}/log" />
+    </target>
+
+	<!-- create startup csim2 script -->
+	
+    <target name="create-script">
+		<echo message="Generating csim2.cmd script"/>
+		<echo file="${distrib-dir}/csim2.cmd" append="false">
+@echo off
+start javaw -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
+		</echo>    	
+    </target>
+
+	<!-- copy all required files for distribution -->
+
+	<target name="copy-dependencies">
+		<echo message="Copying all required files to target folder"/>
+    	<copy todir="${distrib-dir}/conf">
+    		<fileset dir="conf" includes="**/*.conf"/>
+    		<fileset dir="conf" includes="**/*.properties"/>
+    		<fileset dir="conf" includes="**/*.txt"/>
+		</copy>		    	
+    	<copy todir="${distrib-dir}/lib">
+    		<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*.source*.jar"/>
+		</copy>		    	
+    </target>
+			
+	<!-- create executable jar with all classes and resources -->
+
+	<target name="create-jar">
+		<echo message="Generating csim2-swing.jar file"/>
+        <jar destfile="${distrib-dir}/bin/csim2-ui-${version}.jar">
+            <manifest>
+		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
+		        <attribute name="Implementation-Title" value="Csim2 swing application" />
+		        <attribute name="Implementation-Version" value="${version}" />
+        		<attribute name="Built-By" value="Eric Harth" />
+            	<attribute name="Main-class" value="ch.hesge.csim2.ui.swing.Csim2Startup" />
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin" includes="**/*.class"/>
+            <fileset dir="bin" includes="**/*png"/>
+        </jar>
+    </target>
+	
+	<!-- create csim2 core jar files -->
+
+	<target name="create-core-jars">
+		<ant antfile="../ch.hesge.csim2.core/build.xml" target="create-jar" dir="../ch.hesge.csim2.core" />
+		<ant antfile="../ch.hesge.csim2.core/build.xml" target="copy-dependencies" dir="../ch.hesge.csim2.core" />
+	</target>
+	
+    <!-- create csim2 engines -->
+
+	<target name="create-engines">
+		<ant antfile="../ch.hesge.csim2.engine.ontologyloader/build.xml"       dir="../ch.hesge.csim2.engine.ontologyloader" />
+		<ant antfile="../ch.hesge.csim2.engine.cppanalyzer/build.xml"          dir="../ch.hesge.csim2.engine.cppanalyzer" />
+		<ant antfile="../ch.hesge.csim2.engine.cppinstrumenter/build.xml"      dir="../ch.hesge.csim2.engine.cppinstrumenter" />
+		<ant antfile="../ch.hesge.csim2.engine.simulinkanalyzer/build.xml"     dir="../ch.hesge.csim2.engine.simulinkanalyzer" />
+		<ant antfile="../ch.hesge.csim2.engine.simulinkinstrumenter/build.xml" dir="../ch.hesge.csim2.engine.simulinkinstrumenter" />
+		<ant antfile="../ch.hesge.csim2.engine.javaanalyzer/build.xml"     	   dir="../ch.hesge.csim2.engine.javaanalyzer" />
+		<ant antfile="../ch.hesge.csim2.engine.javainstrumenter/build.xml" 	   dir="../ch.hesge.csim2.engine.javainstrumenter" />
+		<ant antfile="../ch.hesge.csim2.engine.traceloader/build.xml"          dir="../ch.hesge.csim2.engine.traceloader" />
+		<ant antfile="../ch.hesge.csim2.engine.scenarioplayer/build.xml"       dir="../ch.hesge.csim2.engine.scenarioplayer" />
+		<ant antfile="../ch.hesge.csim2.engine.stemconceptanalyzer/build.xml"  dir="../ch.hesge.csim2.engine.stemconceptanalyzer" />
+		<ant antfile="../ch.hesge.csim2.engine.stemmethodanalyzer/build.xml"   dir="../ch.hesge.csim2.engine.stemmethodanalyzer" />
+		<ant antfile="../ch.hesge.csim2.engine.methodconceptmatcher/build.xml" dir="../ch.hesge.csim2.engine.methodconceptmatcher" />
+	</target>
+	
+	<!-- default task -->
+	
+	<target name="create-distrib" depends="clean,create-script,create-jar,copy-dependencies,create-core-jars,create-engines">
+    </target>
+
+</project>

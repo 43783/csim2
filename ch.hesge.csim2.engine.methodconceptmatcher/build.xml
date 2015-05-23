@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="csim2 method concept matcher script builder" basedir="." default="create-distrib">
+	
+    <!-- script properties -->
+
+    <property name="engine-version" value="1.0.1"/>
+	<property name="distrib-dir" value="${basedir}/../runtime"/>
+
+	<!-- create a jar with all classes and resources -->
+
+	<target name="create-jar">
+		<echo message="Generating csim2-method-concept-matcher.jar file"/>
+        <jar destfile="${distrib-dir}/bin/csim2-method-concept-matcher-${engine-version}.jar">
+            <manifest>
+		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
+		        <attribute name="Implementation-Title" value="Method concept matcher" />
+		        <attribute name="Implementation-Version" value="${engine-version}" />
+        		<attribute name="Built-By" value="Eric Harth" />
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${basedir}/bin" includes="**/*.class"/>
+        </jar>
+    </target>
+	
+	<!-- default task -->
+	
+	<target name="create-distrib" depends="create-jar">
+    </target>
+
+</project>

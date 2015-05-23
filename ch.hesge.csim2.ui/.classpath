@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.core"/>
+	<classpathentry kind="src" path="conf"/>
+	<classpathentry kind="lib" path="lib/weblaf-1.28.jar" sourcepath="lib/weblaf-src-1.28.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.stemconceptanalyzer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.cppanalyzer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.cppinstrumenter"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.ontologyloader"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.scenarioplayer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.simulinkinstrumenter"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.stemmethodanalyzer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.traceloader"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.simulinkanalyzer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javaanalyzer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javainstrumenter"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.methodconceptmatcher"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.23.jar" sourcepath="lib/jcommon-1.0.23.src.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.19.jar" sourcepath="lib/jfreechart-1.0.19.src.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

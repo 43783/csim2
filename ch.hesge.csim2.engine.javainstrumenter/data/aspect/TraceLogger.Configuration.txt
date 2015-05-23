@@ -1,0 +1,22 @@
+
+1. install aspectj within eclipse market place
+
+2. add nature in .project:
+
+	<nature>org.eclipse.ajdt.ui.ajnature</nature>
+		
+3. in .project, under projectDescription->buildSpec->buildCommand
+
+replace line:
+
+	<name>org.eclipse.jdt.core.javabuilder</name>
+	
+by
+
+	<name>org.eclipse.ajdt.core.ajbuilder</name>
+
+3. add new entry in .classpath:
+
+	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	
+4. copy TraceLogger.java and TraceLoggerAspect.aj into the project			
