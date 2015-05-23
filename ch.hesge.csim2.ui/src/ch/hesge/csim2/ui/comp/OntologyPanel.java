@@ -32,6 +32,7 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 public class OntologyPanel extends JPanel {
 
 	// This a test merge
+	// This another work on branch
 	
 	// Private attributes
 	private Ontology ontology;
