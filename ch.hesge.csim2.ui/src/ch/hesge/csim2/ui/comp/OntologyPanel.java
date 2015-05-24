@@ -27,7 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
@@ -43,6 +42,10 @@ public class OntologyPanel extends JPanel {
 	private ConceptLink selectedLink;
 	private Concept targetConcept;
 
+	private boolean isEditing;
+	private boolean isDraggingConcept;
+	private boolean isDraggingLink;
+
 	private JScrollPane scrollPanel;
 	private ConceptPopup contextMenu;
 	private JTextField editorField;
@@ -50,11 +53,6 @@ public class OntologyPanel extends JPanel {
 	private double minScaleFactor;
 	private double scaleFactor;
 	private ActionListener actionListener;
-
-	private boolean isEditing;
-	private boolean isDraggingConcept;
-	private boolean isDraggingLink;
-	private boolean isDynamicPosition;
 
 	// Internal constants
 	private static int FONT_SIZE = 10;
@@ -116,7 +114,7 @@ public class OntologyPanel extends JPanel {
 			else {
 				minScaleFactor = 1d * drawArea.height / ontologyArea.height;
 			}
-			
+
 			scaleFactor = minScaleFactor;
 		}
 	}
@@ -162,7 +160,7 @@ public class OntologyPanel extends JPanel {
 				onPanelKeyPressed(e);
 			}
 		});
-		
+
 		// Listen to editor field keys (ENTER + ESCAPE)
 		editorField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -185,7 +183,7 @@ public class OntologyPanel extends JPanel {
 	 */
 	private void onMousePressed(MouseEvent e) {
 
-		requestFocus();			
+		requestFocus();
 
 		// Keep current mouse location (needed by context menu)
 		mouseLocation = e.getPoint();
@@ -204,21 +202,21 @@ public class OntologyPanel extends JPanel {
 			isEditing = false;
 			hideNameEditor();
 		}
-		
+
 		// Detect if we are dragging a link
 		else if (isDraggingLink) {
 			isDraggingLink = false;
-			
-//			// If a target is selected, dragging link is completed
-//			if (selectedConcept != null && targetConcept != null) {
-//				selectedLink = ApplicationLogic.createConceptLink(ontology, selectedConcept, targetConcept);
-//				selectedConcept = null;
-//			}
-//
-//			targetConcept = null;
-//			isDraggingConcept = false;
-//			isDraggingLink = false;
-			
+
+			//			// If a target is selected, dragging link is completed
+			//			if (selectedConcept != null && targetConcept != null) {
+			//				selectedLink = ApplicationLogic.createConceptLink(ontology, selectedConcept, targetConcept);
+			//				selectedConcept = null;
+			//			}
+			//
+			//			targetConcept = null;
+			//			isDraggingConcept = false;
+			//			isDraggingLink = false;
+
 		}
 
 		// Detect if user made a right click
@@ -235,12 +233,12 @@ public class OntologyPanel extends JPanel {
 			// Show the menu
 			contextMenu.show(e.getComponent(), e.getX(), e.getY());
 		}
-		
+
 		// Detect if use made a left click
 		else if (SwingUtilities.isLeftMouseButton(e)) {
 
 			isEditing = false;
-			
+
 			// Single right click
 			if (e.getClickCount() == 1) {
 
@@ -253,12 +251,12 @@ public class OntologyPanel extends JPanel {
 					selectedConcept = null;
 				}
 			}
-			
+
 			// Double right click
 			else if (e.getClickCount() == 2) {
-				
+
 				isEditing = true;
-				
+
 				if (selectedConcept != null) {
 					showConceptNameEditor();
 				}
@@ -267,7 +265,7 @@ public class OntologyPanel extends JPanel {
 				}
 			}
 		}
-				
+
 		repaint();
 	}
 
@@ -277,11 +275,11 @@ public class OntologyPanel extends JPanel {
 	 * @param e
 	 */
 	private void onMouseReleased(MouseEvent e) {
-		
+
 		// Stop dragging concept or link
 		isDraggingConcept = false;
 		isDraggingLink = false;
-		
+
 		repaint();
 	}
 
@@ -292,19 +290,19 @@ public class OntologyPanel extends JPanel {
 	 */
 	private void onMouseDragged(MouseEvent e) {
 
-//		if (isDraggingConcept && selectedConcept != null) {
-//
-//			// Retrieve mouse position in ontology coordinates
-//			Point currentPoint = SwingUtils.convertToOriginalCoordinates(e.getPoint(), scaleFactor);
-//			Point previousPoint = SwingUtils.convertToOriginalCoordinates(mouseLocation, scaleFactor);
-//
-//			// Adjust concept position within ontology
-//			selectedConcept.getBounds().translate(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
-//
-//			// Update mouse position
-//			mouseLocation = e.getPoint();			
-//			repaint();
-//		}
+		//		if (isDraggingConcept && selectedConcept != null) {
+		//
+		//			// Retrieve mouse position in ontology coordinates
+		//			Point currentPoint = SwingUtils.convertToOriginalCoordinates(e.getPoint(), scaleFactor);
+		//			Point previousPoint = SwingUtils.convertToOriginalCoordinates(mouseLocation, scaleFactor);
+		//
+		//			// Adjust concept position within ontology
+		//			selectedConcept.getBounds().translate(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
+		//
+		//			// Update mouse position
+		//			mouseLocation = e.getPoint();			
+		//			repaint();
+		//		}
 	}
 
 	/**
@@ -314,45 +312,45 @@ public class OntologyPanel extends JPanel {
 	 */
 	private void onMouseMoved(MouseEvent e) {
 
-//		if (isDraggingLink && selectedConcept != null) {
-//
-//			// Retrieve mouse position in ontology coordinates
-//			Point currentPoint = SwingUtils.convertToOriginalCoordinates(e.getPoint(), scaleFactor);
-//
-//			// Retrieve concept under mouse pointer
-//			targetConcept = SwingUtils.hitConcept(ontology.getConcepts(), currentPoint);
-//
-//			if (targetConcept != null) {
-//
-//				boolean isConceptAlreadyLinked = false;
-//
-//				// Check if the target concept is already linked from current
-//				// one
-//				for (ConceptLink link : selectedConcept.getLinks()) {
-//					if (link.getTargetConcept() == targetConcept) {
-//						isConceptAlreadyLinked = true;
-//						break;
-//					}
-//				}
-//
-//				// Check if the target concept is already linked to current one
-//				for (ConceptLink link : targetConcept.getLinks()) {
-//					if (link.getTargetConcept() == selectedConcept) {
-//						isConceptAlreadyLinked = true;
-//						break;
-//					}
-//				}
-//
-//				// If target concept is already linked
-//				if (isConceptAlreadyLinked || targetConcept == selectedConcept) {
-//					targetConcept = null;
-//				}
-//			}
-//
-//			// Update mouse position
-//			mouseLocation = e.getPoint();
-//			repaint();
-//		}
+		//		if (isDraggingLink && selectedConcept != null) {
+		//
+		//			// Retrieve mouse position in ontology coordinates
+		//			Point currentPoint = SwingUtils.convertToOriginalCoordinates(e.getPoint(), scaleFactor);
+		//
+		//			// Retrieve concept under mouse pointer
+		//			targetConcept = SwingUtils.hitConcept(ontology.getConcepts(), currentPoint);
+		//
+		//			if (targetConcept != null) {
+		//
+		//				boolean isConceptAlreadyLinked = false;
+		//
+		//				// Check if the target concept is already linked from current
+		//				// one
+		//				for (ConceptLink link : selectedConcept.getLinks()) {
+		//					if (link.getTargetConcept() == targetConcept) {
+		//						isConceptAlreadyLinked = true;
+		//						break;
+		//					}
+		//				}
+		//
+		//				// Check if the target concept is already linked to current one
+		//				for (ConceptLink link : targetConcept.getLinks()) {
+		//					if (link.getTargetConcept() == selectedConcept) {
+		//						isConceptAlreadyLinked = true;
+		//						break;
+		//					}
+		//				}
+		//
+		//				// If target concept is already linked
+		//				if (isConceptAlreadyLinked || targetConcept == selectedConcept) {
+		//					targetConcept = null;
+		//				}
+		//			}
+		//
+		//			// Update mouse position
+		//			mouseLocation = e.getPoint();
+		//			repaint();
+		//		}
 	}
 
 	/**
@@ -387,16 +385,16 @@ public class OntologyPanel extends JPanel {
 	 * @param e
 	 */
 	private void onPanelKeyPressed(KeyEvent e) {
-		
+
 		if (e.isControlDown()) {
-			
+
 			if (e.getKeyCode() == KeyEvent.VK_0 || e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
 				scaleFactor = minScaleFactor;
 				repaint();
 			}
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-			
+
 			if (selectedConcept != null) {
 				contextMenu.actionPerformed(new ActionEvent(this, -1, "DELETE_CONCEPT"));
 			}
@@ -414,12 +412,12 @@ public class OntologyPanel extends JPanel {
 	private void onEditorKeyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			
+
 			if (selectedConcept != null) {
-				setConceptName(selectedConcept,  editorField.getText());
+				setConceptName(selectedConcept, editorField.getText());
 			}
 			else if (selectedConcept != null) {
-				setLinkName(selectedLink,  editorField.getText());
+				setLinkName(selectedLink, editorField.getText());
 			}
 
 			isEditing = false;
@@ -504,7 +502,7 @@ public class OntologyPanel extends JPanel {
 	 * @return
 	 *         the selected concept or null
 	 */
-	public Concept getSelectedConcept(Concept concept) {
+	public Concept getSelectedConcept() {
 		return this.selectedConcept;
 	}
 
@@ -527,6 +525,15 @@ public class OntologyPanel extends JPanel {
 	public double getScaledFactor() {
 		return this.scaleFactor;
 	}
+
+	//	/**
+	//	 * Return current mouse location
+	//	 * @return
+	//	 *         a point
+	//	 */
+	//	public Point getMouseLocation() {
+	//		return mouseLocation;
+	//	}
 
 	/**
 	 * Repaint the ontology and all its concepts
@@ -745,7 +752,7 @@ public class OntologyPanel extends JPanel {
 	 * Show editing field
 	 */
 	private void showConceptNameEditor() {
-		
+
 		Graphics g = getGraphics();
 
 		// Sets font size
@@ -765,12 +772,12 @@ public class OntologyPanel extends JPanel {
 		editorField.selectAll();
 		editorField.requestFocus();
 	}
-	
+
 	/**
 	 * Show editing field
 	 */
 	private void showLinkNameEditor() {
-		
+
 		Graphics g = getGraphics();
 
 		// Sets font size
@@ -810,12 +817,12 @@ public class OntologyPanel extends JPanel {
 	 * Hide concept/link editor
 	 */
 	private void hideNameEditor() {
-		
+
 		isEditing = false;
 		editorField.setVisible(false);
 		requestFocus();
 	}
-	
+
 	/**
 	 * Set the name of a specific concept.
 	 * 
@@ -823,7 +830,7 @@ public class OntologyPanel extends JPanel {
 	 * @param name
 	 */
 	private void setConceptName(Concept concept, String name) {
-		
+
 		Graphics g = getGraphics();
 		String conceptName = "Concept";
 
@@ -852,7 +859,7 @@ public class OntologyPanel extends JPanel {
 		concept.setBounds(bounds);
 		concept.setName(name);
 	}
-	
+
 	/**
 	 * Set the name of a specific link.
 	 * 
@@ -862,15 +869,41 @@ public class OntologyPanel extends JPanel {
 	private void setLinkName(ConceptLink link, String name) {
 
 		String linkName = null;
-		
+
 		// Clean concept name
 		if (name != null && name.trim().length() > 0) {
 			linkName = name.trim();
 		}
-		
+
 		link.setQualifier(linkName);
 	}
-	
+
+	/**
+	 * Programmatically select a concept.
+	 * 
+	 * @param concept
+	 */
+	public void editConcept(Concept concept) {
+		selectedConcept = concept;
+		selectedLink = null;
+		isEditing = true;
+		repaint();
+		showConceptNameEditor();
+	}
+
+	/**
+	 * Clear concept/link selection.
+	 */
+	public void resetSelection() {
+
+		selectedConcept = null;
+		isDraggingConcept = false;
+		isDraggingLink = false;
+		isEditing = false;
+
+		hideNameEditor();
+		repaint();
+	}
 
 	/**
 	 * Add an action listener to handle context menu selection.

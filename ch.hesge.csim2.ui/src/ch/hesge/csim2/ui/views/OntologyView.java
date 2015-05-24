@@ -4,13 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -23,24 +22,21 @@ import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
-import ch.hesge.csim2.core.utils.Console;
-import ch.hesge.csim2.core.utils.StringUtils;
+import ch.hesge.csim2.ui.comp.OntologyAnimator;
 import ch.hesge.csim2.ui.comp.OntologyPanel;
-import ch.hesge.csim2.ui.utils.Line;
+import ch.hesge.csim2.ui.dialogs.ConceptPropertiesDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 import com.alee.utils.swing.AncestorAdapter;
 
 @SuppressWarnings("serial")
-public class OntologyView extends JPanel implements Runnable, ActionListener {
+public class OntologyView extends JPanel implements ActionListener {
 
 	// Private attributes
 	private Ontology ontology;
 
-	private boolean isDynamicPosition;
-	private ExecutorService dynamicPositionner;
-
 	private OntologyPanel ontologyPanel;
+	private OntologyAnimator animator;
 	private JCheckBox btnDynamic;
 	private JButton btnShake;
 	private JButton btnSave;
@@ -51,7 +47,6 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	public OntologyView(Ontology ontology) {
 
 		this.ontology = ontology;
-		this.isDynamicPosition = false;
 
 		// Retrieve concepts associated to the ontology
 		List<Concept> concepts = ApplicationLogic.getConceptsWithDependencies(ontology);
@@ -80,6 +75,8 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		add(btnPanel, BorderLayout.SOUTH);
 
+		animator = new OntologyAnimator(ontologyPanel, ontology);
+
 		btnDynamic = new JCheckBox("Dynamic");
 		btnDynamic.addActionListener(this);
 		btnPanel.add(btnDynamic);
@@ -106,63 +103,94 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 		addAncestorListener(new AncestorAdapter() {
 			@Override
 			public void ancestorAdded(AncestorEvent event) {
-
 				ontologyPanel.requestFocus();
-
-				if (isDynamicPosition) {
-					startDynamicPositionning();
-				}
+				animator.resume();
 			}
 
 			@Override
 			public void ancestorRemoved(AncestorEvent event) {
-				if (isDynamicPosition) {
-					stopDynamicPositioning();
-				}
+				animator.suspend();
 			}
 		});
 	}
 
 	/**
-	 * Show concept properties dialog
+	 * Create a new concept
+	 * and insert it to the ontology.
 	 */
-	public void showConceptProperties() {
+	public void createConcept() {
 
-		//		if (selectedConcept != null) {
-		//			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
-		//			new ConceptPropertiesDialog(mainView, selectedConcept).setVisible(true);
-		//		}
+		Graphics g = getGraphics();
+		double scaleFactor = ontologyPanel.getScaledFactor();
+
+		// Sets font size
+		Font scaledFont = getFont().deriveFont((float) Math.round(10 * scaleFactor));
+		g.setFont(scaledFont);
+
+		// Create a new concept
+		Concept concept = ApplicationLogic.createConcept(ontology);
+
+		// Calculate new concept bounds
+		Rectangle viewBounds = SwingUtils.getCenteredText(g, concept.getBounds(), concept.getName());
+		viewBounds.grow(g.getFont().getSize(), g.getFont().getSize());
+		viewBounds.x = ontologyPanel.getMousePosition().x;
+		viewBounds.y = ontologyPanel.getMousePosition().y;
+
+		// Convert bounds into ontology coordinates
+		Rectangle ontoBounds = SwingUtils.convertToOriginalCoordinates(viewBounds, scaleFactor);
+
+		// Update concept bounds
+		concept.setBounds(ontoBounds);
+
+		// Put concept in edit mode
+		ontologyPanel.editConcept(concept);
 	}
 
 	/**
 	 * Delete the current selected concept (if any)
 	 */
-	public void deleteCurrentConcept() {
+	public void deleteConcept() {
 
-		//		// Remove the concept from the ontology
-		//		ApplicationLogic.removeConcept(ontology, selectedConcept);
-		//		selectedConcept = null;
-		//
-		//		// Clear current state
-		//		stopDraggingConcept();
-		//		stopDraggingLink();
-		//		cancelEditing();
-		//		ontologyPanel.repaint();
+		Concept concept = ontologyPanel.getSelectedConcept();
+
+		if (concept != null) {
+			ApplicationLogic.removeConcept(ontology, concept);
+			ontologyPanel.resetSelection();
+		}
 	}
 
 	/**
+	 * Display a dialog with concept properties
+	 */
+	public void showConceptProperties() {
+
+		Concept concept = ontologyPanel.getSelectedConcept();
+
+		if (concept != null) {
+			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
+			new ConceptPropertiesDialog(mainView, concept).setVisible(true);
+		}
+	}
+
+	/**
+	 * Create a new link
+	 * and insert it to the ontology.
+	 */
+	public void createLink() {
+		
+	}
+	
+	/**
 	 * Delete the current selected link (if any)
 	 */
-	public void deleteCurrentLink() {
+	public void deleteLink() {
 
-		//		ApplicationLogic.removeConceptLink(ontology, selectedLink.getSourceConcept(), selectedLink);
-		//		selectedLink = null;
-		//
-		//		// Clear current state
-		//		stopDraggingConcept();
-		//		stopDraggingLink();
-		//		cancelEditing();
-		//		ontologyPanel.repaint();
+		ConceptLink link = ontologyPanel.getSelectedLink();
+
+		if (link != null) {
+			ApplicationLogic.removeConceptLink(ontology, link.getSourceConcept(), link);
+			ontologyPanel.resetSelection();
+		}
 	}
 
 	/**
@@ -191,127 +219,6 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Start adjusting dynamic concepts position
-	 */
-	private void startDynamicPositionning() {
-		isDynamicPosition = true;
-		dynamicPositionner = Executors.newFixedThreadPool(1);
-		dynamicPositionner.submit(new Thread(this));
-	}
-
-	/**
-	 * Stop adjusting dynamic concepts position
-	 */
-	private void stopDynamicPositioning() {
-		isDynamicPosition = false;
-		dynamicPositionner.shutdownNow();
-	}
-
-	/**
-	 * Scan all concepts and recompute their position to each other. This method
-	 * is used internally in a separate thread.
-	 */
-	public void run() {
-
-		while (isDynamicPosition) {
-
-			try {
-
-				List<Concept> concepts = Collections.synchronizedList(ontology.getConcepts());
-
-				// Normalize distance between all concepts
-				for (Concept sourceConcept : concepts) {
-					for (Concept targetConcept : concepts) {
-
-						//						if (selectedConcept == targetConcept) {
-						//							continue;
-						//						}
-
-						Line linkLine;
-
-						// Retrieve source/target bounds in original coordinates
-						Rectangle sourceBounds = sourceConcept.getBounds();
-						Rectangle targetBounds = targetConcept.getBounds();
-
-						// Check if concepts are intersecting
-						boolean isIntersecting = sourceBounds.intersects(targetBounds);
-
-						// Check if target is linked to source
-						boolean isTargetLinkedToSource = false;
-						for (ConceptLink link : targetConcept.getLinks()) {
-							if (link.getTargetConcept() == sourceConcept) {
-								isTargetLinkedToSource = true;
-								break;
-							}
-						}
-
-						// Now we retrieve the line linking the two rectangles
-						if (isIntersecting) {
-							linkLine = SwingUtils.getDiagonal(sourceBounds, targetBounds);
-						}
-						else {
-							linkLine = SwingUtils.getLine(sourceBounds, targetBounds);
-						}
-
-						if (linkLine != null) {
-
-							// Retrieve variation in x and y
-							int vx = linkLine.x2 - linkLine.x1;
-							int vy = linkLine.y2 - linkLine.y1;
-
-							// Retrieve segment length
-							double distance = SwingUtils.getLength(linkLine);
-
-							// If concepts are intersecting, we should separate them
-							if (isIntersecting) {
-
-								// Compute distance amplification factor
-								double ratio = SwingUtils.getAmplificationRatio(distance, 200d);
-
-								// Calculate required variation in x and y
-								targetBounds.x += ratio * vx;
-								targetBounds.y += ratio * vy;
-							}
-
-							// If concepts are too close to each other, we should separate them
-							else if (distance < 50d) {
-
-								// Compute distance amplification factor
-								double ratio = SwingUtils.getAmplificationRatio(distance, 50d);
-
-								// Calculate required variation in x and y
-								targetBounds.x += ratio * vx;
-								targetBounds.y += ratio * vy;
-							}
-
-							// If concepts linked to each other, a minimal distance is required
-							else if (isTargetLinkedToSource && distance > 50d) {
-
-								// Compute distance compression factor
-								double ratio = SwingUtils.getReductionRatio(distance, 50d);
-
-								// Calculate required variation in x and y
-								targetBounds.x -= ratio * vx;
-								targetBounds.y -= ratio * vy;
-							}
-						}
-					}
-				}
-
-				ontologyPanel.repaint();
-				Thread.sleep(100);
-			}
-			catch (InterruptedException e) {
-				// Skip interruption
-				break;
-			}
-			catch (Exception e) {
-				Console.writeError(StringUtils.toString(e));
-			}
-		}
-	}
-
-	/**
 	 * Handle button event This method is used internally to respond to button
 	 * click.
 	 */
@@ -335,29 +242,30 @@ public class OntologyView extends JPanel implements Runnable, ActionListener {
 		else if (e.getSource() == btnDynamic) {
 
 			if (btnDynamic.isSelected()) {
-				startDynamicPositionning();
+				animator.start();
 			}
 			else {
-				stopDynamicPositioning();
+				animator.stop();
 			}
 		}
 		else {
 
 			// Handle context menu selection
 			if (e.getActionCommand().equals("NEW_CONCEPT")) {
-				// view.createNewConcept();
+				createConcept();
 			}
 			else if (e.getActionCommand().equals("DELETE_CONCEPT")) {
-				// view.deleteCurrentConcept();
-			}
-			else if (e.getActionCommand().equals("DELETE_LINK")) {
-				// view.deleteCurrentLink();
+				deleteConcept();
 			}
 			else if (e.getActionCommand().equals("CONCEPT_PROPERTIES")) {
-				// view.showConceptProperties();
+				showConceptProperties();
+			}
+			else if (e.getActionCommand().equals("NEW_LINK")) {
+				createLink();
+			}
+			else if (e.getActionCommand().equals("DELETE_LINK")) {
+				deleteLink();
 			}
 		}
-
 	}
-
 }
