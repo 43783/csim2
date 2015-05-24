@@ -26,6 +26,7 @@ public class TimeSeriesGraph extends JPanel {
 
 	// Private attributes
 	private XYSeriesCollection dataSet;
+	private boolean showLegend;
 
 	/**
 	 * Default constructor
@@ -78,6 +79,15 @@ public class TimeSeriesGraph extends JPanel {
 	}
 
 	/**
+	 * Defined if legend should be displayed or not
+	 * 
+	 * @param showLegend
+	 */
+	public void setShowLegend(boolean showLegend) {
+		this.showLegend = showLegend;
+	}
+	
+	/**
 	 * Repaint the surface area.
 	 */
 	protected void paintComponent(Graphics g) {
@@ -102,11 +112,15 @@ public class TimeSeriesGraph extends JPanel {
 			plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
 			plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 			plot.setOrientation(PlotOrientation.VERTICAL);
-
+			
 			// Create the graph to draw		
 			JFreeChart chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 			chart.setBackgroundPaint(Color.WHITE);
 
+			if (!showLegend) {
+				chart.removeLegend();
+			}
+			
 			// Draw the chart
 	        int x = getInsets().left;
 	        int y = getInsets().top;

@@ -30,6 +30,7 @@ import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.ui.comp.ConceptTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
+import javax.swing.JCheckBox;
 
 @SuppressWarnings("serial")
 public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeListener {
@@ -37,6 +38,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	// Private attributes
 	private int segmentCount;
 	private double threshold;
+	private boolean showLegend;
 
 	private JButton btnOK;
 	private JButton btnCancel;
@@ -46,6 +48,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private JTextField segmentCountField;
 	private JSlider segmentCountSlider;
 	private ConceptTable conceptTable;
+	private JCheckBox showLegendCheckbox;
 
 	/**
 	 * Create the dialog with owner.
@@ -80,14 +83,14 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Create matching fields
 		JLabel thresholdLabel = new JLabel("Weight threshold:");
-		thresholdLabel.setBounds(34, 29, 108, 23);
+		thresholdLabel.setBounds(34, 26, 108, 23);
 		mainPane.add(thresholdLabel);
 		thresholdField = new JTextField();
-		thresholdField.setBounds(152, 26, 61, 23);
+		thresholdField.setBounds(130, 26, 61, 23);
 		thresholdField.setColumns(10);
 		mainPane.add(thresholdField);
 		thresholdSlider = new JSlider(1, 1000);
-		thresholdSlider.setBounds(227, 26, 218, 23);
+		thresholdSlider.setBounds(201, 26, 244, 23);
 		thresholdSlider.setMajorTickSpacing(200);
 		thresholdSlider.setMinorTickSpacing(100);
 		thresholdSlider.setPaintTicks(true);
@@ -96,27 +99,33 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Grouping fields
 		JLabel segmentCountLabel = new JLabel("Segment count:");
-		segmentCountLabel.setBounds(34, 63, 108, 23);
+		segmentCountLabel.setBounds(44, 60, 108, 23);
 		mainPane.add(segmentCountLabel);
 		segmentCountField = new JTextField();
 		segmentCountField.setColumns(10);
-		segmentCountField.setBounds(152, 60, 61, 23);
+		segmentCountField.setBounds(130, 60, 61, 23);
 		mainPane.add(segmentCountField);
 		segmentCountSlider = new JSlider(1, 1000);
-		segmentCountSlider.setBounds(227, 60, 218, 23);
+		segmentCountSlider.setBounds(201, 60, 244, 23);
 		segmentCountSlider.addChangeListener(this);
 		mainPane.add(segmentCountSlider);
 
 		// Create concept panel
 		JPanel conceptPanel = new JPanel();
 		conceptPanel.setBorder(new TitledBorder(null, "Trace concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		conceptPanel.setBounds(10, 105, 450, 268);
+		conceptPanel.setBounds(10, 97, 450, 242);
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 		conceptTable = new ConceptTable();
 		JScrollPane scrollbar = new JScrollPane();
 		scrollbar.setViewportView(conceptTable);
 		conceptPanel.add(scrollbar, BorderLayout.CENTER);
 		mainPane.add(conceptPanel);
+
+		showLegendCheckbox = new JCheckBox("Show legend");
+		showLegendCheckbox.setBounds(352, 346, 108, 23);
+		showLegendCheckbox.setSelected(showLegend);
+		showLegendCheckbox.addActionListener(this);
+		mainPane.add(showLegendCheckbox);
 
 		// Initialize button pane
 		btnOK = new JButton("OK");
@@ -141,8 +150,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				//threshold = Integer.parseInt(thresholdField.getText());
-				
 				try {
 					threshold = NumberFormat.getInstance().parse(thresholdField.getText()).doubleValue();
 					setThreshold(threshold);
@@ -160,9 +167,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		segmentCountField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				
-				//segmentCount segmentCount = Integer.parseInt(segmentCountField.getText());
-				
+
 				try {
 					segmentCount = NumberFormat.getInstance().parse(segmentCountField.getText()).intValue();
 					setSegmentCount(segmentCount);
@@ -222,6 +227,9 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 			dialogResult = false;
 			this.setVisible(false);
 		}
+		else if (e.getSource() == showLegendCheckbox) {
+			showLegend = showLegendCheckbox.isSelected();
+		}
 	}
 
 	/**
@@ -260,6 +268,15 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public List<Concept> getSelectedConcepts() {
 		return conceptTable.getSelectedConcepts();
+	}
+
+	/**
+	 * Return true if legend should be displayed.
+	 * 
+	 * @return a boolean
+	 */
+	public boolean isShowLegend() {
+		return showLegend;
 	}
 
 	/**
@@ -306,5 +323,15 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public void setSelectedConcepts(List<Concept> concepts) {
 		conceptTable.setSelectedConcepts(concepts);
+	}
+
+	/**
+	 * Defined if legend should be displayed or not
+	 * 
+	 * @param showLegend
+	 */
+	public void setShowLegend(boolean showLegend) {
+		this.showLegend = showLegend;
+		showLegendCheckbox.setSelected(showLegend);
 	}
 }

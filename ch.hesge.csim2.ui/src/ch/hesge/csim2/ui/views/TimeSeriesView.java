@@ -36,6 +36,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private TimeSeries timeSeries;
 	private int segmentCount;
 	private double threshold;
+	private boolean showLegend;
 
 	private ScenarioComboBox scenarioComboBox;
 	private TimeSeriesGraph graphPanel;
@@ -54,6 +55,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		this.threshold = DEFAULT_THRESHOLD;
 		this.project = project;
 		this.scenarios = scenarios;
+		this.showLegend = true;
 
 		initComponent();
 	}
@@ -88,7 +90,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		JPanel settingsPanel = new JPanel();
 		FlowLayout flowLayout2 = (FlowLayout) settingsPanel.getLayout();
 		flowLayout2.setAlignment(FlowLayout.RIGHT);
-		settingsBtn = new JButton("Settings...");
+		settingsBtn = new JButton("Settings");
 		settingsBtn.setEnabled(false);
 		settingsBtn.addActionListener(this);
 		settingsPanel.add(settingsBtn);
@@ -160,12 +162,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 			dialog.setThreshold(threshold);
 			dialog.setSegmentCount(segmentCount);
 			dialog.setSelectedConcepts(selectedConcepts);
+			dialog.setShowLegend(showLegend);
 			dialog.setVisible(true);
 
 			// Refresh view with new parameters
 			if (dialog.getDialogResult()) {
 
 				segmentCount = dialog.getSegmentCount();
+				showLegend = dialog.isShowLegend();
 				
 				// If threshold has changed, we need all concepts
 				if (threshold != dialog.getThreshold()) {
@@ -181,6 +185,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 					public void run() {
 						TimeSeries filteredTimeSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, selectedConcepts);
 						selectedConcepts = filteredTimeSeries.getConcepts();
+						graphPanel.setShowLegend(showLegend);
 						graphPanel.setTimeSeries(filteredTimeSeries);
 					}
 				});
