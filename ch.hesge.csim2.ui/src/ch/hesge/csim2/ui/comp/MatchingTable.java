@@ -1,5 +1,6 @@
 package ch.hesge.csim2.ui.comp;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -37,6 +38,7 @@ public class MatchingTable extends JTable {
 
 		setEnabled(true);
 		setRowSelectionAllowed(true);
+		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		initModel();

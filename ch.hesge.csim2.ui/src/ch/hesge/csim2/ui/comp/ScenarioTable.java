@@ -1,5 +1,6 @@
 package ch.hesge.csim2.ui.comp;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,6 +34,7 @@ public class ScenarioTable extends JTable {
 	private void initComponent() {
 		
 		setRowSelectionAllowed(true);
+		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		// Create a context menu
@@ -43,8 +45,6 @@ public class ScenarioTable extends JTable {
 		initModel();
 		initRenderer();		
 		initListeners();
-		
-		
 	}
 	
 	/**

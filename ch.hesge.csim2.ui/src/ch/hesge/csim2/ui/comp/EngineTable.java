@@ -1,5 +1,6 @@
 package ch.hesge.csim2.ui.comp;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +45,7 @@ public class EngineTable extends JTable {
 	private void initComponent() {
 
 		setRowSelectionAllowed(true);
+		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		// Create a context menu

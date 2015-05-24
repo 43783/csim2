@@ -11,16 +11,19 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -30,25 +33,36 @@ import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.ui.comp.ConceptTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
-import javax.swing.JCheckBox;
+import ch.hesge.csim2.ui.views.TimeSeriesView;
 
 @SuppressWarnings("serial")
 public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeListener {
 
 	// Private attributes
-	private int segmentCount;
+	private int timeSeriesSize;
 	private double threshold;
+	private int segmentCount;
+	private int segmentSize;
 	private boolean showLegend;
+
+	private JTextField thresholdField;
+	private JSlider thresholdSlider;
+	
+	private JTextField segmentCountField;
+	private JSlider segmentCountSlider;
+	
+	private JTextField segmentSizeField;
+	private JSlider segmentSizeSlider;
 
 	private JButton btnOK;
 	private JButton btnCancel;
+	private boolean isUpdatingCount;
+	private boolean isUpdatingSize;
 	private boolean dialogResult;
-	private JTextField thresholdField;
-	private JSlider thresholdSlider;
-	private JTextField segmentCountField;
-	private JSlider segmentCountSlider;
+	
 	private ConceptTable conceptTable;
 	private JCheckBox showLegendCheckbox;
+	private JCheckBox clearSelectionCheckbox;
 
 	/**
 	 * Create the dialog with owner.
@@ -81,9 +95,10 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
 		mainPane.setLayout(null);
 
-		// Create matching fields
+		// Create threshold fields
 		JLabel thresholdLabel = new JLabel("Weight threshold:");
-		thresholdLabel.setBounds(34, 26, 108, 23);
+		thresholdLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		thresholdLabel.setBounds(10, 26, 115, 23);
 		mainPane.add(thresholdLabel);
 		thresholdField = new JTextField();
 		thresholdField.setBounds(130, 26, 61, 23);
@@ -97,9 +112,10 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		thresholdSlider.addChangeListener(this);
 		mainPane.add(thresholdSlider);
 
-		// Grouping fields
+		// Create segment count fields
 		JLabel segmentCountLabel = new JLabel("Segment count:");
-		segmentCountLabel.setBounds(44, 60, 108, 23);
+		segmentCountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		segmentCountLabel.setBounds(10, 60, 115, 23);
 		mainPane.add(segmentCountLabel);
 		segmentCountField = new JTextField();
 		segmentCountField.setColumns(10);
@@ -110,10 +126,25 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		segmentCountSlider.addChangeListener(this);
 		mainPane.add(segmentCountSlider);
 
+		// Create segment size field
+		JLabel segmentSizeLabel = new JLabel("Segment size:");
+		segmentSizeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		segmentSizeLabel.setBounds(10, 94, 115, 23);
+		mainPane.add(segmentSizeLabel);
+		segmentSizeField = new JTextField();
+		segmentSizeField.setColumns(10);
+		segmentSizeField.setBounds(130, 94, 61, 23);
+		mainPane.add(segmentSizeField);
+		segmentSizeSlider = new JSlider(1, 1000);
+		segmentSizeSlider.setBounds(201, 94, 244, 23);
+		segmentSizeSlider.addChangeListener(this);
+		mainPane.add(segmentSizeSlider);
+					
+		
 		// Create concept panel
 		JPanel conceptPanel = new JPanel();
 		conceptPanel.setBorder(new TitledBorder(null, "Trace concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		conceptPanel.setBounds(10, 97, 450, 242);
+		conceptPanel.setBounds(10, 133, 450, 220);
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 		conceptTable = new ConceptTable();
 		JScrollPane scrollbar = new JScrollPane();
@@ -121,13 +152,18 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		conceptPanel.add(scrollbar, BorderLayout.CENTER);
 		mainPane.add(conceptPanel);
 
+		// Clear concept selection
+		clearSelectionCheckbox = new JCheckBox("Clear selection");
+		clearSelectionCheckbox.setBounds(20, 360, 97, 23);
+		clearSelectionCheckbox.addActionListener(this);
+		mainPane.add(clearSelectionCheckbox);
+		
 		// Create show legend checkbox
 		showLegendCheckbox = new JCheckBox("Show legend");
-		showLegendCheckbox.setBounds(352, 346, 108, 23);
-		showLegendCheckbox.setSelected(showLegend);
+		showLegendCheckbox.setBounds(130, 360, 108, 23);
 		showLegendCheckbox.addActionListener(this);
 		mainPane.add(showLegendCheckbox);
-
+		
 		// Initialize button pane
 		btnOK = new JButton("OK");
 		btnOK.setPreferredSize(new Dimension(100, 25));
@@ -139,6 +175,9 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		btnCancel.addActionListener(this);
 		btnPane.add(btnCancel);
 
+		isUpdatingCount = false;
+		isUpdatingSize = false;
+		
 		initListeners();
 	}
 
@@ -152,8 +191,8 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 			public void focusLost(FocusEvent e) {
 
 				try {
-					threshold = NumberFormat.getInstance().parse(thresholdField.getText()).doubleValue();
-					setThreshold(threshold);
+					double newValue = NumberFormat.getInstance().parse(thresholdField.getText()).doubleValue();
+					setThreshold(newValue);
 				}
 				catch (ParseException e1) {
 					// Ignore
@@ -170,8 +209,26 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 			public void focusLost(FocusEvent e) {
 
 				try {
-					segmentCount = NumberFormat.getInstance().parse(segmentCountField.getText()).intValue();
-					setSegmentCount(segmentCount);
+					int newValue = NumberFormat.getInstance().parse(segmentCountField.getText()).intValue();
+					setSegmentCount(newValue);
+				}
+				catch (ParseException e1) {
+					// Ignore
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+		});
+
+		segmentSizeField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				try {
+					int newValue = NumberFormat.getInstance().parse(segmentSizeField.getText()).intValue();
+					setSegmentSize(newValue);
 				}
 				catch (ParseException e1) {
 					// Ignore
@@ -206,12 +263,13 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void stateChanged(ChangeEvent e) {
 
 		if (e.getSource() == thresholdSlider) {
-			threshold = thresholdSlider.getValue() / 1000d;
-			thresholdField.setText(String.format("%4.3f", threshold));
+			setThreshold(thresholdSlider.getValue() / 1000d);
 		}
 		else if (e.getSource() == segmentCountSlider) {
-			segmentCount = segmentCountSlider.getValue();
-			segmentCountField.setText(String.format("%d", segmentCount));
+			setSegmentCount(segmentCountSlider.getValue());
+		}
+		else if (e.getSource() == segmentSizeSlider) {
+			setSegmentSize(segmentSizeSlider.getValue());
 		}
 	}
 
@@ -231,6 +289,11 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		else if (e.getSource() == showLegendCheckbox) {
 			showLegend = showLegendCheckbox.isSelected();
 		}
+		else if (e.getSource() == clearSelectionCheckbox) {
+			clearSelectionCheckbox.setSelected(false);
+			conceptTable.setSelectedConcepts(new ArrayList<>());
+			conceptTable.repaint();
+		}
 	}
 
 	/**
@@ -245,6 +308,15 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	}
 
 	/**
+	 * Return current threshold.
+	 * 
+	 * @return an double between 0 and 1
+	 */
+	public double getThreshold() {
+		return threshold;
+	}
+
+	/**
 	 * Return selected segment count.
 	 * 
 	 * @return an int between 1 and time series size
@@ -254,12 +326,12 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	}
 
 	/**
-	 * Return current threshold.
+	 * Return segment size.
 	 * 
-	 * @return an double between 0 and 1
+	 * @return an int between 1 and time series size
 	 */
-	public double getThreshold() {
-		return threshold;
+	public int getSegmentSize() {
+		return segmentSize;
 	}
 
 	/**
@@ -281,18 +353,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	}
 
 	/**
-	 * Set current segment count.
-	 * 
-	 * @param segmentCount
-	 */
-	public void setSegmentCount(int segmentCount) {
-
-		this.segmentCount = segmentCount;
-		this.segmentCountSlider.setValue(segmentCount);
-		this.segmentCountField.setText(String.format("%d", segmentCount));
-	}
-
-	/**
 	 * Set current threshold.
 	 * 
 	 * @param threshold
@@ -305,16 +365,70 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	}
 
 	/**
+	 * Set current segment count.
+	 * 
+	 * @param segmentCount
+	 */
+	public void setSegmentCount(int segmentCount) {
+
+		if (!isUpdatingCount) {
+			try {
+				isUpdatingCount = true;			
+
+				this.segmentCount = segmentCount;
+				this.segmentCountSlider.setValue(segmentCount);
+				this.segmentCountField.setText(String.format("%d", segmentCount));
+				
+				setSegmentSize(timeSeriesSize / segmentCount);
+			}
+			finally {
+				isUpdatingCount = false;			
+			}
+		}
+	}
+
+	/**
+	 * Set current segment size.
+	 * 
+	 * @param segmentCount
+	 */
+	public void setSegmentSize(int segmentSize) {
+
+		if (!isUpdatingSize) {
+			try {
+				isUpdatingSize = true;			
+
+				this.segmentSize = segmentSize;
+				this.segmentSizeSlider.setValue(segmentSize);
+				this.segmentSizeField.setText(String.format("%d", segmentSize));
+				
+				setSegmentCount(timeSeriesSize / segmentSize);
+			}
+			finally {
+				isUpdatingSize = false;			
+			}
+		}
+	}
+
+	/**
 	 * Set timeseries.
 	 * 
 	 * @param timeSeries
 	 */
 	public void setTimeSeries(TimeSeries timeSeries) {
-		this.segmentCountSlider.setMinimum(1);
-		this.segmentCountSlider.setMaximum(timeSeries.getTraceVectors().size());
+		
+		this.timeSeriesSize = timeSeries.getTraceVectors().size();
 		this.conceptTable.setConcepts(timeSeries.getConcepts());
-		setThreshold(0.1d);
-		setSegmentCount(100);
+
+		this.segmentCountSlider.setMinimum(1);
+		this.segmentCountSlider.setMaximum(timeSeriesSize);
+
+		this.segmentSizeSlider.setMinimum(1);
+		this.segmentSizeSlider.setMaximum(timeSeriesSize);
+		
+		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
+		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
+		setSegmentSize(timeSeriesSize / TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 	}
 
 	/**

@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -43,8 +42,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
-	private int DEFAULT_SEGMENT_COUNT = 1000;
-	private double DEFAULT_THRESHOLD = 0.1d;
+	public static int DEFAULT_SEGMENT_COUNT = 1000;
+	public static double DEFAULT_THRESHOLD = 0.1d;
 
 	/**
 	 * Default constructor.
@@ -121,20 +120,20 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						@Override
 						public void run() {
 
-							// Retrieve scenario timeseries
+							// Retrieve timeseries associated to current scenario
 							timeSeries = ApplicationLogic.getTimeSeries(project, scenario);
 
 							// Reset current settings
 							segmentCount = DEFAULT_SEGMENT_COUNT;
 							threshold = DEFAULT_THRESHOLD;
-							selectedConcepts = new ArrayList<>();
 
 							// Extract segmented information
-							TimeSeries filteredTimeSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, timeSeries.getConcepts());
+							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, timeSeries.getConcepts());
 
 							// Update view
-							selectedConcepts = filteredTimeSeries.getConcepts();
-							graphPanel.setTimeSeries(filteredTimeSeries);
+							selectedConcepts = filteredSeries.getConcepts();
+							graphPanel.setTimeSeries(filteredSeries);
+							graphPanel.setShowLegend(showLegend);
 							settingsBtn.setEnabled(true);
 						}
 					});
@@ -183,10 +182,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 				SwingUtils.invokeLongOperation(TimeSeriesView.this, new Runnable() {
 					@Override
 					public void run() {
-						TimeSeries filteredTimeSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, selectedConcepts);
-						selectedConcepts = filteredTimeSeries.getConcepts();
+						
+						// Retrieve filtered timeseries 
+						TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, selectedConcepts);
+					
+						// Retrieve intersection between
+						selectedConcepts = filteredSeries.getConcepts();
 						graphPanel.setShowLegend(showLegend);
-						graphPanel.setTimeSeries(filteredTimeSeries);
+						graphPanel.setTimeSeries(filteredSeries);
 					}
 				});
 			}

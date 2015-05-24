@@ -1,6 +1,7 @@
 package ch.hesge.csim2.ui.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -98,6 +99,7 @@ public class ParametersDialog extends JDialog implements ActionListener {
 		paramsTable = createParametersTable();
 		paramsTable.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		paramsTable.setShowGrid(true);
+		paramsTable.setGridColor(Color.LIGHT_GRAY);
 		paramsTable.setRowSelectionAllowed(true);
 		paramsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane scrollPane = new JScrollPane();

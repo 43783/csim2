@@ -182,7 +182,7 @@ public class MainView extends JFrame implements ActionListener {
 		consoleView.getEnginePanel().setEngines(engineList);
 
 		// Put focus on console
-		consoleView.setActiveTabIndex(0);
+		consoleView.setActiveTabIndex(1);
 		consoleView.getConsolePanel().requestFocus();
 
 		// Redirect standard input/output to console

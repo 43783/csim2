@@ -1,11 +1,13 @@
 package ch.hesge.csim2.ui.comp;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import ch.hesge.csim2.core.model.Concept;
 
@@ -14,11 +16,15 @@ public class ConceptTable extends JTable {
 
 	// Private attributes
 	private List<Concept> concepts;
+	private List<Concept> selectedConcepts;
 
 	/**
 	 * Default constructor
 	 */
 	public ConceptTable() {
+		
+		selectedConcepts = new ArrayList<>();
+		
 		initComponent();
 	}
 
@@ -28,8 +34,8 @@ public class ConceptTable extends JTable {
 	private void initComponent() {
 
 		setRowSelectionAllowed(true);
-		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		setShowGrid(false);
+		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		setGridColor(Color.LIGHT_GRAY);
 		setTableHeader(null);
 
 		initModel();
@@ -44,7 +50,7 @@ public class ConceptTable extends JTable {
 
 			@Override
 			public int getColumnCount() {
-				return 1;
+				return 2;
 			}
 
 			@Override
@@ -53,11 +59,20 @@ public class ConceptTable extends JTable {
 				switch (col) {
 					case 0:
 						return "Name";
+					case 1:
+						return "";
 				}
 
 				return null;
 			}
 
+			@Override
+			public Class<?> getColumnClass(int col) {
+			    if (col == 1)
+			        return Boolean.class;
+			    return super.getColumnClass(col);
+			}
+			
 			@Override
 			public int getRowCount() {
 				if (concepts == null)
@@ -67,7 +82,7 @@ public class ConceptTable extends JTable {
 
 			@Override
 			public boolean isCellEditable(int row, int col) {
-				return false;
+				return col == 1;
 			}
 
 			@Override
@@ -78,11 +93,36 @@ public class ConceptTable extends JTable {
 				switch (col) {
 					case 0:
 						return concept.getName();
+					case 1:
+						return selectedConcepts.contains(concept);
 				}
 
 				return null;
 			}
+			
+			@Override
+			public void setValueAt(Object value, int row, int col) {
+
+				if (col == 1) {
+					
+					Concept concept = concepts.get(row);
+					boolean isSelected = (boolean) value;
+					
+					if (isSelected) {
+						selectedConcepts.add(concept);
+					}
+					else {
+						selectedConcepts.remove(concept);
+					}
+				}
+			}
 		});
+		
+		// Sets column constraint
+		TableColumnModel columnModel = getColumnModel();
+		columnModel.getColumn(1).setMinWidth(50);
+		columnModel.getColumn(1).setMaxWidth(50);
+		
 	}
 
 	/**
@@ -92,8 +132,8 @@ public class ConceptTable extends JTable {
 	 *        the concept list
 	 */
 	public void setConcepts(List<Concept> concepts) {
-
 		this.concepts = concepts;
+		this.selectedConcepts.clear();
 		initModel();
 	}
 
@@ -103,14 +143,7 @@ public class ConceptTable extends JTable {
 	 * @return
 	 *         a list of concepts
 	 */
-	public List<Concept> getSelectedConcepts() {
-		
-		List<Concept> selectedConcepts = new ArrayList<>();
-		
-		for (int selectedRow : getSelectedRows()) {
-			selectedConcepts.add(concepts.get(selectedRow));
-		}
-		
+	public List<Concept> getSelectedConcepts() {	
 		return selectedConcepts;
 	}
 
@@ -120,17 +153,8 @@ public class ConceptTable extends JTable {
 	 * @param selectedConcepts
 	 *        the list of concept currently selected
 	 */
-	public void setSelectedConcepts(List<Concept> selectedConcepts) {
-		
-		ListSelectionModel model = getSelectionModel();
-		model.clearSelection();
-		
-		if (selectedConcepts != null) {
-			
-			for (Concept concept : selectedConcepts) {
-				int row = concepts.indexOf(concept);
-				model.addSelectionInterval(row, row);
-			}
-		}
+	public void setSelectedConcepts(List<Concept> concepts) {
+		selectedConcepts.clear();
+		selectedConcepts.addAll(concepts);
 	}
 }
