@@ -121,6 +121,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		conceptPanel.add(scrollbar, BorderLayout.CENTER);
 		mainPane.add(conceptPanel);
 
+		// Create show legend checkbox
 		showLegendCheckbox = new JCheckBox("Show legend");
 		showLegendCheckbox.setBounds(352, 346, 108, 23);
 		showLegendCheckbox.setSelected(showLegend);
