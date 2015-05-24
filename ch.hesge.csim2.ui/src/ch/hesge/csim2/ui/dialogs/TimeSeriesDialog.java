@@ -63,6 +63,8 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private ConceptTable conceptTable;
 	private JCheckBox showLegendCheckbox;
 	private JCheckBox clearSelectionCheckbox;
+	private JTextField traceSizeField;
+	private JLabel traceSizeLabel;
 
 	/**
 	 * Create the dialog with owner.
@@ -79,7 +81,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Dialog configuration
 		setTitle("TimeSeries Settings");
-		setBounds(0, 0, 476, 457);
+		setBounds(0, 0, 476, 568);
 		setLocationRelativeTo(getParent());
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -98,14 +100,14 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		// Create threshold fields
 		JLabel thresholdLabel = new JLabel("Weight threshold:");
 		thresholdLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		thresholdLabel.setBounds(10, 26, 115, 23);
+		thresholdLabel.setBounds(10, 58, 115, 23);
 		mainPane.add(thresholdLabel);
 		thresholdField = new JTextField();
-		thresholdField.setBounds(130, 26, 61, 23);
+		thresholdField.setBounds(130, 58, 61, 23);
 		thresholdField.setColumns(10);
 		mainPane.add(thresholdField);
 		thresholdSlider = new JSlider(1, 1000);
-		thresholdSlider.setBounds(201, 26, 244, 23);
+		thresholdSlider.setBounds(201, 58, 244, 23);
 		thresholdSlider.setMajorTickSpacing(200);
 		thresholdSlider.setMinorTickSpacing(100);
 		thresholdSlider.setPaintTicks(true);
@@ -115,28 +117,28 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		// Create segment count fields
 		JLabel segmentCountLabel = new JLabel("Segment count:");
 		segmentCountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		segmentCountLabel.setBounds(10, 60, 115, 23);
+		segmentCountLabel.setBounds(10, 92, 115, 23);
 		mainPane.add(segmentCountLabel);
 		segmentCountField = new JTextField();
 		segmentCountField.setColumns(10);
-		segmentCountField.setBounds(130, 60, 61, 23);
+		segmentCountField.setBounds(130, 92, 61, 23);
 		mainPane.add(segmentCountField);
 		segmentCountSlider = new JSlider(1, 1000);
-		segmentCountSlider.setBounds(201, 60, 244, 23);
+		segmentCountSlider.setBounds(201, 92, 244, 23);
 		segmentCountSlider.addChangeListener(this);
 		mainPane.add(segmentCountSlider);
 
 		// Create segment size field
 		JLabel segmentSizeLabel = new JLabel("Segment size:");
 		segmentSizeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		segmentSizeLabel.setBounds(10, 94, 115, 23);
+		segmentSizeLabel.setBounds(10, 126, 115, 23);
 		mainPane.add(segmentSizeLabel);
 		segmentSizeField = new JTextField();
 		segmentSizeField.setColumns(10);
-		segmentSizeField.setBounds(130, 94, 61, 23);
+		segmentSizeField.setBounds(130, 126, 61, 23);
 		mainPane.add(segmentSizeField);
 		segmentSizeSlider = new JSlider(1, 1000);
-		segmentSizeSlider.setBounds(201, 94, 244, 23);
+		segmentSizeSlider.setBounds(201, 126, 244, 23);
 		segmentSizeSlider.addChangeListener(this);
 		mainPane.add(segmentSizeSlider);
 					
@@ -144,7 +146,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		// Create concept panel
 		JPanel conceptPanel = new JPanel();
 		conceptPanel.setBorder(new TitledBorder(null, "Trace concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		conceptPanel.setBounds(10, 133, 450, 220);
+		conceptPanel.setBounds(10, 160, 450, 304);
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 		conceptTable = new ConceptTable();
 		JScrollPane scrollbar = new JScrollPane();
@@ -154,15 +156,26 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Clear concept selection
 		clearSelectionCheckbox = new JCheckBox("Clear selection");
-		clearSelectionCheckbox.setBounds(20, 360, 97, 23);
+		clearSelectionCheckbox.setBounds(10, 471, 97, 23);
 		clearSelectionCheckbox.addActionListener(this);
 		mainPane.add(clearSelectionCheckbox);
 		
 		// Create show legend checkbox
 		showLegendCheckbox = new JCheckBox("Show legend");
-		showLegendCheckbox.setBounds(130, 360, 108, 23);
+		showLegendCheckbox.setBounds(120, 471, 108, 23);
 		showLegendCheckbox.addActionListener(this);
 		mainPane.add(showLegendCheckbox);
+		
+		traceSizeField = new JTextField();
+		traceSizeField.setEditable(false);
+		traceSizeField.setColumns(10);
+		traceSizeField.setBounds(130, 24, 61, 23);
+		mainPane.add(traceSizeField);
+		
+		traceSizeLabel = new JLabel("Trace size:");
+		traceSizeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		traceSizeLabel.setBounds(10, 24, 115, 23);
+		mainPane.add(traceSizeLabel);
 		
 		// Initialize button pane
 		btnOK = new JButton("OK");
@@ -418,13 +431,15 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setTimeSeries(TimeSeries timeSeries) {
 		
 		this.timeSeriesSize = timeSeries.getTraceVectors().size();
-		this.conceptTable.setConcepts(timeSeries.getConcepts());
+		conceptTable.setConcepts(timeSeries.getConcepts());
 
-		this.segmentCountSlider.setMinimum(1);
-		this.segmentCountSlider.setMaximum(timeSeriesSize);
+		segmentCountSlider.setMinimum(1);
+		segmentCountSlider.setMaximum(timeSeriesSize);
 
-		this.segmentSizeSlider.setMinimum(1);
-		this.segmentSizeSlider.setMaximum(timeSeriesSize);
+		segmentSizeSlider.setMinimum(1);
+		segmentSizeSlider.setMaximum(timeSeriesSize);
+		
+		traceSizeField.setText(String.format("%d", timeSeriesSize));
 		
 		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
 		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
