@@ -35,6 +35,9 @@ public class OntologyAnimator implements Runnable {
 	 * Start adjusting dynamic concepts position
 	 */
 	public void start() {
+		
+		stop();
+		
 		isAnimating = true;
 		animator = Executors.newFixedThreadPool(1);
 		animator.submit(new Thread(this));
@@ -44,21 +47,32 @@ public class OntologyAnimator implements Runnable {
 	 * Stop adjusting dynamic concepts position
 	 */
 	public void stop() {
+				
+		if (animator != null) {
+			animator.shutdownNow();
+		}
+		
 		isAnimating = false;
-		animator.shutdownNow();
+		animator = null;
 	}
 
 	/**
 	 * Suspend animation without changing internal state.
 	 */
 	public void suspend() {
-		animator.shutdownNow();
+		
+		if (animator != null) {
+			animator.shutdownNow();
+		}
+		
+		animator = null;
 	}
 	
 	/**
 	 * Resume animation to previous animation state.
 	 */
 	public void resume() {
+		
 		if (isAnimating) {
 			start();
 		}

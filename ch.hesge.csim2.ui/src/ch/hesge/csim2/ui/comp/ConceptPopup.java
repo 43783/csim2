@@ -124,7 +124,7 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "DELETE_CONCEPT"));
 			}
 			else if (e.getSource() == mnuNewLink) {
-				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "NEW_LINK"));
+				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "NEW_LINK_START"));
 			}
 			else if (e.getSource() == mnuDeleteLink) {
 				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "DELETE_LINK"));

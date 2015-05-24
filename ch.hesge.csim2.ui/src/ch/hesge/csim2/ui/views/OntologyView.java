@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -34,7 +35,6 @@ public class OntologyView extends JPanel implements ActionListener {
 
 	// Private attributes
 	private Ontology ontology;
-
 	private OntologyPanel ontologyPanel;
 	private OntologyAnimator animator;
 	private JCheckBox btnDynamic;
@@ -48,7 +48,7 @@ public class OntologyView extends JPanel implements ActionListener {
 
 		this.ontology = ontology;
 
-		// Retrieve concepts associated to the ontology
+		// Load ontology concepts
 		List<Concept> concepts = ApplicationLogic.getConceptsWithDependencies(ontology);
 		ontology.getConcepts().clear();
 		ontology.getConcepts().addAll(concepts);
@@ -118,7 +118,7 @@ public class OntologyView extends JPanel implements ActionListener {
 	 * Create a new concept
 	 * and insert it to the ontology.
 	 */
-	public void createConcept() {
+	private void createConcept() {
 
 		Graphics g = getGraphics();
 		double scaleFactor = ontologyPanel.getScaledFactor();
@@ -143,26 +143,51 @@ public class OntologyView extends JPanel implements ActionListener {
 		concept.setBounds(ontoBounds);
 
 		// Put concept in edit mode
-		ontologyPanel.editConcept(concept);
+		ontologyPanel.selectConcept(concept);
+		ontologyPanel.startEditMode();
 	}
 
 	/**
 	 * Delete the current selected concept (if any)
 	 */
-	public void deleteConcept() {
+	private void deleteConcept() {
 
 		Concept concept = ontologyPanel.getSelectedConcept();
 
 		if (concept != null) {
 			ApplicationLogic.removeConcept(ontology, concept);
-			ontologyPanel.resetSelection();
+			ontologyPanel.clearSelection();
+		}
+	}
+
+	/**
+	 * Create a new link
+	 * and insert it to the ontology.
+	 */
+	private void createLink() {		
+		ConceptLink tmp = ontologyPanel.getSelectedLink();
+		ConceptLink link = ApplicationLogic.createConceptLink(ontology, tmp.getSourceConcept(), tmp.getTargetConcept());
+		ontologyPanel.selectLink(link);
+		ontologyPanel.selectConcept(null);
+	}
+
+	/**
+	 * Delete the current selected link (if any)
+	 */
+	private void deleteLink() {
+
+		ConceptLink link = ontologyPanel.getSelectedLink();
+
+		if (link != null) {
+			ApplicationLogic.removeConceptLink(ontology, link.getSourceConcept(), link);
+			ontologyPanel.clearSelection();	
 		}
 	}
 
 	/**
 	 * Display a dialog with concept properties
 	 */
-	public void showConceptProperties() {
+	private void showConceptDialog() {
 
 		Concept concept = ontologyPanel.getSelectedConcept();
 
@@ -173,49 +198,29 @@ public class OntologyView extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Create a new link
-	 * and insert it to the ontology.
-	 */
-	public void createLink() {
-		
-	}
-	
-	/**
-	 * Delete the current selected link (if any)
-	 */
-	public void deleteLink() {
-
-		ConceptLink link = ontologyPanel.getSelectedLink();
-
-		if (link != null) {
-			ApplicationLogic.removeConceptLink(ontology, link.getSourceConcept(), link);
-			ontologyPanel.resetSelection();
-		}
-	}
-
-	/**
 	 * Move randomly all concepts
 	 */
 	private void shakeConcepts() {
 
-		//		List<Concept> concepts = Collections.synchronizedList(ontology.getConcepts());
-		//
-		//		// Randomize all concept location
-		//		for (Concept concept : concepts) {
-		//
-		//			// Retrieve adjusted concept coordinates
-		//			Rectangle conceptBounds = SwingUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
-		//
-		//			// Recompute random position
-		//			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();
-		//			double newY = (ontologyPanel.getPreferredSize().height - conceptBounds.height) * Math.random();
-		//
-		//			// Update concept position
-		//			concept.getBounds().x = Double.valueOf(newX).intValue();
-		//			concept.getBounds().y = Double.valueOf(newY).intValue();
-		//		}
-		//
-		//		refreshOntology();
+		double scaleFactor = ontologyPanel.getScaledFactor();
+		List<Concept> concepts = Collections.synchronizedList(ontology.getConcepts());
+
+		// Randomize all concept location
+		for (Concept concept : concepts) {
+
+			// Retrieve adjusted concept coordinates
+			Rectangle conceptBounds = SwingUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
+
+			// Recompute random position
+			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();
+			double newY = (ontologyPanel.getPreferredSize().height - conceptBounds.height) * Math.random();
+
+			// Update concept position
+			concept.getBounds().x = Double.valueOf(newX).intValue();
+			concept.getBounds().y = Double.valueOf(newY).intValue();
+		}
+
+		ontologyPanel.repaint();
 	}
 
 	/**
@@ -257,14 +262,17 @@ public class OntologyView extends JPanel implements ActionListener {
 			else if (e.getActionCommand().equals("DELETE_CONCEPT")) {
 				deleteConcept();
 			}
-			else if (e.getActionCommand().equals("CONCEPT_PROPERTIES")) {
-				showConceptProperties();
+			else if (e.getActionCommand().equals("NEW_LINK_START")) {
+				ontologyPanel.startLinkMode();
 			}
-			else if (e.getActionCommand().equals("NEW_LINK")) {
+			else if (e.getActionCommand().equals("NEW_LINK_END")) {
 				createLink();
 			}
 			else if (e.getActionCommand().equals("DELETE_LINK")) {
 				deleteLink();
+			}
+			else if (e.getActionCommand().equals("CONCEPT_PROPERTIES")) {
+				showConceptDialog();
 			}
 		}
 	}
