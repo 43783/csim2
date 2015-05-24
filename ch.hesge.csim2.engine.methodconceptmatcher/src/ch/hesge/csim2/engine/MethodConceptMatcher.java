@@ -15,6 +15,7 @@ import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.Context;
 import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
+import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
@@ -22,6 +23,8 @@ import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.EngineException;
 import ch.hesge.csim2.core.utils.StringUtils;
+import ch.hesge.csim2.engine.conceptmapper.RddaMethodConceptMatch;
+import ch.hesge.csim2.engine.conceptmapper.TermVectorBuilder;
 
 /**
  * This engine is responsible to compute score for all stem in system (stem and
@@ -148,6 +151,28 @@ public class MethodConceptMatcher implements IEngine {
 
 			Console.writeLine("loading sources information...");
 
+			List<RddaMethodConceptMatch> matchings = new ArrayList<>();
+			
+			// Compute matchings for each ontology
+			for (Ontology ontology : project.getOntologies()) {
+				List<RddaMethodConceptMatch> rddaMatch = new TermVectorBuilder().computeVectors(project, ontology);
+				matchings.addAll(rddaMatch);
+			}
+			
+			// Convert rdda matching into csim2 matching
+			for (RddaMethodConceptMatch rddaMatch : matchings) {
+				
+				MethodConceptMatch match = new MethodConceptMatch();
+
+				match.setProjectId(project.getKeyId());
+				match.setSourceMethodId(rddaMatch.getMethodId().getMethodID());
+				match.setConceptId(rddaMatch.getConceptId().getConceptID());
+				match.setWeight(rddaMatch.getMatchingStrength());
+
+				ApplicationLogic.saveMatching(match);
+			}
+
+			/*
 			// Load all concepts & methods
 			Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
 			Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
@@ -208,6 +233,7 @@ public class MethodConceptMatcher implements IEngine {
 					}
 				}
 			}
+			*/
 		}
 		catch (Exception e) {
 			Console.writeError("error while analyzing sources: " + StringUtils.toString(e));

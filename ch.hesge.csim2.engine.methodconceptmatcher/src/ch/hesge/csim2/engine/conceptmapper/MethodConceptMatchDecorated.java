@@ -1,10 +1,10 @@
 package ch.hesge.csim2.engine.conceptmapper;
 
-public class MethodConceptMatchDecorated extends MethodConceptMatch2 {
+public class MethodConceptMatchDecorated extends RddaMethodConceptMatch {
 
-	private MethodConceptMatch2 mcm;
+	private RddaMethodConceptMatch mcm;
 
-	public MethodConceptMatchDecorated(MethodConceptMatch2 mcm) {
+	public MethodConceptMatchDecorated(RddaMethodConceptMatch mcm) {
 		this.mcm = mcm;
 	}
 

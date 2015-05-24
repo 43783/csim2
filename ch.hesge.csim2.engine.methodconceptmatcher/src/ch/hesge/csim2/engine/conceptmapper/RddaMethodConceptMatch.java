@@ -1,15 +1,15 @@
 package ch.hesge.csim2.engine.conceptmapper;
 
-public class MethodConceptMatch2 implements Comparable {
+public class RddaMethodConceptMatch implements Comparable {
 
 	private ConceptIdentifier conceptId;
 	private MethodIdentifier methodId;
 	private float matchingStrength;
 
-	public MethodConceptMatch2() {
+	public RddaMethodConceptMatch() {
 	}
 
-	public MethodConceptMatch2(MethodIdentifier mId, ConceptIdentifier cId, float matchingStrength) {
+	public RddaMethodConceptMatch(MethodIdentifier mId, ConceptIdentifier cId, float matchingStrength) {
 		super();
 		this.methodId = mId;
 		this.conceptId = cId;
@@ -17,9 +17,9 @@ public class MethodConceptMatch2 implements Comparable {
 	}
 
 	public int compareTo(Object o) {
-		if (matchingStrength > ((MethodConceptMatch2) o).getMatchingStrength())
+		if (matchingStrength > ((RddaMethodConceptMatch) o).getMatchingStrength())
 			return 1;
-		else if (matchingStrength < ((MethodConceptMatch2) o).getMatchingStrength())
+		else if (matchingStrength < ((RddaMethodConceptMatch) o).getMatchingStrength())
 			return -1;
 		else
 			return 0;
