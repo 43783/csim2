@@ -56,8 +56,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 	private JButton btnOK;
 	private JButton btnCancel;
-	private boolean isUpdatingCount;
-	private boolean isUpdatingSize;
 	private boolean dialogResult;
 	
 	private ConceptTable conceptTable;
@@ -156,13 +154,13 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Clear concept selection
 		clearSelectionCheckbox = new JCheckBox("Clear selection");
-		clearSelectionCheckbox.setBounds(10, 471, 97, 23);
+		clearSelectionCheckbox.setBounds(20, 471, 131, 23);
 		clearSelectionCheckbox.addActionListener(this);
 		mainPane.add(clearSelectionCheckbox);
 		
 		// Create show legend checkbox
 		showLegendCheckbox = new JCheckBox("Show legend");
-		showLegendCheckbox.setBounds(120, 471, 108, 23);
+		showLegendCheckbox.setBounds(153, 471, 108, 23);
 		showLegendCheckbox.addActionListener(this);
 		mainPane.add(showLegendCheckbox);
 		
@@ -187,9 +185,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		btnCancel.setPreferredSize(new Dimension(80, 25));
 		btnCancel.addActionListener(this);
 		btnPane.add(btnCancel);
-
-		isUpdatingCount = false;
-		isUpdatingSize = false;
 		
 		initListeners();
 	}
@@ -335,7 +330,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 * @return an int between 1 and time series size
 	 */
 	public int getSegmentCount() {
-		return segmentCount;
+		return Math.round(segmentCount);
 	}
 
 	/**
@@ -344,7 +339,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 * @return an int between 1 and time series size
 	 */
 	public int getSegmentSize() {
-		return segmentSize;
+		return Math.round(segmentSize);
 	}
 
 	/**
@@ -383,21 +378,15 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 * @param segmentCount
 	 */
 	public void setSegmentCount(int segmentCount) {
+		
+		this.segmentCount = segmentCount;
+		segmentSize = timeSeriesSize / segmentCount;
+		
+		segmentCountSlider.setValue(segmentCount);
+		segmentCountField.setText(String.format("%d", segmentCount));
 
-		if (!isUpdatingCount) {
-			try {
-				isUpdatingCount = true;			
-
-				this.segmentCount = segmentCount;
-				this.segmentCountSlider.setValue(segmentCount);
-				this.segmentCountField.setText(String.format("%d", segmentCount));
-				
-				setSegmentSize(timeSeriesSize / segmentCount);
-			}
-			finally {
-				isUpdatingCount = false;			
-			}
-		}
+		segmentSizeSlider.setValue(segmentSize);
+		segmentSizeField.setText(String.format("%d", segmentSize));
 	}
 
 	/**
@@ -407,20 +396,14 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public void setSegmentSize(int segmentSize) {
 
-		if (!isUpdatingSize) {
-			try {
-				isUpdatingSize = true;			
+		this.segmentSize = segmentSize;
+		segmentCount = timeSeriesSize / segmentSize;
 
-				this.segmentSize = segmentSize;
-				this.segmentSizeSlider.setValue(segmentSize);
-				this.segmentSizeField.setText(String.format("%d", segmentSize));
-				
-				setSegmentCount(timeSeriesSize / segmentSize);
-			}
-			finally {
-				isUpdatingSize = false;			
-			}
-		}
+		segmentSizeSlider.setValue(segmentSize);
+		segmentSizeField.setText(String.format("%d", segmentSize));
+		
+		segmentCountSlider.setValue(segmentCount);
+		segmentCountField.setText(String.format("%d", segmentCount));
 	}
 
 	/**
@@ -433,14 +416,14 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		this.timeSeriesSize = timeSeries.getTraceVectors().size();
 		conceptTable.setConcepts(timeSeries.getConcepts());
 
-		segmentCountSlider.setMinimum(1);
-		segmentCountSlider.setMaximum(timeSeriesSize);
-
-		segmentSizeSlider.setMinimum(1);
-		segmentSizeSlider.setMaximum(timeSeriesSize);
-		
 		traceSizeField.setText(String.format("%d", timeSeriesSize));
 		
+		segmentCountSlider.setMinimum(1);
+		segmentCountSlider.setMaximum(timeSeriesSize / 2);
+
+		segmentSizeSlider.setMinimum(1);
+		segmentSizeSlider.setMaximum(timeSeriesSize / 2);
+				
 		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
 		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 		setSegmentSize(timeSeriesSize / TimeSeriesView.DEFAULT_SEGMENT_COUNT);
