@@ -21,7 +21,7 @@ class DBStemInMethodsLoader {
 		HashMap<Integer, MethodIdentifier> miMap = new HashMap<Integer, MethodIdentifier>();
 
 		// Load all sources in project
-		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClassesWithDependencies(project, true);
+		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClassesWithDependencies(project, false);
 
 		for (SourceClass sourceClass : sourceClasses) {
 			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
@@ -42,30 +42,53 @@ class DBStemInMethodsLoader {
 		//invariant: any stem referenced as key is associated at least with 1 source element
 
 		HashMap<String, ArrayList<StemOccurrence>> soMap = new HashMap<>();
-		Map<String, List<StemMethod>> stemMethodMap = ApplicationLogic.getStemMethodByTermMap(project);
-
+		Map<Integer, StemMethod> stemMethodTree = ApplicationLogic.getStemMethodTree(project);
+		
 		// Scan all identifier
 		for (MethodIdentifier mi : miMap.values()) {
 
-			// Create a dummy method
-			SourceMethod method = new SourceMethod();
-			method.setKeyId(mi.getMethodID());
-
-			// Retrieve all stem associated to the concept
-			List<StemMethod> methodStems = stemMethodMap.get(mi.getSignature());
-
+			// Retrieve all stems associated to the method			
+			StemMethod stemMethodRoot = stemMethodTree.get(mi.getMethodID());
+			List<StemMethod> stemMethodList = inflateStemTree(stemMethodRoot);
+			
 			// For each stem, create an new occurrence
-			for (StemMethod stem : methodStems) {
+			for (StemMethod stem : stemMethodList) {
 
 				if (!soMap.containsKey(stem.getTerm())) {
 					soMap.put(stem.getTerm(), new ArrayList<StemOccurrence>());
 				}
 
 				StemOccurrence stemOccurence = new StemOccurrence(stem.getTerm(), stem.getStemType().getValue(), mi);
-				soMap.get(stem).add(stemOccurence);
+				soMap.get(stem.getTerm()).add(stemOccurence);
 			}
 		}
 
 		return soMap;
 	}
+	
+	/**
+	 * Serialize stem method tree into a single flat list of stem methods.
+	 * 
+	 * @param stem
+	 *        the stem node
+	 * 
+	 * @return
+	 *         a flat list of stem methods
+	 */
+	private List<StemMethod> inflateStemTree(StemMethod stem) {
+
+		List<StemMethod> flatList = new ArrayList<>();
+
+		if (stem != null) {
+
+			flatList.add(stem);
+
+			for (StemMethod childStem : stem.getChildren()) {
+				flatList.addAll(inflateStemTree(childStem));
+			}
+		}
+
+		return flatList;
+	}
+	
 }

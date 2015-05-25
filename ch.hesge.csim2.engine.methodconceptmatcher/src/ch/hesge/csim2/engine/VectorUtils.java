@@ -28,16 +28,16 @@ public class VectorUtils {
 	 * @return a zero vector
 	 */
 	public static Vector<Double> createVector(int size) {
-		
+
 		Vector<Double> vector = new Vector<>(size);
-		
+
 		for (int i = 0; i < size; i++) {
 			vector.add(0d);
 		}
-		
+
 		return vector;
 	}
-	
+
 	/**
 	 * <pre>
 	 * Returns a new vector that corresponds to the hadamard product 
@@ -60,9 +60,9 @@ public class VectorUtils {
 	 * </pre>
 	 * 
 	 * @param a
-	 *            the first column vector
+	 *        the first column vector
 	 * @param b
-	 *            the second column vector
+	 *        the second column vector
 	 * @return the resulting hadamar vector
 	 */
 	public static Vector<Double> getHadamardProduct(Vector<Double> a, Vector<Double> b) {
@@ -102,9 +102,9 @@ public class VectorUtils {
 	 * </pre>
 	 * 
 	 * @param a
-	 *            the first column vector
+	 *        the first column vector
 	 * @param b
-	 *            the second column vector
+	 *        the second column vector
 	 * @return the resulting hadamar vector
 	 */
 	public static double getScalarProduct(Vector<Double> a, Vector<Double> b) {
@@ -142,7 +142,7 @@ public class VectorUtils {
 	 * </pre>
 	 * 
 	 * @param v
-	 *            a column vector
+	 *        a column vector
 	 * @return the length of vector v
 	 */
 	public static double getLength(Vector<Double> v) {
@@ -158,58 +158,66 @@ public class VectorUtils {
 
 	/**
 	 * <pre>
-	 * Returns a vector of idf-values associated to a list of term. 
-	 * Basically idf represent the inverse document frequency of a term within a corpus of documents.
+	 * Returns a vector of idf-values associated to a list of term.
+	 *  
+	 * Basically idf represent the inverse document frequency of a term 
+	 * within a corpus of documents.
 	 * 
-	 * In our case, we consider:
+	 * So, we calculate for each term, its associated idf value and return 
+	 * a vector of same size as the term list.
 	 * 
-	 *  	concept = document.
+	 * For a single term t, we calculate idf(t) as follow:
 	 * 
-	 * 	So, for a single term t, we calculate idf(t) as:
+	 * 		totalCount		= total number of concepts in space
+	 * 		conceptCount(t)	= number of concepts referring the term t
 	 * 
-	 * 		totalConceptCount	= total number of concepts
-	 * 		conceptCount(t)		= number of concepts referring term t
+	 * 			idf(t) 	= log( totalConceptCount / conceptCount(t) )
 	 * 
-	 * 		idf(t) 	= log( totalConceptCount / 1 + conceptCount(t) ) 
+	 *  	and as conceptCount(t) can be zero, 
+	 *  	we rewrite the formula to get:
 	 * 
-	 * And as we have a list of term, we should calculate an array of idf values (as a vector)
-	 * which correspond to the inverse document frequencies of a list of term among concept stems.
+	 * 		idf(t) 	= log( totalConceptCount / (conceptCount(t) + 1) )
+	 *
+	 * The vector return contains all idf value for each term in list.
+	 * So the vector size is identical to term list size.
 	 * 
 	 * </pre>
 	 *
 	 * @param terms
-	 *            the list of term used to compute frequencies
-	 * @param stems
-	 *            the concept stem to analyze
+	 *        the list of term used to compute frequencies
 	 * @param concepts
-	 *            a concept map
-	 * @return the idf vector representing all frequencies associated to the term list
+	 *        a concept map
+	 * @param stems
+	 *        the concept stem to analyze
+	 * @return the idf vector representing all frequencies associated to the
+	 *         term list
 	 * @return
 	 */
 
-	public static Vector<Double> getIdfVector(List<String> terms, Map<String, List<StemConcept>> stems, Map<Integer, Concept> concepts) {
+	public static Vector<Double> getIdfVector(List<String> terms, Map<Integer, Concept> concepts, Map<String, List<StemConcept>> stems) {
 
 		Vector<Double> idfVector = VectorUtils.createVector(terms.size());
 
 		// Lookup each term
 		for (int i = 0; i < terms.size(); i++) {
 
-			// Set keeping track of concept referring current term
-			HashSet<Integer> uniqueIdSet = new HashSet<>();
-
-			// Retrieve current terms and stems
 			String currentTerm = terms.get(i);
+
+			// Keep track of all concepts referring current term
+			HashSet<Integer> conceptIds = new HashSet<>();
+
+			// Retrieve all concept stem associated to current term
 			List<StemConcept> stemConcepts = stems.get(currentTerm);
 
 			// Scan each stem associated to current term
 			for (StemConcept stem : stemConcepts) {
-				uniqueIdSet.add(stem.getConceptId());
+				conceptIds.add(stem.getConceptId());
 			}
 
 			// Compute idf value
 			double totalConceptCount = concepts.size();
-			double referringConcepts = uniqueIdSet.size();
-			double idfValue = Math.log10(totalConceptCount / (1 + referringConcepts));
+			double conceptCountReferringTerm = conceptIds.size() + 1;
+			double idfValue = Math.log10(totalConceptCount / conceptCountReferringTerm);
 
 			// Set idf-value within the resulting vector
 			idfVector.set(i, idfValue);
@@ -239,14 +247,14 @@ public class VectorUtils {
 	 * </pre>
 	 * 
 	 * @param terms
-	 *            the list of term used to compute frequencies
-	 * @param stems
-	 *            the concept stem to analyze
+	 *        the list of term used to compute frequencies
 	 * @param concepts
-	 *            a map of concepts
+	 *        a map of concepts
+	 * @param stems
+	 *        the concept stem to analyze
 	 * @return the map of concept tf vectors
 	 */
-	public static Map<Concept, Vector<Double>> getTfcVectorMap(List<String> terms, Map<String, List<StemConcept>> stems, Map<Integer, Concept> concepts) {
+	public static Map<Concept, Vector<Double>> getTfcVectorMap(List<String> terms, Map<Integer, Concept> concepts, Map<String, List<StemConcept>> stems) {
 
 		Map<Concept, Vector<Double>> tfMap = new HashMap<>();
 
@@ -296,30 +304,29 @@ public class VectorUtils {
 	 * Returns a map of tf vectors associated to methods. 
 	 * Each vector represents the term frequencies, among a method, of the list of term passed in argument.
 	 * 
-	 * In our case, we consider:
-	 * 
-	 *  	method = document.
-	 * 
 	 * 	So, for a single method m, we calculate tf(t,m) as:
 	 * 
-	 * 		totalTermCount(m)	= total number of terms among method
-	 * 		termCount(t,m)		= number of occurrence of the term t among the method m
+	 * 		totalCount(m)	= total number of terms within stem method
+	 * 		termCount(t,m)	= number of occurrence of the term t among the stem methods
 	 * 
 	 * Then:
 	 * 
-	 * 		tf(t,m)			= termCount(t,m) / totalTermCount(m)	=>		tf(t,m) € [0, 1]
+	 * 		tf(t,m)	= termCount(t,m) / totalCount(m)
+	 * 
+	 * Note:	
+	 * 		tf(t,m) € [0, 1]
 	 * 
 	 * </pre>
 	 * 
 	 * @param terms
-	 *            the list of term used to compute frequencies
-	 * @param stems
-	 *            the method stem to analyze
+	 *        the list of term used to compute frequencies
 	 * @param methods
-	 *            a map of methods
+	 *        a map of methods
+	 * @param stems
+	 *        the method stem to analyze
 	 * @return the map of method tf vectors
 	 */
-	public static Map<SourceMethod, Vector<Double>> getTfmVectorMap(List<String> terms, Map<String, List<StemMethod>> stems, Map<Integer, SourceMethod> methods) {
+	public static Map<SourceMethod, Vector<Double>> getTfmVectorMap(List<String> terms, Map<Integer, SourceMethod> methods, Map<String, List<StemMethod>> stems) {
 
 		Map<SourceMethod, Vector<Double>> tfMap = new HashMap<>();
 
