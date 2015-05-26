@@ -79,6 +79,11 @@ class TimeSeriesLogic {
 
 		int traceStep = 0;
 		List<Concept> originalConcepts = timeSeries.getTraceConcepts();
+		
+		if (concepts.size() == 0) {
+			concepts.addAll(originalConcepts);
+		}
+		
 		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(concepts.size(), segmentCount);
 		int segmentSize = timeSeries.getTraceMatrix().getColumnDimension() / segmentCount;
 
