@@ -526,18 +526,17 @@ public class ApplicationLogic {
 	 * 
 	 * @param project
 	 *        the owner
-	 * @param withMethodDependencies
-	 *        true to retrieve also method dependencies (parameters &
-	 *        references)
+	 * @param includeMethodParamsAndRefs
+	 *        true to retrieve also method parameters & references
 	 * 
 	 * @return a list of source classes
 	 */
-	public static List<SourceClass> getSourceClassesWithDependencies(Project project, boolean withMethodDependencies) {
+	public static List<SourceClass> getSourceClassesWithDependencies(Project project, boolean includeMethodParamsAndRefs) {
 
-		String cacheKey = "getSourceClassesWithDependencies_" + project.getKeyId() + "_" + withMethodDependencies;
+		String cacheKey = "getSourceClassesWithDependencies_" + project.getKeyId() + "_" + includeMethodParamsAndRefs;
 
 		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceClassesWithDependencies(project, withMethodDependencies));
+			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceClassesWithDependencies(project, includeMethodParamsAndRefs));
 		}
 
 		return ApplicationLogic.APPCACHE.get(cacheKey);
@@ -827,7 +826,8 @@ public class ApplicationLogic {
 	 * @param threshold
 	 *        the concept weight threshold to use to select concept
 	 * @param concepts
-	 *        a subset of timerSeries concepts to keep results to a specific concepts
+	 *        a subset of timerSeries concepts to keep results to a specific
+	 *        concepts
 	 * @return
 	 *         a new time series instance with segmented trace vectors
 	 */
