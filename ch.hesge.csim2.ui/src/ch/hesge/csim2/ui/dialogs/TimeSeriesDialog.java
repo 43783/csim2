@@ -39,7 +39,8 @@ import ch.hesge.csim2.ui.views.TimeSeriesView;
 public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeListener {
 
 	// Private attributes
-	private int timeSeriesSize;
+	private TimeSeries timeSeries;
+	private int traceSize;
 	private double threshold;
 	private int segmentCount;
 	private int segmentSize;
@@ -138,8 +139,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		segmentSizeSlider = new JSlider(1, 1000);
 		segmentSizeSlider.setBounds(201, 126, 244, 23);
 		segmentSizeSlider.addChangeListener(this);
-		mainPane.add(segmentSizeSlider);
-					
+		mainPane.add(segmentSizeSlider);				
 		
 		// Create concept panel
 		JPanel conceptPanel = new JPanel();
@@ -298,8 +298,14 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 			showLegend = showLegendCheckbox.isSelected();
 		}
 		else if (e.getSource() == clearSelectionCheckbox) {
-			clearSelectionCheckbox.setSelected(false);
-			conceptTable.setSelectedConcepts(new ArrayList<>());
+			
+			if (clearSelectionCheckbox.isSelected()) {
+				conceptTable.setSelectedConcepts(timeSeries.getConcepts());
+			}
+			else {
+				conceptTable.setSelectedConcepts(new ArrayList<>());
+			}
+			
 			conceptTable.repaint();
 		}
 	}
@@ -380,7 +386,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setSegmentCount(int segmentCount) {
 		
 		this.segmentCount = segmentCount;
-		segmentSize = timeSeriesSize / segmentCount;
+		segmentSize = traceSize / segmentCount;
 		
 		segmentCountSlider.setValue(segmentCount);
 		segmentCountField.setText(String.format("%d", segmentCount));
@@ -397,7 +403,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setSegmentSize(int segmentSize) {
 
 		this.segmentSize = segmentSize;
-		segmentCount = timeSeriesSize / segmentSize;
+		segmentCount = traceSize / segmentSize;
 
 		segmentSizeSlider.setValue(segmentSize);
 		segmentSizeField.setText(String.format("%d", segmentSize));
@@ -413,20 +419,21 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public void setTimeSeries(TimeSeries timeSeries) {
 		
-		this.timeSeriesSize = timeSeries.getTraceVectors().size();
+		this.timeSeries = timeSeries;
+		this.traceSize  = timeSeries.getTraceVectors().size();
+		
 		conceptTable.setConcepts(timeSeries.getConcepts());
-
-		traceSizeField.setText(String.format("%d", timeSeriesSize));
+		traceSizeField.setText(String.format("%d", traceSize));
 		
 		segmentCountSlider.setMinimum(1);
-		segmentCountSlider.setMaximum(timeSeriesSize / 2);
+		segmentCountSlider.setMaximum(traceSize / 2);
 
 		segmentSizeSlider.setMinimum(1);
-		segmentSizeSlider.setMaximum(timeSeriesSize / 2);
+		segmentSizeSlider.setMaximum(traceSize / 2);
 				
 		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
 		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
-		setSegmentSize(timeSeriesSize / TimeSeriesView.DEFAULT_SEGMENT_COUNT);
+		setSegmentSize(traceSize / TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 	}
 
 	/**
