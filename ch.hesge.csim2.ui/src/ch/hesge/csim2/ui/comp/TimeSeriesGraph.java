@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -56,16 +55,14 @@ public class TimeSeriesGraph extends JPanel {
 			dataSet = new XYSeriesCollection();
 
 			// Create the series to display
-			for (int i = 0; i < timeSeries.getTraceConcepts().size(); i++) {
+			for (int row = 0; row < timeSeries.getTraceConcepts().size(); row++) {
 
-				Concept concept = timeSeries.getTraceConcepts().get(i);
+				Concept concept = timeSeries.getTraceConcepts().get(row);
 				XYSeries series = new XYSeries(concept.getName());
 
-				// Scan trace vectors
-				for (int j = 0; j < timeSeries.getTraceMatrix().rows(); j++) {
-					Vector<Double> traceVector = timeSeries.getTraceMatrix().getRow(j);
-					series.add(j+1, traceVector.get(i));
-				}
+				// Populate series with trace matrix row
+				for (int col = 0; col < timeSeries.getTraceMatrix().getColumnDimension(); col++) {
+					series.add(col+1, timeSeries.getTraceMatrix().getEntry(row, col));				}
 
 				dataSet.addSeries(series);
 			}

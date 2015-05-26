@@ -420,7 +420,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setTimeSeries(TimeSeries timeSeries) {
 		
 		this.timeSeries = timeSeries;
-		this.traceSize  = timeSeries.getTraceMatrix().cols();
+		this.traceSize  = timeSeries.getTraceMatrix().getColumnDimension();
 		
 		conceptTable.setConcepts(timeSeries.getTraceConcepts());
 		traceSizeField.setText(String.format("%d", traceSize));

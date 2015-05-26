@@ -7,6 +7,8 @@ package ch.hesge.csim2.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.linear.RealMatrix;
+
 /**
  * Represents a scenario time series describing trace evolution from the concept
  * point of view.
@@ -22,7 +24,7 @@ public class TimeSeries {
 	private Project project;
 	private Scenario scenario;
 	private List<Concept> concepts;
-	private Matrix2d matrix;
+	private RealMatrix matrix;
 
 	/**
 	 * Default constructor
@@ -55,11 +57,11 @@ public class TimeSeries {
 		this.concepts = concepts;
 	}
 
-	public Matrix2d getTraceMatrix() {
+	public RealMatrix getTraceMatrix() {
 		return matrix;
 	}
 
-	public void setTraceMatrix(Matrix2d matrix) {
+	public void setTraceMatrix(RealMatrix matrix) {
 		this.matrix = matrix;
 	}
 

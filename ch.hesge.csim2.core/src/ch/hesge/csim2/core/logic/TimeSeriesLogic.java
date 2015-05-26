@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 
 import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Concept;
-import ch.hesge.csim2.core.model.Matrix2d;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.VectorUtils;
 
 /**
  * This class implement all logical rules associated to timeseries.
@@ -50,9 +52,9 @@ class TimeSeriesLogic {
 		// Retrieve all distinct concepts found in traces
 		List<Concept> traceConcepts = getTraceConcepts(scenario, matchMap);
 		timeSeries.getTraceConcepts().addAll(traceConcepts);
-		
+
 		// Retrieve all trace matrix (concept weight by trace step)
-		Matrix2d traceMatrix = getTraceMatrix(scenario, traceConcepts, matchMap);
+		RealMatrix traceMatrix = getTraceMatrix(scenario, traceConcepts, matchMap);
 		timeSeries.setTraceMatrix(traceMatrix);
 
 		return timeSeries;
@@ -74,41 +76,51 @@ class TimeSeriesLogic {
 	 *         a new time series instance with segmented trace vectors
 	 */
 	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
-		
+
 		int traceStep = 0;
-		Matrix2d traceMatrix = new Matrix2d(timeSeries.getTraceConcepts().size(), segmentCount);
-		int segmentSize = timeSeries.getTraceMatrix().cols() / segmentCount;
+		List<Concept> originalConcepts = timeSeries.getTraceConcepts();
+		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(concepts.size(), segmentCount);
+		int segmentSize = timeSeries.getTraceMatrix().getColumnDimension() / segmentCount;
 
 		// Compute each segment value
 		for (int i = 0; i < segmentCount; i++) {
-			
-			Vector<Double> conceptVector = VectorUtils.createVector(concepts.size(), 0d);
+
+			RealVector originalConceptVector = new ArrayRealVector(originalConcepts.size());
 
 			// Scan steps in segment
 			for (int j = traceStep; j < traceStep + segmentSize; j++) {
 
 				// Retrieve concept vector in original matrix
-				Vector<Double> traceVector = timeSeries.getTraceMatrix().getColumn(traceStep);
-				
-				// Normalize its value according to threshold
-				for (int k = 0; k < traceVector.size(); k++) {
-					if (traceVector.get(k) > threshold) {
-						traceVector.set(k, 1d);
+				RealVector traceVector = timeSeries.getTraceMatrix().getColumnVector(traceStep);
+
+				// Normalize its values according to threshold
+				for (int k = 0; k < traceVector.getDimension(); k++) {
+					if (traceVector.getEntry(k) > threshold) {
+						traceVector.setEntry(k, 1d);
 					}
 					else {
-						traceVector.set(k, 0d);
+						traceVector.setEntry(k, 0d);
 					}
 				}
-				
-				// Account concept occurrence into conceptVector
-				conceptVector = VectorUtils.addVectors(conceptVector, traceVector);
+
+				// Accounting concept occurrence into conceptVector
+				originalConceptVector = originalConceptVector.add(traceVector);
 			}
 
-			traceMatrix.setColumn(i, conceptVector);
+			// Convert original concept vector (with all concepts in trace) 
+			// into target concept vector (with only specified concepts)
+			RealVector targetConceptVector = new ArrayRealVector(concepts.size());
+
+			for (int l = 0; l < concepts.size(); l++) {
+				Concept concept = concepts.get(l);
+				int originalConceptIndex = originalConcepts.indexOf(concept);
+				targetConceptVector.setEntry(l, originalConceptVector.getEntry(originalConceptIndex));
+			}
+
+			traceMatrix.setColumnVector(i, targetConceptVector);
 			traceStep += segmentSize;
 		}
 
-		
 		TimeSeries newTimeSeries = new TimeSeries();
 		newTimeSeries.setProject(timeSeries.getProject());
 		newTimeSeries.setScenario(timeSeries.getScenario());
@@ -148,11 +160,11 @@ class TimeSeriesLogic {
 				}
 			}
 		}
-		
+
 		// Finally sort concepts by name
 		List<Concept> traceConcepts = new ArrayList<>(traceConceptMap.values());
 		ObjectSorter.sortConcepts(traceConcepts);
-		
+
 		return traceConcepts;
 	}
 
@@ -182,38 +194,38 @@ class TimeSeriesLogic {
 	 *        the timeSeries to initialize
 	 * @param matchMap
 	 *        the method/concept matching map of current project
-	 * @return 
-	 *        a matrix of all concept's weight associated to each trace step
+	 * @return
+	 *         a matrix of all concept's weight associated to each trace step
 	 */
-	private static Matrix2d getTraceMatrix(Scenario scenario, List<Concept> traceConcepts, Map<Integer, List<MethodConceptMatch>> matchMap) {
+	private static RealMatrix getTraceMatrix(Scenario scenario, List<Concept> traceConcepts, Map<Integer, List<MethodConceptMatch>> matchMap) {
 
 		// Retrieve scenario traces
 		List<Trace> scenarioTraces = TraceDao.findByScenario(scenario);
 
-		Matrix2d traceMatrix = new Matrix2d(scenarioTraces.size(), traceConcepts.size());
-		
-		for (int col = 0; col < traceMatrix.cols(); col++) {
-			
-			Trace trace = scenarioTraces.get(col);
-			
+		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(scenarioTraces.size(), traceConcepts.size());
+
+		for (int i = 0; i < scenarioTraces.size(); i++) {
+
+			Trace trace = scenarioTraces.get(i);
+
 			// Retrieve all concepts associated to method
 			if (matchMap.containsKey(trace.getMethodId())) {
-				
+
 				// Retrieve all matches for current method
 				List<MethodConceptMatch> matches = matchMap.get(trace.getMethodId());
 
 				for (MethodConceptMatch match : matches) {
 
-					int conceptIndex = traceConcepts.indexOf(match.getConcept());
+					int row = traceConcepts.indexOf(match.getConcept());
 
-					// Update column weigth associated to the concept
-					if (conceptIndex != -1) {
-						traceMatrix.set(conceptIndex, col, match.getWeight());
+					// Update column weight associated to the concept
+					if (row != -1) {
+						traceMatrix.setEntry(row, i, match.getWeight());
 					}
 				}
 			}
 		}
-		
+
 		return traceMatrix;
 	}
 }
