@@ -53,7 +53,7 @@ public class TracesView extends JPanel {
 	public TracesView(Project project, List<Scenario> scenarios) {
 		
 		this.scenarios = scenarios;
-		this.matchMap = ApplicationLogic.getMatchingMap(project);
+		this.matchMap = ApplicationLogic.getMethodMatchingMap(project);
 
 		initComponent();
 	}

@@ -128,10 +128,10 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 							threshold = DEFAULT_THRESHOLD;
 
 							// Extract segmented information
-							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, timeSeries.getConcepts());
+							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, timeSeries.getTraceConcepts());
 
 							// Update view
-							selectedConcepts = filteredSeries.getConcepts();
+							selectedConcepts = filteredSeries.getTraceConcepts();
 							graphPanel.setTimeSeries(filteredSeries);
 							graphPanel.setShowLegend(showLegend);
 							settingsBtn.setEnabled(true);
@@ -187,7 +187,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(project, timeSeries, segmentCount, threshold, selectedConcepts);
 					
 						// Retrieve intersection between
-						selectedConcepts = filteredSeries.getConcepts();
+						selectedConcepts = filteredSeries.getTraceConcepts();
 						graphPanel.setShowLegend(showLegend);
 						graphPanel.setTimeSeries(filteredSeries);
 					}

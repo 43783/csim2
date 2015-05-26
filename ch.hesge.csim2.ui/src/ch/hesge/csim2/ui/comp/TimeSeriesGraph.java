@@ -56,14 +56,14 @@ public class TimeSeriesGraph extends JPanel {
 			dataSet = new XYSeriesCollection();
 
 			// Create the series to display
-			for (int i = 0; i < timeSeries.getConcepts().size(); i++) {
+			for (int i = 0; i < timeSeries.getTraceConcepts().size(); i++) {
 
-				Concept concept = timeSeries.getConcepts().get(i);
+				Concept concept = timeSeries.getTraceConcepts().get(i);
 				XYSeries series = new XYSeries(concept.getName());
 
 				// Scan trace vectors
-				for (int j = 0; j < timeSeries.getTraceVectors().size(); j++) {
-					Vector<Integer> traceVector = timeSeries.getTraceVectors().get(j);
+				for (int j = 0; j < timeSeries.getTraceMatrix().rows(); j++) {
+					Vector<Double> traceVector = timeSeries.getTraceMatrix().getRow(j);
 					series.add(j+1, traceVector.get(i));
 				}
 

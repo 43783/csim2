@@ -465,17 +465,34 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all map of all MethodConceptMatch classified by method Id.
+	 * Retrieve a map of all MethodConceptMatch classified by method Id.
 	 * 
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMatchingMap(Project project) {
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
 
-		String cacheKey = "getMatchingMap_" + project.getKeyId();
+		String cacheKey = "getMethodMatchingMap_" + project.getKeyId();
 
 		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getMatchingMap(project));
+			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getMethodMatchingMap(project));
+		}
+
+		return ApplicationLogic.APPCACHE.get(cacheKey);
+	}
+
+	/**
+	 * Retrieve a map of all MethodConceptMatch classified by concept Id.
+	 * 
+	 * @return
+	 *         a map of (ConceptId, List<MethodConceptMatch>)
+	 */
+	public static Map<Integer, List<MethodConceptMatch>> getConceptMatchingMap(Project project) {
+
+		String cacheKey = "getConceptMatchingMap_" + project.getKeyId();
+
+		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
+			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getConceptMatchingMap(project));
 		}
 
 		return ApplicationLogic.APPCACHE.get(cacheKey);

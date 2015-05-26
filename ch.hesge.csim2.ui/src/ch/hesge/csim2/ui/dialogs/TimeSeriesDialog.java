@@ -300,7 +300,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		else if (e.getSource() == clearSelectionCheckbox) {
 			
 			if (clearSelectionCheckbox.isSelected()) {
-				conceptTable.setSelectedConcepts(timeSeries.getConcepts());
+				conceptTable.setSelectedConcepts(timeSeries.getTraceConcepts());
 			}
 			else {
 				conceptTable.setSelectedConcepts(new ArrayList<>());
@@ -420,9 +420,9 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setTimeSeries(TimeSeries timeSeries) {
 		
 		this.timeSeries = timeSeries;
-		this.traceSize  = timeSeries.getTraceVectors().size();
+		this.traceSize  = timeSeries.getTraceMatrix().cols();
 		
-		conceptTable.setConcepts(timeSeries.getConcepts());
+		conceptTable.setConcepts(timeSeries.getTraceConcepts());
 		traceSizeField.setText(String.format("%d", traceSize));
 		
 		segmentCountSlider.setMinimum(1);

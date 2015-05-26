@@ -5,10 +5,7 @@
 package ch.hesge.csim2.core.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * Represents a scenario time series describing trace evolution from the concept
@@ -25,16 +22,13 @@ public class TimeSeries {
 	private Project project;
 	private Scenario scenario;
 	private List<Concept> concepts;
-	private Map<Integer, Double> weightMap;
-	private List<Vector<Integer>> traceVectors;
+	private Matrix2d matrix;
 
 	/**
 	 * Default constructor
 	 */
 	public TimeSeries() {
 		concepts = new ArrayList<>();
-		weightMap = new HashMap<>();
-		traceVectors = new ArrayList<>();
 	}
 
 	public Project getProject() {
@@ -53,15 +47,20 @@ public class TimeSeries {
 		this.scenario = scenario;
 	}
 
-	public List<Concept> getConcepts() {
+	public List<Concept> getTraceConcepts() {
 		return concepts;
 	}
 
-	public Map<Integer, Double> getWeightMap() {
-		return weightMap;
+	public void setTraceConcepts(List<Concept> concepts) {
+		this.concepts = concepts;
 	}
 
-	public List<Vector<Integer>> getTraceVectors() {
-		return traceVectors;
+	public Matrix2d getTraceMatrix() {
+		return matrix;
 	}
+
+	public void setTraceMatrix(Matrix2d matrix) {
+		this.matrix = matrix;
+	}
+
 }

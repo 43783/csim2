@@ -37,26 +37,42 @@ class MatchingLogic {
 	}
 
 	/**
-	 * Retrieve all map of all MethodConceptMatch classified by method Id.
+	 * Retrieve all MethodConcetMatch instances in projects
+	 * and for each one populate their classes, methods and concepts.
+	 * 
+	 * @return a list of MethodConceptMatch
+	 */
+	public static List<MethodConceptMatch> getMatchingsWithDependencies(Project project) {
+
+		Map<Integer, SourceClass> classMap   = ApplicationLogic.getSourceClassMap(project);
+		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
+		Map<Integer, Concept> conceptMap     = ApplicationLogic.getConceptMap(project);
+
+		List<MethodConceptMatch> matchings = MethodConceptMatchDao.findByProject(project);
+
+		// Retrieve class, method and concept for each match
+		for (MethodConceptMatch match : matchings) {
+			SourceMethod sourceMethod = methodMap.get(match.getSourceMethodId());
+			match.setSourceClass(classMap.get(sourceMethod.getClassId()));
+			match.setSourceMethod(sourceMethod);
+			match.setConcept(conceptMap.get(match.getConceptId()));
+		}
+
+		return matchings;
+	}
+
+	/**
+	 * Retrieve a map of all MethodConceptMatch classified by method Id.
 	 * 
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMatchingMap(Project project) {
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
 
 		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
+		List<MethodConceptMatch> matchings = MatchingLogic.getMatchingsWithDependencies(project);
 
-		List<MethodConceptMatch> matchings = MethodConceptMatchDao.findByProject(project);
-
-		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
-		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
-		Map<Integer, SourceClass> classMap = ApplicationLogic.getSourceClassMap(project);
-
-		// Populate each match with concept, class and method
 		for (MethodConceptMatch match : matchings) {
-
-			// Populate dependencies
-			populateDependencies(match, conceptMap, classMap, methodMap);
 
 			// Create an associated array if missing
 			if (!matchingMap.containsKey(match.getSourceMethodId())) {
@@ -71,51 +87,28 @@ class MatchingLogic {
 	}
 
 	/**
-	 * Retrieve all matching with its dependencies SourceMethod and Concept.
+	 * Retrieve a map of all MethodConceptMatch classified by concept Id.
 	 * 
-	 * @return a list of MethodConceptMatch
+	 * @return
+	 *         a map of (ConceptId, List<MethodConceptMatch>)
 	 */
-	public static List<MethodConceptMatch> getMatchingsWithDependencies(Project project) {
+	public static Map<Integer, List<MethodConceptMatch>> getConceptMatchingMap(Project project) {
 
-		List<MethodConceptMatch> matchings = ApplicationLogic.getMatchings(project);
+		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
+		List<MethodConceptMatch> matchings = MatchingLogic.getMatchingsWithDependencies(project);
 
-		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
-		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
-		Map<Integer, SourceClass> classMap = ApplicationLogic.getSourceClassMap(project);
-
-		// Populate each match with concept, class and method
 		for (MethodConceptMatch match : matchings) {
-			populateDependencies(match, conceptMap, classMap, methodMap);
+
+			// Create an associated array if missing
+			if (!matchingMap.containsKey(match.getConceptId())) {
+				matchingMap.put(match.getConceptId(), new ArrayList<>());
+			}
+
+			// Add the match to the array for the specific concept
+			matchingMap.get(match.getConceptId()).add(match);
 		}
 
-		return matchings;
-	}
-
-	/**
-	 * Populate a MethodConceptMatch with the following dependencies:
-	 * 
-	 * - its concept
-	 * - its class
-	 * - its method
-	 * 
-	 * @param match
-	 *        the MethodConceptMatch to populate
-	 * @param conceptMap
-	 *        the map of all source classes
-	 * @param classMap
-	 *        the map of all source classes
-	 * @param methodMap
-	 *        the map of all source methods
-	 */
-	private static void populateDependencies(MethodConceptMatch match, Map<Integer, Concept> conceptMap, Map<Integer, SourceClass> classMap, Map<Integer, SourceMethod> methodMap) {
-
-		Concept concept = conceptMap.get(match.getConceptId());
-		SourceMethod sourceMethod = methodMap.get(match.getSourceMethodId());
-		SourceClass sourceClass = classMap.get(sourceMethod.getClassId());
-
-		match.setConcept(concept);
-		match.setSourceClass(sourceClass);
-		match.setSourceMethod(sourceMethod);
+		return matchingMap;
 	}
 
 	/**
