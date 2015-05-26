@@ -202,13 +202,13 @@ class TimeSeriesLogic {
 		// Retrieve scenario traces
 		List<Trace> scenarioTraces = TraceDao.findByScenario(scenario);
 
-		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(scenarioTraces.size(), traceConcepts.size());
+		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), scenarioTraces.size());
 
 		for (int i = 0; i < scenarioTraces.size(); i++) {
 
 			Trace trace = scenarioTraces.get(i);
 
-			// Retrieve all concepts associated to method
+			// Retrieve all concepts associated to the method
 			if (matchMap.containsKey(trace.getMethodId())) {
 
 				// Retrieve all matches for current method

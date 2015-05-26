@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import org.apache.commons.math3.linear.RealVector;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
@@ -55,14 +56,15 @@ public class TimeSeriesGraph extends JPanel {
 			dataSet = new XYSeriesCollection();
 
 			// Create the series to display
-			for (int row = 0; row < timeSeries.getTraceConcepts().size(); row++) {
+			for (int i = 0; i < timeSeries.getTraceMatrix().getRowDimension(); i++) {
 
-				Concept concept = timeSeries.getTraceConcepts().get(row);
+				Concept concept = timeSeries.getTraceConcepts().get(i);
 				XYSeries series = new XYSeries(concept.getName());
 
 				// Populate series with trace matrix row
-				for (int col = 0; col < timeSeries.getTraceMatrix().getColumnDimension(); col++) {
-					series.add(col+1, timeSeries.getTraceMatrix().getEntry(row, col));				}
+				RealVector rowVector = timeSeries.getTraceMatrix().getRowVector(i);
+				for (int j = 0; j < rowVector.getDimension(); j++) {
+					series.add(j+1, rowVector.getEntry(j));				}
 
 				dataSet.addSeries(series);
 			}
