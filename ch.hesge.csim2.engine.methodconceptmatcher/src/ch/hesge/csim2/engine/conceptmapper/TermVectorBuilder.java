@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 
@@ -35,7 +36,6 @@ public class TermVectorBuilder {
 		methodStemMap = new DBStemInMethodsLoader().getStemLocations(project, methodIdentifiersMap);
 		//hashmap whose key is a stem and whose value is a list of stemoccurrences (stem, code, conceptidentifier)	
 		conceptStemMap = new DBStemInConceptsLoader().getStemLocations(project, conceptIdentifiersMap);
-
 	}
 
 	//concept should be sorted
