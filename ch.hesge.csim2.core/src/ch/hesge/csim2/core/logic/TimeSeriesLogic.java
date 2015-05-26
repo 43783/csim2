@@ -54,6 +54,77 @@ class TimeSeriesLogic {
 	}
 
 	/**
+	 * Create a segmented time series.
+	 * 
+	 * @param timeSeries
+	 *        the time series to use for segmentation
+	 * @param segmentCount
+	 *        the number of segment to generate
+	 * @param threshold
+	 *        the concept weight threshold to use to select concept
+	 * @param concepts
+	 *        a subset of timerSeries concepts to keep results to a specific
+	 *        concepts
+	 * @return
+	 *         a new time series instance with segmented trace vectors
+	 */
+	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
+
+		TimeSeries filteredTimeSeries = new TimeSeries();
+		List<Concept> filteredConcepts = new ArrayList<>();
+		Map<Integer, Double> weightMap = new HashMap<>();
+
+		// First filter timeSeries concepts;
+		for (Concept concept : timeSeries.getConcepts()) {
+
+			double weight = timeSeries.getWeightMap().get(concept.getKeyId());
+
+			if (weight >= threshold && (concepts.size() == 0 || concepts.contains(concept))) {
+				filteredConcepts.add(concept);
+				weightMap.put(concept.getKeyId(), weight);
+			}
+		}
+
+		// Sort concept by relevance (weight)
+		filteredConcepts.sort(new Comparator<Concept>() {
+			@Override
+			public int compare(Concept a, Concept b) {
+				double aWeight = weightMap.get(a.getKeyId());
+				double bWeight = weightMap.get(b.getKeyId());
+				return (int) (bWeight - aWeight);
+			}
+		});
+
+		// Finally populate concepts and weights
+		filteredTimeSeries.getConcepts().addAll(filteredConcepts);
+		filteredTimeSeries.getWeightMap().putAll(weightMap);
+
+		// Now segment trace vectors
+		int sequenceNumber = 0;
+		List<Vector<Integer>> traceVectors = new ArrayList<>();
+		int segmentSize = timeSeries.getTraceVectors().size() / segmentCount;
+
+		// Generate each segment
+		for (int i = 0; i < segmentCount; i++) {
+
+			Vector<Integer> conceptVector = createVector(filteredConcepts.size(), 0);
+
+			for (int j = sequenceNumber; j < sequenceNumber + segmentSize; j++) {
+
+				Vector<Integer> traceVector = timeSeries.getTraceVectors().get(j);
+				conceptVector = addVectors(conceptVector, traceVector);
+			}
+
+			traceVectors.add(conceptVector);
+			sequenceNumber += segmentSize;
+		}
+
+		filteredTimeSeries.getTraceVectors().addAll(traceVectors);
+
+		return filteredTimeSeries;
+	}
+
+	/**
 	 * Retrieve all distinct concepts found in a trace according to the
 	 * threshold passed in argument.
 	 * 
@@ -150,76 +221,6 @@ class TimeSeriesLogic {
 
 			timeSeries.getTraceVectors().add(conceptVector);
 		}
-	}
-
-	/**
-	 * Create a segmented time series.
-	 * 
-	 * @param timeSeries
-	 *        the time series to use for segmentation
-	 * @param segmentCount
-	 *        the number of segment to generate
-	 * @param threshold
-	 *        the concept weight threshold to use to select concept
-	 * @param concepts
-	 *        a subset of timerSeries concepts to keep results to a specific concepts
-	 * @return
-	 *         a new time series instance with segmented trace vectors
-	 */
-	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
-
-		TimeSeries filteredTimeSeries = new TimeSeries();
-		List<Concept> filteredConcepts = new ArrayList<>();
-		Map<Integer, Double> weightMap = new HashMap<>();
-
-		// First filter timeSeries concepts;
-		for (Concept concept : timeSeries.getConcepts()) {
-
-			double weight = timeSeries.getWeightMap().get(concept.getKeyId());
-
-			if (weight >= threshold && (concepts.size() == 0 || concepts.contains(concept))) {
-				filteredConcepts.add(concept);
-				weightMap.put(concept.getKeyId(), weight);
-			}
-		}
-
-		// Sort concept by relevance (weight)
-		filteredConcepts.sort(new Comparator<Concept>() {
-			@Override
-			public int compare(Concept a, Concept b) {
-				double aWeight = weightMap.get(a.getKeyId());
-				double bWeight = weightMap.get(b.getKeyId());
-				return (int) (bWeight - aWeight);
-			}
-		});
-
-		// Finally populate concepts and weights
-		filteredTimeSeries.getConcepts().addAll(filteredConcepts);
-		filteredTimeSeries.getWeightMap().putAll(weightMap);
-
-		// Now segment trace vectors
-		int sequenceNumber = 0;
-		List<Vector<Integer>> traceVectors = new ArrayList<>();
-		int segmentSize = timeSeries.getTraceVectors().size() / segmentCount;
-
-		// Generate each segment
-		for (int i = 0; i < segmentCount; i++) {
-
-			Vector<Integer> conceptVector = createVector(filteredConcepts.size(), 0);
-
-			for (int j = sequenceNumber; j < sequenceNumber + segmentSize; j++) {
-
-				Vector<Integer> traceVector = timeSeries.getTraceVectors().get(j);
-				conceptVector = addVectors(conceptVector, traceVector);
-			}
-
-			traceVectors.add(conceptVector);
-			sequenceNumber += segmentSize;
-		}
-
-		filteredTimeSeries.getTraceVectors().addAll(traceVectors);
-
-		return filteredTimeSeries;
 	}
 
 	/**
