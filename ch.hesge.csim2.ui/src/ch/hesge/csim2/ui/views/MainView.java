@@ -186,7 +186,7 @@ public class MainView extends JFrame implements ActionListener {
 		consoleView.getConsolePanel().requestFocus();
 
 		// Redirect standard input/output to console
-		SwingUtils.redirectStandardStreams(consoleView.getConsolePanel());
+		//SwingUtils.redirectStandardStreams(consoleView.getConsolePanel());
 	}
 
 	/**

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 
 /**
  * Represents a scenario time series describing trace evolution from the concept
@@ -24,6 +25,7 @@ public class TimeSeries {
 	private Project project;
 	private Scenario scenario;
 	private List<Concept> concepts;
+	private RealVector occurrences;
 	private RealMatrix matrix;
 
 	/**
@@ -63,6 +65,14 @@ public class TimeSeries {
 
 	public void setTraceMatrix(RealMatrix matrix) {
 		this.matrix = matrix;
+	}
+
+	public RealVector getOccurrences() {
+		return occurrences;
+	}
+
+	public void setOccurrences(RealVector occurrences) {
+		this.occurrences = occurrences;
 	}
 
 }

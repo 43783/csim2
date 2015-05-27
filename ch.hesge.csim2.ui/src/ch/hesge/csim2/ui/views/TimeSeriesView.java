@@ -43,8 +43,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
-	public static int DEFAULT_SEGMENT_COUNT = 1000;
-	public static double DEFAULT_THRESHOLD = 0.1d;
+	public static int DEFAULT_SEGMENT_COUNT = 20;
+	public static double DEFAULT_THRESHOLD = 0.5d;
 
 	/**
 	 * Default constructor.
@@ -129,7 +129,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 							threshold = DEFAULT_THRESHOLD;
 
 							// Extract segmented information
-							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, timeSeries.getTraceConcepts());
+							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
 
 							// Update view
 							selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
