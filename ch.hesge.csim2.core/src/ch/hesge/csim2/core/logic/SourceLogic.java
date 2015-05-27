@@ -55,13 +55,13 @@ class SourceLogic {
 	 * 
 	 * @param project
 	 *        the owner
-	 * @param withMethodDependencies
+	 * @param includeMethodParamsAndRefs
 	 *        true to retrieve also method dependencies (parameters &
 	 *        references)
 	 * 
 	 * @return a list of source classes
 	 */
-	public static List<SourceClass> getSourceClassesWithDependencies(Project project, boolean withMethodDependencies) {
+	public static List<SourceClass> getSourceClassesWithDependencies(Project project, boolean includeMethodParamsAndRefs) {
 
 		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
 
@@ -73,7 +73,28 @@ class SourceLogic {
 
 		// Populate each class with its dependencies
 		for (SourceClass sourceClass : sourceClasses) {
-			populateDependencies(sourceClass, withMethodDependencies, classMap);
+
+			// Populate attributes
+			sourceClass.getAttributes().clear();
+			sourceClass.getAttributes().addAll(SourceAttributeDao.findByClass(sourceClass));
+			ObjectSorter.sortSourceAttributes(sourceClass.getAttributes());
+
+			// Populate methods
+			sourceClass.getMethods().clear();
+			sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
+			ObjectSorter.sortSourceMethods(sourceClass.getMethods());
+
+			// Populate superclass
+			sourceClass.setSuperClass(classMap.get(sourceClass.getSuperClassId()));
+
+			if (sourceClass.getSuperClass() != null) {
+				sourceClass.getSuperClass().getSubClasses().add(sourceClass);
+				ObjectSorter.sortSourceClasses(sourceClass.getSuperClass().getSubClasses());
+			}
+			
+			if (includeMethodParamsAndRefs) {
+				populateMethodParamsAndRefs(sourceClass, classMap);
+			}
 		}
 
 		return sourceClasses;
@@ -88,47 +109,22 @@ class SourceLogic {
 	 * 
 	 * @param sourceClass
 	 *        the source class to populate
-	 * @param withMethodDependencies
-	 *        true to retrieve also method dependencies (parameters &
-	 *        references)
 	 * @param conceptMap
 	 *        the map of all source classes
 	 */
-	private static void populateDependencies(SourceClass sourceClass, boolean withMethodDependencies, Map<Integer, SourceClass> classMap) {
+	private static void populateMethodParamsAndRefs(SourceClass sourceClass, Map<Integer, SourceClass> classMap) {
 
-		// Populate attributes
-		sourceClass.getAttributes().clear();
-		sourceClass.getAttributes().addAll(SourceAttributeDao.findByClass(sourceClass));
-		ObjectSorter.sortSourceAttributes(sourceClass.getAttributes());
+		for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
-		// Populate methods
-		sourceClass.getMethods().clear();
-		sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
-		ObjectSorter.sortSourceMethods(sourceClass.getMethods());
+			// Populate parameters
+			sourceMethod.getParameters().clear();
+			sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
+			ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
 
-		// Populate method dependencies
-		if (withMethodDependencies) {
-
-			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
-
-				// Populate parameters
-				sourceMethod.getParameters().clear();
-				sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
-				ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
-
-				// Populate references
-				sourceMethod.getReferences().clear();
-				sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
-				ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
-			}
-		}
-
-		// Populate superclass
-		sourceClass.setSuperClass(classMap.get(sourceClass.getSuperClassId()));
-
-		if (sourceClass.getSuperClass() != null) {
-			sourceClass.getSuperClass().getSubClasses().add(sourceClass);
-			ObjectSorter.sortSourceClasses(sourceClass.getSuperClass().getSubClasses());
+			// Populate references
+			sourceMethod.getReferences().clear();
+			sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
+			ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
 		}
 	}
 

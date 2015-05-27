@@ -11,6 +11,7 @@ import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemMethod;
 
 class DBStemInConceptsLoader {
 
@@ -61,26 +62,53 @@ class DBStemInConceptsLoader {
 		//in other words if a set of stem belong to the same concept they reference the same ConceptIdentifier
 
 		HashMap<String, ArrayList<StemOccurrence>> soMap = new HashMap<>();
-		Map<String, List<StemConcept>> stemConceptMap = ApplicationLogic.getStemConceptByTermMap(project);
+		Map<Integer, StemConcept> stemConceptTree = ApplicationLogic.getStemConceptTree(project);
 		
 		// Scan all identifier
 		for (ConceptIdentifier ci : ciMap.values()) {
 
-			// Retrieve all stem associated to the concept
-			List<StemConcept> conceptStems = stemConceptMap.get(ci.getConceptName());
-			
+			// Retrieve all stems associated to the concept			
+			StemConcept stemConceptRoot = stemConceptTree.get(ci.getConceptID());
+			List<StemConcept> stemConceptList = inflateStemTree(stemConceptRoot);
+
 			// For each stem, create an new occurrence
-			for (StemConcept stem : conceptStems) {
+			for (StemConcept stem : stemConceptList) {
 
 				if (!soMap.containsKey(stem.getTerm())) {
 					soMap.put(stem.getTerm(), new ArrayList<StemOccurrence>());
 				}
 
 				StemOccurrence stemOccurence = new StemOccurrence(stem.getTerm(), stem.getStemType().getValue(), ci);
-				soMap.get(stem).add(stemOccurence);
+				soMap.get(stem.getTerm()).add(stemOccurence);
 			}
 		}
 
 		return soMap;
 	}
+	
+	/**
+	 * Serialize stem concept tree into a single flat list of stem concepts.
+	 * 
+	 * @param stem
+	 *        the stem node
+	 * 
+	 * @return
+	 *         a flat list of stem concepts
+	 */
+	private List<StemConcept> inflateStemTree(StemConcept stem) {
+
+		List<StemConcept> flatList = new ArrayList<>();
+
+		if (stem != null) {
+
+			flatList.add(stem);
+
+			for (StemConcept childStem : stem.getChildren()) {
+				flatList.addAll(inflateStemTree(childStem));
+			}
+		}
+
+		return flatList;
+	}
+	
 }

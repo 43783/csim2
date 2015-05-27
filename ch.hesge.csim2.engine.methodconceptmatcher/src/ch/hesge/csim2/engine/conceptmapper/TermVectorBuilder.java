@@ -2,9 +2,11 @@ package ch.hesge.csim2.engine.conceptmapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 
@@ -17,13 +19,13 @@ public class TermVectorBuilder {
 	//hashmap whose key is the string identifier of a method and value 
 	//is the collection of method concept match (mcm) for the method given as key
 	//Hence all the mcm in a given list reference the same methodId
-	private HashMap<String, ArrayList<MethodConceptMatch2>> mcmMap = new HashMap<String, ArrayList<MethodConceptMatch2>>();;
+	private HashMap<String, ArrayList<RddaMethodConceptMatch>> mcmMap = new HashMap<String, ArrayList<RddaMethodConceptMatch>>();;
 
 	public TermVectorBuilder() {
 		//computeVectors();
 	}
 
-	public HashMap<String, ArrayList<MethodConceptMatch2>> getMethodConceptMatchMap() {
+	public HashMap<String, ArrayList<RddaMethodConceptMatch>> getMethodConceptMatchMap() {
 		return mcmMap;
 	}
 
@@ -34,15 +36,14 @@ public class TermVectorBuilder {
 		methodStemMap = new DBStemInMethodsLoader().getStemLocations(project, methodIdentifiersMap);
 		//hashmap whose key is a stem and whose value is a list of stemoccurrences (stem, code, conceptidentifier)	
 		conceptStemMap = new DBStemInConceptsLoader().getStemLocations(project, conceptIdentifiersMap);
-
 	}
 
 	//concept should be sorted
 	public ArrayList<ConceptIdentifier> getConceptIdentifiers() {
 		ArrayList<ConceptIdentifier> result = new ArrayList<ConceptIdentifier>();
 		TreeSet<ConceptIdentifier> ciSet = new TreeSet<ConceptIdentifier>();
-		for (ArrayList<MethodConceptMatch2> mcmList : mcmMap.values()) {
-			for (MethodConceptMatch2 mcm : mcmList) {
+		for (ArrayList<RddaMethodConceptMatch> mcmList : mcmMap.values()) {
+			for (RddaMethodConceptMatch mcm : mcmList) {
 				ciSet.add(mcm.getConceptId());
 			}
 		}
@@ -61,7 +62,10 @@ public class TermVectorBuilder {
 	}
 
 	//main method: computes the idf ,tfc(ci) and tfm(mi) vectors for all ci and mi 
-	private void computeVectors(Project project, Ontology ontology) {
+	public List<RddaMethodConceptMatch> computeVectors(Project project, Ontology ontology) {
+		
+		ArrayList<RddaMethodConceptMatch> mcmList = new ArrayList<>();
+		
 		loadMaps(project, ontology);
 		int conceptSetSize = conceptIdentifiersMap.size();
 		//computes the T set : the intersection of the two sets of terms
@@ -80,7 +84,6 @@ public class TermVectorBuilder {
 		try {
 			for (StemLocationElement mId : tfmVectorMap.keySet()) {
 				MethodIdentifier methodId = (MethodIdentifier) mId;
-				ArrayList<MethodConceptMatch2> mcmList = new ArrayList<MethodConceptMatch2>();
 				mcmMap.put(methodId.getStringIdentifier(), mcmList);
 				TfIdfVector tfm = tfmVectorMap.get(methodId);
 				TfIdfVector tfIdfMethodVector = tfm.hardamardProduct(idf);
@@ -92,12 +95,14 @@ public class TermVectorBuilder {
 					// result should be between 0 and 1.
 					float result = scalarProduct / (tfIdfMethodVector.length() * tfIdfConceptVector.length());
 					if (result > 0)
-						mcmList.add(new MethodConceptMatch2((MethodIdentifier) methodId, (ConceptIdentifier) conceptId, result));
+						mcmList.add(new RddaMethodConceptMatch((MethodIdentifier) methodId, (ConceptIdentifier) conceptId, result));
 				}
 			}
 		}
 		catch (Exception e) {
 			System.out.println(e);
 		}
+		
+		return mcmList;
 	}
 }
