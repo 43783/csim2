@@ -153,7 +153,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		mainPane.add(conceptPanel);
 
 		// Clear concept selection
-		clearSelectionCheckbox = new JCheckBox("Clear selection");
+		clearSelectionCheckbox = new JCheckBox("Selection");
 		clearSelectionCheckbox.setBounds(20, 471, 131, 23);
 		clearSelectionCheckbox.addActionListener(this);
 		mainPane.add(clearSelectionCheckbox);

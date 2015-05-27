@@ -51,7 +51,7 @@ public class TimeSeriesGraph extends JPanel {
 	public void setTimeSeries(TimeSeries timeSeries) {
 
 		// Update series to display
-		if (timeSeries != null) {
+		if (timeSeries != null && timeSeries.getTraceMatrix() != null) {
 
 			dataSet = new XYSeriesCollection();
 

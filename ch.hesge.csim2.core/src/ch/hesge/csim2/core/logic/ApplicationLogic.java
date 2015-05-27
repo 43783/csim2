@@ -838,25 +838,18 @@ public class ApplicationLogic {
 	 * Create a segmented time series.
 	 * 
 	 * @param timeSeries
-	 *        the time series to use for segmentation
+	 *        the time series to compress
 	 * @param segmentCount
-	 *        the number of segment to generate
+	 *        the total number of segment to generate
 	 * @param threshold
-	 *        the concept weight threshold to use to select concept
+	 *        the concept weight threshold to use to select concepts
 	 * @param concepts
-	 *        a subset of timerSeries concepts to keep results to a specific concepts
+	 *        a subset of timerSeries concepts
 	 * @return
-	 *         a new time series instance with segmented trace vectors
+	 *         a new time series instance with segmented trace with only history of concepts passed in argument
 	 */
-	public static TimeSeries getFilteredTimeSeries(Project project, TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
-
-		String cacheKey = "getSegmentedSeries_" + project.getKeyId() + "_" + segmentCount + "_" + threshold + "_" + concepts.size();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, TimeSeriesLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, concepts));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
+		return TimeSeriesLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, concepts);
 	}
 
 	/**

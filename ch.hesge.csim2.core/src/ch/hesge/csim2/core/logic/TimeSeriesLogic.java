@@ -42,12 +42,11 @@ class TimeSeriesLogic {
 	public static TimeSeries getTimeSeries(Project project, Scenario scenario) {
 
 		TimeSeries timeSeries = new TimeSeries();
+		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project);
 
 		// Initialize time series
 		timeSeries.setProject(project);
 		timeSeries.setScenario(scenario);
-
-		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project);
 
 		// Retrieve all distinct concepts found in traces
 		List<Concept> traceConcepts = getTraceConcepts(scenario, matchMap);
@@ -61,76 +60,108 @@ class TimeSeriesLogic {
 	}
 
 	/**
-	 * Create a segmented time series.
+	 * <code>
+	 * Create a filtered time series.
+	 * 
+	 * Filtering a time series consist to reduce all column vectors associated
+	 * to a group of steps into a single vector iteratively.
+	 * 
+	 * The group of steps is named segment. And reducing all steps in segment,
+	 * is kind of compression of the original matrix.
+	 * 
+	 * Notice: if concepts list is empty all concepts are selected in resulting
+	 * time series.
+	 * 
+	 * More precisely:
+	 * 
+	 * 	if we call current method with:
+	 *  
+	 * 		segment-count = 3
+	 * 		threshold     = 0.2
+	 * 		concept       = [A, C]
+	 * 	
+	 * 	with this matrix:
+	 * 
+	 * 		------------------------------------------------------------
+	 * 
+	 * 		   A		0.1		0.5		0		0		0.1		0.78
+	 * 		   B		0		0.3		0		0.3		0		0.4
+	 * 		   C		0		0		0.7		0.5		0.6		0
+	 * 
+	 * 		------------------------------------------------------------
+	 * 
+	 * 	we will obtains the following matrix:
+	 * 
+	 * 		------------------------------------------------------------
+	 * 			
+	 * 		   A		1		0		1
+	 * 		   C		0		2		1
+	 * 
+	 * 		------------------------------------------------------------
+	 * 
+	 * 	Note: the resulting matrix contains occurrence count depending of threshold (not weights)
+	 * 
+	 * </code>
 	 * 
 	 * @param timeSeries
-	 *        the time series to use for segmentation
+	 *        the time series to compress
 	 * @param segmentCount
-	 *        the number of segment to generate
+	 *        the total number of segment to generate
 	 * @param threshold
-	 *        the concept weight threshold to use to select concept
+	 *        the concept weight threshold to use to select concepts
 	 * @param concepts
-	 *        a subset of timerSeries concepts to keep results to a specific
-	 *        concepts
+	 *        all concepts found in segmented time series
 	 * @return
-	 *         a new time series instance with segmented trace vectors
+	 *         a new time series instance with segmented trace matrix gathering
+	 *         only information associated to concepts passed in argument.
 	 */
 	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
 
-		int traceStep = 0;
-		List<Concept> originalConcepts = timeSeries.getTraceConcepts();
+		// Retrieve segmented time series
+		TimeSeries segmentedSeries = getSegmentedTimeSeries(timeSeries, segmentCount, threshold);		
+
+		List<Concept> traceConcepts = concepts;
+		List<Concept> foundConcepts = segmentedSeries.getTraceConcepts();
 		
-		if (concepts.size() == 0) {
-			concepts.addAll(originalConcepts);
+		if (traceConcepts.size() == 0) {
+			traceConcepts = foundConcepts;
 		}
 		
-		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(concepts.size(), segmentCount);
-		int segmentSize = timeSeries.getTraceMatrix().getColumnDimension() / segmentCount;
+		RealMatrix reducedMatrix = null;
 
-		// Compute each segment value
-		for (int i = 0; i < segmentCount; i++) {
+		if (traceConcepts.size() > 0) {
+			
+			// Create a reduced matrix with a subset of all concepts
+			reducedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
 
-			RealVector originalConceptVector = new ArrayRealVector(originalConcepts.size());
+			// Convert each matrix column vector (with all concepts) in proper column vector (concept subset)
+			for (int i = 0; i < segmentCount; i++) {
 
-			// Scan steps in segment
-			for (int j = traceStep; j < traceStep + segmentSize; j++) {
+				RealVector traceVector = segmentedSeries.getTraceMatrix().getColumnVector(i);
+				RealVector reducedVector = new ArrayRealVector(traceConcepts.size());
 
-				// Retrieve concept vector in original matrix
-				RealVector traceVector = timeSeries.getTraceMatrix().getColumnVector(traceStep);
-
-				// Normalize its values according to threshold
-				for (int k = 0; k < traceVector.getDimension(); k++) {
-					if (traceVector.getEntry(k) > threshold) {
-						traceVector.setEntry(k, 1d);
-					}
-					else {
-						traceVector.setEntry(k, 0d);
+				// Gather occurrences only for specified concepts
+				for (int j = 0; j < traceConcepts.size(); j++) {
+					
+					Concept concept = traceConcepts.get(j);
+					int conceptIndex = foundConcepts.indexOf(concept);
+					
+					if (conceptIndex != -1) {
+						double conceptCount = traceVector.getEntry(conceptIndex);
+						reducedVector.setEntry(j, conceptCount);
 					}
 				}
 
-				// Accounting concept occurrence into conceptVector
-				originalConceptVector = originalConceptVector.add(traceVector);
+				// Update matrix column for current segment
+				reducedMatrix.setColumnVector(i, reducedVector);
 			}
-
-			// Convert original concept vector (with all concepts in trace) 
-			// into target concept vector (with only specified concepts)
-			RealVector targetConceptVector = new ArrayRealVector(concepts.size());
-
-			for (int l = 0; l < concepts.size(); l++) {
-				Concept concept = concepts.get(l);
-				int originalConceptIndex = originalConcepts.indexOf(concept);
-				targetConceptVector.setEntry(l, originalConceptVector.getEntry(originalConceptIndex));
-			}
-
-			traceMatrix.setColumnVector(i, targetConceptVector);
-			traceStep += segmentSize;
 		}
 
 		TimeSeries newTimeSeries = new TimeSeries();
 		newTimeSeries.setProject(timeSeries.getProject());
 		newTimeSeries.setScenario(timeSeries.getScenario());
-		newTimeSeries.setTraceConcepts(timeSeries.getTraceConcepts());
-		newTimeSeries.setTraceMatrix(traceMatrix);
+		newTimeSeries.setTraceConcepts(traceConcepts);
+		newTimeSeries.setTraceMatrix(reducedMatrix);
 
 		return newTimeSeries;
 	}
@@ -148,17 +179,17 @@ class TimeSeriesLogic {
 		Map<Integer, Concept> traceConceptMap = new HashMap<>();
 
 		// Retrieve unique methods found in trace
-		List<Integer> uniqueMethodIds = TraceDao.findDistinctMethodIds(scenario);
+		List<Integer> uniqueIds = TraceDao.findDistinctMethodIds(scenario);
 
-		for (Integer methodId : uniqueMethodIds) {
+		for (Integer methodId : uniqueIds) {
 
 			// Handle only methods with at least one matching
 			if (matchMap.containsKey(methodId)) {
 
-				// Scan all concepts matching
+				// Scan all concepts matching method
 				for (MethodConceptMatch match : matchMap.get(methodId)) {
 
-					// Handle only concept not already present in conceptMap
+					// If concept not already include, put it on map
 					if (!traceConceptMap.containsKey(match.getConceptId())) {
 						traceConceptMap.put(match.getConceptId(), match.getConcept());
 					}
@@ -166,7 +197,7 @@ class TimeSeriesLogic {
 			}
 		}
 
-		// Finally sort concepts by name
+		// Finally sort all concepts by name
 		List<Concept> traceConcepts = new ArrayList<>(traceConceptMap.values());
 		ObjectSorter.sortConcepts(traceConcepts);
 
@@ -175,62 +206,183 @@ class TimeSeriesLogic {
 
 	/**
 	 * <code>
-	 * Retrieve all trace concept associated to each trace entry.
-	 * The result will be a step-concept matrix.
+	 * Retrieve all trace concepts associated to each method in trace.
+	 * The result is a step-concept matrix.
 	 * 
-	 * The rows represents concepts and each column contains concept weight matching for a trace step.
+	 * Each row represents all weights of a specific concept in the trace.
+	 * Each column represent, for a single step, all concept weights found in matching map.
 	 * 
-	 * for instance:
-	 * 							concept weight column
-	 * 		 lines					|		 concept weight column
-	 * 		= concepts				|			|
-	 * 		
-	 * 		   A					0.2		0.5		0		0
-	 * 		   B					0		0.3		0.7		0.3
-	 * 		   C					0		0		0		0.5
+	 * More precisely:
 	 * 
-	 * 							----------------------------------> list of vectors
+	 * 								column = concepts weight
+	 * 		 rows						|		 	concepts weight
+	 * 		= concepts					|				|
+	 * 			
+	 * 		   A						0.2		0.5		0		0
+	 * 		   B						0		0.3		0.7		0.3
+	 * 		   C						0		0		0		0.5
 	 * 
-	 * 		row = trace steps:		0	1	2	3	...
+	 * 								----------------------------------> list of column vectors
+	 * 
+	 * 		columns = trace steps:		0	1	2	3	...
 	 * 
 	 * </code>
 	 * 
-	 * @param timeSeries
-	 *        the timeSeries to initialize
+	 * @param scenario
+	 *        the scenario whose trace matching should be extracted
+	 * @param concepts
+	 *        the unique concepts found among the whole trace
 	 * @param matchMap
 	 *        the method/concept matching map of current project
 	 * @return
 	 *         a matrix of all concept's weight associated to each trace step
 	 */
-	private static RealMatrix getTraceMatrix(Scenario scenario, List<Concept> traceConcepts, Map<Integer, List<MethodConceptMatch>> matchMap) {
+	private static RealMatrix getTraceMatrix(Scenario scenario, List<Concept> concepts, Map<Integer, List<MethodConceptMatch>> matchMap) {
 
 		// Retrieve scenario traces
 		List<Trace> scenarioTraces = TraceDao.findByScenario(scenario);
 
-		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), scenarioTraces.size());
+		// Create an empty matrix
+		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(concepts.size(), scenarioTraces.size());
 
-		for (int i = 0; i < scenarioTraces.size(); i++) {
+		int col = 0;
+		for (Trace trace : scenarioTraces) {
 
-			Trace trace = scenarioTraces.get(i);
-
-			// Retrieve all concepts associated to the method
+			// Check if current trace has some concept matching
 			if (matchMap.containsKey(trace.getMethodId())) {
 
-				// Retrieve all matches for current method
-				List<MethodConceptMatch> matches = matchMap.get(trace.getMethodId());
+				// Scan all matching for current method
+				for (MethodConceptMatch match : matchMap.get(trace.getMethodId())) {
 
-				for (MethodConceptMatch match : matches) {
+					// Retrieve concept index concerned by the match
+					int conceptIndex = concepts.indexOf(match.getConcept());
 
-					int row = traceConcepts.indexOf(match.getConcept());
-
-					// Update column weight associated to the concept
-					if (row != -1) {
-						traceMatrix.setEntry(row, i, match.getWeight());
+					// Update associated column in matrix with weight associated to the concept
+					if (conceptIndex != -1) {
+						traceMatrix.setEntry(conceptIndex, col, match.getWeight());
 					}
 				}
 			}
+
+			col++;
 		}
 
 		return traceMatrix;
+	}
+
+	/**
+	 * <code>
+	 * Create a segmented time series.
+	 * 
+	 * Segmenting a time series consist in reducing all column vectors associated
+	 * to a group of steps into a single vector iteratively.
+	 * 
+	 * The group of steps is named segment. And reducing all steps in segment,
+	 * is kind of compression of the original time series.
+	 * 
+	 * More precisely:
+	 * 
+	 * 	if we call current method with:
+	 *  
+	 * 		segment-count = 3
+	 * 		threshold     = 0.2
+	 * 		concept       = [A, C]
+	 * 	
+	 * 	with this matrix:
+	 * 
+	 * 		------------------------------------------------------------
+	 * 
+	 * 		   A		0.1		0.5		0		0		0.1		0.78
+	 * 		   B		0		0.3		0		0.3		0		0.4
+	 * 		   C		0		0		0.7		0.5		0.6		0
+	 * 
+	 * 		------------------------------------------------------------
+	 * 
+	 * 	we will obtains the following matrix:
+	 * 
+	 * 		------------------------------------------------------------
+	 * 			
+	 * 		   A		1		0		1
+	 * 		   B		1		1		1
+	 * 		   C		0		2		1
+	 * 
+	 * 		------------------------------------------------------------
+	 * 
+	 * 	Note: the resulting matrix contains occurrence count depending of threshold (not weights)
+	 * 
+	 * @param timeSeries
+	 *        the time series to compress
+	 * @param segmentCount
+	 *        the total number of segment to generate
+	 * @param threshold
+	 *        the concept weight threshold to use to select concepts
+	 * @return
+	 *         a new time series instance with segmented trace matrix gathering
+	 *         only concept occurrences (not weight).
+	 */
+	private static TimeSeries getSegmentedTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold) {
+
+		List<Concept> traceConcepts = timeSeries.getTraceConcepts();
+		Map<Integer, Concept> conceptsFoundInTrace = new HashMap<>();
+
+		// Create an empty segmented matrix
+		RealMatrix segmentedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
+
+		// Retrieve size of each segment (based on segment count)
+		int segmentSize = timeSeries.getTraceMatrix().getColumnDimension() / segmentCount;
+
+		int traceNumber = 0;
+
+		// Compute each segment value
+		for (int segmentNumber = 0; segmentNumber < segmentCount; segmentNumber++) {
+
+			RealVector matrixVector = new ArrayRealVector(traceConcepts.size());
+
+			// Scan steps in segment
+			for (int i = traceNumber; i < traceNumber + segmentSize; i++) {
+
+				// Retrieve concept vector from original matrix
+				RealVector traceVector = timeSeries.getTraceMatrix().getColumnVector(i);
+
+				for (int j = 0; j < traceVector.getDimension(); j++) {
+
+					// Detect vector component based on threshold
+					if (traceVector.getEntry(j) > threshold) {
+						
+						// Normalize vector values to 1.0
+						traceVector.setEntry(j, 1d);
+						
+						// Retrieve concept from vector component index
+						Concept concept = traceConcepts.get(j);
+
+						// If concept not already include, put it on map
+						if (!conceptsFoundInTrace.containsKey(concept.getKeyId())) {
+							conceptsFoundInTrace.put(concept.getKeyId(), concept);
+						}						
+					}
+					else {
+						// Normalize vector values to 0.0
+						traceVector.setEntry(j, 0d);
+					}
+				}
+
+				// Add current vector the new concept vector (so it will sum all concepts occurrences)
+				matrixVector = matrixVector.add(traceVector);
+			}
+
+			// Update matrix column for current segment
+			segmentedMatrix.setColumnVector(segmentNumber, matrixVector);
+			traceNumber += segmentSize;
+		}
+		
+		List<Concept> conceptsFound = new ArrayList<>(conceptsFoundInTrace.values());
+
+		TimeSeries newTimeSeries = new TimeSeries();
+		newTimeSeries.setProject(timeSeries.getProject());
+		newTimeSeries.setScenario(timeSeries.getScenario());
+		newTimeSeries.setTraceConcepts(conceptsFound);
+		newTimeSeries.setTraceMatrix(segmentedMatrix);
+
+		return newTimeSeries;
 	}
 }
