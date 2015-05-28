@@ -126,17 +126,21 @@ public class MethodConceptMatcherUtils {
 		RealMatrix toMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
 		RealVector tcVector = new ArrayRealVector(concepts.size());
 
+		Map<Integer, Concept> conceptMap = new HashMap<>();
+		for (Concept concept : concepts) {
+			conceptMap.put(concept.getKeyId(), concept);
+		}
+		
 		// Loop over all terms
 		for (int i = 0; i < terms.size(); i++) {
 
-			// Retrieve current terms and stems
+			// Retrieve current term
 			String currentTerm = terms.get(i);
-			List<StemConcept> stemConcepts = stems.get(currentTerm);
 
 			// Loop over all concept referring term
-			for (StemConcept stem : stemConcepts) {
+			for (StemConcept stem : stems.get(currentTerm)) {
 
-				Concept concept = concepts.get(stem.getConceptId());
+				Concept concept = conceptMap.get(stem.getConceptId());
 
 				// Retrieve concept column
 				int conceptIndex = concepts.indexOf(concept);
