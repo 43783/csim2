@@ -1,5 +1,6 @@
 package ch.hesge.csim2.engine;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemMethod;
 
 public class MethodConceptMatcherUtils {
 
@@ -51,6 +54,34 @@ public class MethodConceptMatcherUtils {
 		return getHadamardProduct(tfMatrix, idfMatrix);
 	}
 
+	public static Map<Integer, RealVector> getMethodVectorMap(List<String> terms, Map<Integer, SourceMethod> methods, Map<String, List<StemMethod>> stems) {
+		
+		Map<Integer, RealVector> methodVectorMap = new HashMap<>();
+		
+		// Loop over all terms
+		for (int i = 0; i < terms.size(); i++) {
+
+			// Retrieve current terms and stems
+			String currentTerm = terms.get(i);
+
+			// Count each method referring the term
+			for (StemMethod stem : stems.get(currentTerm)) {
+
+				SourceMethod method = methods.get(stem.getSourceMethodId());
+
+				// Create a new entry for the concept
+				if (!methodVectorMap.containsKey(method.getKeyId())) {
+					methodVectorMap.put(method.getKeyId(), new ArrayRealVector(terms.size()));
+				}
+
+				// Update term counter in current concept vector
+				methodVectorMap.get(method).setEntry(i, 1d);
+			}
+		}
+		
+		return methodVectorMap;
+	}
+	
 	/**
 	 * <pre>
 	 *  Compute the tf matrix based on terms and concepts passed in argument.

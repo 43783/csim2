@@ -277,44 +277,34 @@ public class MethodConceptMatcher implements IEngine {
 		// Calculate the TFIDF matrix (row = terms, col = concept, item = tf-idf weight)
 		RealMatrix tfidfMatrix = MethodConceptMatcherUtils.getTfIdfMatrix(terms, concepts, stemConceptsMap);
 
+		// Calculate all term vectors for all methods
+		Map<Integer, RealVector> methodVectorMap = MethodConceptMatcherUtils.getMethodVectorMap(terms, methodMap, stemMethodsMap);
+		
 		for (SourceMethod sourceMethod : methodMap.values()) {
 
-			/*
-			// Calculate the TFIDF vector for current method
-			Vector<Double> tfMethodVector = tfmVectorMap.get(sourceMethod);
-			Vector<Double> tfidfMethodVector = VectorUtils.getHadamardProduct(tfMethodVector, idfVector);
-
-			for (Concept concept : tfcVectortMap.keySet()) {
-
-				// Calculate the TFIDF vector for current concept
-				Vector<Double> tfConceptVector = tfcVectortMap.get(concept);
-				Vector<Double> tfidfConceptVector = VectorUtils.getHadamardProduct(tfConceptVector, idfVector);
-
-				// Now calculate distance between the method and concept (cosine similarity)
-				double scalarProduct = VectorUtils.getScalarProduct(tfidfMethodVector, tfidfConceptVector);
-				double tfidfMethodLength = VectorUtils.getLength(tfidfMethodVector);
-				double tfidfConceptLength = VectorUtils.getLength(tfidfConceptVector);
-
-				// weight = tfidf(t,m) = tf(t,m) * idf(t), where:
-				//   tf(t,m) = 
-				//   idf(t)  = 
-
-				double vectorSimilarity = scalarProduct / (tfidfMethodLength * tfidfConceptLength);
-
+			RealVector methodVector = methodVectorMap.get(sourceMethod.getKeyId());
+			
+			// Loop over all concepts
+			for (int i = 0; i < tfidfMatrix.getRowDimension(); i++) {
+				
+				RealVector conceptVector = tfidfMatrix.getColumnVector(i);
+				
+				// Calculate distance between document and concept vector (cosine similarity)
+				double weight = conceptVector.dotProduct(methodVector) / (conceptVector.getNorm() * methodVector.getNorm());
+				
 				// Register result within the matchMap
-				if (vectorSimilarity > 0) {
+				if (weight > 0) {
 
 					MethodConceptMatch match = new MethodConceptMatch();
 
 					match.setProjectId(project.getKeyId());
 					match.setSourceMethodId(sourceMethod.getKeyId());
-					match.setConceptId(concept.getKeyId());
-					match.setWeight(vectorSimilarity);
+					match.setConceptId(concepts.get(i).getKeyId());
+					match.setWeight(weight);
 
 					matchings.add(match);
-				}
+				}				
 			}
-			*/
 		}
 
 		return matchings;
