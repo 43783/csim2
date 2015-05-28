@@ -33,8 +33,8 @@ class TimeSeriesLogic {
 	 * <code>
 	 * Retrieve the time series associated to a scenario traces.
 	 * 
-	 * A time series contains a list of concepts (found within the trace),
-	 * and a matrix representing all concepts weights associated to each step trace.
+	 * A time series contains a list of all concepts found in trace,
+	 * and a matrix concept references (in weight) by each step in trace.
 	 * 
 	 * The matrix can be for instance:
 	 * 
@@ -45,8 +45,6 @@ class TimeSeriesLogic {
 	 * 		   A				0.2		0.5		0		0
 	 * 		   B				0		0.3		0.7		0.3
 	 * 		   C				0		0		0		0.5
-	 * 
-	 * 							----------------------------------> list of column vectors
 	 * 
 	 * 		trace steps:		0	1	2	3	...
 	 * 
@@ -66,7 +64,7 @@ class TimeSeriesLogic {
 		// First retrieve unique methods found in trace
 		List<Integer> uniqueIds = TraceDao.findDistinctMethodIds(scenario);
 
-		// Then for each method, retrieve matching concepts
+		// Then for each method, retrieve its matching concepts
 		for (Integer methodId : uniqueIds) {
 
 			// Handle only methods with at least one matching
@@ -198,9 +196,11 @@ class TimeSeriesLogic {
 		// Retrieve segmented time series (for all available concepts in trace)
 		TimeSeries segmentedSeries = getSegmentedTimeSeries(timeSeries, segmentCount, threshold);
 		
-		// Retrieve the list of concepts found in trace
 		List<Concept> traceConcepts = new ArrayList<>();
+
+		// Retrieve the list of concepts found in segments, based on occurrences
 		for (int i = 0; i < segmentedSeries.getOccurrences().getDimension(); i++) {
+			
 			if (segmentedSeries.getOccurrences().getEntry(i) > 0) {
 				
 				Concept elligibleConcept = segmentedSeries.getTraceConcepts().get(i);
@@ -212,6 +212,7 @@ class TimeSeriesLogic {
 			}
 		}
 		
+		// If concepts are found in trace
 		if (traceConcepts.size() > 0) {
 			
 			// Retrieve matrix for all concepts
@@ -233,10 +234,10 @@ class TimeSeriesLogic {
 				for (int j = 0; j < traceConcepts.size(); j++) {
 
 					Concept concept = traceConcepts.get(j);
-					int foundIndex = segmentedSeries.getTraceConcepts().indexOf(concept);
+					int originalIndex = segmentedSeries.getTraceConcepts().indexOf(concept);
 
-					if (foundIndex != -1) {
-						double conceptCount = originalVector.getEntry(foundIndex);
+					if (originalIndex != -1) {
+						double conceptCount = originalVector.getEntry(originalIndex);
 						reducedVector.setEntry(j, conceptCount);
 					}
 				}
@@ -256,7 +257,7 @@ class TimeSeriesLogic {
 			
 			System.out.println("reducedMatrix: ");
 			for (int i = 0; i < reducedMatrix.getColumnDimension(); i++) {
-				System.out.println("originalVector: " + reducedMatrix.getColumnVector(i));
+				System.out.println("reducedVector: " + reducedMatrix.getColumnVector(i));
 			}
 			System.out.println("");
 			
@@ -294,7 +295,7 @@ class TimeSeriesLogic {
 	 * 
 	 * 		------------------------------------------------------------
 	 * 
-	 * 		   A		0.1		0.5		0		0		0.1		0.78
+	 * 		   A		0.2		0.5		0		0		0.1		0.78
 	 * 		   B		0		0.3		0		0.3		0		0.4
 	 * 		   C		0		0		0.7		0.5		0.6		0
 	 * 
@@ -304,13 +305,13 @@ class TimeSeriesLogic {
 	 * 
 	 * 		------------------------------------------------------------
 	 * 			
-	 * 		   A		1		0		1
+	 * 		   A		2		0		1
 	 * 		   B		1		1		1
 	 * 		   C		0		2		1
 	 * 
 	 * 		------------------------------------------------------------
 	 * 
-	 * 	Note: the resulting matrix contains occurrence count depending of threshold (not weights)
+	 * 	Note: the resulting matrix contains occurrence count (njot weight) depending of threshold specified
 	 * 
 	 * @param timeSeries
 	 *        the time series to compress
@@ -324,7 +325,6 @@ class TimeSeriesLogic {
 	private static TimeSeries getSegmentedTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold) {
 
 		List<Concept> traceConcepts = timeSeries.getTraceConcepts();
-		//Map<Integer, Concept> conceptsInTrace = new HashMap<>();
 
 		// Create an empty segmented matrix
 		RealMatrix segmentedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
