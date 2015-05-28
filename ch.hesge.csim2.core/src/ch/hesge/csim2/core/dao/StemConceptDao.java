@@ -36,7 +36,7 @@ public class StemConceptDao {
 	private static String DELETE = "DELETE FROM stem_concepts WHERE concept_id in (SELECT key_id FROM concepts WHERE ontology_id=?ontologyId)";
 
 	private static String FIND_BY_CONCEPT = "SELECT key_id, project_id, parent_id, concept_id, term, stem_type FROM stem_concepts WHERE concept_id=?conceptId";
-	private static String FIND_BY_PROJECT = "SELECT key_id, project_id, parent_id, concept_id, term, stem_type FROM stem_concepts WHERE project_id=?projectId";
+	private static String FIND_BY_PROJECT = "SELECT key_id, project_id, parent_id, concept_id, term, stem_type FROM stem_concepts WHERE project_id=?projectId AND stem_type in (0,1)";
 
 	
 	/**

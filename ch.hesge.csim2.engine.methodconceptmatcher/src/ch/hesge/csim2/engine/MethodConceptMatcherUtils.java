@@ -64,18 +64,21 @@ public class MethodConceptMatcherUtils {
 			// Retrieve current terms and stems
 			String currentTerm = terms.get(i);
 
-			// Count each method referring the term
-			for (StemMethod stem : stems.get(currentTerm)) {
+			if (stems.containsKey(currentTerm)) {
+				
+				// Count each method referring the term
+				for (StemMethod stem : stems.get(currentTerm)) {
 
-				SourceMethod method = methods.get(stem.getSourceMethodId());
+					SourceMethod method = methods.get(stem.getSourceMethodId());
 
-				// Create a new entry for the concept
-				if (!methodVectorMap.containsKey(method.getKeyId())) {
-					methodVectorMap.put(method.getKeyId(), new ArrayRealVector(terms.size()));
+					// Create a new entry for the concept
+					if (!methodVectorMap.containsKey(method.getKeyId())) {
+						methodVectorMap.put(method.getKeyId(), new ArrayRealVector(terms.size()));
+					}
+
+					// Update term counter in current concept vector
+					methodVectorMap.get(method.getKeyId()).setEntry(i, 1d);
 				}
-
-				// Update term counter in current concept vector
-				methodVectorMap.get(method).setEntry(i, 1d);
 			}
 		}
 		

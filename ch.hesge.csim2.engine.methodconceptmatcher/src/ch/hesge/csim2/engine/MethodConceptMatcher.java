@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-import java.util.Vector;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -282,28 +280,31 @@ public class MethodConceptMatcher implements IEngine {
 		
 		for (SourceMethod sourceMethod : methodMap.values()) {
 
-			RealVector methodVector = methodVectorMap.get(sourceMethod.getKeyId());
-			
-			// Loop over all concepts
-			for (int i = 0; i < tfidfMatrix.getRowDimension(); i++) {
+			if (methodVectorMap.containsKey(sourceMethod.getKeyId())) {
 				
-				RealVector conceptVector = tfidfMatrix.getColumnVector(i);
+				RealVector methodVector = methodVectorMap.get(sourceMethod.getKeyId());
 				
-				// Calculate distance between document and concept vector (cosine similarity)
-				double weight = conceptVector.dotProduct(methodVector) / (conceptVector.getNorm() * methodVector.getNorm());
-				
-				// Register result within the matchMap
-				if (weight > 0) {
+				// Loop over all concepts
+				for (int i = 0; i < tfidfMatrix.getRowDimension(); i++) {
+					
+					RealVector conceptVector = tfidfMatrix.getColumnVector(i);
+					
+					// Calculate distance between document and concept vector (cosine similarity)
+					double weight = conceptVector.dotProduct(methodVector) / (conceptVector.getNorm() * methodVector.getNorm());
+					
+					// Register result within the matchMap
+					if (weight > 0) {
 
-					MethodConceptMatch match = new MethodConceptMatch();
+						MethodConceptMatch match = new MethodConceptMatch();
 
-					match.setProjectId(project.getKeyId());
-					match.setSourceMethodId(sourceMethod.getKeyId());
-					match.setConceptId(concepts.get(i).getKeyId());
-					match.setWeight(weight);
+						match.setProjectId(project.getKeyId());
+						match.setSourceMethodId(sourceMethod.getKeyId());
+						match.setConceptId(concepts.get(i).getKeyId());
+						match.setWeight(weight);
 
-					matchings.add(match);
-				}				
+						matchings.add(match);
+					}				
+				}
 			}
 		}
 
