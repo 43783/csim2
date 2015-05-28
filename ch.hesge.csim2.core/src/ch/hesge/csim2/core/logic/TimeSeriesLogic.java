@@ -234,10 +234,10 @@ class TimeSeriesLogic {
 				for (int j = 0; j < traceConcepts.size(); j++) {
 
 					Concept concept = traceConcepts.get(j);
-					int originalIndex = segmentedSeries.getTraceConcepts().indexOf(concept);
+					int foundIndex = segmentedSeries.getTraceConcepts().indexOf(concept);
 
-					if (originalIndex != -1) {
-						double conceptCount = originalVector.getEntry(originalIndex);
+					if (foundIndex != -1) {
+						double conceptCount = originalVector.getEntry(foundIndex);
 						reducedVector.setEntry(j, conceptCount);
 					}
 				}

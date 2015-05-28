@@ -10,6 +10,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
+
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.Context;
@@ -157,17 +160,17 @@ public class MethodConceptMatcher implements IEngine {
 		try {
 
 			Console.writeLine("loading ontologies...");
-			
+
 			// Load project and its ontologies
 			ApplicationLogic.loadProject(project);
-			
+
 			Console.writeLine("cleaning previous matches...");
-			
+
 			// Clean project matchings
 			ApplicationLogic.deleteMatching(project);
 
 			List<MethodConceptMatch> matchings = null;
-			
+
 			// Compute method-concept matching
 			if (matchingAlgorithm.equals("phd")) {
 				matchings = computeMatchingWithPhd();
@@ -175,7 +178,7 @@ public class MethodConceptMatcher implements IEngine {
 			else {
 				matchings = computeMatchingWithEha();
 			}
-			
+
 			for (MethodConceptMatch match : matchings) {
 				System.out.println("  " + "method: " + match.getSourceMethodId() + ", " + "concept: " + match.getConceptId() + ", " + "weight: " + match.getWeight());
 				ApplicationLogic.saveMatching(match);
@@ -194,77 +197,89 @@ public class MethodConceptMatcher implements IEngine {
 	@Override
 	public void stop() {
 	}
-	
+
 	/**
 	 * Compute method-concept match through PHD algo.
 	 */
 	public List<MethodConceptMatch> computeMatchingWithPhd() {
-		
+
 		List<MethodConceptMatch> matchings = new ArrayList<>();
-		
+
 		// Compute matchings for each ontology
 		for (Ontology ontology : project.getOntologies()) {
 
 			// Load ontology concepts
 			ontology.getConcepts().clear();
 			ontology.getConcepts().addAll(ApplicationLogic.getConceptsWithDependencies(ontology));
-			
+
 			// Retrieve method/concept matchings
 			List<RddaMethodConceptMatch> rddaMatchings = new TermVectorBuilder().computeVectors(project, ontology);
 
 			// Convert rdda matching into csim2 matching
 			for (RddaMethodConceptMatch rddaMatch : rddaMatchings) {
-				
+
 				MethodConceptMatch match = new MethodConceptMatch();
 
 				match.setProjectId(project.getKeyId());
 				match.setSourceMethodId(rddaMatch.getMethodId().getMethodID());
 				match.setConceptId(rddaMatch.getConceptId().getConceptID());
 				match.setWeight(rddaMatch.getMatchingStrength());
-				
+
 				matchings.add(match);
 			}
 		}
-		
+
 		return matchings;
 	}
 
 	/**
+	 * <pre>
 	 * Compute method-concept match through EHA algo.
+	 * 
+	 * 	TF 	= term frequency
+	 * 		= relative term frequency within a concept
+	 * 
+	 * 	IDF	= inverse document frequencies 
+	 * 		= inverse frequency of terms among all concepts.
+	 * 
+	 * 	TF-IDF = relevance of a term within a concept.
+	 * 
+	 * 
+	 * </pre>
 	 */
 	public List<MethodConceptMatch> computeMatchingWithEha() {
-		
+
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
 		Console.writeLine("loading method & concept information...");
 
-		// Load all concepts & methods
+		// Load all concepts, methods and stems
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
 		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
-
-		// Load all concept-stem / method-stems
 		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
-		Map<String, List<StemMethod>>  stemMethodsMap  = ApplicationLogic.getStemMethodByTermMap(project);
+		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
 
-		Console.writeLine("selecting term intersection...");
+		Console.writeLine("selecting terms intersection...");
 
-		// Retrieve intersecting terms
+		/*
+		// Retrieve intersection between concept terns and method terms
 		Set<String> termSet = stemConceptsMap.keySet();
 		termSet.retainAll(stemMethodsMap.keySet());
 		List<String> termList = new ArrayList<String>();
 		termList.addAll(termSet);
+		*/
 
 		Console.writeLine("analyzing potential matching elements...");
 
-		// Calculate the IDF vector for all terms (term inverse document frequency)
-		Vector<Double> idfVector = VectorUtils.getIdfVector(termList, conceptMap, stemConceptsMap);
+		List<Concept> concepts = new ArrayList<>(conceptMap.values());
+		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
 
-		// Now we calculate a TF vector for each method & concept (term frequency)
-		Map<SourceMethod, Vector<Double>> tfmVectorMap = VectorUtils.getTfmVectorMap(termList, methodMap, stemMethodsMap);
-		Map<Concept, Vector<Double>> tfcVectortMap = VectorUtils.getTfcVectorMap(termList, conceptMap, stemConceptsMap);
+		// Calculate the TFIDF matrix for all terms/concepts
+		RealMatrix tfidfMatrix = MethodConceptMatcherUtils.getTfIdfMatrix(terms, concepts, stemConceptsMap);
 
-		for (SourceMethod sourceMethod : tfmVectorMap.keySet()) {
+		for (SourceMethod sourceMethod : methodMap.values()) {
 
+			/*
 			// Calculate the TFIDF vector for current method
 			Vector<Double> tfMethodVector = tfmVectorMap.get(sourceMethod);
 			Vector<Double> tfidfMethodVector = VectorUtils.getHadamardProduct(tfMethodVector, idfVector);
@@ -283,7 +298,7 @@ public class MethodConceptMatcher implements IEngine {
 				// weight = tfidf(t,m) = tf(t,m) * idf(t), where:
 				//   tf(t,m) = 
 				//   idf(t)  = 
-				
+
 				double vectorSimilarity = scalarProduct / (tfidfMethodLength * tfidfConceptLength);
 
 				// Register result within the matchMap
@@ -299,9 +314,10 @@ public class MethodConceptMatcher implements IEngine {
 					matchings.add(match);
 				}
 			}
+			*/
 		}
-		
+
 		return matchings;
 	}
-	
+
 }

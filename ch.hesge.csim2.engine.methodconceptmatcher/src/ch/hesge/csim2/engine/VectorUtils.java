@@ -198,7 +198,7 @@ public class VectorUtils {
 
 		Vector<Double> idfVector = VectorUtils.createVector(terms.size());
 
-		// Lookup each term
+		// Loop over all terms
 		for (int i = 0; i < terms.size(); i++) {
 
 			String currentTerm = terms.get(i);
@@ -206,7 +206,7 @@ public class VectorUtils {
 			// Keep track of all concepts referring current term
 			HashSet<Integer> conceptIds = new HashSet<>();
 
-			// Retrieve all concept stem associated to current term
+			// Retrieve all stems associated to current term
 			List<StemConcept> stemConcepts = stems.get(currentTerm);
 
 			// Scan each stem associated to current term
@@ -215,9 +215,9 @@ public class VectorUtils {
 			}
 
 			// Compute idf value
-			double totalConceptCount = concepts.size();
-			double conceptCountReferringTerm = conceptIds.size() + 1;
-			double idfValue = Math.log10(totalConceptCount / conceptCountReferringTerm);
+			double conceptCount = concepts.size();
+			double df = conceptIds.size() + 1;
+			double idfValue = Math.log10(conceptCount / df);
 
 			// Set idf-value within the resulting vector
 			idfVector.set(i, idfValue);

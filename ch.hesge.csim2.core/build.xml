@@ -12,10 +12,12 @@
 		<echo message="Copying all required files to target folder"/>
     	<copy todir="${distrib-dir}/lib">
     		<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*.source*.jar"/>
-		</copy>		    	
+		</copy>		  
+		<!--
     	<copy todir="${distrib-dir}/data">
     		<fileset dir="${basedir}/data"/>
-		</copy>		    	
+		</copy>
+		-->		    	
     </target>
 			
 	<!-- create a jar with all classes and resources -->
