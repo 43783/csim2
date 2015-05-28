@@ -272,7 +272,7 @@ public class MethodConceptMatcher implements IEngine {
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
 
-		// Calculate the TFIDF matrix (row = terms, col = concept, item = tf-idf weight)
+		// Calculate the TFIDF matrix (row = terms, col = concepts, cell = tf-idf weight)
 		RealMatrix tfidfMatrix = MethodConceptMatcherUtils.getTfIdfMatrix(terms, concepts, stemConceptsMap);
 
 		// Calculate all term vectors for all methods
