@@ -284,7 +284,7 @@ public class MethodConceptMatcher implements IEngine {
 				
 				RealVector methodVector = methodVectorMap.get(sourceMethod.getKeyId());
 				
-				// Loop over all concepts AAA BBB DDD
+				// Loop over all concepts AAA BBB DDD EEE
 				for (int i = 0; i < tfidfMatrix.getRowDimension(); i++) {
 					
 					RealVector conceptVector = tfidfMatrix.getColumnVector(i);
