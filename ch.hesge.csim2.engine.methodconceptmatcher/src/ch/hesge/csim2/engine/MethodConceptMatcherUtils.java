@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.math3.exception.ZeroException;
 import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.MatrixDimensionMismatchException;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -25,16 +27,94 @@ public class MethodConceptMatcherUtils {
 	 * 
 	 * For instance:
 	 * 
-	 * 			T1		0.3		3		0
-	 * 			T2		1.5		0		7
-	 * 			T3		0		0		8
-	 * 			T4		0		20		5
+	 * 		  						+->  tf-idf weight for term T1, concept C2
+	 * 								|
+	 * 					|						|		
+	 * 					|	0.3		3		0	|		T1		
+	 * 		TF-IDF	=	|	1.5		0		7	|		T2		terms
+	 * 					|	0		0		8	|		T3
+	 * 					|	0		20		5	|		T4
+	 * 					|						|
 	 * 
-	 * 					C1		C2		C3
+	 * 						C1		C2		C3		--> concepts
 	 * 
-	 * where:
+	 * </pre>
 	 * 
-	 * 		a(i,j) = tf-idf value for term i and concept j
+	 * @param terms
+	 *        the terms used to compute weights
+	 * @param concepts
+	 *        the concepts used to compute weights
+	 * @param stems
+	 *        the stems allowing links between terms and concepts
+	 * @return
+	 *         a tf-idf matrix
+	 */
+	public static RealMatrix getTfIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
+
+		RealMatrix tfMatrix = computeTfMatrix(terms, concepts, stems);
+		RealMatrix idfMatrix = computeIdfMatrix(terms, concepts, stems);
+
+		return ebeMultiply(tfMatrix, idfMatrix);
+	}
+
+	/**
+	 * <pre>
+	 * 
+	 *  Compute the tf matrix based on terms and concepts passed in argument.
+	 *  
+	 *  The tf matrix (term frequency by concept) is computed with:
+	 *  
+	 *  	TF	=	TO / TC
+	 *  
+	 * 	
+	 *  where:
+	 * 		  						+->  occurrence of term T1 in concept C2
+	 * 								|
+	 * 					|						|		
+	 * 					|	3		3		0	|		T1		
+	 * 		TO		=	|	5		0		7	|		T2		terms
+	 * 					|	0		0		8	|		T3
+	 * 					|	0		20		5	|		T4
+	 * 					|						|
+	 * 
+	 * 						C1		C2		C3		--> concepts
+	 * 
+	 *  and:
+	 * 		  						+->  total number of terms in C2
+	 * 								|
+	 * 					|						|				
+	 * 		TC'		=	|	8		23		20	|		
+	 * 					|						|
+	 * 
+	 * 						C1		C2		C3		--> concepts
+	 * 
+	 *  then:
+	 *  
+	 *   	TC is based on the duplication of row vector TC' (as much rows there are terms):
+	 * 
+	 * 					|						|		
+	 * 					|	8		23		20	|		T1		
+	 * 		TC		=	|	8		23		20	|		T2		terms
+	 * 					|	8		23		20	|		T3
+	 * 					|	8		23		20	|		T4
+	 * 					|						|
+	 * 
+	 * 						C1		C2		C3		--> concepts
+	 * 
+	 *  finally:
+	 *  
+	 *  	we can now calculate TF = TO / TC (with matrix element-by-element division)
+	 * 
+	 * 		  						+-> relative weight of term T1 within concept C2
+	 * 								|
+	 * 					|							|		
+	 * 					|	0.38	0.13	0		|		T1		
+	 * 		TF		=	|	0.62	0		0.35	|		T2		terms
+	 * 					|	0		0		0.4		|		T3
+	 * 					|	0		0.87	0.25	|		T4
+	 * 					|							|
+	 * 
+	 * 						C1		C2		C3		--> concepts
 	 * 
 	 * </pre>
 	 * 
@@ -43,169 +123,108 @@ public class MethodConceptMatcherUtils {
 	 * @param concepts
 	 *        the concepts used to compute frequencies
 	 * @param stems
-	 *        the stems allowing links between term and concepts
+	 *        the stems allowing links between terms and concepts
 	 * @return
-	 *         a tf-idf matrix
+	 *         a tf matrix
 	 */
-	public static RealMatrix getTfIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
+	private static RealMatrix computeTfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
 
-		RealMatrix tfMatrix = getTfMatrix(terms, concepts, stems);
-		RealMatrix idfMatrix = getIdfMatrix(terms, concepts, stems);
-		return getHadamardProduct(tfMatrix, idfMatrix);
-	}
-
-	public static Map<Integer, RealVector> getMethodVectorMap(List<String> terms, Map<Integer, SourceMethod> methods, Map<String, List<StemMethod>> stems) {
-		
-		Map<Integer, RealVector> methodVectorMap = new HashMap<>();
-		
-		// Loop over all terms
-		for (int i = 0; i < terms.size(); i++) {
-
-			// Retrieve current terms and stems
-			String currentTerm = terms.get(i);
-
-			if (stems.containsKey(currentTerm)) {
-				
-				// Count each method referring the term
-				for (StemMethod stem : stems.get(currentTerm)) {
-
-					SourceMethod method = methods.get(stem.getSourceMethodId());
-
-					// Create a new entry for the concept
-					if (!methodVectorMap.containsKey(method.getKeyId())) {
-						methodVectorMap.put(method.getKeyId(), new ArrayRealVector(terms.size()));
-					}
-
-					// Update term counter in current concept vector
-					methodVectorMap.get(method.getKeyId()).setEntry(i, 1d);
-				}
-			}
-		}
-		
-		return methodVectorMap;
-	}
-	
-	/**
-	 * <pre>
-	 *  Compute the tf matrix based on terms and concepts passed in argument.
-	 *  
-	 *  The tf matrix (term frequency by concept) is computed with:
-	 *  
-	 *  	TF	=	TO / TCF
-	 *  
-	 *  where:
-	 * 
-	 * 		TO	=	term occurrence by concept	=	matrix
-	 * 
-	 * 			T1		3		3		0
-	 * 			T2		5		0		7
-	 * 			T3		0		0		8
-	 * 			T4		0		20		5
-	 * 
-	 * 					C1		C2		C3
-	 * 
-	 * 		TC	=	total term count for each concepts	= row vector
-	 * 
-	 * 					8		23		20
-	 * 
-	 * 					C1		C2		C3
-	 * 
-	 *  then:
-	 * 
-	 * 		TF	=	TO / TCF (row by row)
-	 * 
-	 * 			T1		0.38	0.13	0
-	 * 			T2		0.62	0		0.35
-	 * 			T3		0		0		0.4
-	 * 			T4		0		0.87	0.25
-	 * 
-	 * 					C1		C2		C3
-	 * 
-	 * 
-	 * </pre>
-	 */
-	private static RealMatrix getTfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
-
-		RealMatrix toMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
-		RealVector tcVector = new ArrayRealVector(concepts.size());
-
+		// First build a concept map for speed
 		Map<Integer, Concept> conceptMap = new HashMap<>();
 		for (Concept concept : concepts) {
 			conceptMap.put(concept.getKeyId(), concept);
 		}
-		
+
+		RealMatrix toMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
+		RealMatrix tcMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
+
+		RealVector tcRowVector = new ArrayRealVector(concepts.size());
+
 		// Loop over all terms
 		for (int i = 0; i < terms.size(); i++) {
 
 			// Retrieve current term
 			String currentTerm = terms.get(i);
 
-			// Loop over all concept referring term
+			// Loop over all concepts referring term
 			for (StemConcept stem : stems.get(currentTerm)) {
 
+				// Retrieve concept and index
 				Concept concept = conceptMap.get(stem.getConceptId());
-
-				// Retrieve concept column
 				int conceptIndex = concepts.indexOf(concept);
 
-				// count term occurrences in matrix
+				// Adjust occurrence count in matrix
 				toMatrix.addToEntry(i, conceptIndex, 1d);
 
-				// count term count in vector
-				tcVector.addToEntry(conceptIndex, 1d);
+				// Adjust total term count in vector
+				tcRowVector.addToEntry(conceptIndex, 1d);
 			}
 		}
 
-		RealMatrix tfMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
-
-		// Compute row by row tf = to / tc
-		for (int i = 0; i < toMatrix.getRowDimension(); i++) {
-
-			RealVector toVector = toMatrix.getRowVector(i);
-			RealVector tfVector = toVector.ebeDivide(tcVector);
-
-			tfMatrix.setRowVector(i, tfVector);
+		// Now create the total count matrix
+		for (int i = 0; i < tcMatrix.getRowDimension(); i++) {
+			tcMatrix.setRowVector(i, tcRowVector);
 		}
 
-		return tfMatrix;
+		// Return TF = TO /TC
+		return ebeDivide(toMatrix, tcMatrix);
 	}
 
 	/**
 	 * 
 	 * <pre>
-	 * Returns a vector of idf-values associated to a list of term.
+	 *  Compute the idf matrix based on terms and concepts passed in argument.
 	 *  
-	 * Basically idf vector represents for each term a value that allows
-	 * measuring the term relevance among all concepts.
+	 *  The idf matrix (inverse term frequency within all concepts) 
+	 *  is computed based on IDF' column vector, as follow:
+	 *  
+	 * 					|			|		
+	 * 					|	0.38	|		T1		
+	 * 		IDF'	=	|	0.62	|		T2		terms
+	 * 					|	0		|		T3
+	 * 					|	0		|		T4
+	 * 					|			|
 	 * 
-	 * For a specific term, 
-	 * 		a great idf value indicated that the term is discriminant in search.
-	 * 		a small idf value indicated that the term is not really important.
+	 *  where:
+	 * 						   total-term-count
+	 * 		IDF'	=	log(  ------------------  )
+	 * 						    concept-count
 	 * 
-	 * For each term t, we calculate idf(t) as follow:
+	 *  and:
+	 *  
+	 * 		total-term-count	= total number of term in space
+	 * 		concept-count		= number of concepts referring the term Ti
+	 * 		
+	 *  then:
+	 *  
+	 *   	IDF is based on the duplication of column vector IDF' (as much column there are concepts):
 	 * 
-	 * 		totalCount		= number of concepts in space
-	 * 		conceptCount(t)	= number of concepts referring the term t
+	 * 					|							|		
+	 * 					|	0.38	0.38	0.38	|		T1		
+	 * 		IDF		=	|	0.62	0.62	0.62	|		T2		terms
+	 * 					|	0		0		0		|		T3
+	 * 					|	0.12	0.12	0.12	|		T4
+	 * 					|							|
 	 * 
-	 * 			idf(t) 	= log( totalCount / conceptCount(t) )
+	 * 						C1		C2		C3		--> concepts
 	 * 
-	 *  	and as conceptCount(t) can be zero, 
-	 *  	we rewrite the formula to get:
-	 * 
-	 * 			idf(t) 	= log( totalCount / (conceptCount(t) + 1) )
-	 * 
-	 * The vector returned contains all idf values for each term passed in argument (same order).
 	 * </pre>
 	 * 
 	 * @param terms
+	 *        the terms used to compute inverse frequencies
 	 * @param concepts
+	 *        the concepts used to compute inverse frequencies
 	 * @param stems
+	 *        the stems allowing links between terms and concepts
 	 * @return
+	 *         a idf matrix
 	 */
-	private static RealMatrix getIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
+	private static RealMatrix computeIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
+
+		RealMatrix idfMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
 
 		// Create the idf vector
-		RealVector idfVector = new ArrayRealVector(terms.size());
+		RealVector idfColumnVector = new ArrayRealVector(terms.size());
 
 		// Loop over all terms
 		for (int i = 0; i < terms.size(); i++) {
@@ -226,47 +245,84 @@ public class MethodConceptMatcherUtils {
 			double idfValue = Math.log10(totalcount / df);
 
 			// Set idf-value within the resulting vector
-			idfVector.setEntry(i, idfValue);
+			idfColumnVector.setEntry(i, idfValue);
 		}
 
-		RealMatrix idfMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
-
-		// Generate as column there is concepts in matrix
+		// Now create the idf matrix
 		for (int i = 0; i < idfMatrix.getColumnDimension(); i++) {
-			idfMatrix.setColumnVector(i, idfVector);
+			idfMatrix.setColumnVector(i, idfColumnVector);
 		}
 
 		return idfMatrix;
 	}
 
 	/**
+	 * Retrieve a map of term vector for each method passed in argument.
+	 * Note: each vector component is based on term presence (1) or missing (0).
+	 * 
+	 * @param terms
+	 *        the terms used to compute vectors
+	 * @param concepts
+	 *        the methods used to compute vectors
+	 * @param stems
+	 *        the stems allowing links between terms and methods
+	 * @return
+	 *         a map of all vectors associated to methods
+	 */
+	public static Map<Integer, RealVector> getMethodTermVectorMap(List<String> terms, Map<Integer, SourceMethod> methods, Map<String, List<StemMethod>> stems) {
+
+		Map<Integer, RealVector> methodTermVectorMap = new HashMap<>();
+
+		// First fill ensure all methods are registered in map
+		for (SourceMethod method : methods.values()) {
+			methodTermVectorMap.put(method.getKeyId(), new ArrayRealVector(terms.size()));
+		}
+
+		// Now Loop over all terms
+		for (int i = 0; i < terms.size(); i++) {
+
+			// Retrieve current terms and stems
+			String currentTerm = terms.get(i);
+
+			if (stems.containsKey(currentTerm)) {
+
+				// Count each method referring the term
+				for (StemMethod stem : stems.get(currentTerm)) {
+
+					SourceMethod method = methods.get(stem.getSourceMethodId());
+
+					// Update term counter in current concept vector
+					methodTermVectorMap.get(method.getKeyId()).setEntry(i, 1d);
+				}
+			}
+		}
+
+		return methodTermVectorMap;
+	}
+
+	/**
 	 * <pre>
-	 * Returns a new matrix that corresponds to the hadamard product of two matrix.
-	 * That is element-by-element multiplication. The matrix must be of same dimension.
 	 * 
-	 *  For instance:
+	 * 	Multiply element-by-element matrix content.
+	 * 	This is the hadamard matrix product of two matrix in entry.
 	 * 
-	 * 		A	=
+	 * 	Note: both matrix must have same size.
 	 * 
-	 * 			3		3		0
-	 * 			5		0		7
-	 * 			0		0		8
-	 * 			0		20		5
+	 *  for instance:
 	 * 
-	 * 		B	=
-	 * 
-	 * 			2		3		1
-	 * 			3		1		2
-	 * 			0		3		0
-	 * 			3		20		3
-	 * 
-	 * 
-	 * 		A * B = 
-	 * 
-	 * 			9		9		0
-	 * 			25		0		14
-	 * 			0		0		0
-	 * 			0		40		15
+	 * 					|	3		3		0	|
+	 * 		A	=		|	5		0		7	|
+	 * 					|	0		0		8	|
+	 * 			
+	 * 					|	2		3		1	|
+	 * 		B	=		|	3		1		2	|
+	 * 					|	0		3		0	|
+	 * 	
+	 * 	then:		
+	 * 			
+	 * 					|	6		9		0	|
+	 * 		A * B =		|	15		0		14 	|
+	 * 					|	0		0		0	|
 	 * 
 	 * </pre>
 	 * 
@@ -275,10 +331,12 @@ public class MethodConceptMatcherUtils {
 	 * @param b
 	 *        the second matrix
 	 * @return
-	 *         the hadamard resulting matrix
+	 *         the hadamard matrix product
+	 * @throws MatrixDimensionMismatchException
 	 */
-	private static RealMatrix getHadamardProduct(RealMatrix a, RealMatrix b) {
+	private static RealMatrix ebeMultiply(RealMatrix a, RealMatrix b) throws MatrixDimensionMismatchException {
 
+		MatrixUtils.checkAdditionCompatible(a, b);
 		RealMatrix result = MatrixUtils.createRealMatrix(a.getRowDimension(), a.getColumnDimension());
 
 		for (int i = 0; i < a.getRowDimension(); i++) {
@@ -290,4 +348,52 @@ public class MethodConceptMatcherUtils {
 		return result;
 	}
 
+	/**
+	 * <pre>
+	 * 	Divide element-by-element matrix content.
+	 * 	This is the hadamard matrix inverse product of two matrix in entry.
+	 * 
+	 * 	Note: both matrix must have same size and second matrix must not contains 0 elements.
+	 * 
+	 *  for instance:
+	 * 
+	 * 					|		3		3		0		|
+	 * 		A	=		|		5		0		7		|
+	 * 					|		0		0		8		|
+	 * 			
+	 * 					|		2		3		1		|
+	 * 		B	=		|		3		1		2		|
+	 * 					|		1		3		4		|
+	 * 	
+	 * 	then:		
+	 * 			
+	 * 					|		1.5		1		0		|
+	 * 		A / B =		|		1.66	0		3.5		|
+	 * 					|		0		0		2		|
+	 * </pre>
+	 * 
+	 * @param a
+	 *        the first matrix
+	 * @param b
+	 *        the second matrix
+	 * @return
+	 *         the hadamard matrix inverse product
+	 * @throws MatrixDimensionMismatchException
+	 */
+	private static RealMatrix ebeDivide(RealMatrix a, RealMatrix b) throws MatrixDimensionMismatchException {
+
+		MatrixUtils.checkAdditionCompatible(a, b);
+		RealMatrix result = MatrixUtils.createRealMatrix(a.getRowDimension(), a.getColumnDimension());
+
+		for (int i = 0; i < a.getRowDimension(); i++) {
+			for (int j = 0; j < a.getColumnDimension(); j++) {
+				if (b.getEntry(i, j) == 0) {
+					throw new ZeroException();
+				}
+				result.setEntry(i, j, a.getEntry(i, j) / b.getEntry(i, j));
+			}
+		}
+
+		return result;
+	}
 }

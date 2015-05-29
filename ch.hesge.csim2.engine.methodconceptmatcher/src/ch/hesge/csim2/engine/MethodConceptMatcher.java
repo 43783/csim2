@@ -66,7 +66,7 @@ public class MethodConceptMatcher implements IEngine {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.0";
+		return "1.0.6";
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class MethodConceptMatcher implements IEngine {
 
 		Console.writeLine("loading method & concept information...");
 
-		// Load all concepts, methods and stems
+		// Load concepts, methods and stems into maps
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
 		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
 		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
@@ -275,35 +275,33 @@ public class MethodConceptMatcher implements IEngine {
 		// Calculate the TFIDF matrix (row = terms, col = concepts, cell = tf-idf weight)
 		RealMatrix tfidfMatrix = MethodConceptMatcherUtils.getTfIdfMatrix(terms, concepts, stemConceptsMap);
 
-		// Calculate all term vectors for all methods
-		Map<Integer, RealVector> methodVectorMap = MethodConceptMatcherUtils.getMethodVectorMap(terms, methodMap, stemMethodsMap);
-		
+		// Calculate on term vectors for each method
+		Map<Integer, RealVector> methodTermVectorMap = MethodConceptMatcherUtils.getMethodTermVectorMap(terms, methodMap, stemMethodsMap);
+
 		for (SourceMethod sourceMethod : methodMap.values()) {
 
-			if (methodVectorMap.containsKey(sourceMethod.getKeyId())) {
-				
-				RealVector methodVector = methodVectorMap.get(sourceMethod.getKeyId());
-				
-				// Loop over all concepts
-				for (int i = 0; i < tfidfMatrix.getRowDimension(); i++) {
-					
-					RealVector conceptVector = tfidfMatrix.getColumnVector(i);
-					
-					// Calculate distance between document and concept vector (cosine similarity)
-					double weight = conceptVector.dotProduct(methodVector) / (conceptVector.getNorm() * methodVector.getNorm());
-					
-					// Register result within the matchMap
-					if (weight > 0) {
+			RealVector methodTermVector = methodTermVectorMap.get(sourceMethod.getKeyId());
 
-						MethodConceptMatch match = new MethodConceptMatch();
+			// Select all concepts with similarity factor > 0
+			for (int i = 0; i < tfidfMatrix.getColumnDimension(); i++) {
 
-						match.setProjectId(project.getKeyId());
-						match.setSourceMethodId(sourceMethod.getKeyId());
-						match.setConceptId(concepts.get(i).getKeyId());
-						match.setWeight(weight);
+				Concept concept = concepts.get(i);
+				RealVector conceptTermVector = tfidfMatrix.getColumnVector(i);
 
-						matchings.add(match);
-					}				
+				// Calculate similarity between method and concept vector (cosine similarity)
+				double similarity = conceptTermVector.dotProduct(methodTermVector) / (conceptTermVector.getNorm() * methodTermVector.getNorm());
+
+				// Register result within the matchMap
+				if (similarity > 0) {
+
+					MethodConceptMatch match = new MethodConceptMatch();
+
+					match.setProjectId(project.getKeyId());
+					match.setSourceMethodId(sourceMethod.getKeyId());
+					match.setConceptId(concept.getKeyId());
+					match.setWeight(similarity);
+
+					matchings.add(match);
 				}
 			}
 		}
