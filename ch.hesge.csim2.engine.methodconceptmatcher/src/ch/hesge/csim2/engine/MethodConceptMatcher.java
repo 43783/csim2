@@ -257,16 +257,6 @@ public class MethodConceptMatcher implements IEngine {
 		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
 		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
 
-		Console.writeLine("selecting terms intersection...");
-
-		/*
-		// Retrieve intersection between concept terns and method terms
-		Set<String> termSet = stemConceptsMap.keySet();
-		termSet.retainAll(stemMethodsMap.keySet());
-		List<String> termList = new ArrayList<String>();
-		termList.addAll(termSet);
-		*/
-
 		Console.writeLine("analyzing potential matching elements...");
 
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
