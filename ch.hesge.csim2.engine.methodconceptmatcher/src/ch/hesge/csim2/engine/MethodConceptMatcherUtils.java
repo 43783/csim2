@@ -396,4 +396,35 @@ public class MethodConceptMatcherUtils {
 
 		return result;
 	}
+
+	/**
+	 * Detect if a vector has all its components to 0.
+	 * 
+	 * @param v
+	 *        the vector to check
+	 * @return
+	 *         true if zero vector, false otherwise
+	 */
+	public static boolean isZeroVector(RealVector v) {
+
+		for (int i = 0; i < v.getDimension(); i++) {
+			if (v.getEntry(i) != 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Detect if a vector has at least one component different than 0.
+	 * 
+	 * @param v
+	 *        the vector to check
+	 * @return
+	 *         true if not zero vector, false otherwise
+	 */
+	public static boolean isNotZeroVector(RealVector v) {
+		return !isZeroVector(v);
+	}
 }

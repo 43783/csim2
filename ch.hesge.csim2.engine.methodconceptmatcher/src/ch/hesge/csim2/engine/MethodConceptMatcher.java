@@ -287,21 +287,27 @@ public class MethodConceptMatcher implements IEngine {
 
 				Concept concept = concepts.get(i);
 				RealVector conceptTermVector = tfidfMatrix.getColumnVector(i);
+				boolean isNotZeroMethodVector = MethodConceptMatcherUtils.isNotZeroVector(methodTermVector);
 
-				// Calculate similarity between method and concept vector (cosine similarity)
-				double similarity = conceptTermVector.dotProduct(methodTermVector) / (conceptTermVector.getNorm() * methodTermVector.getNorm());
+				// Skip null method vector
+				if (isNotZeroMethodVector) {
 
-				// Register result within the matchMap
-				if (similarity > 0) {
+					// Calculate similarity between method and concept vectors
+					// => computed through cosine similarity (cosine angle between the two vectors)
+					double similarity = conceptTermVector.cosine(methodTermVector);
 
-					MethodConceptMatch match = new MethodConceptMatch();
+					// Register result within the matchMap
+					if (similarity > 0) {
 
-					match.setProjectId(project.getKeyId());
-					match.setSourceMethodId(sourceMethod.getKeyId());
-					match.setConceptId(concept.getKeyId());
-					match.setWeight(similarity);
+						MethodConceptMatch match = new MethodConceptMatch();
 
-					matchings.add(match);
+						match.setProjectId(project.getKeyId());
+						match.setSourceMethodId(sourceMethod.getKeyId());
+						match.setConceptId(concept.getKeyId());
+						match.setWeight(similarity);
+
+						matchings.add(match);
+					}
 				}
 			}
 		}
