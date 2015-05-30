@@ -37,36 +37,6 @@ public class MethodConceptMatcherUtils {
 	 * @param stems
 	 * @return
 	 */
-	
-	public static int getConceptNamePartCount(StemConcept stemRoot) {
-		
-		int partCount = 0;
-		
-		for (StemConcept stem : stemRoot.getChildren())  {
-			if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-				partCount++;
-			}
-		}
-		
-		return partCount;
-	}
-	
-	public static int getConceptAttributePartCount(StemConcept stemRoot) {
-		
-		int partCount = 0;
-		
-		for (StemConcept stem : stemRoot.getChildren())  {
-			if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
-				partCount++;
-			}
-		}
-		
-		return partCount;
-	}
-
-	public static int getConceptAttributeCount(Concept concept) {
-		return concept.getAttributes().size();
-	}
 
 	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap, Map<Integer, StemConcept> stemTreeByConceptMap) {
 
@@ -91,14 +61,13 @@ public class MethodConceptMatcherUtils {
 					conceptWeight = 1d;
 				}
 				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-					double partCount = getConceptNamePartCount(stem);
-					conceptWeight = 0.9d / partCount;
+					conceptWeight = 0.9d / stem.getParts().size();
 				}
 				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
-					conceptWeight = 0.8d / getConceptAttributeCount(concept);
+					conceptWeight = 0.8d / concept.getAttributes().size();
 				}
 				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
-					conceptWeight = 0.7d / getConceptAttributePartCount(stem);
+					conceptWeight = 0.7d / concept.getAttributes().size() / stem.getParts().size();
 				}
 				
 				weightMatrix.addToEntry(i, conceptIndex, conceptWeight);

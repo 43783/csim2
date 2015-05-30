@@ -69,7 +69,7 @@ class DBStemInConceptsLoader {
 
 			// Retrieve all stems associated to the concept			
 			StemConcept stemConceptRoot = stemConceptTree.get(ci.getConceptID());
-			List<StemConcept> stemConceptList = inflateStemTree(stemConceptRoot);
+			List<StemConcept> stemConceptList = ApplicationLogic.getStemConceptList(stemConceptRoot);
 
 			// For each stem, create an new occurrence
 			for (StemConcept stem : stemConceptList) {
@@ -85,30 +85,4 @@ class DBStemInConceptsLoader {
 
 		return soMap;
 	}
-	
-	/**
-	 * Serialize stem concept tree into a single flat list of stem concepts.
-	 * 
-	 * @param stem
-	 *        the stem node
-	 * 
-	 * @return
-	 *         a flat list of stem concepts
-	 */
-	private List<StemConcept> inflateStemTree(StemConcept stem) {
-
-		List<StemConcept> flatList = new ArrayList<>();
-
-		if (stem != null) {
-
-			flatList.add(stem);
-
-			for (StemConcept childStem : stem.getChildren()) {
-				flatList.addAll(inflateStemTree(childStem));
-			}
-		}
-
-		return flatList;
-	}
-	
 }

@@ -12,6 +12,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 
@@ -168,32 +169,7 @@ public class StemConceptTable extends JTable {
 	 */
 	public void setStemTree(StemConcept stemTree) {
 
-		this.stemConcepts = inflateStemTree(stemTree);
+		this.stemConcepts = ApplicationLogic.getStemConceptList(stemTree);
 		initModel();
-	}
-
-	/**
-	 * Serialize stem concept tree into a single flat list of stem concepts.
-	 * 
-	 * @param stem
-	 *        the stem node
-	 *        
-	 * @return
-	 *         a flat list of stem concepts
-	 */
-	private List<StemConcept> inflateStemTree(StemConcept stem) {
-
-		List<StemConcept> flatList = new ArrayList<>();
-
-		if (stem != null) {
-
-			flatList.add(stem);
-
-			for (StemConcept childStem : stem.getChildren()) {
-				flatList.addAll(inflateStemTree(childStem));
-			}
-		}
-
-		return flatList;
 	}
 }

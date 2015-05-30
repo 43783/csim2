@@ -5,7 +5,6 @@
 package ch.hesge.csim2.core.logic;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ import ch.hesge.csim2.core.dao.StemMethodDao;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.persistence.PersistanceUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
@@ -30,6 +30,161 @@ import ch.hesge.csim2.core.utils.ObjectSorter;
 class StemLogic {
 
 	/**
+	 * Retrieve a hierarchy of stem concepts defined for a project.
+	 * 
+	 * More specifically allows one stem hierarchy to be retrieved for a
+	 * specific concept. So entries are of the form (conceptId, root of
+	 * StemConcept tree).
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return
+	 *         the map of (conceptId, StemConcept)
+	 */
+	public static Map<Integer, StemConcept> getStemConceptTree(Project project) {
+
+		Map<Integer, StemConcept> stemConceptTree = new HashMap<>();
+
+		// First build a stem map classified by concept
+		Map<Integer, StemConcept> stemConceptMap = new HashMap<>();
+		for (StemConcept stem : StemConceptDao.findByProject(project)) {
+			stemConceptMap.put(stem.getKeyId(), stem);
+		}
+
+		// Loop over all stems
+		for (StemConcept stem : stemConceptMap.values()) {
+
+			// If stem has a parent, just update stem hierarchy
+			if (stemConceptMap.containsKey(stem.getParentId())) {
+
+				StemConcept parent = stemConceptMap.get(stem.getParentId());;
+
+				if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+					stemConceptTree.put(stem.getConceptId(), stem);
+				}
+				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+					parent.getParts().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getParts());
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+					parent.getAttributes().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getAttributes());
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
+					parent.getParts().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getParts());
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+					parent.getAttributeIdentifiers().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getAttributeIdentifiers());
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
+					parent.getParts().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getParts());
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_NAME_FULL) {
+					parent.getClasses().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getClasses());
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
+					parent.getParts().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getParts());
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
+					parent.getClassIdentifiers().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getClassIdentifiers());
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
+					parent.getParts().add(stem);
+					ObjectSorter.sortStemConcepts(parent.getParts());
+				}
+			}
+		}
+
+		return stemConceptTree;
+	}
+
+	/**
+	 * Serialize stem concept tree into a single flat list of stem concepts.
+	 * 
+	 * @param rootStem
+	 *        the root stem of a stem tree
+	 * 
+	 * @return
+	 *         a flat list of stem concepts
+	 */
+	public static List<StemConcept> getStemConceptList(StemConcept rootStem) {
+
+		List<StemConcept> flatList = new ArrayList<>();
+
+		if (rootStem != null) {
+
+			flatList.add(rootStem);
+			flatList.addAll(rootStem.getParts());
+
+			for (StemConcept attrStem : rootStem.getAttributes()) {
+
+				flatList.add(attrStem);
+				flatList.addAll(attrStem.getParts());
+
+				for (StemConcept identifierStem : attrStem.getAttributeIdentifiers()) {
+					flatList.add(identifierStem);
+					flatList.addAll(identifierStem.getParts());
+				}
+			}
+
+			for (StemConcept classStem : rootStem.getAttributes()) {
+
+				flatList.add(classStem);
+				flatList.addAll(classStem.getParts());
+
+				for (StemConcept identifierStem : classStem.getClassIdentifiers()) {
+					flatList.add(identifierStem);
+					flatList.addAll(identifierStem.getParts());
+				}
+			}
+		}
+
+		return flatList;
+	}
+
+	/**
+	 * Retrieve a map of all StemConcepts in project, classified by term.
+	 * Each entry will be of the form (term, List<StemConcept>).
+	 * 
+	 * @param project
+	 *        the project owning stems
+	 * 
+	 * @return
+	 *         a map of stems
+	 */
+	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
+
+		Map<String, List<StemConcept>> stemMap = new HashMap<>();
+
+		Map<Integer, StemConcept> stemTreeMap = ApplicationLogic.getStemConceptTree(project);
+
+		// Populate map
+		for (StemConcept rootStem : stemTreeMap.values()) {
+
+			// Get all stem is hierarchy
+			List<StemConcept> stems = ApplicationLogic.getStemConceptList(rootStem);
+
+			for (StemConcept stem : stems) {
+
+				if (!stemMap.containsKey(stem.getTerm())) {
+					stemMap.put(stem.getTerm(), new ArrayList<>());
+				}
+
+				stemMap.get(stem.getTerm()).add(stem);
+			}
+		}
+
+		return stemMap;
+	}
+
+	/**
 	 * Retrieve all stem methods associated to a project.
 	 * 
 	 * @param project
@@ -40,42 +195,6 @@ class StemLogic {
 	 */
 	public static List<StemMethod> getStemMethods(Project project) {
 		return StemMethodDao.findByProject(project);
-	}
-
-	/**
-	 * Retrieve all stem concepts associated to a project.
-	 * 
-	 * @param project
-	 *        the project owning stems
-	 * 
-	 * @return
-	 *         a list of stem
-	 */
-	public static List<StemConcept> getStemConcepts(Project project) {
-		return StemConceptDao.findByProject(project);
-	}
-
-	/**
-	 * Retrieve all stem concepts owned by a project
-	 * as a (stemId, StemConcept) map.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         a map of stem concept
-	 */
-	public static Map<Integer, StemConcept> getStemConceptMap(Project project) {
-
-		Map<Integer, StemConcept> stemConceptMap = new HashMap<>();
-		List<StemConcept> stemConcepts = ApplicationLogic.getStemConcepts(project);
-
-		// Populate the stem concept map
-		for (StemConcept stemConcept : stemConcepts) {
-			stemConceptMap.put(stemConcept.getKeyId(), stemConcept);
-		}
-
-		return stemConceptMap;
 	}
 
 	/**
@@ -99,51 +218,6 @@ class StemLogic {
 		}
 
 		return stemMethodMap;
-	}
-
-	/**
-	 * Retrieve a hierarchy of stem concepts defined for a project.
-	 * 
-	 * More specifically allows one stem hierarchy to be retrieved for a
-	 * specific concept. So entries are of the form (conceptId, root of
-	 * StemConcept tree).
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         the map of (conceptId, StemConcept)
-	 */
-	public static Map<Integer, StemConcept> getStemConceptTree(Project project) {
-
-		Map<Integer, StemConcept> stemConceptTree = new HashMap<>();
-		Map<Integer, StemConcept> stemConceptMap = ApplicationLogic.getStemConceptMap(project);
-
-		// SourceClass sorter
-		Comparator<StemConcept> comparator = new Comparator<StemConcept>() {
-			@Override
-			public int compare(StemConcept s1, StemConcept s2) {
-				if (s1.getStemType().getValue() == s2.getStemType().getValue())
-					return s1.getTerm().compareTo(s2.getTerm());
-				return s1.getStemType().getValue() - s2.getStemType().getValue();
-			}
-		};
-
-		for (StemConcept stemConcept : stemConceptMap.values()) {
-
-			// If stem has a parent, just update stem hierarchy
-			if (stemConceptMap.containsKey(stemConcept.getParentId())) {
-				StemConcept parent = stemConceptMap.get(stemConcept.getParentId());
-				parent.getChildren().add(stemConcept);
-				parent.getChildren().sort(comparator);
-			}
-			else {
-				// Otherwise it is a root stem
-				stemConceptTree.put(stemConcept.getConceptId(), stemConcept);
-			}
-		}
-
-		return stemConceptTree;
 	}
 
 	/**
@@ -179,33 +253,6 @@ class StemLogic {
 		}
 
 		return stemMethodTree;
-	}
-
-	/**
-	 * Retrieve a map of all StemConcepts in project, classified by term.
-	 * Each entry will be of the form (term, List<StemConcept>).
-	 * 
-	 * @param project
-	 *        the project owning stems
-	 * 
-	 * @return
-	 *         a map of stems
-	 */
-	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
-
-		Map<String, List<StemConcept>> stemMap = new HashMap<>();
-
-		// Populate map
-		for (StemConcept stem : ApplicationLogic.getStemConcepts(project)) {
-
-			if (!stemMap.containsKey(stem.getTerm())) {
-				stemMap.put(stem.getTerm(), new ArrayList<>());
-			}
-
-			stemMap.get(stem.getTerm()).add(stem);
-		}
-
-		return stemMap;
 	}
 
 	/**

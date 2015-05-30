@@ -624,92 +624,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all stem concepts associated to a project.
-	 * 
-	 * @param project
-	 *        the project owning stems
-	 * 
-	 * @return
-	 *         a list of stem
-	 */
-	public static List<StemConcept> getStemConcepts(Project project) {
-
-		String cacheKey = "getStemConcepts_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConcepts(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
-	 * Retrieve all stem concepts owned by a project
-	 * as a (stemId, StemConcept) map.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         a map of stem concept
-	 */
-	public static Map<Integer, StemConcept> getStemConceptMap(Project project) {
-
-		String cacheKey = "getStemConceptMap_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptMap(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
-	 * Retrieve a hierarchy of stem concepts defined for a project.
-	 * 
-	 * More specifically allows one stem hierarchy to be retrieved for a
-	 * specific concept. So entries are of the form (conceptId, root of
-	 * StemConcept tree).
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         the map of (conceptId, StemConcept)
-	 */
-	public static Map<Integer, StemConcept> getStemConceptTree(Project project) {
-
-		String cacheKey = "getStemConceptTree_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptTree(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
-	 * Retrieve a map of all StemConcepts in project, classified by term. Each
-	 * entry will then contains a couple (term, List<StemConcept>).
-	 * 
-	 * @param project
-	 *        the project owning stems
-	 * 
-	 * @return
-	 *         a map of stems
-	 */
-	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
-
-		String cacheKey = "getStemConceptsByTermMap_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptByTermMap(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
 	 * Retrieve all stem methods associated to a project.
 	 * 
 	 * @param project
@@ -796,6 +710,78 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Retrieve a hierarchy of stem concepts defined for a project.
+	 * 
+	 * More specifically allows one stem hierarchy to be retrieved for a
+	 * specific concept. So entries are of the form (conceptId, root of
+	 * StemConcept tree).
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return
+	 *         the map of (conceptId, StemConcept)
+	 */
+	public static Map<Integer, StemConcept> getStemConceptTree(Project project) {
+
+		String cacheKey = "getStemConceptTree_" + project.getKeyId();
+
+		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
+			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptTree(project));
+		}
+
+		return ApplicationLogic.APPCACHE.get(cacheKey);
+	}
+
+	/**
+	 * Serialize stem concept tree into a single flat list of stem concepts.
+	 * 
+	 * @param rootStem
+	 *        the root stem of a stem tree
+	 * 
+	 * @return
+	 *         a flat list of stem concepts
+	 */
+	public static List<StemConcept> getStemConceptList(StemConcept rootStem) {
+
+		List<StemConcept> stemList = null;
+		
+		if (rootStem != null) {
+			
+			String cacheKey = "getStemConceptList_" + rootStem.getKeyId();
+
+			if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
+				ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptList(rootStem));
+			}
+			
+			stemList = ApplicationLogic.APPCACHE.get(cacheKey);
+		}
+
+		return stemList;
+	}
+
+	/**
+	 * Retrieve a map of all StemConcepts in project, classified by term. Each
+	 * entry will then contains a couple (term, List<StemConcept>).
+	 * 
+	 * @param project
+	 *        the project owning stems
+	 * 
+	 * @return
+	 *         a map of stems
+	 */
+	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
+
+		String cacheKey = "getStemConceptsByTermMap_" + project.getKeyId();
+
+		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
+			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptByTermMap(project));
+		}
+
+		return ApplicationLogic.APPCACHE.get(cacheKey);
+	}
+
+	/**
 	 * Retrieve all traces owned by a scenario.
 	 * 
 	 * @param scenario
@@ -845,7 +831,8 @@ public class ApplicationLogic {
 	 * @param concepts
 	 *        a subset of timerSeries concepts
 	 * @return
-	 *         a new time series instance with segmented trace with only history of concepts passed in argument
+	 *         a new time series instance with segmented trace with only history
+	 *         of concepts passed in argument
 	 */
 	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
 		return TimeSeriesLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, concepts);
