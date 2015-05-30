@@ -744,7 +744,7 @@ public class ApplicationLogic {
 	 */
 	public static List<StemConcept> getStemConceptList(StemConcept rootStem) {
 
-		List<StemConcept> stemList = null;
+		List<StemConcept> stemList = null; 
 		
 		if (rootStem != null) {
 			
