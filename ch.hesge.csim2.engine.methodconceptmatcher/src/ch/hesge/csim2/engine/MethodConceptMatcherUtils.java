@@ -16,9 +16,97 @@ import org.apache.commons.math3.linear.RealVector;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 
 public class MethodConceptMatcherUtils {
+
+	/**
+	 * 
+	 * 					|						|		
+	 * 					|	0.3		3		0	|		T1		
+	 * 		WEIGHT	=	|	1.5		0		7	|		T2		terms
+	 * 					|	0		0		8	|		T3
+	 * 					|	0		20		5	|		T4
+	 * 					|						|
+	 * 
+	 * 						C1		C2		C3		--> concepts
+	 * 
+	 * @param terms
+	 * @param concepts
+	 * @param stems
+	 * @return
+	 */
+	
+	public static int getConceptNamePartCount(StemConcept stemRoot) {
+		
+		int partCount = 0;
+		
+		for (StemConcept stem : stemRoot.getChildren())  {
+			if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+				partCount++;
+			}
+		}
+		
+		return partCount;
+	}
+	
+	public static int getConceptAttributePartCount(StemConcept stemRoot) {
+		
+		int partCount = 0;
+		
+		for (StemConcept stem : stemRoot.getChildren())  {
+			if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+				partCount++;
+			}
+		}
+		
+		return partCount;
+	}
+
+	public static int getConceptAttributeCount(Concept concept) {
+		return concept.getAttributes().size();
+	}
+
+	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap, Map<Integer, StemConcept> stemTreeByConceptMap) {
+
+		RealMatrix weightMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
+		
+		// Loop over all terms
+		for (int i = 0; i < terms.size(); i++) {
+			
+			// Retrieve current term
+			String currentTerm = terms.get(i);
+			
+			// Loop over all concepts referring term
+			for (StemConcept stem : stemByTermMap.get(currentTerm)) {
+				
+				// Retrieve concept and index
+				Concept concept = conceptMap.get(stem.getConceptId());
+				int conceptIndex = concepts.indexOf(concept);
+				
+				double conceptWeight = 0d;
+				
+				if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+					conceptWeight = 1d;
+				}
+				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+					double partCount = getConceptNamePartCount(stem);
+					conceptWeight = 0.9d / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+					conceptWeight = 0.8d / getConceptAttributeCount(concept);
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
+					conceptWeight = 0.7d / getConceptAttributePartCount(stem);
+				}
+				
+				weightMatrix.addToEntry(i, conceptIndex, conceptWeight);
+			}
+		}
+
+		return weightMatrix;
+	}
 
 	/**
 	 * <pre>
