@@ -445,8 +445,8 @@ public class MainView extends JFrame implements ActionListener {
 			public void run() {
 
 				// Retrieve required data from cache
-				List<Concept> concepts = ApplicationLogic.getConceptsWithDependencies(project);
-				Map<Integer, StemConcept> stemTree = ApplicationLogic.getStemConceptTree(project);
+				List<Concept> concepts = ApplicationLogic.getConcepts(project);
+				Map<Integer, StemConcept> stemTree = ApplicationLogic.getStemConceptTreeMap(project);
 
 				// Create the view
 				showView(new StemConceptsView(concepts, stemTree));

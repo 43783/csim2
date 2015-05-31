@@ -30,6 +30,25 @@ import ch.hesge.csim2.core.utils.ObjectSorter;
 class StemLogic {
 
 	/**
+	 * Retrieve a map of all stem concepts classified by concept.
+	 * 
+	 * @param project
+	 *        the owner
+	 * @return
+	 *         the map of (conceptId, StemConcept)
+	 */
+	public static Map<Integer, StemConcept> getStemConceptMap(Project project) {
+
+		Map<Integer, StemConcept> stemMap = new HashMap<>();
+
+		for (StemConcept stem : StemConceptDao.findByProject(project)) {
+			stemMap.put(stem.getKeyId(), stem);
+		}
+
+		return stemMap;
+	}
+
+	/**
 	 * Retrieve a hierarchy of stem concepts defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a
@@ -38,29 +57,25 @@ class StemLogic {
 	 * 
 	 * @param project
 	 *        the owner
-	 * 
 	 * @return
 	 *         the map of (conceptId, StemConcept)
 	 */
-	public static Map<Integer, StemConcept> getStemConceptTree(Project project) {
+	public static Map<Integer, StemConcept> getStemConceptTreeMap(Project project) {
 
 		Map<Integer, StemConcept> stemConceptTree = new HashMap<>();
 
-		// First build a stem map classified by concept
-		Map<Integer, StemConcept> stemConceptMap = new HashMap<>();
-		for (StemConcept stem : StemConceptDao.findByProject(project)) {
-			stemConceptMap.put(stem.getKeyId(), stem);
-		}
+		// First retrieve all stem concepts classified by concept 
+		Map<Integer, StemConcept> stemMap = ApplicationLogic.getStemConceptMap(project);
 
 		// Loop over all stems
-		for (StemConcept stem : stemConceptMap.values()) {
+		for (StemConcept stem : stemMap.values()) {
 
 			// If stem has a parent, just update stem hierarchy
-			if (stemConceptMap.containsKey(stem.getParentId())) {
+			if (stemMap.containsKey(stem.getParentId())) {
 
-				StemConcept parent = stemConceptMap.get(stem.getParentId());;
+				StemConcept parent = stemMap.get(stem.getParentId());
 
-				if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+				if (parent.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
 					stemConceptTree.put(stem.getConceptId(), stem);
 				}
 				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
@@ -134,7 +149,7 @@ class StemLogic {
 				}
 			}
 
-			for (StemConcept classStem : rootStem.getAttributes()) {
+			for (StemConcept classStem : rootStem.getClasses()) {
 
 				flatList.add(classStem);
 				flatList.addAll(classStem.getParts());
@@ -163,7 +178,7 @@ class StemLogic {
 
 		Map<String, List<StemConcept>> stemMap = new HashMap<>();
 
-		Map<Integer, StemConcept> stemTreeMap = ApplicationLogic.getStemConceptTree(project);
+		Map<Integer, StemConcept> stemTreeMap = ApplicationLogic.getStemConceptTreeMap(project);
 
 		// Populate map
 		for (StemConcept rootStem : stemTreeMap.values()) {

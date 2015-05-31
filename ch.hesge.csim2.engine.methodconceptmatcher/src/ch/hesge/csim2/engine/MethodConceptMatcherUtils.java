@@ -38,7 +38,7 @@ public class MethodConceptMatcherUtils {
 	 * @return
 	 */
 
-	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap, Map<Integer, StemConcept> stemTreeByConceptMap) {
+	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap) {
 
 		RealMatrix weightMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
 		
@@ -48,27 +48,31 @@ public class MethodConceptMatcherUtils {
 			// Retrieve current term
 			String currentTerm = terms.get(i);
 			
-			// Loop over all concepts referring term
+			// Loop over all concepts referring a single term
 			for (StemConcept stem : stemByTermMap.get(currentTerm)) {
 				
-				// Retrieve concept and index
+				// Retrieve concept and its index
 				Concept concept = conceptMap.get(stem.getConceptId());
 				int conceptIndex = concepts.indexOf(concept);
 				
 				double conceptWeight = 0d;
 				
-				if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
-					conceptWeight = 1d;
+//				if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+//					conceptWeight = 1.0;
+//				}
+				/*else*/ if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+					int partSize = stem.getParts().isEmpty() ? 1 : stem.getParts().size();
+					conceptWeight = 0.9 / (partSize == 0 ? 1 : partSize);
 				}
-				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-					conceptWeight = 0.9d / stem.getParts().size();
-				}
-				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
-					conceptWeight = 0.8d / concept.getAttributes().size();
-				}
-				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
-					conceptWeight = 0.7d / concept.getAttributes().size() / stem.getParts().size();
-				}
+//				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+//					int attributeSize = stem.getAttributes().isEmpty() ? 1 : stem.getAttributes().size();
+//					conceptWeight = 0.08 / attributeSize;
+//				}
+//				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
+//					int attributeSize = stem.getAttributes().isEmpty() ? 1 : stem.getAttributes().size();
+//					int partSize = stem.getParts().isEmpty() ? 1 : stem.getParts().size();
+//					conceptWeight = 0.001 /attributeSize / partSize;
+//				}
 				
 				weightMatrix.addToEntry(i, conceptIndex, conceptWeight);
 			}

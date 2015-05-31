@@ -62,13 +62,13 @@ class DBStemInConceptsLoader {
 		//in other words if a set of stem belong to the same concept they reference the same ConceptIdentifier
 
 		HashMap<String, ArrayList<StemOccurrence>> soMap = new HashMap<>();
-		Map<Integer, StemConcept> stemConceptTree = ApplicationLogic.getStemConceptTree(project);
+		Map<Integer, StemConcept> stemConceptMap = ApplicationLogic.getStemConceptMap(project);
 		
 		// Scan all identifier
 		for (ConceptIdentifier ci : ciMap.values()) {
 
 			// Retrieve all stems associated to the concept			
-			StemConcept stemConceptRoot = stemConceptTree.get(ci.getConceptID());
+			StemConcept stemConceptRoot = stemConceptMap.get(ci.getConceptID());
 			List<StemConcept> stemConceptList = ApplicationLogic.getStemConceptList(stemConceptRoot);
 
 			// For each stem, create an new occurrence

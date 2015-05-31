@@ -353,60 +353,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all concepts owned by an ontology with the following
-	 * dependencies:
-	 * 
-	 * - its concept attributes
-	 * - its concept classes
-	 * - its links
-	 * - its superconcept
-	 * - its children concept
-	 * 
-	 * @param ontology
-	 *        the owner
-	 * 
-	 * @return
-	 *         the list of concept
-	 */
-	public static List<Concept> getConceptsWithDependencies(Ontology ontology) {
-
-		String cacheKey = "getConceptsWithDependenciesByOntology_" + ontology.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getConceptsWithDependencies(ontology));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
-	 * Retrieve all concepts owned by a project with the following
-	 * dependencies:
-	 * 
-	 * - its concept attributes
-	 * - its concept classes
-	 * - its links
-	 * - its superconcept
-	 * - its children concept
-	 * 
-	 * @param ontology
-	 *        the owner
-	 * 
-	 * @return
-	 *         the list of concept
-	 */
-	public static List<Concept> getConceptsWithDependencies(Project project) {
-
-		String cacheKey = "getConceptsWithDependenciesByProject_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getConceptsWithDependencies(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
 	 * Retrieve a map of concepts owned by an ontology
 	 * with each entries of the form (keyId, Concept) map.
 	 * 
@@ -710,6 +656,25 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Retrieve a map of all stem concepts classified by concept.
+	 * 
+	 * @param project
+	 *        the owner
+	 * @return
+	 *         the map of (conceptId, StemConcept)
+	 */
+	public static Map<Integer, StemConcept> getStemConceptMap(Project project) {
+
+		String cacheKey = "getStemConceptMap_" + project.getKeyId();
+
+		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
+			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptMap(project));
+		}
+
+		return ApplicationLogic.APPCACHE.get(cacheKey);
+	}
+	
+	/**
 	 * Retrieve a hierarchy of stem concepts defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a
@@ -722,12 +687,12 @@ public class ApplicationLogic {
 	 * @return
 	 *         the map of (conceptId, StemConcept)
 	 */
-	public static Map<Integer, StemConcept> getStemConceptTree(Project project) {
+	public static Map<Integer, StemConcept> getStemConceptTreeMap(Project project) {
 
 		String cacheKey = "getStemConceptTree_" + project.getKeyId();
 
 		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptTree(project));
+			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptTreeMap(project));
 		}
 
 		return ApplicationLogic.APPCACHE.get(cacheKey);

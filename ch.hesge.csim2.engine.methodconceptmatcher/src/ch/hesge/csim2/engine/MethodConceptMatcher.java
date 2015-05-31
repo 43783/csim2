@@ -211,7 +211,7 @@ public class MethodConceptMatcher implements IEngine {
 
 			// Load ontology concepts
 			ontology.getConcepts().clear();
-			ontology.getConcepts().addAll(ApplicationLogic.getConceptsWithDependencies(ontology));
+			ontology.getConcepts().addAll(ApplicationLogic.getConcepts(ontology));
 
 			// Retrieve method/concept matchings
 			List<RddaMethodConceptMatch> rddaMatchings = new TermVectorBuilder().computeVectors(project, ontology);
@@ -318,20 +318,22 @@ public class MethodConceptMatcher implements IEngine {
 
 		Console.writeLine("loading method & concept information...");
 
-		// Load concepts, methods and stems into maps
+		// Load concepts and stems
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
-		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
 		Map<String, List<StemConcept>> stemConceptByTermMap = ApplicationLogic.getStemConceptByTermMap(project);
+
+		// Load methods and stems
+		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
 		Map<String, List<StemMethod>> stemMethodByTermMap = ApplicationLogic.getStemMethodByTermMap(project);
 
-		Map<Integer, StemConcept> stemTreeByConceptMap = ApplicationLogic.getStemConceptTree(project);
+		// Convert concept and term maps into list
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptByTermMap.keySet());
 
 		Console.writeLine("analyzing potential matching elements...");
 
 		// Retrieve the term/concept matrix (row = terms, col = concepts, cell = weight)
-		RealMatrix weightMatrix = MethodConceptMatcherUtils.getWeightMatrix(terms, concepts, conceptMap, stemConceptByTermMap, stemTreeByConceptMap);
+		RealMatrix weightMatrix = MethodConceptMatcherUtils.getWeightMatrix(terms, concepts, conceptMap, stemConceptByTermMap);
 
 		// Calculate on term vectors for each method
 		Map<Integer, RealVector> methodTermVectorMap = MethodConceptMatcherUtils.getMethodTermVectorMap(terms, methodMap, stemMethodByTermMap);

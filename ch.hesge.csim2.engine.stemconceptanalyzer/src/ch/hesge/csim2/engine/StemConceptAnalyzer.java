@@ -182,7 +182,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 			// Load all ontology concepts
 			Console.writeLine("loading ontology concepts...");
-			List<Concept> conceptList = ApplicationLogic.getConceptsWithDependencies(ontology);
+			List<Concept> conceptList = ApplicationLogic.getConcepts(ontology);
 
 			Console.writeLine("scanning all concepts...");
 
