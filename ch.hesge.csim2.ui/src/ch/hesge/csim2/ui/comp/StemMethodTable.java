@@ -3,7 +3,6 @@ package ch.hesge.csim2.ui.comp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -12,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
 
@@ -35,7 +35,13 @@ public class StemMethodTable extends JTable {
 	public StemMethodTable(StemMethod stemTree) {
 
 		this.stemTree = stemTree;
-		this.stemMethods = inflateStemTree(stemTree);
+		
+		if (stemTree != null) {
+			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+		}
+		else {
+			this.stemMethods = null;
+		}
 
 		initComponent();
 	}
@@ -156,9 +162,9 @@ public class StemMethodTable extends JTable {
 					}
 				}
 				else if (col == 1) {
-					
+
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					
+
 					if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_TYPE_FULL) {
 						cellRenderer.setText(value.toString());
 					}
@@ -175,8 +181,8 @@ public class StemMethodTable extends JTable {
 	/**
 	 * Return the root of the stem this table is displaying.
 	 * 
-	 * @return 
-	 *        the root of stem method hierarchy
+	 * @return
+	 *         the root of stem method hierarchy
 	 */
 	public StemMethod getStemTree() {
 		return stemTree;
@@ -190,32 +196,14 @@ public class StemMethodTable extends JTable {
 	 */
 	public void setStemTree(StemMethod stemTree) {
 		this.stemTree = stemTree;
-		this.stemMethods = inflateStemTree(stemTree);
-		initModel();
-	}
-
-	/**
-	 * Serialize stem method tree into a single flat list of stem methods.
-	 * 
-	 * @param stem
-	 *        the stem node
-	 * 
-	 * @return
-	 *         a flat list of stem concepts
-	 */
-	private List<StemMethod> inflateStemTree(StemMethod stem) {
-
-		List<StemMethod> flatList = new ArrayList<>();
-
-		if (stem != null) {
-
-			flatList.add(stem);
-
-			for (StemMethod childStem : stem.getChildren()) {
-				flatList.addAll(inflateStemTree(childStem));
-			}
+		
+		if (stemTree != null) {
+			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+		}
+		else {
+			this.stemMethods = null;
 		}
 
-		return flatList;
+		initModel();
 	}
 }

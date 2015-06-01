@@ -11,7 +11,6 @@ import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.StemConcept;
-import ch.hesge.csim2.core.model.StemMethod;
 
 class DBStemInConceptsLoader {
 
@@ -62,14 +61,14 @@ class DBStemInConceptsLoader {
 		//in other words if a set of stem belong to the same concept they reference the same ConceptIdentifier
 
 		HashMap<String, ArrayList<StemOccurrence>> soMap = new HashMap<>();
-		Map<Integer, StemConcept> stemConceptMap = ApplicationLogic.getStemConceptMap(project);
+		Map<Integer, StemConcept> stemConceptMap = ApplicationLogic.getStemConceptTreeMap(project);
 		
 		// Scan all identifier
 		for (ConceptIdentifier ci : ciMap.values()) {
 
 			// Retrieve all stems associated to the concept			
 			StemConcept stemConceptRoot = stemConceptMap.get(ci.getConceptID());
-			List<StemConcept> stemConceptList = ApplicationLogic.getStemConceptList(stemConceptRoot);
+			List<StemConcept> stemConceptList = ApplicationLogic.inflateStemConcepts(stemConceptRoot);
 
 			// For each stem, create an new occurrence
 			for (StemConcept stem : stemConceptList) {

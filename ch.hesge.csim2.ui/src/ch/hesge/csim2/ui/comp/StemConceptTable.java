@@ -3,7 +3,6 @@ package ch.hesge.csim2.ui.comp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -145,9 +144,9 @@ public class StemConceptTable extends JTable {
 					}
 				}
 				else if (col == 1) {
-					
+
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					
+
 					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
 						cellRenderer.setText(value.toString());
 					}
@@ -169,7 +168,13 @@ public class StemConceptTable extends JTable {
 	 */
 	public void setStemTree(StemConcept stemTree) {
 
-		this.stemConcepts = ApplicationLogic.getStemConceptList(stemTree);
+		if (stemTree != null) {
+			this.stemConcepts = ApplicationLogic.inflateStemConcepts(stemTree);
+		}
+		else {
+			this.stemConcepts = null;
+		}
+		
 		initModel();
 	}
 }

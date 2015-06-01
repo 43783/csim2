@@ -26,13 +26,21 @@ public class StemMethod {
 	private double weight;
 	private StemMethodType stemType;
 	private SourceReferenceOrigin refOrigin;
-	private List<StemMethod> children;
+	private List<StemMethod> parts;
+	private List<StemMethod> parameters;
+	private List<StemMethod> parameterTypes;
+	private List<StemMethod> references;
+	private List<StemMethod> referenceTypes;
 
 	/**
 	 * Default constructor
 	 */
 	public StemMethod() {
-		children = new ArrayList<>();
+		parts = new ArrayList<>();
+		parameters = new ArrayList<>();
+		parameterTypes = new ArrayList<>();
+		references = new ArrayList<>();
+		referenceTypes = new ArrayList<>();
 	}
 
 	/**
@@ -112,8 +120,23 @@ public class StemMethod {
 		this.methodId = methodId;
 	}
 
-	public List<StemMethod> getChildren() {
-		return children;
+	public List<StemMethod> getParts() {
+		return parts;
 	}
 
+	public List<StemMethod> getParameters() {
+		return parameters;
+	}
+
+	public List<StemMethod> getParameterTypes() {
+		return parameterTypes;
+	}
+
+	public List<StemMethod> getReferences() {
+		return references;
+	}
+
+	public List<StemMethod> getReferenceTypes() {
+		return referenceTypes;
+	}
 }
