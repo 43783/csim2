@@ -66,7 +66,7 @@ public class MethodConceptMatcher implements IEngine {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.6";
+		return "1.0.7";
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class MethodConceptMatcher implements IEngine {
 		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
 		Map<String, List<StemMethod>> stemMethodByTermMap = ApplicationLogic.getStemMethodByTermMap(project);
 
-		// Convert concept and term maps into list
+		// Serialize concepts / terms 
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptByTermMap.keySet());
 
@@ -354,11 +354,15 @@ public class MethodConceptMatcher implements IEngine {
 
 					// Calculate similarity between method and concept vectors
 					// => computed through vector component sum
-					double similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
+					//double similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
+					double similarity = conceptTermVector.cosine(methodTermVector);
 
 					// Register result within the matchMap
 					if (similarity > 0) {
 
+						// Limit similarity amplitude
+						similarity = Math.min(1d, similarity);
+						
 						MethodConceptMatch match = new MethodConceptMatch();
 
 						match.setProjectId(project.getKeyId());

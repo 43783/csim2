@@ -33,9 +33,13 @@ public class MethodConceptMatcherUtils {
 	 * 						C1		C2		C3		--> concepts
 	 * 
 	 * @param terms
+	 *        the terms used to compute weights
 	 * @param concepts
+	 *        the concepts used to compute weights
 	 * @param stems
+	 *        the stems allowing links between terms and concepts
 	 * @return
+	 *         a terms/concepts weight matrix
 	 */
 
 	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap) {
@@ -48,32 +52,60 @@ public class MethodConceptMatcherUtils {
 			// Retrieve current term
 			String currentTerm = terms.get(i);
 			
-			// Loop over all concepts referring a single term
+			// Loop over all stem concepts referring a single term
 			for (StemConcept stem : stemByTermMap.get(currentTerm)) {
 				
-				// Retrieve concept and its index
+				// Retrieve stem parent
+				StemConcept parent = stem.getParent(); 
+
+				// Retrieve concept associated to the stem
 				Concept concept = conceptMap.get(stem.getConceptId());
-				int conceptIndex = concepts.indexOf(concept);
-				
+								
 				double conceptWeight = 0d;
 				
-//				if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
-//					conceptWeight = 1.0;
-//				}
-				/*else*/ if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-					int partSize = stem.getParts().isEmpty() ? 1 : stem.getParts().size();
-					conceptWeight = 0.9 / (partSize == 0 ? 1 : partSize);
+				// Evaluate for current term, the stem matching weight
+				if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
+					conceptWeight = 1.0;
 				}
-//				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
-//					int attributeSize = stem.getAttributes().isEmpty() ? 1 : stem.getAttributes().size();
-//					conceptWeight = 0.08 / attributeSize;
-//				}
-//				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
-//					int attributeSize = stem.getAttributes().isEmpty() ? 1 : stem.getAttributes().size();
-//					int partSize = stem.getParts().isEmpty() ? 1 : stem.getParts().size();
-//					conceptWeight = 0.001 /attributeSize / partSize;
-//				}
-				
+				else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
+					int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 1.0 / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+					int attrCount = parent.getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getAttributes().size();
+					conceptWeight = 0.9 / attrCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
+					int attrCount = parent.getParent().getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getParent().getAttributes().size();
+					int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.9 / attrCount / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_NAME_FULL) {
+					conceptWeight = 0.8;
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
+					int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.8 / partSize;
+				}
+				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+					conceptWeight = 0.7;
+				}
+				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+					int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.7 / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+					int attrCount = parent.getAttributes().isEmpty() ? 1 : parent.getAttributes().size();
+					conceptWeight = 0.6 / attrCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
+					int attrCount = parent.getAttributes().isEmpty() ? 1 : parent.getAttributes().size();
+					int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.6 / attrCount / partSize;
+				}
+
+				// Update matrix weight for concept
+				int conceptIndex = concepts.indexOf(concept);
 				weightMatrix.addToEntry(i, conceptIndex, conceptWeight);
 			}
 		}

@@ -44,7 +44,7 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class ApplicationLogic {
 
 	// Private static attributes
-	private static ApplicationCache<String, Object> APPCACHE = new ApplicationCache<>(50);
+	private static ApplicationCache<String, Object> APPCACHE = new ApplicationCache<>(1000);
 
 	public static final String USER_NAME_PROPERTY = "user-name";
 	public static final String USER_FOLDER_PROPERTY = "user-folder";

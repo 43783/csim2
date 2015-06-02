@@ -24,6 +24,7 @@ public class StemConcept {
 	private int conceptId;
 	private String term;
 	private StemConceptType stemType;
+	private StemConcept parent;
 	private List<StemConcept> parts;
 	private List<StemConcept> attributes;
 	private List<StemConcept> classes;
@@ -107,6 +108,14 @@ public class StemConcept {
 		this.conceptId = conceptId;
 	}
 	
+	public StemConcept getParent() {
+		return parent;
+	}
+
+	public void setParent(StemConcept parent) {
+		this.parent = parent;
+	}
+
 	public List<StemConcept> getParts() {
 		return parts;
 	}

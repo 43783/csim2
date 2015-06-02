@@ -31,12 +31,54 @@ import ch.hesge.csim2.core.utils.ObjectSorter;
 class StemLogic {
 
 	/**
+	 * <pre>
 	 * Retrieve a hierarchy of stem concepts defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a
 	 * specific concept.
 	 * 
+	 * For instance:
+	 * 
+	 * 		StemTree for a single concept:
+	 * 
+	 * 			CONCEPT_NAME_FULL
+	 * 
+	 * 				CONCEPT_NAME_PART
+	 * 				CONCEPT_NAME_PART
+	 * 
+	 * 				ATTRIBUTE_ONE_FULL
+	 * 
+	 * 					ATTRIBUTE_ONE_PART
+	 * 					ATTRIBUTE_ONE_PART
+	 * 
+	 * 					ATTRIBUTE_ONE_IDENTIFIER_FULL
+	 * 
+	 * 						ATTRIBUTE_ONE_IDENTIFIER_PART
+	 * 						ATTRIBUTE_ONE_IDENTIFIER_PART
+	 * 
+	 * 				ATTRIBUTE_TWO_NAME_FULL
+	 * 
+	 * 					ATTRIBUTE_TWO_NAME_PART
+	 * 					ATTRIBUTE_TWO_NAME_PART
+	 * 
+	 * 					ATTRIBUTE_TOW_IDENTIFIER_FULL
+	 * 
+	 * 						ATTRIBUTE_TWO_IDENTIFIER_PART
+	 * 						ATTRIBUTE_TWO_IDENTIFIER_PART
+	 * 
+	 * 				CLASS_NAME_FULL
+	 * 
+	 * 					CLASS_NAME_PART
+	 * 					CLASS_NAME_PART
+	 * 
+	 * 					CLASS_IDENTIFIER_FULL
+	 * 
+	 * 						CLASS_IDENTIFIER_PART
+	 * 						CLASS_IDENTIFIER_PART
+	 * 	
+	 * 
 	 * So entries are of the form (conceptId, root of StemConcept tree).
+	 * </pre>
 	 * 
 	 * @param project
 	 *        the owner
@@ -56,7 +98,9 @@ class StemLogic {
 		// Loop over all stems
 		for (StemConcept stem : stemMap.values()) {
 
-			StemConcept parent = stemMap.get(stem.getParentId());
+			// Retrieve stem parent
+			StemConcept parent = stemMap.get(stem.getParentId()); 
+			stem.setParent(parent);
 
 			if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
 				stemConceptTree.put(stem.getConceptId(), stem);

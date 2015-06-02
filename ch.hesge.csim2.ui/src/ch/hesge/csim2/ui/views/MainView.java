@@ -272,7 +272,7 @@ public class MainView extends JFrame implements ActionListener {
 		JPanel statusPanel = new JPanel();
 		statusPanel.setLayout(new BorderLayout(0, 0));
 		statusPanel.setBorder(new EmptyBorder(2, 10, 2, 10));
-		JLabel statusLabel = new JLabel("Copyright Â© 2010-2015, HEG Geneva, Switzerland. All rights reserved.");
+		JLabel statusLabel = new JLabel("Copyright © 2010-2015, HEG Geneva, Switzerland. All rights reserved.");
 		statusPanel.add(statusLabel);
 		getContentPane().add(statusPanel, BorderLayout.SOUTH);
 	}
