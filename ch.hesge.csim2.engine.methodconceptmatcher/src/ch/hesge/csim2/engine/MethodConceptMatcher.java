@@ -136,7 +136,7 @@ public class MethodConceptMatcher implements IEngine {
 				matchingAlgorithm = (String) context.getProperty("algo");
 			}
 			else {
-				matchingAlgorithm = "phd";
+				matchingAlgorithm = "tfidf1";
 			}
 		}
 		catch (Exception e) {
@@ -170,14 +170,17 @@ public class MethodConceptMatcher implements IEngine {
 			List<MethodConceptMatch> matchings = null;
 
 			// Compute method-concept matching
-			if (matchingAlgorithm.equals("phd")) {
-				matchings = computeMatchingWithPhd();
+			if (matchingAlgorithm.equals("tfidf1")) {
+				matchings = computeMatchingWithTfIdf1();
 			}
-			else if (matchingAlgorithm.equals("eha")) {
-				matchings = computeMatchingWithEha();
+			else if (matchingAlgorithm.equals("tfidf2")) {
+				matchings = computeMatchingWithTfIdf2();
 			}
-			else if (matchingAlgorithm.equals("eha2")) {
-				matchings = computeMatchingWithEha2();
+			else if (matchingAlgorithm.equals("norm")) {
+				matchings = computeMatchingWithNorm();
+			}
+			else if (matchingAlgorithm.equals("cos")) {
+				matchings = computeMatchingWithCosine();
 			}
 
 			for (MethodConceptMatch match : matchings) {
@@ -200,9 +203,9 @@ public class MethodConceptMatcher implements IEngine {
 	}
 
 	/**
-	 * Compute method-concept match through PHD algo.
+	 * Compute method-concept match through TF-IDF (phd).
 	 */
-	public List<MethodConceptMatch> computeMatchingWithPhd() {
+	public List<MethodConceptMatch> computeMatchingWithTfIdf1() {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
@@ -235,7 +238,7 @@ public class MethodConceptMatcher implements IEngine {
 
 	/**
 	 * <pre>
-	 * Compute method-concept match through EHA algo.
+	 * Compute method-concept match through TF-IDF (eha).
 	 * 
 	 * 	TF 	= term frequency
 	 * 		= relative term frequency within a concept
@@ -245,10 +248,9 @@ public class MethodConceptMatcher implements IEngine {
 	 * 
 	 * 	TF-IDF = relevance of a term within a concept.
 	 * 
-	 * 
 	 * </pre>
 	 */
-	public List<MethodConceptMatch> computeMatchingWithEha() {
+	public List<MethodConceptMatch> computeMatchingWithTfIdf2() {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
@@ -309,10 +311,9 @@ public class MethodConceptMatcher implements IEngine {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Compute method-concept match through concept information weight (eha).
 	 */
-	public List<MethodConceptMatch> computeMatchingWithEha2() {
+	public List<MethodConceptMatch> computeMatchingWithNorm() {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
@@ -353,16 +354,15 @@ public class MethodConceptMatcher implements IEngine {
 					RealVector conceptTermVector = weightMatrix.getColumnVector(i);
 
 					// Calculate similarity between method and concept vectors
-					// => computed through vector component sum
-					//double similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
-					double similarity = conceptTermVector.cosine(methodTermVector);
+					// => computed through sum of concept weight
+					double similarity = Math.min(1d, conceptTermVector.ebeMultiply(methodTermVector).getL1Norm());
 
 					// Register result within the matchMap
 					if (similarity > 0) {
 
 						// Limit similarity amplitude
 						similarity = Math.min(1d, similarity);
-						
+
 						MethodConceptMatch match = new MethodConceptMatch();
 
 						match.setProjectId(project.getKeyId());
@@ -379,4 +379,69 @@ public class MethodConceptMatcher implements IEngine {
 		return matchings;
 	}
 
+	/**
+	 * Compute method-concept match through concept information weight (eha).
+	 */
+	public List<MethodConceptMatch> computeMatchingWithCosine() {
+
+		List<MethodConceptMatch> matchings = new ArrayList<>();
+
+		Console.writeLine("loading method & concept information...");
+
+		// Load concepts and stems
+		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
+		Map<String, List<StemConcept>> stemConceptByTermMap = ApplicationLogic.getStemConceptByTermMap(project);
+
+		// Load methods and stems
+		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
+		Map<String, List<StemMethod>> stemMethodByTermMap = ApplicationLogic.getStemMethodByTermMap(project);
+
+		// Serialize concepts / terms 
+		List<Concept> concepts = new ArrayList<>(conceptMap.values());
+		List<String> terms = new ArrayList<>(stemConceptByTermMap.keySet());
+
+		Console.writeLine("analyzing potential matching elements...");
+
+		// Retrieve the term/concept matrix (row = terms, col = concepts, cell = weight)
+		RealMatrix weightMatrix = MethodConceptMatcherUtils.getWeightMatrix(terms, concepts, conceptMap, stemConceptByTermMap);
+
+		// Calculate on term vectors for each method
+		Map<Integer, RealVector> methodTermVectorMap = MethodConceptMatcherUtils.getMethodTermVectorMap(terms, methodMap, stemMethodByTermMap);
+
+		for (SourceMethod sourceMethod : methodMap.values()) {
+
+			RealVector methodTermVector = methodTermVectorMap.get(sourceMethod.getKeyId());
+			boolean isNotZeroMethodVector = MethodConceptMatcherUtils.isNotZeroVector(methodTermVector);
+
+			// Skip null method vector
+			if (isNotZeroMethodVector) {
+
+				// Select all concepts with similarity factor > 0
+				for (int i = 0; i < weightMatrix.getColumnDimension(); i++) {
+
+					Concept concept = concepts.get(i);
+					RealVector conceptTermVector = weightMatrix.getColumnVector(i);
+
+					// Calculate similarity between method and concept vectors
+					// => computed through cosine similarity (cosine angle between the two vectors)
+					double similarity = conceptTermVector.cosine(methodTermVector);
+
+					// Register result within the matchMap
+					if (similarity > 0) {
+
+						MethodConceptMatch match = new MethodConceptMatch();
+
+						match.setProjectId(project.getKeyId());
+						match.setSourceMethodId(sourceMethod.getKeyId());
+						match.setConceptId(concept.getKeyId());
+						match.setWeight(similarity);
+
+						matchings.add(match);
+					}
+				}
+			}
+		}
+
+		return matchings;
+	}
 }
