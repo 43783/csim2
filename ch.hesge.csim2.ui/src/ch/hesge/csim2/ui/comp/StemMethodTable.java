@@ -19,7 +19,6 @@ import ch.hesge.csim2.core.model.StemMethodType;
 public class StemMethodTable extends JTable {
 
 	// Private attributes
-	private StemMethod stemTree;
 	private List<StemMethod> stemMethods;
 
 	/**
@@ -34,8 +33,6 @@ public class StemMethodTable extends JTable {
 	 */
 	public StemMethodTable(StemMethod stemTree) {
 
-		this.stemTree = stemTree;
-		
 		if (stemTree != null) {
 			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
 		}
@@ -112,19 +109,19 @@ public class StemMethodTable extends JTable {
 					case 0:
 						return stem.getTerm();
 					case 1:
-						if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.METHOD_NAME_PART) {
+						if (stemType == StemMethodType.METHOD_NAME_FULL) {
 							return "method";
 						}
-						else if (stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_PART) {
+						else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
 							return "parameter";
 						}
-						else if (stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.PARAMETER_TYPE_PART) {
+						else if (stemType == StemMethodType.PARAMETER_TYPE_FULL) {
 							return "type";
 						}
-						else if (stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_NAME_PART) {
+						else if (stemType == StemMethodType.REFERENCE_NAME_FULL) {
 							return "reference";
 						}
-						else if (stemType == StemMethodType.REFERENCE_TYPE_FULL || stemType == StemMethodType.REFERENCE_TYPE_PART) {
+						else if (stemType == StemMethodType.REFERENCE_TYPE_FULL) {
 							return "type";
 						}
 				}
@@ -151,21 +148,48 @@ public class StemMethodTable extends JTable {
 
 				if (col == 0) {
 
-					// Detect full names
-					if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_TYPE_FULL) {
+					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+
+					if (stemType == StemMethodType.METHOD_NAME_FULL) {
 						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
 						cellRenderer.setText(value.toString());
 					}
-					else {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+					else if (stemType == StemMethodType.METHOD_NAME_PART) {
 						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_TYPE_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_TYPE_PART) {
+						cellRenderer.setText("    " + value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_TYPE_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_TYPE_PART) {
+						cellRenderer.setText("    " + value.toString());
 					}
 				}
 				else if (col == 1) {
 
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
 
-					if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_TYPE_FULL) {
+					// Detect full names
+					if (stemType.getValue() % 2 == 0) {
 						cellRenderer.setText(value.toString());
 					}
 					else {
@@ -179,24 +203,13 @@ public class StemMethodTable extends JTable {
 	}
 
 	/**
-	 * Return the root of the stem this table is displaying.
-	 * 
-	 * @return
-	 *         the root of stem method hierarchy
-	 */
-	public StemMethod getStemTree() {
-		return stemTree;
-	}
-
-	/**
 	 * Set the stems to display in this table.
 	 * 
 	 * @param stemTree
 	 *        the root of stem method hierarchy
 	 */
 	public void setStemTree(StemMethod stemTree) {
-		this.stemTree = stemTree;
-		
+
 		if (stemTree != null) {
 			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
 		}

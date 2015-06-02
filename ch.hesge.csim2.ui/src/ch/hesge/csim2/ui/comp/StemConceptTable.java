@@ -94,20 +94,20 @@ public class StemConceptTable extends JTable {
 					case 0:
 						return stem.getTerm();
 					case 1:
-						if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.CONCEPT_NAME_PART) {
+						if (stemType == StemConceptType.CONCEPT_NAME_FULL) {
 							return "concept";
 						}
-						else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_PART) {
+						else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL) {
 							return "attribute";
 						}
-						else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
-							return "attribute identifier";
+						else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+							return "identifier";
 						}
-						else if (stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_NAME_PART) {
-							return "concept class";
+						else if (stemType == StemConceptType.CLASS_NAME_FULL) {
+							return "class";
 						}
-						else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_PART) {
-							return "class identifier";
+						else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+							return "identifier";
 						}
 				}
 
@@ -133,21 +133,48 @@ public class StemConceptTable extends JTable {
 
 				if (col == 0) {
 
-					// Detect full names
-					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+
+					if (stemType == StemConceptType.CONCEPT_NAME_FULL) {
 						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
 						cellRenderer.setText(value.toString());
 					}
-					else {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+					else if (stemType == StemConceptType.CONCEPT_NAME_PART) {
 						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
+						cellRenderer.setText("    " + value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_IDENTIFIER_PART) {
+						cellRenderer.setText("    " + value.toString());
 					}
 				}
 				else if (col == 1) {
 
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
 
-					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+					// Detect full names
+					if (stemType.getValue() % 2 == 0) {
 						cellRenderer.setText(value.toString());
 					}
 					else {

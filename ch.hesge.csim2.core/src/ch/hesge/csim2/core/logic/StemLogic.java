@@ -31,25 +31,6 @@ import ch.hesge.csim2.core.utils.ObjectSorter;
 class StemLogic {
 
 	/**
-	 * Retrieve a map of all stem concepts classified by concept.
-	 * 
-	 * @param project
-	 *        the owner
-	 * @return
-	 *         the map of (conceptId, StemConcept)
-	 */
-	public static Map<Integer, StemConcept> getStemConceptMap(Project project) {
-
-		Map<Integer, StemConcept> stemMap = new HashMap<>();
-
-		for (StemConcept stem : StemConceptDao.findByProject(project)) {
-			stemMap.put(stem.getKeyId(), stem);
-		}
-
-		return stemMap;
-	}
-
-	/**
 	 * Retrieve a hierarchy of stem concepts defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a
@@ -66,8 +47,11 @@ class StemLogic {
 
 		Map<Integer, StemConcept> stemConceptTree = new HashMap<>();
 
-		// First retrieve all stem concepts classified by concept 
-		Map<Integer, StemConcept> stemMap = ApplicationLogic.getStemConceptMap(project);
+		// Create a map of all stems 
+		Map<Integer, StemConcept> stemMap = new HashMap<>();
+		for (StemConcept stem : StemConceptDao.findByProject(project)) {
+			stemMap.put(stem.getKeyId(), stem);
+		}
 
 		// Loop over all stems
 		for (StemConcept stem : stemMap.values()) {
@@ -198,25 +182,6 @@ class StemLogic {
 	}
 
 	/**
-	 * Retrieve a map of all stem methods classified by method.
-	 * 
-	 * @param project
-	 *        the owner
-	 * @return
-	 *         the map of (methoId, StemMethod)
-	 */
-	public static Map<Integer, StemMethod> getStemMethodMap(Project project) {
-
-		Map<Integer, StemMethod> stemMap = new HashMap<>();
-
-		for (StemMethod stem : StemMethodDao.findByProject(project)) {
-			stemMap.put(stem.getKeyId(), stem);
-		}
-
-		return stemMap;
-	}
-
-	/**
 	 * Retrieve a hierarchy of stem methods defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a
@@ -233,8 +198,11 @@ class StemLogic {
 
 		Map<Integer, StemMethod> stemMethodTree = new HashMap<>();
 
-		// First retrieve all stem methods classified by method 
-		Map<Integer, StemMethod> stemMap = ApplicationLogic.getStemMethodMap(project);
+		// Create a map of all stems
+		Map<Integer, StemMethod> stemMap = new HashMap<>();
+		for (StemMethod stem : StemMethodDao.findByProject(project)) {
+			stemMap.put(stem.getKeyId(), stem);
+		}
 
 		// Loop over all stems
 		for (StemMethod stem : stemMap.values()) {
@@ -273,8 +241,8 @@ class StemLogic {
 				ObjectSorter.sortStemMethods(parent.getParts());
 			}
 			else if (stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL) {
-				parent.getReferences().add(stem);
-				ObjectSorter.sortStemMethods(parent.getReferences());
+				parent.getReferenceTypes().add(stem);
+				ObjectSorter.sortStemMethods(parent.getReferenceTypes());
 			}
 			else if (stem.getStemType() == StemMethodType.REFERENCE_TYPE_PART) {
 				parent.getParts().add(stem);
@@ -306,21 +274,21 @@ class StemLogic {
 			for (StemMethod paramStem : rootStem.getParameters()) {
 				flatList.add(paramStem);
 				flatList.addAll(paramStem.getParts());
-			}
 
-			for (StemMethod paramTypeStem : rootStem.getParameterTypes()) {
-				flatList.add(paramTypeStem);
-				flatList.addAll(paramTypeStem.getParts());
+				for (StemMethod paramTypeStem : paramStem.getParameterTypes()) {
+					flatList.add(paramTypeStem);
+					flatList.addAll(paramTypeStem.getParts());
+				}
 			}
 
 			for (StemMethod refStem : rootStem.getReferences()) {
 				flatList.add(refStem);
 				flatList.addAll(refStem.getParts());
-			}
 
-			for (StemMethod refTypeStem : rootStem.getReferenceTypes()) {
-				flatList.add(refTypeStem);
-				flatList.addAll(refTypeStem.getParts());
+				for (StemMethod refTypeStem : refStem.getReferenceTypes()) {
+					flatList.add(refTypeStem);
+					flatList.addAll(refTypeStem.getParts());
+				}
 			}
 		}
 

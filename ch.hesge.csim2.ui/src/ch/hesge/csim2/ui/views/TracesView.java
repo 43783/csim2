@@ -2,28 +2,39 @@ package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
+import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.Trace;
+import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.comp.TraceEntryTable;
 import ch.hesge.csim2.ui.comp.TraceMatchTable;
@@ -33,9 +44,11 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 public class TracesView extends JPanel {
 
 	// Private attribute
+	private String rootSourceFolder;
 	private List<Scenario> scenarios;
-	private Map<Integer, List<MethodConceptMatch>> matchMap;
 	private List<Trace> traces;
+	private Map<Integer, List<MethodConceptMatch>> matchMap;
+	private Map<Integer, SourceMethod> methodMap;
 
 	private JPanel settingsPanel;
 	private JPanel mainPanel;
@@ -51,9 +64,10 @@ public class TracesView extends JPanel {
 	 * Default constructor.
 	 */
 	public TracesView(Project project, List<Scenario> scenarios) {
-		
+
 		this.scenarios = scenarios;
 		this.matchMap = ApplicationLogic.getMethodMatchingMap(project);
+		this.methodMap = ApplicationLogic.getSourceMethodMap(project);
 
 		initComponent();
 	}
@@ -150,24 +164,95 @@ public class TracesView extends JPanel {
 			}
 		});
 
-		// Add listener to trace entry selection
-		traceTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
+		// Add listener to trace selection
+		traceTable.addActionListener(new ActionListener() {
 
-				if (traceTable.getSelectedValue() != null) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (e.getActionCommand().equals("SINGLE_CLICK")) {
 
 					// Retrieve selected trace
 					Trace trace = traceTable.getSelectedValue();
 
-					// Retrieve its associated match list
-					List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
-					matchTable.setMatchings(matchings);
+					// Retrieve the matching list
+					if (trace != null) {
+						List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
+						matchTable.setMatchings(matchings);
+					}
+					else {
+						matchTable.setMatchings(null);
+					}
 				}
-				else {
-					matchTable.setMatchings(null);
+				else if (e.getActionCommand().equals("DOUBLE_CLICK")) {
+
+					Trace trace = traceTable.getSelectedValue();
+
+					if (trace != null) {
+
+						SourceMethod method = methodMap.get(trace.getMethodId());
+
+						if (method != null && method.getFilename() != null) {
+
+							if (rootSourceFolder == null) {
+								selectRootFolderFile();
+							}
+
+							if (rootSourceFolder != null) {
+								openFile(method.getFilename());
+							}
+						}
+					}
 				}
 			}
 		});
 	}
+
+	/**
+	 * Open the folder selection dialog
+	 * and set root source dialog.
+	 */
+	private void selectRootFolderFile() {
+
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+		if (fileChooser.showOpenDialog(TracesView.this) == JFileChooser.APPROVE_OPTION) {
+			rootSourceFolder = fileChooser.getSelectedFile().getAbsolutePath();
+		}
+	}
+
+	/**
+	 * Open the file specified in argument.
+	 * 
+	 * @param filename
+	 *        the name of the file to open
+	 */
+	private void openFile(String filename) {
+
+		// Scan all folder recursively to discover filename full path
+		try {
+			Files.walkFileTree(Paths.get(rootSourceFolder), new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult visitFile(Path filepath, BasicFileAttributes attrs) throws IOException {
+
+					if (filepath.getFileName().toString().equals(filename)) {
+						try {
+							Desktop.getDesktop().open(filepath.toFile());
+						}
+						catch (IOException e1) {
+							Console.writeError("error while opening file " + filepath + ": " + StringUtils.toString(e1));
+						}
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		}
+		catch (IOException e1) {
+			Console.writeError("error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
+		}
+	}
+
 }

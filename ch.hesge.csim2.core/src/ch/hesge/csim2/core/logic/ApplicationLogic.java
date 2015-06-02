@@ -570,25 +570,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve a map of all stem methods classified by method.
-	 * 
-	 * @param project
-	 *        the owner
-	 * @return
-	 *         the map of (methoId, StemMethod)
-	 */
-	public static Map<Integer, StemMethod> getStemMethodMap(Project project) {
-
-		String cacheKey = "getStemMethodMap_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemMethodMap(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
 	 * Retrieve a hierarchy of stem methods defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a
@@ -648,25 +629,6 @@ public class ApplicationLogic {
 
 		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
 			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemMethodByTermMap(project));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
-	}
-
-	/**
-	 * Retrieve a map of all stem concepts classified by concept.
-	 * 
-	 * @param project
-	 *        the owner
-	 * @return
-	 *         the map of (conceptId, StemConcept)
-	 */
-	public static Map<Integer, StemConcept> getStemConceptMap(Project project) {
-
-		String cacheKey = "getStemConceptMap_" + project.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptMap(project));
 		}
 
 		return ApplicationLogic.APPCACHE.get(cacheKey);
