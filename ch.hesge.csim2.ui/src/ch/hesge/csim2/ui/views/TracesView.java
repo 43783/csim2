@@ -26,6 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
@@ -165,42 +167,42 @@ public class TracesView extends JPanel {
 		});
 
 		// Add listener to trace selection
-		traceTable.addActionListener(new ActionListener() {
-
+		traceTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void valueChanged(ListSelectionEvent e) {
+				// Retrieve selected trace
+				Trace trace = traceTable.getSelectedValue();
 
-				if (e.getActionCommand().equals("SINGLE_CLICK")) {
-
-					// Retrieve selected trace
-					Trace trace = traceTable.getSelectedValue();
-
-					// Retrieve the matching list
-					if (trace != null) {
-						List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
-						matchTable.setMatchings(matchings);
-					}
-					else {
-						matchTable.setMatchings(null);
-					}
+				// Retrieve the matching list
+				if (trace != null) {
+					List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
+					matchTable.setMatchings(matchings);
 				}
-				else if (e.getActionCommand().equals("DOUBLE_CLICK")) {
+				else {
+					matchTable.setMatchings(null);
+				}
+			}
+		});
+		
+		traceTable.addDoubleClickListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
 
-					Trace trace = traceTable.getSelectedValue();
+				Trace trace = traceTable.getSelectedValue();
 
-					if (trace != null) {
+				if (trace != null) {
 
-						SourceMethod method = methodMap.get(trace.getMethodId());
+					SourceMethod method = methodMap.get(trace.getMethodId());
 
-						if (method != null && method.getFilename() != null) {
+					if (method != null && method.getFilename() != null) {
 
-							if (rootSourceFolder == null) {
-								selectRootFolderFile();
-							}
+						if (rootSourceFolder == null) {
+							selectRootFolderFile();
+						}
 
-							if (rootSourceFolder != null) {
-								openFile(method.getFilename());
-							}
+						if (rootSourceFolder != null) {
+							openFile(method.getFilename());
 						}
 					}
 				}

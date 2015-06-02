@@ -26,7 +26,7 @@ public class TraceEntryPopup extends JPopupMenu implements ActionListener {
 	 */
 	private void initComponent() {
 
-		mnuOpenFile = new JMenuItem("Open file");
+		mnuOpenFile = new JMenuItem("Open source file");
 		mnuOpenFile.addActionListener(this);
 		add(mnuOpenFile);
 	}
