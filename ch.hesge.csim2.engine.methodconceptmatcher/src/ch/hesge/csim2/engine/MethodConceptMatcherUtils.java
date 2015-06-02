@@ -51,6 +51,9 @@ public class MethodConceptMatcherUtils {
 			
 			// Retrieve current term
 			String currentTerm = terms.get(i);
+
+			if (currentTerm.length() ==0) 
+				continue;
 			
 			// Loop over all stem concepts referring a single term
 			for (StemConcept stem : stemByTermMap.get(currentTerm)) {
@@ -99,7 +102,7 @@ public class MethodConceptMatcherUtils {
 					conceptWeight = 0.6 / attrCount;
 				}
 				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
-					int attrCount = parent.getAttributes().isEmpty() ? 1 : parent.getAttributes().size();
+					int attrCount = parent.getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getAttributes().size();
 					int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
 					conceptWeight = 0.6 / attrCount / partSize;
 				}

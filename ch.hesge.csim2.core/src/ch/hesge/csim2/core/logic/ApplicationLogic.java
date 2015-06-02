@@ -44,7 +44,7 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class ApplicationLogic {
 
 	// Private static attributes
-	private static ApplicationCache<String, Object> APPCACHE = new ApplicationCache<>(1000);
+	private static ApplicationCache<String, Object> APPCACHE = new ApplicationCache<>(50);
 
 	public static final String USER_NAME_PROPERTY = "user-name";
 	public static final String USER_FOLDER_PROPERTY = "user-folder";
@@ -603,14 +603,7 @@ public class ApplicationLogic {
 	 *         a flat list of stem methods
 	 */
 	public static List<StemMethod> inflateStemMethods(StemMethod rootStem) {
-
-		String cacheKey = "inflateStemMethods_" + rootStem.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.inflateStemMethods(rootStem));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return StemLogic.inflateStemMethods(rootStem);
 	}
 
 	/**
@@ -668,14 +661,7 @@ public class ApplicationLogic {
 	 *         a flat list of stem concepts
 	 */
 	public static List<StemConcept> inflateStemConcepts(StemConcept rootStem) {
-
-		String cacheKey = "inflateStemConcepts_" + rootStem.getKeyId();
-
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.inflateStemConcepts(rootStem));
-		}
-
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return StemLogic.inflateStemConcepts(rootStem);
 	}
 
 	/**
