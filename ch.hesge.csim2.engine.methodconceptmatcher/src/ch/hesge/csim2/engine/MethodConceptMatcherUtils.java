@@ -16,9 +16,105 @@ import org.apache.commons.math3.linear.RealVector;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 
 public class MethodConceptMatcherUtils {
+
+	/**
+	 * 
+	 * 					|						|		
+	 * 					|	0.3		3		0	|		T1		
+	 * 		WEIGHT	=	|	1.5		0		7	|		T2		terms
+	 * 					|	0		0		8	|		T3
+	 * 					|	0		20		5	|		T4
+	 * 					|						|
+	 * 
+	 * 						C1		C2		C3		--> concepts
+	 * 
+	 * @param terms
+	 *        the terms used to compute weights
+	 * @param concepts
+	 *        the concepts used to compute weights
+	 * @param stems
+	 *        the stems allowing links between terms and concepts
+	 * @return
+	 *         a terms/concepts weight matrix
+	 */
+
+	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap) {
+
+		RealMatrix weightMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
+		
+		// Loop over all terms
+		for (int i = 0; i < terms.size(); i++) {
+			
+			// Retrieve current term
+			String currentTerm = terms.get(i);
+
+			if (currentTerm.length() ==0) 
+				continue;
+			
+			// Loop over all stem concepts referring a single term
+			for (StemConcept stem : stemByTermMap.get(currentTerm)) {
+				
+				// Retrieve stem parent
+				StemConcept parent = stem.getParent(); 
+
+				// Retrieve concept associated to the stem
+				Concept concept = conceptMap.get(stem.getConceptId());
+								
+				double conceptWeight = 0d;
+				
+				// Evaluate for current term, the stem matching weight
+				if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
+					conceptWeight = 1.0;
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
+					int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 1.0 / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+					int attrCount = parent.getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getAttributes().size();
+					conceptWeight = 0.9 / attrCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
+					int attrCount = parent.getParent().getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getParent().getAttributes().size();
+					int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.9 / attrCount / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_NAME_FULL) {
+					conceptWeight = 0.8;
+				}
+				else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
+					int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.8 / partSize;
+				}
+				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+					conceptWeight = 0.7;
+				}
+				else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+					int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.7 / partCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+					int attrCount = parent.getAttributes().isEmpty() ? 1 : parent.getAttributes().size();
+					conceptWeight = 0.6 / attrCount;
+				}
+				else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
+					int attrCount = parent.getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getAttributes().size();
+					int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
+					conceptWeight = 0.6 / attrCount / partSize;
+				}
+
+				// Update matrix weight for concept
+				int conceptIndex = concepts.indexOf(concept);
+				weightMatrix.addToEntry(i, conceptIndex, conceptWeight);
+			}
+		}
+
+		return weightMatrix;
+	}
 
 	/**
 	 * <pre>
@@ -395,5 +491,36 @@ public class MethodConceptMatcherUtils {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Detect if a vector has all its components to 0.
+	 * 
+	 * @param v
+	 *        the vector to check
+	 * @return
+	 *         true if zero vector, false otherwise
+	 */
+	public static boolean isZeroVector(RealVector v) {
+
+		for (int i = 0; i < v.getDimension(); i++) {
+			if (v.getEntry(i) != 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Detect if a vector has at least one component different than 0.
+	 * 
+	 * @param v
+	 *        the vector to check
+	 * @return
+	 *         true if not zero vector, false otherwise
+	 */
+	public static boolean isNotZeroVector(RealVector v) {
+		return !isZeroVector(v);
 	}
 }

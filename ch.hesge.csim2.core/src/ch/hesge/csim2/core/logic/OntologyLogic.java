@@ -67,7 +67,16 @@ class OntologyLogic {
 	 *         the list of concept
 	 */
 	public static List<Concept> getConcepts(Project project) {
-		return ConceptDao.findByProject(project);
+
+		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
+
+		// Convert the map into a list
+		List<Concept> concepts = new ArrayList<>(conceptMap.values());
+
+		// Sort concepts
+		ObjectSorter.sortConcepts(concepts);
+
+		return concepts;
 	}
 
 	/**
@@ -80,74 +89,73 @@ class OntologyLogic {
 	 *         the list of concept
 	 */
 	public static List<Concept> getConcepts(Ontology ontology) {
-		return ConceptDao.findByOntology(ontology);
-	}
 
-	/**
-	 * Retrieve all concepts owned by a project with the following
-	 * dependencies:
-	 * 
-	 * - its concept attributes
-	 * - its concept classes
-	 * - its links
-	 * - its superconcept
-	 * - its children concept
-	 * 
-	 * @param ontology
-	 *        the owner
-	 * 
-	 * @return
-	 *         the list of concept
-	 */
-	public static List<Concept> getConceptsWithDependencies(Project project) {
+		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(ontology);
 
-		List<Concept> concepts = ApplicationLogic.getConcepts(project);
+		// Convert the map into a list
+		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 
-		// Create a map of concepts with identical instances
-		Map<Integer, Concept> conceptMap = new HashMap<>();
-		for (Concept concept : concepts) {
-			conceptMap.put(concept.getKeyId(), concept);
-		}
-
-		for (Concept concept : concepts) {
-			populateDependencies(concept, conceptMap);
-		}
+		// Sort concepts
+		ObjectSorter.sortConcepts(concepts);
 
 		return concepts;
 	}
 
 	/**
-	 * Retrieve all concepts owned by an ontology with the following
-	 * dependencies:
+	 * Retrieve all concepts owned by a project as a (keyId, Concept) map.
 	 * 
-	 * - its concept attributes
-	 * - its concept classes
-	 * - its links
-	 * - its superconcept
-	 * - its children concept
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return
+	 *         a map of concept
+	 */
+	public static Map<Integer, Concept> getConceptMap(Project project) {
+
+		Map<Integer, Concept> conceptMap = new HashMap<>();
+
+		List<Concept> concepts = ConceptDao.findByProject(project);
+
+		// First populate the concept map
+		for (Concept concept : concepts) {
+			conceptMap.put(concept.getKeyId(), concept);
+		}
+
+		// Then populate dependencies
+		for (Concept concept : concepts) {
+			populateDependencies(concept, conceptMap);
+		}
+
+		return conceptMap;
+	}
+
+	/**
+	 * Retrieve a map of concepts owned by an ontology
+	 * with each entries of the form (keyId, Concept) map.
 	 * 
 	 * @param ontology
 	 *        the owner
 	 * 
 	 * @return
-	 *         the list of concept
+	 *         a map of concept
 	 */
-	public static List<Concept> getConceptsWithDependencies(Ontology ontology) {
+	public static Map<Integer, Concept> getConceptMap(Ontology ontology) {
 
-		List<Concept> concepts = ApplicationLogic.getConcepts(ontology);
-
-		// Create a map of concepts with identical instances
 		Map<Integer, Concept> conceptMap = new HashMap<>();
+
+		List<Concept> concepts = ConceptDao.findByOntology(ontology);
+
+		// First populate the concept map
 		for (Concept concept : concepts) {
 			conceptMap.put(concept.getKeyId(), concept);
 		}
 
-		// Populate each concept with its dependencies
+		// Then populate dependencies
 		for (Concept concept : concepts) {
 			populateDependencies(concept, conceptMap);
 		}
 
-		return concepts;
+		return conceptMap;
 	}
 
 	/**
@@ -195,51 +203,6 @@ class OntologyLogic {
 				ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
 			}
 		}
-	}
-
-	/**
-	 * Retrieve all concepts owned by a project as a (keyId, Concept) map.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         a map of concept
-	 */
-	public static Map<Integer, Concept> getConceptMap(Project project) {
-
-		Map<Integer, Concept> conceptMap = new HashMap<>();
-		List<Concept> concepts = ApplicationLogic.getConcepts(project);
-
-		// Populate the concept map
-		for (Concept concept : concepts) {
-			conceptMap.put(concept.getKeyId(), concept);
-		}
-
-		return conceptMap;
-	}
-
-	/**
-	 * Retrieve a map of concepts owned by an ontology
-	 * with each entries of the form (keyId, Concept) map.
-	 * 
-	 * @param ontology
-	 *        the owner
-	 * 
-	 * @return
-	 *         a map of concept
-	 */
-	public static Map<Integer, Concept> getConceptMap(Ontology ontology) {
-
-		Map<Integer, Concept> conceptMap = new HashMap<>();
-		List<Concept> concepts = ApplicationLogic.getConcepts(ontology);
-
-		// Populate the concept map
-		for (Concept concept : concepts) {
-			conceptMap.put(concept.getKeyId(), concept);
-		}
-
-		return conceptMap;
 	}
 
 	/**

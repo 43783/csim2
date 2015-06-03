@@ -36,7 +36,7 @@ public class StemSourcesView extends JPanel {
 	public StemSourcesView(Project project, List<SourceClass> sourceClasses) {
 
 		this.sourceClasses = sourceClasses;
-		this.stemTree = ApplicationLogic.getStemMethodTree(project);
+		this.stemTree = ApplicationLogic.getStemMethodTreeMap(project);
 		
 		initComponent();
 	}

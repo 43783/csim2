@@ -215,9 +215,6 @@ class TimeSeriesLogic {
 		// If concepts are found in trace
 		if (traceConcepts.size() > 0) {
 			
-			// Retrieve matrix for all concepts
-			RealMatrix originalMatrix = segmentedSeries.getTraceMatrix();
-			
 			// Create a reduced matrix with a subset of all concepts
 			reducedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
 
@@ -249,17 +246,20 @@ class TimeSeriesLogic {
 				occurrenceVector = occurrenceVector.add(reducedVector);
 			}
 			
-			System.out.println("originalMatrix: ");
-			for (int i = 0; i < originalMatrix.getColumnDimension(); i++) {
-				System.out.println("originalVector: " + originalMatrix.getColumnVector(i));
-			}
-			System.out.println("");
-			
-			System.out.println("reducedMatrix: ");
-			for (int i = 0; i < reducedMatrix.getColumnDimension(); i++) {
-				System.out.println("reducedVector: " + reducedMatrix.getColumnVector(i));
-			}
-			System.out.println("");
+//			// Retrieve matrix for all concepts
+//			RealMatrix originalMatrix = segmentedSeries.getTraceMatrix();
+//			
+//			System.out.println("originalMatrix: ");
+//			for (int i = 0; i < originalMatrix.getColumnDimension(); i++) {
+//				System.out.println("originalVector: " + originalMatrix.getColumnVector(i));
+//			}
+//			System.out.println("");
+//			
+//			System.out.println("reducedMatrix: ");
+//			for (int i = 0; i < reducedMatrix.getColumnDimension(); i++) {
+//				System.out.println("reducedVector: " + reducedMatrix.getColumnVector(i));
+//			}
+//			System.out.println("");
 			
 		}
 

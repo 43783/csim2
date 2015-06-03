@@ -3,7 +3,6 @@ package ch.hesge.csim2.ui.comp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -12,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
 
@@ -19,7 +19,6 @@ import ch.hesge.csim2.core.model.StemMethodType;
 public class StemMethodTable extends JTable {
 
 	// Private attributes
-	private StemMethod stemTree;
 	private List<StemMethod> stemMethods;
 
 	/**
@@ -34,8 +33,12 @@ public class StemMethodTable extends JTable {
 	 */
 	public StemMethodTable(StemMethod stemTree) {
 
-		this.stemTree = stemTree;
-		this.stemMethods = inflateStemTree(stemTree);
+		if (stemTree != null) {
+			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+		}
+		else {
+			this.stemMethods = null;
+		}
 
 		initComponent();
 	}
@@ -106,19 +109,19 @@ public class StemMethodTable extends JTable {
 					case 0:
 						return stem.getTerm();
 					case 1:
-						if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.METHOD_NAME_PART) {
+						if (stemType == StemMethodType.METHOD_NAME_FULL) {
 							return "method";
 						}
-						else if (stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_PART) {
+						else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
 							return "parameter";
 						}
-						else if (stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.PARAMETER_TYPE_PART) {
+						else if (stemType == StemMethodType.PARAMETER_TYPE_FULL) {
 							return "type";
 						}
-						else if (stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_NAME_PART) {
+						else if (stemType == StemMethodType.REFERENCE_NAME_FULL) {
 							return "reference";
 						}
-						else if (stemType == StemMethodType.REFERENCE_TYPE_FULL || stemType == StemMethodType.REFERENCE_TYPE_PART) {
+						else if (stemType == StemMethodType.REFERENCE_TYPE_FULL) {
 							return "type";
 						}
 				}
@@ -145,21 +148,48 @@ public class StemMethodTable extends JTable {
 
 				if (col == 0) {
 
-					// Detect full names
-					if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_TYPE_FULL) {
+					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+
+					if (stemType == StemMethodType.METHOD_NAME_FULL) {
 						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
 						cellRenderer.setText(value.toString());
 					}
-					else {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+					else if (stemType == StemMethodType.METHOD_NAME_PART) {
 						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_TYPE_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.PARAMETER_TYPE_PART) {
+						cellRenderer.setText("    " + value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_TYPE_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemMethodType.REFERENCE_TYPE_PART) {
+						cellRenderer.setText("    " + value.toString());
 					}
 				}
 				else if (col == 1) {
-					
+
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					
-					if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.PARAMETER_TYPE_FULL || stemType == StemMethodType.REFERENCE_NAME_FULL || stemType == StemMethodType.REFERENCE_TYPE_FULL) {
+
+					// Detect full names
+					if (stemType.getValue() % 2 == 0) {
 						cellRenderer.setText(value.toString());
 					}
 					else {
@@ -173,49 +203,20 @@ public class StemMethodTable extends JTable {
 	}
 
 	/**
-	 * Return the root of the stem this table is displaying.
-	 * 
-	 * @return 
-	 *        the root of stem method hierarchy
-	 */
-	public StemMethod getStemTree() {
-		return stemTree;
-	}
-
-	/**
 	 * Set the stems to display in this table.
 	 * 
 	 * @param stemTree
 	 *        the root of stem method hierarchy
 	 */
 	public void setStemTree(StemMethod stemTree) {
-		this.stemTree = stemTree;
-		this.stemMethods = inflateStemTree(stemTree);
-		initModel();
-	}
 
-	/**
-	 * Serialize stem method tree into a single flat list of stem methods.
-	 * 
-	 * @param stem
-	 *        the stem node
-	 * 
-	 * @return
-	 *         a flat list of stem concepts
-	 */
-	private List<StemMethod> inflateStemTree(StemMethod stem) {
-
-		List<StemMethod> flatList = new ArrayList<>();
-
-		if (stem != null) {
-
-			flatList.add(stem);
-
-			for (StemMethod childStem : stem.getChildren()) {
-				flatList.addAll(inflateStemTree(childStem));
-			}
+		if (stemTree != null) {
+			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+		}
+		else {
+			this.stemMethods = null;
 		}
 
-		return flatList;
+		initModel();
 	}
 }

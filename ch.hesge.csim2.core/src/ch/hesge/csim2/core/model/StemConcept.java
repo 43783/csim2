@@ -24,13 +24,22 @@ public class StemConcept {
 	private int conceptId;
 	private String term;
 	private StemConceptType stemType;
-	private List<StemConcept> children;
+	private StemConcept parent;
+	private List<StemConcept> parts;
+	private List<StemConcept> attributes;
+	private List<StemConcept> classes;
+	private List<StemConcept> attributeIdentifiers;
+	private List<StemConcept> classIdentifiers;
 
 	/**
 	 * Default constructor
 	 */
 	public StemConcept() {
-		children = new ArrayList<>();
+		parts = new ArrayList<>();
+		attributes = new ArrayList<>();
+		classes = new ArrayList<>();
+		attributeIdentifiers = new ArrayList<>();
+		classIdentifiers = new ArrayList<>();
 	}
 
 	/**
@@ -43,7 +52,12 @@ public class StemConcept {
 		this.term = term;
 		this.stemType = stemType;
 		this.conceptId = concept == null ? -1 : concept.getKeyId();
-		this.children = new ArrayList<>();
+
+		parts = new ArrayList<>();
+		attributes = new ArrayList<>();
+		classes = new ArrayList<>();
+		attributeIdentifiers = new ArrayList<>();
+		classIdentifiers = new ArrayList<>();
 	}
 
 	public int getKeyId() {
@@ -94,7 +108,31 @@ public class StemConcept {
 		this.conceptId = conceptId;
 	}
 	
-	public List<StemConcept> getChildren() {
-		return children;
+	public StemConcept getParent() {
+		return parent;
+	}
+
+	public void setParent(StemConcept parent) {
+		this.parent = parent;
+	}
+
+	public List<StemConcept> getParts() {
+		return parts;
+	}
+
+	public List<StemConcept> getAttributes() {
+		return attributes;
+	}
+
+	public List<StemConcept> getClasses() {
+		return classes;
+	}
+
+	public List<StemConcept> getAttributeIdentifiers() {
+		return attributeIdentifiers;
+	}
+
+	public List<StemConcept> getClassIdentifiers() {
+		return classIdentifiers;
 	}
 }

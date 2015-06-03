@@ -3,7 +3,6 @@ package ch.hesge.csim2.ui.comp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -12,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 
@@ -94,20 +94,20 @@ public class StemConceptTable extends JTable {
 					case 0:
 						return stem.getTerm();
 					case 1:
-						if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.CONCEPT_NAME_PART) {
+						if (stemType == StemConceptType.CONCEPT_NAME_FULL) {
 							return "concept";
 						}
-						else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_PART) {
+						else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL) {
 							return "attribute";
 						}
-						else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
-							return "attribute identifier";
+						else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+							return "identifier";
 						}
-						else if (stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_NAME_PART) {
-							return "concept class";
+						else if (stemType == StemConceptType.CLASS_NAME_FULL) {
+							return "class";
 						}
-						else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_PART) {
-							return "class identifier";
+						else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+							return "identifier";
 						}
 				}
 
@@ -133,21 +133,48 @@ public class StemConceptTable extends JTable {
 
 				if (col == 0) {
 
-					// Detect full names
-					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+
+					if (stemType == StemConceptType.CONCEPT_NAME_FULL) {
 						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
 						cellRenderer.setText(value.toString());
 					}
-					else {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+					else if (stemType == StemConceptType.CONCEPT_NAME_PART) {
 						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
+						cellRenderer.setText("    " + value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_NAME_FULL) {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
+						cellRenderer.setText(value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_NAME_PART) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+						cellRenderer.setText("  " + value.toString());
+					}
+					else if (stemType == StemConceptType.CLASS_IDENTIFIER_PART) {
+						cellRenderer.setText("    " + value.toString());
 					}
 				}
 				else if (col == 1) {
-					
+
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					
-					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL || stemType == StemConceptType.CLASS_NAME_FULL || stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
+
+					// Detect full names
+					if (stemType.getValue() % 2 == 0) {
 						cellRenderer.setText(value.toString());
 					}
 					else {
@@ -168,32 +195,13 @@ public class StemConceptTable extends JTable {
 	 */
 	public void setStemTree(StemConcept stemTree) {
 
-		this.stemConcepts = inflateStemTree(stemTree);
-		initModel();
-	}
-
-	/**
-	 * Serialize stem concept tree into a single flat list of stem concepts.
-	 * 
-	 * @param stem
-	 *        the stem node
-	 *        
-	 * @return
-	 *         a flat list of stem concepts
-	 */
-	private List<StemConcept> inflateStemTree(StemConcept stem) {
-
-		List<StemConcept> flatList = new ArrayList<>();
-
-		if (stem != null) {
-
-			flatList.add(stem);
-
-			for (StemConcept childStem : stem.getChildren()) {
-				flatList.addAll(inflateStemTree(childStem));
-			}
+		if (stemTree != null) {
+			this.stemConcepts = ApplicationLogic.inflateStemConcepts(stemTree);
 		}
-
-		return flatList;
+		else {
+			this.stemConcepts = null;
+		}
+		
+		initModel();
 	}
 }

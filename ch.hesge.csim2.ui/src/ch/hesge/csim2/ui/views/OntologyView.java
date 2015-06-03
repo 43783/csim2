@@ -49,7 +49,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		this.ontology = ontology;
 
 		// Load ontology concepts
-		List<Concept> concepts = ApplicationLogic.getConceptsWithDependencies(ontology);
+		List<Concept> concepts = ApplicationLogic.getConcepts(ontology);
 		ontology.getConcepts().clear();
 		ontology.getConcepts().addAll(concepts);
 
