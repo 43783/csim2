@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,15 +148,18 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		XYSplineRenderer renderer = new XYSplineRenderer();
 		renderer.setBaseShapesVisible(false);
 		renderer.setSeriesPaint(0, Color.GREEN);
-		renderer.setPrecision(5);
-		renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+		renderer.setPrecision(10);
+
+		// Create a tooltip renderer for timeseries values
+		String tooltipFormat = "<html>concept: {0}<br>segment n°: {1}<br>occurrences: {2}";		
+		renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator(tooltipFormat, NumberFormat.getNumberInstance(), NumberFormat.getNumberInstance()));
 		
 		// Create the vertical axis		
-		NumberAxis yAxis = new NumberAxis("concepts");
+		NumberAxis yAxis = new NumberAxis("concept occurrences");
 		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
 		// Create the horizontal axis		
-		NumberAxis xAxis = new NumberAxis("methods");
+		NumberAxis xAxis = new NumberAxis("method segments");
 		xAxis.setAutoRangeIncludesZero(false);
 		xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
