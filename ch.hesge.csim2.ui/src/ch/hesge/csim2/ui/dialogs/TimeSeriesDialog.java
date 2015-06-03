@@ -44,7 +44,8 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private double threshold;
 	private int segmentCount;
 	private int segmentSize;
-	private boolean showLegend;
+	private boolean isShowLegend;
+	private boolean isClearSelection;
 
 	private JTextField thresholdField;
 	private JSlider thresholdSlider;
@@ -55,21 +56,30 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private JTextField segmentSizeField;
 	private JSlider segmentSizeSlider;
 
+	private JButton btnReset;
+	private JButton btnSelection;
 	private JButton btnOK;
 	private JButton btnCancel;
 	private boolean dialogResult;
 	
 	private ConceptTable conceptTable;
 	private JCheckBox showLegendCheckbox;
-	private JCheckBox clearSelectionCheckbox;
 	private JTextField traceSizeField;
 	private JLabel traceSizeLabel;
+	private JPanel btnLeftPane;
+	private JPanel btnRightPane;
 
 	/**
 	 * Create the dialog with owner.
 	 */
 	public TimeSeriesDialog(Window parent) {
 		super(parent);
+		
+		this.isClearSelection = false;
+		this.isShowLegend = false;
+		this.segmentCount = TimeSeriesView.DEFAULT_SEGMENT_COUNT;
+		this.threshold = TimeSeriesView.DEFAULT_THRESHOLD;
+
 		initComponents();
 	}
 
@@ -91,9 +101,38 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		JPanel mainPane = new JPanel();
 		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
+		btnPane.setLayout(new BorderLayout(0, 0));
+		
+		// Initialize button pane
+		btnLeftPane = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) btnLeftPane.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		btnPane.add(btnLeftPane, BorderLayout.WEST);
+		btnRightPane = new JPanel();
+		btnPane.add(btnRightPane, BorderLayout.CENTER);
+		btnRightPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+				
+		btnReset = new JButton("Reset");
+		btnLeftPane.add(btnReset);
+		btnReset.setPreferredSize(new Dimension(100, 25));
+		btnReset.addActionListener(this);
+		
+		btnSelection = new JButton("Selection");
+		btnLeftPane.add(btnSelection);
+		btnSelection.setPreferredSize(new Dimension(100, 25));
+		btnSelection.addActionListener(this);
+		
+		btnOK = new JButton("OK");
+		btnRightPane.add(btnOK);
+		btnOK.setPreferredSize(new Dimension(100, 25));
+		btnOK.addActionListener(this);
+		
+		btnCancel = new JButton("Cancel");
+		btnRightPane.add(btnCancel);
+		btnCancel.setPreferredSize(new Dimension(80, 25));
+		btnCancel.addActionListener(this);
+		
 		mainPane.setLayout(null);
 
 		// Create threshold fields
@@ -151,16 +190,10 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		scrollbar.setViewportView(conceptTable);
 		conceptPanel.add(scrollbar, BorderLayout.CENTER);
 		mainPane.add(conceptPanel);
-
-		// Clear concept selection
-		clearSelectionCheckbox = new JCheckBox("Selection");
-		clearSelectionCheckbox.setBounds(232, 471, 85, 23);
-		clearSelectionCheckbox.addActionListener(this);
-		mainPane.add(clearSelectionCheckbox);
 		
 		// Create show legend checkbox
 		showLegendCheckbox = new JCheckBox("Show legend");
-		showLegendCheckbox.setBounds(337, 471, 108, 23);
+		showLegendCheckbox.setBounds(352, 469, 108, 23);
 		showLegendCheckbox.addActionListener(this);
 		mainPane.add(showLegendCheckbox);
 		
@@ -174,17 +207,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		traceSizeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		traceSizeLabel.setBounds(10, 24, 115, 23);
 		mainPane.add(traceSizeLabel);
-		
-		// Initialize button pane
-		btnOK = new JButton("OK");
-		btnOK.setPreferredSize(new Dimension(100, 25));
-		btnOK.addActionListener(this);
-		btnPane.add(btnOK);
-
-		btnCancel = new JButton("Cancel");
-		btnCancel.setPreferredSize(new Dimension(80, 25));
-		btnCancel.addActionListener(this);
-		btnPane.add(btnCancel);
 		
 		initListeners();
 	}
@@ -295,18 +317,26 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 			this.setVisible(false);
 		}
 		else if (e.getSource() == showLegendCheckbox) {
-			showLegend = showLegendCheckbox.isSelected();
+			isShowLegend = showLegendCheckbox.isSelected();
 		}
-		else if (e.getSource() == clearSelectionCheckbox) {
+		else if (e.getSource() == btnSelection) {
 			
-			if (clearSelectionCheckbox.isSelected()) {
-				conceptTable.setSelectedConcepts(timeSeries.getTraceConcepts());
-			}
-			else {
+			if (isClearSelection) {
 				conceptTable.setSelectedConcepts(new ArrayList<>());
 			}
+			else {
+				conceptTable.setSelectedConcepts(timeSeries.getTraceConcepts());
+			}
 			
+			isClearSelection = !isClearSelection;
 			conceptTable.repaint();
+		}
+		else if (e.getSource() == btnReset) {
+			
+			setShowLegend(false);
+			setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
+			setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
+			setSelectedConcepts(new ArrayList<>());
 		}
 	}
 
@@ -363,7 +393,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 * @return a boolean
 	 */
 	public boolean isShowLegend() {
-		return showLegend;
+		return isShowLegend;
 	}
 
 	/**
@@ -439,6 +469,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public void setSelectedConcepts(List<Concept> concepts) {
 		conceptTable.setSelectedConcepts(concepts);
+		conceptTable.repaint();
 	}
 
 	/**
@@ -447,7 +478,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 * @param showLegend
 	 */
 	public void setShowLegend(boolean showLegend) {
-		this.showLegend = showLegend;
+		this.isShowLegend = showLegend;
 		showLegendCheckbox.setSelected(showLegend);
 	}
 }

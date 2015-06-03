@@ -2,6 +2,7 @@ package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -20,10 +21,9 @@ import org.apache.commons.math3.linear.RealVector;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -44,13 +44,12 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private List<Scenario> scenarios;
 	private List<Concept> selectedConcepts;
 	private TimeSeries timeSeries;
+	private TimeSeries filteredSeries;
 	private int segmentCount;
 	private double threshold;
 	private boolean showLegend;
 
 	private ScenarioComboBox scenarioComboBox;
-	private ChartPanel chartPanel;
-	private LegendTitle chartLegend;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
@@ -67,8 +66,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		this.threshold = DEFAULT_THRESHOLD;
 		this.project = project;
 		this.scenarios = scenarios;
-		this.showLegend = true;
-
+		this.showLegend = false;
+		
 		initComponent();
 	}
 
@@ -108,11 +107,79 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		settingsPanel.add(settingsBtn);
 		parameterPanel.add(settingsPanel, BorderLayout.EAST);
 
-		// Create the chart panel
-		chartPanel = createChartPanel();
-		this.add(chartPanel, BorderLayout.CENTER);
-
+		initChartPanel();
 		initListeners();
+	}
+
+	/**
+	 * Initialize the chart displaying graph.
+	 */
+	private void initChartPanel() {
+
+		// Remove previous chart panel
+		BorderLayout layout = (BorderLayout) this.getLayout();
+		Component oldChartPanel = layout.getLayoutComponent(BorderLayout.CENTER);
+		if (oldChartPanel != null) {
+			this.remove(oldChartPanel);
+		}
+		
+		XYSeriesCollection dataSet = new XYSeriesCollection();
+		
+		// Populate dataset with timeseries values
+		if (filteredSeries != null && filteredSeries.getTraceMatrix() != null) {
+
+			for (int i = 0; i < filteredSeries.getTraceMatrix().getRowDimension(); i++) {
+
+				Concept concept = filteredSeries.getTraceConcepts().get(i);
+				XYSeries series = new XYSeries(concept.getName());
+
+				// Populate series with trace matrix row
+				RealVector rowVector = filteredSeries.getTraceMatrix().getRowVector(i);
+				for (int j = 0; j < rowVector.getDimension(); j++) {
+					series.add(j + 1, rowVector.getEntry(j));
+				}
+
+				dataSet.addSeries(series);
+			}
+		}
+		
+		// Create a smooth line renderer
+		XYSplineRenderer renderer = new XYSplineRenderer();
+		renderer.setBaseShapesVisible(false);
+		renderer.setSeriesPaint(0, Color.GREEN);
+		renderer.setPrecision(5);
+		renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+		
+		// Create the vertical axis		
+		NumberAxis yAxis = new NumberAxis("concepts");
+		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+		// Create the horizontal axis		
+		NumberAxis xAxis = new NumberAxis("methods");
+		xAxis.setAutoRangeIncludesZero(false);
+		xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+		// Create the graph plot		
+		XYPlot plot = new XYPlot(dataSet, xAxis, yAxis, renderer);
+		plot.setOutlinePaint(Color.WHITE);
+		plot.setBackgroundPaint(Color.WHITE);
+		plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
+		plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
+
+		// Create the graph to draw		
+		JFreeChart chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		chart.setBackgroundPaint(Color.WHITE);
+
+		ChartPanel newChartPanel = new ChartPanel(chart);
+		newChartPanel.setMouseWheelEnabled(true);
+		newChartPanel.restoreAutoBounds();
+
+		if (!showLegend) {
+			newChartPanel.getChart().removeLegend();
+		}
+		
+		this.add(newChartPanel, BorderLayout.CENTER);
+		this.revalidate();
 	}
 
 	/**
@@ -127,7 +194,11 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 				Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
 
-				if (scenario != null) {
+				if (scenario == null) {
+					filteredSeries = null;
+					initChartPanel();
+				}
+				else {
 
 					SwingUtils.invokeLongOperation(TimeSeriesView.this, new Runnable() {
 						@Override
@@ -141,17 +212,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 							threshold = DEFAULT_THRESHOLD;
 
 							// Extract segmented information
-							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
+							filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
 
-							// Update graph
+							// Update view attributes
 							selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
-							updateChartPanel(filteredSeries);
 							settingsBtn.setEnabled(true);
+							initChartPanel();
 						}
 					});
-				}
-				else {
-					updateChartPanel(null);
 				}
 			}
 		});
@@ -196,100 +264,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 					public void run() {
 
 						// Retrieve filtered timeseries 
-						TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, selectedConcepts);
+						filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, selectedConcepts);
 
-						// Retrieve intersection between
+						// Update view attributes
 						selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
-						updateChartPanel(filteredSeries);
+						initChartPanel();
 					}
 				});
 			}
 		}
 	}
-
-	/**
-	 * Initialize the chart displaying graph.
-	 * 
-	 * @return
-	 *         a ChartPanel
-	 */
-	private ChartPanel createChartPanel() {
-
-		XYSeriesCollection dataSet = new XYSeriesCollection();
-
-		// Create the vertical axis		
-		NumberAxis yAxis = new NumberAxis("concepts");
-		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-		// Create the horizontal axis		
-		NumberAxis xAxis = new NumberAxis("methods");
-		xAxis.setAutoRangeIncludesZero(false);
-		xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-		// Create the graph plot		
-		XYPlot plot = new XYPlot(dataSet, xAxis, yAxis, new XYLineAndShapeRenderer(true, false));
-		plot.setOutlinePaint(Color.WHITE);
-		plot.setBackgroundPaint(Color.WHITE);
-		plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
-		plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
-		plot.setOrientation(PlotOrientation.VERTICAL);
-
-		// Create the graph to draw		
-		JFreeChart chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-		chart.setBackgroundPaint(Color.WHITE);
-
-		chartPanel = new ChartPanel(chart);
-		chartPanel.setMouseWheelEnabled(true);
-		updateChartPanel(null);
-
-		return chartPanel;
-	}
-
-	/**
-	 * Initialize graph data to display.
-	 * 
-	 * @param timeSeries
-	 *        The timeSeries to display
-	 */
-	private void updateChartPanel(TimeSeries timeSeries) {
-
-		// Update series to display
-		if (timeSeries != null && timeSeries.getTraceMatrix() != null) {
-
-			XYSeriesCollection dataSet = new XYSeriesCollection();
-
-			// Create the series to display
-			for (int i = 0; i < timeSeries.getTraceMatrix().getRowDimension(); i++) {
-
-				Concept concept = timeSeries.getTraceConcepts().get(i);
-				XYSeries series = new XYSeries(concept.getName());
-
-				// Populate series with trace matrix row
-				RealVector rowVector = timeSeries.getTraceMatrix().getRowVector(i);
-				for (int j = 0; j < rowVector.getDimension(); j++) {
-					series.add(j + 1, rowVector.getEntry(j));
-				}
-
-				dataSet.addSeries(series);
-			}
-
-			chartPanel.getChart().getXYPlot().setDataset(dataSet);
-		}
-		else {
-			chartPanel.getChart().getXYPlot().setDataset(null);
-		}
-		
-		// Show/hide legend
-		if (!showLegend) {
-			chartLegend = chartPanel.getChart().getLegend();
-			chartPanel.getChart().removeLegend();
-		}
-		else if (chartLegend != null && chartPanel.getChart().getLegend() == null) {
-			chartPanel.getChart().addLegend(chartLegend);			
-		}
-
-		// Reset zoom factor
-		chartPanel.restoreAutoBounds();
-	}
-
 }
