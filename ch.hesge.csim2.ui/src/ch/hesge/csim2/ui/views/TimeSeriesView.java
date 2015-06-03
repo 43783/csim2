@@ -16,13 +16,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import org.apache.commons.math3.linear.RealVector;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
-import ch.hesge.csim2.ui.comp.TimeSeriesGraph;
 import ch.hesge.csim2.ui.dialogs.TimeSeriesDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -39,7 +48,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private boolean showLegend;
 
 	private ScenarioComboBox scenarioComboBox;
-	private TimeSeriesGraph graphPanel;
+	private ChartPanel chartPanel;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
@@ -96,9 +105,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		settingsPanel.add(settingsBtn);
 		parameterPanel.add(settingsPanel, BorderLayout.EAST);
 
-		// Create the chart container
-		graphPanel = new TimeSeriesGraph();
-		this.add(graphPanel, BorderLayout.CENTER);
+		// Create the chart panel
+		chartPanel = createChartPanel();
+		this.add(chartPanel, BorderLayout.CENTER);
 
 		initListeners();
 	}
@@ -131,16 +140,15 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 							// Extract segmented information
 							TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
 
-							// Update view
+							// Update graph
 							selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
-							graphPanel.setTimeSeries(filteredSeries);
-							graphPanel.setShowLegend(showLegend);
+							updateChartPanel(filteredSeries);
 							settingsBtn.setEnabled(true);
 						}
 					});
 				}
 				else {
-					graphPanel.setTimeSeries(null);
+					updateChartPanel(null);
 				}
 			}
 		});
@@ -170,7 +178,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 				segmentCount = dialog.getSegmentCount();
 				showLegend = dialog.isShowLegend();
-				
+
 				// If threshold has changed, we need all concepts
 				if (threshold != dialog.getThreshold()) {
 					threshold = dialog.getThreshold();
@@ -179,21 +187,102 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 				else {
 					selectedConcepts = dialog.getSelectedConcepts();
 				}
-				
+
 				SwingUtils.invokeLongOperation(TimeSeriesView.this, new Runnable() {
 					@Override
 					public void run() {
-						
+
 						// Retrieve filtered timeseries 
 						TimeSeries filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, selectedConcepts);
-					
+
 						// Retrieve intersection between
 						selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
-						graphPanel.setShowLegend(showLegend);
-						graphPanel.setTimeSeries(filteredSeries);
+						updateChartPanel(filteredSeries);
 					}
 				});
 			}
 		}
 	}
+
+	/**
+	 * Initialize the chart displaying graph.
+	 * 
+	 * @return
+	 *         a ChartPanel
+	 */
+	private ChartPanel createChartPanel() {
+
+		XYSeriesCollection dataSet = new XYSeriesCollection();
+
+		// Create the vertical axis		
+		NumberAxis yAxis = new NumberAxis("occurences");
+		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+		// Create the horizontal axis		
+		NumberAxis xAxis = new NumberAxis("segments");
+		xAxis.setAutoRangeIncludesZero(false);
+		xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+		// Create the graph plot		
+		XYPlot plot = new XYPlot(dataSet, xAxis, yAxis, new XYLineAndShapeRenderer(true, false));
+		plot.setOutlinePaint(Color.WHITE);
+		plot.setBackgroundPaint(Color.WHITE);
+		plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
+		plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
+		plot.setOrientation(PlotOrientation.VERTICAL);
+
+		// Create the graph to draw		
+		JFreeChart chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		chart.setBackgroundPaint(Color.WHITE);
+
+		chartPanel = new ChartPanel(chart);
+		chartPanel.setMouseWheelEnabled(true);
+		updateChartPanel(null);
+
+		return chartPanel;
+	}
+
+	/**
+	 * Initialize graph data to display.
+	 * 
+	 * @param timeSeries
+	 *        The timeSeries to display
+	 */
+	private void updateChartPanel(TimeSeries timeSeries) {
+
+		// Update series to display
+		if (timeSeries != null && timeSeries.getTraceMatrix() != null) {
+
+			XYSeriesCollection dataSet = new XYSeriesCollection();
+
+			// Create the series to display
+			for (int i = 0; i < timeSeries.getTraceMatrix().getRowDimension(); i++) {
+
+				Concept concept = timeSeries.getTraceConcepts().get(i);
+				XYSeries series = new XYSeries(concept.getName());
+
+				// Populate series with trace matrix row
+				RealVector rowVector = timeSeries.getTraceMatrix().getRowVector(i);
+				for (int j = 0; j < rowVector.getDimension(); j++) {
+					series.add(j + 1, rowVector.getEntry(j));
+				}
+
+				dataSet.addSeries(series);
+			}
+
+			chartPanel.getChart().getXYPlot().setDataset(dataSet);
+		}
+		else {
+			chartPanel.getChart().getXYPlot().setDataset(null);
+		}
+
+		// Show/hide legend
+		if (!showLegend) {
+			chartPanel.getChart().removeLegend();
+		}
+
+		// Reset zoom factor
+		chartPanel.restoreAutoBounds();
+	}
+
 }
