@@ -24,6 +24,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYAreaRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -144,11 +146,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 			}
 		}
 		
-		// Create a smooth line renderer
-		XYSplineRenderer renderer = new XYSplineRenderer();
+		// Create a line renderer
+		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setBaseShapesVisible(false);
-		renderer.setSeriesPaint(0, Color.GREEN);
-		renderer.setPrecision(10);
 
 		// Create a tooltip renderer for timeseries values
 		String tooltipFormat = "<html>concept: {0}<br>segment n°: {1}<br>occurrences: {2}";		
@@ -176,6 +176,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 		ChartPanel newChartPanel = new ChartPanel(chart);
 		newChartPanel.setMouseWheelEnabled(true);
+		newChartPanel.setInitialDelay(0); // tooltip delay
 		newChartPanel.restoreAutoBounds();
 
 		if (!showLegend) {
