@@ -355,7 +355,7 @@ public class MethodConceptMatcher implements IEngine {
 
 					// Calculate similarity between method and concept vectors
 					// => computed through sum of concept weight
-					double similarity = Math.min(1d, conceptTermVector.ebeMultiply(methodTermVector).getL1Norm());
+					double similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
 
 					// Register result within the matchMap
 					if (similarity > 0) {
