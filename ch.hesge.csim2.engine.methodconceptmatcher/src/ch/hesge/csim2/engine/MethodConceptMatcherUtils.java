@@ -52,7 +52,7 @@ public class MethodConceptMatcherUtils {
 			// Retrieve current term
 			String currentTerm = terms.get(i);
 
-			if (currentTerm.length() ==0) 
+			if (currentTerm.length() == 0) 
 				continue;
 			
 			// Loop over all stem concepts referring a single term
@@ -380,6 +380,8 @@ public class MethodConceptMatcherUtils {
 			// Retrieve current terms and stems
 			String currentTerm = terms.get(i);
 
+			// If at least one stem method is found, 
+			// the ième coordinate should be 1.0. Otherwise, should be 0.0
 			if (stems.containsKey(currentTerm)) {
 
 				// Count each method referring the term
