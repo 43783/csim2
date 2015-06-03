@@ -154,13 +154,13 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Clear concept selection
 		clearSelectionCheckbox = new JCheckBox("Selection");
-		clearSelectionCheckbox.setBounds(20, 471, 131, 23);
+		clearSelectionCheckbox.setBounds(232, 471, 85, 23);
 		clearSelectionCheckbox.addActionListener(this);
 		mainPane.add(clearSelectionCheckbox);
 		
 		// Create show legend checkbox
 		showLegendCheckbox = new JCheckBox("Show legend");
-		showLegendCheckbox.setBounds(153, 471, 108, 23);
+		showLegendCheckbox.setBounds(337, 471, 108, 23);
 		showLegendCheckbox.addActionListener(this);
 		mainPane.add(showLegendCheckbox);
 		
@@ -426,14 +426,10 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		traceSizeField.setText(String.format("%d", traceSize));
 		
 		segmentCountSlider.setMinimum(1);
-		segmentCountSlider.setMaximum(traceSize / 2);
-
-		segmentSizeSlider.setMinimum(1);
-		segmentSizeSlider.setMaximum(traceSize / 2);
+		segmentCountSlider.setMaximum(TimeSeriesView.MAX_SEGMENT_COUNT);
 				
 		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
 		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
-		setSegmentSize(traceSize / TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 	}
 
 	/**

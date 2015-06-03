@@ -23,6 +23,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -49,11 +50,13 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 	private ScenarioComboBox scenarioComboBox;
 	private ChartPanel chartPanel;
+	private LegendTitle chartLegend;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
 	public static int DEFAULT_SEGMENT_COUNT = 20;
 	public static double DEFAULT_THRESHOLD = 0.5d;
+	public static int MAX_SEGMENT_COUNT = 1000;
 
 	/**
 	 * Default constructor.
@@ -215,11 +218,11 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		XYSeriesCollection dataSet = new XYSeriesCollection();
 
 		// Create the vertical axis		
-		NumberAxis yAxis = new NumberAxis("occurences");
+		NumberAxis yAxis = new NumberAxis("concepts");
 		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
 		// Create the horizontal axis		
-		NumberAxis xAxis = new NumberAxis("segments");
+		NumberAxis xAxis = new NumberAxis("methods");
 		xAxis.setAutoRangeIncludesZero(false);
 		xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
@@ -275,10 +278,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		else {
 			chartPanel.getChart().getXYPlot().setDataset(null);
 		}
-
+		
 		// Show/hide legend
 		if (!showLegend) {
+			chartLegend = chartPanel.getChart().getLegend();
 			chartPanel.getChart().removeLegend();
+		}
+		else if (chartLegend != null && chartPanel.getChart().getLegend() == null) {
+			chartPanel.getChart().addLegend(chartLegend);			
 		}
 
 		// Reset zoom factor
