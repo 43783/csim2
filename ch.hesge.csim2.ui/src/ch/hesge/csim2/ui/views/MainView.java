@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,11 +22,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CGrid;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
@@ -69,10 +70,9 @@ public class MainView extends JFrame implements ActionListener {
 	private JMenuItem mnuSettings;
 	private JMenuItem mnuAbout;
 
-	private JSplitPane horizontalPanel;
-	private JSplitPane verticalPanel;
 	private ProjectView projectView;
 	private ConsoleView consoleView;
+	private EngineView engineView;
 
 	private Dimension defaultSize = new Dimension(1024, 768);
 
@@ -115,28 +115,45 @@ public class MainView extends JFrame implements ActionListener {
 		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-72x72.png")));
 		setIconImages(appIcons);
 
-		// Create basic layout structure
-		horizontalPanel = new JSplitPane();
-		horizontalPanel.setResizeWeight(0.3);
-		horizontalPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		horizontalPanel.setContinuousLayout(true);
-		verticalPanel = new JSplitPane();
-		verticalPanel.setResizeWeight(0.7);
-		verticalPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		horizontalPanel.setRightComponent(verticalPanel);
-		getContentPane().add(horizontalPanel, BorderLayout.CENTER);
-
 		// Create menu & statusbar
 		initMenu();
 		initStatusbar();
 
+		// Create the docking area
+		CControl dockingControl = new CControl(this);
+		CGrid dockingGrid = new CGrid(dockingControl);
+		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
+
 		// Create project view
+		DefaultSingleCDockable projectDocking = new DefaultSingleCDockable("project", "Project");
+		projectDocking.setMinimizable(false);
+		projectDocking.setMaximizable(false);
+		projectDocking.setStackable(false);
+		projectDocking.setExternalizable(false);
+		projectDocking.setCloseable(false);
 		projectView = new ProjectView();
-		horizontalPanel.setLeftComponent(projectView);
+		projectDocking.add(projectView);
+		dockingGrid.add(0, 0, 1, 2, projectDocking);
 
 		// Create console view
+		DefaultSingleCDockable consoleDocking = new DefaultSingleCDockable("console", "Console");
+		consoleDocking.setMinimizable(false);
+		consoleDocking.setExternalizable(false);
+		consoleDocking.setCloseable(false);
 		consoleView = new ConsoleView();
-		verticalPanel.setRightComponent(consoleView);
+		consoleDocking.add(consoleView);
+		dockingGrid.add(1, 1, 2, 1, consoleDocking);
+
+		// Create console view
+		DefaultSingleCDockable engineDocking = new DefaultSingleCDockable("engines", "Engines");
+		engineDocking.setMinimizable(false);
+		engineDocking.setExternalizable(false);
+		engineDocking.setCloseable(false);
+		engineView = new EngineView();
+		engineDocking.add(engineView);
+		dockingGrid.add(1, 1, 2, 1, engineDocking);
+
+		dockingControl.getContentArea().deploy(dockingGrid);
 
 		// Clear current project
 		setProject(null);
@@ -179,14 +196,10 @@ public class MainView extends JFrame implements ActionListener {
 
 		// Populate engine table
 		List<IEngine> engineList = ApplicationLogic.getEngines();
-		consoleView.getEnginePanel().setEngines(engineList);
-
-		// Put focus on console
-		consoleView.setActiveTabIndex(1);
-		consoleView.getConsolePanel().requestFocus();
+		engineView.setEngines(engineList);
 
 		// Redirect standard input/output to console
-		SwingUtils.redirectStandardStreams(consoleView.getConsolePanel());
+		SwingUtils.redirectStandardStreams(consoleView.getLogArea());
 	}
 
 	/**
@@ -293,16 +306,16 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	public void showView(JComponent documentView) {
 
-		if (documentView == null) {
-			documentView = new JButton("Empty");
-			documentView.setPreferredSize(defaultSize);
-			documentView.setEnabled(false);
-			verticalPanel.setLeftComponent(documentView);
-		}
-
-		// Make the view visible
-		documentView.setPreferredSize(defaultSize);
-		verticalPanel.setLeftComponent(documentView);
+		//		if (documentView == null) {
+		//			documentView = new JButton("Empty");
+		//			documentView.setPreferredSize(defaultSize);
+		//			documentView.setEnabled(false);
+		//			verticalPanel.setLeftComponent(documentView);
+		//		}
+		//
+		//		// Make the view visible
+		//		documentView.setPreferredSize(defaultSize);
+		//		verticalPanel.setLeftComponent(documentView);
 	}
 
 	/**
@@ -335,11 +348,11 @@ public class MainView extends JFrame implements ActionListener {
 			mnuSave.setEnabled(true);
 
 			// Clear application data
-			showView(null);
+			//showView(null);
 			this.project = project;
 			ApplicationLogic.clearCache();
-			consoleView.setActiveTabIndex(0);
-			consoleView.clearLogConsole();
+			//consoleView.setActiveTabIndex(0);
+			//consoleView.clearLogConsole();
 
 			SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
 				@Override
@@ -528,9 +541,9 @@ public class MainView extends JFrame implements ActionListener {
 			context.putAll(dialog.getParameters());
 			engine.setContext(context);
 
-			// Start the engine
-			consoleView.setActiveTabIndex(0);
-			consoleView.clearLogConsole();
+			//			// Start the engine
+			//			consoleView.setActiveTabIndex(0);
+			//			consoleView.clearLogConsole();
 
 			ApplicationLogic.startEngine(engine);
 		}
@@ -543,14 +556,14 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	public void stopEngine(IEngine engine) {
 
-		consoleView.setActiveTabIndex(0);
-		ApplicationLogic.stopEngine(engine);
+		//		consoleView.setActiveTabIndex(0);
+		//		ApplicationLogic.stopEngine(engine);
 	}
 
 	/**
 	 * Clear console content.
 	 */
 	public void clearLogConsole() {
-		consoleView.clearLogConsole();
+		//		consoleView.clearLogConsole();
 	}
 }

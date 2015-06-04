@@ -20,5 +20,7 @@
 	<classpathentry kind="lib" path="lib/jcommon-1.0.23.jar" sourcepath="lib/jcommon-1.0.23.src.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.19.jar" sourcepath="lib/jfreechart-1.0.19.src.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math-3-3.5-bin.jar" sourcepath="lib/commons-math-3-3.5-src.jar"/>
+	<classpathentry kind="lib" path="lib/docking-frames-common-1.1.2p14d-bin.jar" sourcepath="lib/docking-frames-common-1.1.2p14d-src.jar"/>
+	<classpathentry kind="lib" path="lib/docking-frames-core-1.1.2p14d-bin.jar" sourcepath="lib/docking-frames-core-1.1.2p14d-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
