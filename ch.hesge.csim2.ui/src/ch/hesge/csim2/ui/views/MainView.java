@@ -70,6 +70,8 @@ public class MainView extends JFrame implements ActionListener {
 	private JMenuItem mnuSettings;
 	private JMenuItem mnuAbout;
 
+	private CControl dockingControl;
+	private CGrid dockingGrid;	
 	private ProjectView projectView;
 	private ConsoleView consoleView;
 	private EngineView engineView;
@@ -120,8 +122,8 @@ public class MainView extends JFrame implements ActionListener {
 		initStatusbar();
 
 		// Create the docking area
-		CControl dockingControl = new CControl(this);
-		CGrid dockingGrid = new CGrid(dockingControl);
+		dockingControl = new CControl(this);
+		dockingGrid = new CGrid(dockingControl);
 		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
 
 		// Create project view
@@ -306,6 +308,20 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	public void showView(JComponent documentView) {
 
+		if (documentView != null) {
+			
+			// Create console view
+			DefaultSingleCDockable engineDocking = new DefaultSingleCDockable(documentView.getName(), documentView.getName());
+			
+			engineDocking.setMinimizable(false);
+			engineDocking.setExternalizable(false);
+			engineDocking.setCloseable(false);
+			engineDocking.add(documentView);
+			
+			dockingGrid.add(0, 1, 1, 1, engineDocking);
+		}
+
+		
 		//		if (documentView == null) {
 		//			documentView = new JButton("Empty");
 		//			documentView.setPreferredSize(defaultSize);
@@ -348,11 +364,12 @@ public class MainView extends JFrame implements ActionListener {
 			mnuSave.setEnabled(true);
 
 			// Clear application data
-			//showView(null);
+			showView(null);
 			this.project = project;
 			ApplicationLogic.clearCache();
+			
 			//consoleView.setActiveTabIndex(0);
-			//consoleView.clearLogConsole();
+			consoleView.clearLogConsole();
 
 			SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
 				@Override
