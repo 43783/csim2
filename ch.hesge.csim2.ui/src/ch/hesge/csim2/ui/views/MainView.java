@@ -26,9 +26,10 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CGrid;
-import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import org.flexdock.docking.DockingConstants;
+import org.flexdock.docking.DockingManager;
+import org.flexdock.docking.defaults.DefaultDockingPort;
+
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
@@ -70,8 +71,15 @@ public class MainView extends JFrame implements ActionListener {
 	private JMenuItem mnuSettings;
 	private JMenuItem mnuAbout;
 
+	private DefaultDockingPort dockPort;
+	
+	/*
+	private DockController dockingController;
+	
 	private CControl dockingControl;
-	private CGrid dockingGrid;	
+	private CGrid dockingGrid;
+	*/
+	
 	private ProjectView projectView;
 	private ConsoleView consoleView;
 	private EngineView engineView;
@@ -121,45 +129,59 @@ public class MainView extends JFrame implements ActionListener {
 		initMenu();
 		initStatusbar();
 
-		// Create the docking area
-		dockingControl = new CControl(this);
-		dockingGrid = new CGrid(dockingControl);
-		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
+		dockPort = new DefaultDockingPort();
+		dockPort.setSingleTabAllowed(true);
+		getContentPane().add(dockPort, BorderLayout.CENTER);
 
 		// Create project view
+		projectView = new ProjectView();
+		DockingManager.registerDockable(projectView);
+		dockPort.dock(projectView, DockingConstants.CENTER_REGION);
+		
+		
+		
+		
+		
+//		dockingControl = new CControl(this);
+//		dockingGrid = new CGrid(dockingControl);
+//		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
+
+		/*
+		// Create project view
+		projectView = new ProjectView();
 		DefaultSingleCDockable projectDocking = new DefaultSingleCDockable("project", "Project");
 		projectDocking.setMinimizable(false);
 		projectDocking.setMaximizable(false);
 		projectDocking.setStackable(false);
 		projectDocking.setExternalizable(false);
 		projectDocking.setCloseable(false);
-		projectView = new ProjectView();
 		projectDocking.add(projectView);
-		dockingGrid.add(0, 0, 1, 2, projectDocking);
+		//dockingGrid.addDockable(0, 0, 40, 100, projectDocking);
 
 		// Create console view
+		consoleView = new ConsoleView();
 		DefaultSingleCDockable consoleDocking = new DefaultSingleCDockable("console", "Console");
 		consoleDocking.setMinimizable(false);
 		consoleDocking.setExternalizable(false);
 		consoleDocking.setCloseable(false);
-		consoleView = new ConsoleView();
 		consoleDocking.add(consoleView);
-		dockingGrid.add(1, 1, 2, 1, consoleDocking);
 
 		// Create console view
+		engineView = new EngineView();
 		DefaultSingleCDockable engineDocking = new DefaultSingleCDockable("engines", "Engines");
 		engineDocking.setMinimizable(false);
 		engineDocking.setExternalizable(false);
 		engineDocking.setCloseable(false);
-		engineView = new EngineView();
 		engineDocking.add(engineView);
-		dockingGrid.add(1, 1, 2, 1, engineDocking);
+
+		dockingGrid.add(40, 50, 60, 100, consoleDocking, engineDocking);
 
 		dockingControl.getContentArea().deploy(dockingGrid);
 
 		// Clear current project
 		setProject(null);
 
+		*/
 		// Initialize the view when visible
 		SwingUtils.invokeWhenVisible(this.getRootPane(), new Runnable() {
 			@Override
@@ -306,19 +328,25 @@ public class MainView extends JFrame implements ActionListener {
 	 * 
 	 * @param scenario
 	 */
-	public void showView(JComponent documentView) {
+	public void showView(String name, JComponent documentView) {
 
 		if (documentView != null) {
 			
-			// Create console view
-			DefaultSingleCDockable engineDocking = new DefaultSingleCDockable(documentView.getName(), documentView.getName());
+			/*
+			// Create project view
+			DefaultMultipleCDockable dockable = new DefaultMultipleCDockable
+			dockable.setMinimizable(false);
+			dockable.setMaximizable(false);
+			dockable.setStackable(false);
+			dockable.setExternalizable(false);
+			dockable.setCloseable(false);
+			dockable.add(documentView);
 			
-			engineDocking.setMinimizable(false);
-			engineDocking.setExternalizable(false);
-			engineDocking.setCloseable(false);
-			engineDocking.add(documentView);
+			dockingControl.addDockable(dockable);
 			
-			dockingGrid.add(0, 1, 1, 1, engineDocking);
+			dockable.setLocation(CLocation.base().normalNorth(0.4));
+			dockable.setVisible(true);
+			*/
 		}
 
 		
@@ -345,7 +373,7 @@ public class MainView extends JFrame implements ActionListener {
 
 			setTitle("Csim2 Environment");
 			this.project = null;
-			showView(null);
+			//showView(null);
 
 			mnuClose.setEnabled(false);
 			mnuCloseAll.setEnabled(false);
@@ -364,10 +392,10 @@ public class MainView extends JFrame implements ActionListener {
 			mnuSave.setEnabled(true);
 
 			// Clear application data
-			showView(null);
+			//showView(null);
 			this.project = project;
 			ApplicationLogic.clearCache();
-			
+
 			//consoleView.setActiveTabIndex(0);
 			consoleView.clearLogConsole();
 
@@ -425,7 +453,7 @@ public class MainView extends JFrame implements ActionListener {
 				ApplicationLogic.getScenarioWithDependencies(scenario);
 
 				// Create the view
-				showView(new ScenarioView(scenario));
+				showView(scenario.getName(), new ScenarioView(scenario));
 			}
 		});
 	}
@@ -442,7 +470,7 @@ public class MainView extends JFrame implements ActionListener {
 			public void run() {
 
 				// Create the view
-				showView(new OntologyView(ontology));
+				showView(ontology.getName(), new OntologyView(ontology));
 			}
 		});
 	}
@@ -460,7 +488,7 @@ public class MainView extends JFrame implements ActionListener {
 				List<SourceClass> classes = ApplicationLogic.getSourceClassesWithDependencies(project, false);
 
 				// Create the view
-				showView(new StemSourcesView(project, classes));
+				showView("sources", new StemSourcesView(project, classes));
 			}
 		});
 	}
@@ -479,7 +507,7 @@ public class MainView extends JFrame implements ActionListener {
 				Map<Integer, StemConcept> stemTree = ApplicationLogic.getStemConceptTreeMap(project);
 
 				// Create the view
-				showView(new StemConceptsView(concepts, stemTree));
+				showView("concepts", new StemConceptsView(concepts, stemTree));
 			}
 		});
 	}
@@ -497,7 +525,7 @@ public class MainView extends JFrame implements ActionListener {
 				List<MethodConceptMatch> matchings = ApplicationLogic.getMatchingsWithDependencies(project);
 
 				// Create the view
-				showView(new MatchingView(matchings));
+				showView("matchings", new MatchingView(matchings));
 			}
 		});
 	}
@@ -515,7 +543,7 @@ public class MainView extends JFrame implements ActionListener {
 				List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
 
 				// Create the view
-				showView(new TracesView(project, scenarios));
+				showView("traces", new TracesView(project, scenarios));
 			}
 		});
 	}
@@ -533,7 +561,7 @@ public class MainView extends JFrame implements ActionListener {
 				List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
 
 				// Create the view
-				showView(new TimeSeriesView(project, scenarios));
+				showView("timeseries", new TimeSeriesView(project, scenarios));
 			}
 		});
 	}
