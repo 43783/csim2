@@ -31,9 +31,6 @@ import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
-import bibliothek.gui.dock.common.MultipleCDockable;
-import bibliothek.gui.dock.common.SingleCDockable;
-import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
@@ -356,24 +353,16 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	public void showView(String title, JComponent view) {
 
-		MultipleCDockable dockable1 = dockControl.getMultipleDockable(title);
-		SingleCDockable dockable2 = dockControl.getSingleDockable(title);
-		
-		if (dockable1 != null) {
-			dockable1.setVisible(true);
-		}
-		else {
+		DefaultMultipleCDockable editor = new DefaultMultipleCDockable(null);
+		editor.setTitleText(title);
+		editor.setTitleText(title);
+		editor.setMinimizable(false);
+		editor.setExternalizable(false);
+		editor.setCloseable(true);
+		editor.add(view);
 
-			DefaultMultipleCDockable editor = new DefaultMultipleCDockable(null);
-			editor.setTitleText(title);
-			editor.setMinimizable(false);
-			editor.setExternalizable(false);
-			editor.setCloseable(true);
-			editor.add(view);
-
-			workingArea.show(editor);
-			editor.toFront();
-		}
+		workingArea.show(editor);
+		editor.toFront();
 	}
 
 	/**
