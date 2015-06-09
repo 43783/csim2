@@ -491,7 +491,7 @@ public class MainView extends JFrame implements ActionListener {
 						.getSourceClassesWithDependencies(project, false);
 
 				// Create the view
-				showView("sources", new StemSourcesView(project, classes));
+				showView("Sources", new StemSourcesView(project, classes));
 			}
 		});
 	}
@@ -511,7 +511,7 @@ public class MainView extends JFrame implements ActionListener {
 						.getStemConceptTreeMap(project);
 
 				// Create the view
-				showView("concepts", new StemConceptsView(concepts, stemTree));
+				showView("Concepts", new StemConceptsView(concepts, stemTree));
 			}
 		});
 	}
@@ -530,7 +530,7 @@ public class MainView extends JFrame implements ActionListener {
 						.getMatchingsWithDependencies(project);
 
 				// Create the view
-				showView("matchings", new MatchingView(matchings));
+				showView("Matchings", new MatchingView(matchings));
 			}
 		});
 	}
@@ -549,7 +549,7 @@ public class MainView extends JFrame implements ActionListener {
 						.getScenarios(project);
 
 				// Create the view
-				showView("traces", new TracesView(project, scenarios));
+				showView("Traces", new TracesView(project, scenarios));
 			}
 		});
 	}
@@ -568,7 +568,7 @@ public class MainView extends JFrame implements ActionListener {
 						.getScenarios(project);
 
 				// Create the view
-				showView("timeseries", new TimeSeriesView(project, scenarios));
+				showView("Timeseries", new TimeSeriesView(project, scenarios));
 			}
 		});
 	}

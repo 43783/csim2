@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
@@ -61,8 +60,8 @@ public class OntologyView extends JPanel implements ActionListener {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(null, ontology.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
+		//setBorder(new TitledBorder(null, ontology.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		JScrollPane scrollPanel = new JScrollPane();
 		ontologyPanel = new OntologyPanel(ontology, scrollPanel);

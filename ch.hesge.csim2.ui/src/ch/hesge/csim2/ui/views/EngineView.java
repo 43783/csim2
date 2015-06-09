@@ -7,10 +7,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 
 import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.ui.comp.EngineTable;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class EngineView extends JPanel implements ActionListener {
@@ -22,6 +23,7 @@ public class EngineView extends JPanel implements ActionListener {
 	 * Default constructor.
 	 */
 	public EngineView() {
+		setBorder(new LineBorder(Color.LIGHT_GRAY));
 		initComponent();
 	}
 
@@ -31,7 +33,7 @@ public class EngineView extends JPanel implements ActionListener {
 	private void initComponent() {
 		
 		setLayout(new BorderLayout(0, 0));
-		setBorder(new TitledBorder(null, null, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		//setBorder(new TitledBorder(null, null, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		engineTable = new EngineTable();
 		engineTable.addActionListener(this);

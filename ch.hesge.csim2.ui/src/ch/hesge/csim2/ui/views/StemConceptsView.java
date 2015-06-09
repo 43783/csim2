@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -42,8 +41,8 @@ public class StemConceptsView extends JPanel {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(null, "Stem concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
+		//setBorder(new TitledBorder(null, "Stem concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		// Initialize split panes
 		JSplitPane splitPanel1 = new JSplitPane();
