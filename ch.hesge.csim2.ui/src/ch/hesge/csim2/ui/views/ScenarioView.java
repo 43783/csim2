@@ -41,7 +41,6 @@ public class ScenarioView extends JPanel implements ActionListener {
 	private void initComponent() {
 
 		setLayout(new BorderLayout(0, 0));
-		//setBorder(new TitledBorder(null, scenario.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		scenarioTable = new ScenarioTable(scenario);
 		scenarioTable.setFocusable(true);

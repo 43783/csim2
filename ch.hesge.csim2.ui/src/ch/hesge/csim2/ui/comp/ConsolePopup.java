@@ -6,20 +6,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import ch.hesge.csim2.ui.views.ConsoleView2;
+import ch.hesge.csim2.ui.views.ConsoleView;
 
 @SuppressWarnings("serial")
 public class ConsolePopup extends JPopupMenu implements ActionListener {
 
 	// Private attribute
-	private ConsoleView2 owner;
+	private ConsoleView owner;
 	
 	private JMenuItem mnuClear;
 
 	/**
 	 * Default constructor
 	 */
-	public ConsolePopup(ConsoleView2 owner) {
+	public ConsolePopup(ConsoleView owner) {
 
 		this.owner = owner;
 

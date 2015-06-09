@@ -19,7 +19,6 @@ public class ProjectView extends JPanel {
 	public ProjectView() {
 
 		setLayout(new BorderLayout(0, 0));
-		//setBorder(null);
 
 		JScrollPane scrollPane = new JScrollPane();
 

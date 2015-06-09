@@ -31,7 +31,6 @@ public class MatchingView extends JPanel {
 	private void initComponent() {
 
 		setLayout(new BorderLayout(0, 0));
-		//setBorder(new TitledBorder(null, "Matchings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		// Initialize matching table
 		matchingTable = new MatchingTable(matchings);

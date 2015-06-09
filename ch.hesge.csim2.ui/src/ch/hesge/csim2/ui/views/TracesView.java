@@ -78,7 +78,6 @@ public class TracesView extends JPanel {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Traces", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new BorderLayout(0, 0));
 
 		// Create the setting panel

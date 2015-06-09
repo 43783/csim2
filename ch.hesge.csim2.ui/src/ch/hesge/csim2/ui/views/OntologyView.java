@@ -61,7 +61,6 @@ public class OntologyView extends JPanel implements ActionListener {
 	private void initComponent() {
 
 		setLayout(new BorderLayout(0, 0));
-		//setBorder(new TitledBorder(null, ontology.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		JScrollPane scrollPanel = new JScrollPane();
 		ontologyPanel = new OntologyPanel(ontology, scrollPanel);

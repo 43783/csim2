@@ -31,6 +31,9 @@ import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.MultipleCDockable;
+import bibliothek.gui.dock.common.SingleCDockable;
+import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
@@ -353,7 +356,13 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	public void showView(String title, JComponent view) {
 
-		if (view != null) {
+		MultipleCDockable dockable1 = dockControl.getMultipleDockable(title);
+		SingleCDockable dockable2 = dockControl.getSingleDockable(title);
+		
+		if (dockable1 != null) {
+			dockable1.setVisible(true);
+		}
+		else {
 
 			DefaultMultipleCDockable editor = new DefaultMultipleCDockable(null);
 			editor.setTitleText(title);
@@ -378,6 +387,13 @@ public class MainView extends JFrame implements ActionListener {
 
 			setTitle("Csim2 Environment");
 			this.project = null;
+			
+			/*
+			for (int i = 0 ; i < workingArea.getWorkingArea().getCDockableCount(); i++) {
+				MultipleCDockable dockable = (MultipleCDockable)CDockable(i);
+				dockControl.removeDockable(dockable);
+			}
+			*/
 			// showView(null);
 
 			mnuClose.setEnabled(false);
@@ -400,6 +416,7 @@ public class MainView extends JFrame implements ActionListener {
 			this.project = project;
 			ApplicationLogic.clearCache();
 
+			//dockControl.segetRegister().gete rid.select(0,  0, width, height, dockable);
 			// consoleView.setActiveTabIndex(0);
 			consoleView.clearLogConsole();
 

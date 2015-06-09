@@ -23,7 +23,6 @@ public class EngineView extends JPanel implements ActionListener {
 	 * Default constructor.
 	 */
 	public EngineView() {
-		setBorder(new LineBorder(Color.LIGHT_GRAY));
 		initComponent();
 	}
 
@@ -33,7 +32,7 @@ public class EngineView extends JPanel implements ActionListener {
 	private void initComponent() {
 		
 		setLayout(new BorderLayout(0, 0));
-		//setBorder(new TitledBorder(null, null, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new LineBorder(Color.LIGHT_GRAY));
 		
 		engineTable = new EngineTable();
 		engineTable.addActionListener(this);

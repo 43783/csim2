@@ -46,7 +46,6 @@ public class StemSourcesView extends JPanel {
 	private void initComponent() {
 
 		setLayout(new BorderLayout(0, 0));
-		//setBorder(new TitledBorder(null, "Stem sources", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		// Initialize split panes
 		JSplitPane splitPanel1 = new JSplitPane();
