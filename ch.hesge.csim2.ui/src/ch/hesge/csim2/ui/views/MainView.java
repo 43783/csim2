@@ -26,10 +26,9 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.defaults.DefaultDockingPort;
-
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CGrid;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
@@ -71,14 +70,8 @@ public class MainView extends JFrame implements ActionListener {
 	private JMenuItem mnuSettings;
 	private JMenuItem mnuAbout;
 
-	private DefaultDockingPort dockPort;
-	
-	/*
-	private DockController dockingController;
-	
-	private CControl dockingControl;
-	private CGrid dockingGrid;
-	*/
+	private CControl dockControl;
+	private CGrid dockGrid;
 	
 	private ProjectView projectView;
 	private ConsoleView consoleView;
@@ -129,15 +122,41 @@ public class MainView extends JFrame implements ActionListener {
 		initMenu();
 		initStatusbar();
 
-		dockPort = new DefaultDockingPort();
-		dockPort.setSingleTabAllowed(true);
-		getContentPane().add(dockPort, BorderLayout.CENTER);
+		// Initialize docking area
+		dockControl = new CControl(this);
+		dockGrid = new CGrid(dockControl);
+		getContentPane().add(dockControl.getContentArea(), BorderLayout.CENTER);
+
+		DefaultSingleCDockable docking;
 
 		// Create project view
 		projectView = new ProjectView();
-		DockingManager.registerDockable(projectView);
-		dockPort.dock(projectView, DockingConstants.CENTER_REGION);
+		docking = new DefaultSingleCDockable("project", "Project");
+		docking.setMinimizable(false);
+		docking.setMaximizable(false);
+		docking.setStackable(false);
+		docking.setExternalizable(false);
+		docking.setCloseable(false);
+		docking.add(projectView);
+		dockGrid.add(0, 0, 40, 100, docking);
 		
+		// Create console view
+		consoleView = new ConsoleView();
+		docking = new DefaultSingleCDockable("console", "Console");
+		docking.setMinimizable(false);
+		docking.setExternalizable(false);
+		docking.setCloseable(false);
+		docking.add(consoleView);
+		dockGrid.add(40, 50, 60, 100, docking);
+
+		// Create console view
+		engineView = new EngineView();
+		docking = new DefaultSingleCDockable("engines", "Engines");
+		docking.setMinimizable(false);
+		docking.setExternalizable(false);
+		docking.setCloseable(false);
+		docking.add(engineView);
+		dockGrid.add(40, 50, 60, 100, docking);
 		
 		
 		
