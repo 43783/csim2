@@ -1,26 +1,20 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 
 import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.ui.comp.EngineTable;
 
-import javax.swing.border.LineBorder;
-
-import com.vldocking.swing.docking.DockKey;
-import com.vldocking.swing.docking.Dockable;
-
-import java.awt.Color;
-
 @SuppressWarnings("serial")
-public class EngineView extends JPanel implements Dockable, ActionListener {
+public class EngineView extends JPanel implements ActionListener {
 
 	// Private attributes
 	private EngineTable engineTable;
@@ -56,14 +50,6 @@ public class EngineView extends JPanel implements Dockable, ActionListener {
 			mainView.startEngine(engineTable.getSelectedValue());
 		}
 	}
-
-	public DockKey getDockKey(){
-        return new DockKey("engines");
-    }
-	
-    public Component getComponent(){
-        return this;
-    }
 	
 	/**
 	 * Set engines to display.
