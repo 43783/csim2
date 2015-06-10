@@ -27,7 +27,6 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import bibliothek.gui.Dockable;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CWorkingArea;
@@ -86,8 +85,8 @@ public class MainView extends JFrame implements ActionListener {
 
 	private Dimension defaultSize = new Dimension(1024, 768);
 
-	private CControl dockControl;
-	private CWorkingArea dockWorkspace;
+	private CControl dockingControl;
+	private CWorkingArea workspace;
 	private DefaultSingleCDockable projectDockable;
 	private DefaultSingleCDockable consoleDockable;
 	private DefaultSingleCDockable engineDockable;
@@ -124,8 +123,8 @@ public class MainView extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Initialize docking area
-		dockControl = new CControl(this);
-		getContentPane().add(dockControl.getContentArea(), BorderLayout.CENTER);
+		dockingControl = new CControl(this);
+		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
 
 		// Initialize application icons
 		List<Image> appIcons = new ArrayList<>();
@@ -192,7 +191,7 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	private void initLayout() {
 
-		CGrid dockGrid = new CGrid(dockControl);
+		CGrid dockGrid = new CGrid(dockingControl);
 
 		// Create project view
 		projectView = new ProjectView();
@@ -261,11 +260,11 @@ public class MainView extends JFrame implements ActionListener {
 		dockGrid.add(40, 60, 100, 40, engineDockable);
 
 		// Create the workspace area
-		dockWorkspace = dockControl.createWorkingArea("workspace");
-		dockGrid.add(40, 0, 100, 60, dockWorkspace);
+		workspace = dockingControl.createWorkingArea("workspace");
+		dockGrid.add(40, 0, 100, 60, workspace);
 
 		// Deploy dockings on dock control
-		dockControl.getContentArea().deploy(dockGrid);
+		dockingControl.getContentArea().deploy(dockGrid);
 	}
 
 	/**
@@ -396,24 +395,8 @@ public class MainView extends JFrame implements ActionListener {
 		dockable.setRemoveOnClose(true);
 		dockable.add(view);
 
-		dockWorkspace.show(dockable);
+		workspace.show(dockable);
 		dockable.toFront();
-	}
-
-	/**
-	 * Close all view available in the workspace.
-	 */
-	private void closeAllViews() {
-
-		for (int i = 0; i < dockWorkspace.getStation().getDockableCount(); i++) {
-
-			Dockable dockable = dockWorkspace.getStation().getDockable(i);
-
-			if (dockable instanceof DefaultMultipleCDockable) {
-				DefaultMultipleCDockable dockDocument = (DefaultMultipleCDockable) dockable;
-				dockDocument.setVisible(false);
-			}
-		}
 	}
 
 	/**
@@ -441,9 +424,9 @@ public class MainView extends JFrame implements ActionListener {
 			mnuSave.setEnabled(false);
 
 			// Clear application data
-			closeAllViews();
 			this.project = null;
 			ApplicationLogic.clearCache();
+			workspace.getStation().removeAllDockables();
 			application.setProject(null);
 			projectView.getProjectTree().setProject(null);
 		}
@@ -455,12 +438,9 @@ public class MainView extends JFrame implements ActionListener {
 			mnuSave.setEnabled(true);
 
 			// Clear application data
-			closeAllViews();
 			this.project = project;
 			ApplicationLogic.clearCache();
-
-			//dockControl.segetRegister().gete rid.select(0,  0, width, height, dockable);
-			// consoleView.setActiveTabIndex(0);
+			workspace.getStation().removeAllDockables();
 			consoleView.clearLogConsole();
 
 			SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
@@ -501,7 +481,7 @@ public class MainView extends JFrame implements ActionListener {
 			consoleDockable.setVisible(mnuConsole.isSelected());
 		}
 		else if (e.getSource() == mnuCloseAll) {
-			closeAllViews();
+			workspace.getStation().removeAllDockables();
 		}
 		else if (e.getSource() == mnuSettings) {
 			new SettingsDialog(this).setVisible(true);
