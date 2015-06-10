@@ -31,6 +31,10 @@ import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.MultipleCDockable;
+import bibliothek.gui.dock.common.intern.CControlAccess;
+import bibliothek.gui.dock.common.intern.CDockable;
+import bibliothek.gui.dock.common.intern.DefaultCDockable;
 import bibliothek.gui.dock.common.theme.ThemeMap;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
@@ -83,6 +87,10 @@ public class MainView extends JFrame implements ActionListener {
 
 	private Dimension defaultSize = new Dimension(1024, 768);
 
+	private DefaultSingleCDockable projectDockable;
+	private DefaultSingleCDockable consoleDockable;
+	private DefaultSingleCDockable engineDockable;
+	
 	/**
 	 * Default constructor
 	 */
@@ -149,46 +157,44 @@ public class MainView extends JFrame implements ActionListener {
 		dockGrid = new CGrid(dockControl);
 		getContentPane().add(dockControl.getContentArea(), BorderLayout.CENTER);
 
-		DefaultSingleCDockable docking;
-
 		// Create project view
 		projectView = new ProjectView();
-		docking = new DefaultSingleCDockable("project", "Project");
-		docking.setMinimizable(false);
-		docking.setMaximizable(false);
-		docking.setStackable(false);
-		docking.setExternalizable(false);
-		docking.setCloseable(false);
-		docking.add(projectView);
-		dockGrid.add(0, 0, 40, 100, docking);
-
-		// Create workspace area
-		workingArea = dockControl.createWorkingArea("workspace");
-		dockGrid.add(40, 0, 100, 60, workingArea);
+		projectDockable = new DefaultSingleCDockable("project", "Project");
+		projectDockable.setMinimizable(false);
+		projectDockable.setMaximizable(false);
+		projectDockable.setStackable(false);
+		projectDockable.setExternalizable(false);
+		projectDockable.setCloseable(false);
+		projectDockable.add(projectView);
+		dockGrid.add(0, 0, 40, 100, projectDockable);
 
 		// Create console view
 		consoleView = new ConsoleView();
-		docking = new DefaultSingleCDockable("console", "Console");
-		docking.setMinimizable(false);
-		docking.setExternalizable(false);
-		docking.setCloseable(false);
-		docking.add(consoleView);
-		dockGrid.add(40, 60, 100, 40, docking);
+		consoleDockable = new DefaultSingleCDockable("console", "Console");
+		consoleDockable.setMinimizable(false);
+		consoleDockable.setExternalizable(false);
+		consoleDockable.setCloseable(false);
+		consoleDockable.add(consoleView);
+		dockGrid.add(40, 60, 100, 40, consoleDockable);
 
 		// Create console view
 		engineView = new EngineView();
-		docking = new DefaultSingleCDockable("engines", "Engines");
-		docking.setMinimizable(false);
-		docking.setExternalizable(false);
-		docking.setCloseable(false);
-		docking.add(engineView);
-		dockGrid.add(40, 60, 100, 40, docking);
-
+		engineDockable = new DefaultSingleCDockable("engines", "Engines");
+		engineDockable.setMinimizable(false);
+		engineDockable.setExternalizable(false);
+		engineDockable.setCloseable(false);
+		engineDockable.add(engineView);
+		dockGrid.add(40, 60, 100, 40, engineDockable);
+		
+		// Create workspace area
+		workingArea = dockControl.createWorkingArea("workspace");
+		dockGrid.add(40, 0, 100, 60, workingArea);
+		
 		// Deploy dockings on control
 		dockControl.getContentArea().deploy(dockGrid);
 
 		// Clear current project
-		setProject(null);
+		//setProject(null);
 
 		// Initialize the view when visible
 		SwingUtils.invokeWhenVisible(this.getRootPane(), new Runnable() {
@@ -359,10 +365,35 @@ public class MainView extends JFrame implements ActionListener {
 		editor.setMinimizable(false);
 		editor.setExternalizable(false);
 		editor.setCloseable(true);
+		editor.setRemoveOnClose(true);		
 		editor.add(view);
 
 		workingArea.show(editor);
 		editor.toFront();
+
+		//workingArea.add(editor);
+		
+    	//workingArea.getControl().addDockable(editor);
+        
+		/*
+    	editor.setLocationsAsideFocused();
+    	editor.setVisible(true);
+    	editor.toFront();
+    	*/
+    	
+    	/*
+    	CControlAccess access = control();
+        if( access != null ){
+            access.getOwner().addDockable( dockable );
+        } 
+        */   	
+    	
+    	//workingArea.getControl().removeDockable(editor);
+		
+    	/*
+		workingArea.show(editor);
+		editor.toFront();
+		*/
 	}
 
 	/**
@@ -376,13 +407,26 @@ public class MainView extends JFrame implements ActionListener {
 
 			setTitle("Csim2 Environment");
 			this.project = null;
+
+			for (int i = 0 ; i < workingArea.getControl().getCDockableCount(); i++) {
+				workingArea.getControl().getCDockable(i).setVisible(false);
+			}
+			//dockable.setVisible( false )
 			
 			/*
-			for (int i = 0 ; i < workingArea.getWorkingArea().getCDockableCount(); i++) {
-				MultipleCDockable dockable = (MultipleCDockable)CDockable(i);
+			for (int i = 0 ; i < workingArea.getControl().getCDockableCount(); i++) {
+				DefaultCDockable dockable = (DefaultCDockable) workingArea.getControl().getCDockable(i);
+				System.out.println("dockable: " + dockable);
+			}
+			*/
+
+			/*
+			for (int i = 0 ; i < workingArea.getControl().getCDockableCount(); i++) {
+				MultipleCDockable dockable = (MultipleCDockable) workingArea.getControl().getCDockable(i);
 				dockControl.removeDockable(dockable);
 			}
 			*/
+			
 			// showView(null);
 
 			mnuClose.setEnabled(false);
@@ -444,6 +488,8 @@ public class MainView extends JFrame implements ActionListener {
 		} else if (e.getSource() == mnuExit) {
 			System.exit(0);
 		}
+		
+		//setLocationAside with other dockable
 	}
 
 	/**
