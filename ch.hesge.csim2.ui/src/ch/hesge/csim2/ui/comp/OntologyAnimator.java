@@ -12,7 +12,7 @@ import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.ui.utils.Line;
-import ch.hesge.csim2.ui.utils.SwingUtils;
+import ch.hesge.csim2.ui.utils.PaintUtils;
 
 public class OntologyAnimator implements Runnable {
 
@@ -120,10 +120,10 @@ public class OntologyAnimator implements Runnable {
 
 						// Now we retrieve the line linking the two rectangles
 						if (isIntersecting) {
-							linkLine = SwingUtils.getDiagonal(sourceBounds, targetBounds);
+							linkLine = PaintUtils.getDiagonal(sourceBounds, targetBounds);
 						}
 						else {
-							linkLine = SwingUtils.getLine(sourceBounds, targetBounds);
+							linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
 						}
 
 						if (linkLine != null) {
@@ -133,13 +133,13 @@ public class OntologyAnimator implements Runnable {
 							int vy = linkLine.y2 - linkLine.y1;
 
 							// Retrieve segment length
-							double distance = SwingUtils.getLength(linkLine);
+							double distance = PaintUtils.getLength(linkLine);
 
 							// If concepts are intersecting, we should separate them
 							if (isIntersecting) {
 
 								// Compute distance amplification factor
-								double ratio = SwingUtils.getAmplificationRatio(distance, 200d);
+								double ratio = PaintUtils.getAmplificationRatio(distance, 200d);
 
 								// Calculate required variation in x and y
 								targetBounds.x += ratio * vx;
@@ -150,7 +150,7 @@ public class OntologyAnimator implements Runnable {
 							else if (distance < 50d) {
 
 								// Compute distance amplification factor
-								double ratio = SwingUtils.getAmplificationRatio(distance, 50d);
+								double ratio = PaintUtils.getAmplificationRatio(distance, 50d);
 
 								// Calculate required variation in x and y
 								targetBounds.x += ratio * vx;
@@ -161,7 +161,7 @@ public class OntologyAnimator implements Runnable {
 							else if (isTargetLinkedToSource && distance > 50d) {
 
 								// Compute distance compression factor
-								double ratio = SwingUtils.getReductionRatio(distance, 50d);
+								double ratio = PaintUtils.getReductionRatio(distance, 50d);
 
 								// Calculate required variation in x and y
 								targetBounds.x -= ratio * vx;

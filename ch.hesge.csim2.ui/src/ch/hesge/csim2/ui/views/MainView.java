@@ -54,7 +54,7 @@ import ch.hesge.csim2.ui.dialogs.AboutDialog;
 import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ProjectDialog;
 import ch.hesge.csim2.ui.dialogs.SettingsDialog;
-import ch.hesge.csim2.ui.utils.SwingConsole;
+import ch.hesge.csim2.ui.utils.SwingAppender;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 /**
@@ -215,7 +215,7 @@ public class MainView extends JFrame implements ActionListener {
 		consoleDockable.setExternalizable(false);
 		consoleDockable.setCloseable(true);
 		consoleDockable.add(consoleView);
-		SwingConsole.setTextArea(consoleView.getLogArea());
+		SwingAppender.setTextArea(consoleView.getLogArea());
 		consoleDockable.addCDockableStateListener(new CDockableStateListener() {
 			@Override
 			public void visibilityChanged(CDockable dockable) {
