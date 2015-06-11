@@ -2,7 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.35-bin.jar" sourcepath="lib/mysql-connector-java-5.1.35-src.jar"/>
-	<classpathentry kind="lib" path="lib/commons-math-3-3.5-bin.jar" sourcepath="lib/commons-math-3-3.5-src.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math.3.3.5.jar" sourcepath="lib/commons-math.3.3.5-src.jar"/>
+	<classpathentry kind="lib" path="lib/ehcache-2.10.0.jar" sourcepath="lib/ehcache-2.10.0-src.zip"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.35.jar" sourcepath="lib/mysql-connector-java-5.1.35-src.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.12.jar" sourcepath="lib/slf4j-api-1.7.12-src.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-jdk14-1.7.12.jar" sourcepath="lib/slf4j-jdk14-1.7.12-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -138,17 +140,10 @@ public class MainView extends JFrame implements ActionListener {
 		initMenu();
 		initStatusbar();
 		initLayout();
+		initListeners();
 
 		// Clear current project
 		setProject(null);
-
-		// Initialize the view when visible
-		SwingUtils.invokeWhenVisible(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-				initView();
-			}
-		});
 	}
 
 	/**
@@ -375,6 +370,25 @@ public class MainView extends JFrame implements ActionListener {
 		getContentPane().add(statusPanel, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Initialize the application listener.
+	 */
+	private void initListeners() {
+		
+		this.addWindowListener(new WindowAdapter() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				initView();
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				ApplicationLogic.shutdownApplication(application);
+			}
+		});
+	}
+	
 	/**
 	 * Show the view passed in argument within the workspace area.
 	 * 

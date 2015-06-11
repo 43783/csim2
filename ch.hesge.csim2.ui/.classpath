@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.core"/>
 	<classpathentry kind="src" path="conf"/>
-	<classpathentry kind="lib" path="lib/weblaf-1.28.jar" sourcepath="lib/weblaf-src-1.28.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.stemconceptanalyzer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.cppanalyzer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.cppinstrumenter"/>
@@ -17,11 +16,15 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javaanalyzer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javainstrumenter"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.methodconceptmatcher"/>
-	<classpathentry kind="lib" path="lib/commons-math-3-3.5.jar" sourcepath="lib/commons-math-3-3.5.src.jar"/>
-	<classpathentry kind="lib" path="lib/docking-frames-common-1.1.2p14d.jar" sourcepath="lib/docking-frames-common-1.1.2p14d.src.jar"/>
-	<classpathentry kind="lib" path="lib/docking-frames-core-1.1.2p14d.jar" sourcepath="lib/docking-frames-core-1.1.2p14d.src.jar"/>
-	<classpathentry kind="lib" path="lib/jfreechart-1.0.19.jar" sourcepath="lib/jfreechart-1.0.19.src.jar"/>
-	<classpathentry kind="lib" path="lib/jcommon-1.0.23.jar" sourcepath="lib/jcommon-1.0.23.src.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math-3.3.5.jar" sourcepath="lib/commons-math-3.3.5-src.jar"/>
+	<classpathentry kind="lib" path="lib/docking-frames-common-1.1.2p14d.jar" sourcepath="lib/docking-frames-common-1.1.2p14d-src.jar"/>
+	<classpathentry kind="lib" path="lib/docking-frames-core-1.1.2p14d.jar" sourcepath="lib/docking-frames-core-1.1.2p14d-src.jar"/>
+	<classpathentry kind="lib" path="lib/ehcache-2.10.0.jar" sourcepath="lib/ehcache-2.10.0-src.zip"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.23.jar" sourcepath="lib/jcommon-1.0.23-src.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.19.jar" sourcepath="lib/jfreechart-1.0.19-src.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.35.jar" sourcepath="lib/mysql-connector-java-5.1.35-src.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.12.jar" sourcepath="lib/slf4j-api-1.7.12-src.jar"/>
+	<classpathentry kind="lib" path="lib/weblaf-1.28.jar" sourcepath="lib/weblaf-1.28-src.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

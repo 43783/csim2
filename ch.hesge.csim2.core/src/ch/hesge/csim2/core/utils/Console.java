@@ -3,8 +3,9 @@ package ch.hesge.csim2.core.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class centralize all request to display message on the system console.
@@ -22,8 +23,9 @@ public class Console {
 	private static boolean		isEchoOn;
 
 	// Create a local logger
-	private static final Logger	LOGGER	= Logger.getLogger(Console.class.getName());
-
+	//private static final Logger	LOGGER	= Logger.getLogger(Console.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Console.class);
+	
 	/**
 	 * Static initializor
 	 */
@@ -63,8 +65,8 @@ public class Console {
 			System.out.println(message);
 		}
 
-		LOGGER.log(Level.FINE, message);
-
+		LOGGER.info(message);
+		//LOGGER.log(Level.FINE, message);
 	}
 
 	/**
@@ -75,7 +77,8 @@ public class Console {
 	 */
 	public static void writeError(String message) {
 		System.out.println(message);
-		LOGGER.log(Level.SEVERE, message);
+		LOGGER.error(message);
+		//LOGGER.log(Level.SEVERE, message);
 	}
 
 	/**
@@ -85,7 +88,8 @@ public class Console {
 	 *            the string to display on the console
 	 */
 	public static void writeDebug(String message) {
-		LOGGER.log(Level.FINEST, message);
+		LOGGER.debug(message);
+		//LOGGER.log(Level.FINEST, message);
 	}
 
 	/**
