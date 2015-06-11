@@ -54,7 +54,7 @@ public class OntologyDao {
 			ontologyList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(OntologyDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return ontologyList;
@@ -81,7 +81,7 @@ public class OntologyDao {
 			ontology = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(OntologyDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return ontology;
@@ -108,7 +108,7 @@ public class OntologyDao {
 			ontologyList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(OntologyDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return ontologyList;
@@ -136,7 +136,7 @@ public class OntologyDao {
 			ontology.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(OntologyDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -160,7 +160,7 @@ public class OntologyDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(OntologyDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -183,7 +183,7 @@ public class OntologyDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(OntologyDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

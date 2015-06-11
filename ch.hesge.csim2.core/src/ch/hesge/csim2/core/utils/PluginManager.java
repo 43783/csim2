@@ -108,7 +108,7 @@ public final class PluginManager<T> implements Iterable<T> {
 	private void loadPlugins() {
 
 		pluginList.clear();
-		Console.writeDebug("loading " + pluginInterface.getSimpleName() + " plugins defined in " + this.configPath + ".");
+		Console.writeDebug(PluginManager.class, "loading " + pluginInterface.getSimpleName() + " plugins defined in " + this.configPath + ".");
 
 		// Retrieve path to plugin configuration file
 		Path configurationPath = Paths.get(configPath);
@@ -126,7 +126,7 @@ public final class PluginManager<T> implements Iterable<T> {
 				String[] configLineItems = line.split("=");
 
 				if (configLineItems.length != 2) {
-					Console.writeError("wrong formatted entry '" + line + "' found in file " + configurationPath + ".");
+					Console.writeError(PluginManager.class, "wrong formatted entry '" + line + "' found in file " + configurationPath + ".");
 				}
 				else {
 
@@ -141,14 +141,14 @@ public final class PluginManager<T> implements Iterable<T> {
 
 						if (pluginInstance != null) {
 							pluginList.add(pluginInstance);
-							Console.writeDebug(pluginInstance.getClass().getSimpleName() + " plugin loaded.");
+							Console.writeDebug(PluginManager.class, pluginInstance.getClass().getSimpleName() + " plugin loaded.");
 						}
 					}
 				}
 			}
 		}
 		catch (IOException e) {
-			Console.writeError("error while reading config file '" + configurationPath + ": " + StringUtils.toString(e));
+			Console.writeError(PluginManager.class, "error while reading config file '" + configurationPath + ": " + StringUtils.toString(e));
 		}
 	}
 
@@ -194,7 +194,7 @@ public final class PluginManager<T> implements Iterable<T> {
 
 			// Check if it implements correct interface
 			if (!pluginInterface.isAssignableFrom(pluginClass)) {
-				Console.writeError("class " + pluginClassName + " does not implement interface " + pluginInterface.getName() + ".");
+				Console.writeError(PluginManager.class, "class " + pluginClassName + " does not implement interface " + pluginInterface.getName() + ".");
 			}
 
 			// Try to cast instance to correct class
@@ -203,12 +203,12 @@ public final class PluginManager<T> implements Iterable<T> {
 					pluginInstance = pluginInterface.cast(pluginClass.newInstance());
 				}
 				catch (Throwable t) {
-					Console.writeError("unable to casting " + pluginClassName + " into interface " + pluginInterface.getName() + ": " + StringUtils.toString(t));
+					Console.writeError(PluginManager.class, "unable to casting " + pluginClassName + " into interface " + pluginInterface.getName() + ": " + StringUtils.toString(t));
 				}
 			}
 		}
 		catch (ClassNotFoundException e) {
-			Console.writeError("ClassNotFoundException while loading class " + pluginClassName + ": " + StringUtils.toString(e));
+			Console.writeError(PluginManager.class, "ClassNotFoundException while loading class " + pluginClassName + ": " + StringUtils.toString(e));
 		}
 
 		return pluginInstance;

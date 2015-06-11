@@ -56,7 +56,7 @@ public class ScenarioStepDao {
 			scenarioSteps = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioStepDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return scenarioSteps;
@@ -88,7 +88,7 @@ public class ScenarioStepDao {
 			scenarioStep = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioStepDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return scenarioStep;
@@ -116,7 +116,7 @@ public class ScenarioStepDao {
 			step.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioStepDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -139,7 +139,7 @@ public class ScenarioStepDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioStepDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -162,7 +162,7 @@ public class ScenarioStepDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioStepDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

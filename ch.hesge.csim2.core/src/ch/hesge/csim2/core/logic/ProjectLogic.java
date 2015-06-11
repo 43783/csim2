@@ -52,25 +52,25 @@ class ProjectLogic {
 	 */
 	public static void loadProject(Project project) {
 
-		Console.writeLine("loading application: " + project.getName());
+		Console.writeInfo(ProjectLogic.class, "loading application: " + project.getName());
 
 		// Load scenarios
 		List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
 		project.getScenarios().clear();
 		project.getScenarios().addAll(scenarios);
-		Console.writeLine(" scenarios: " + project.getScenarios().size());
+		Console.writeInfo(ProjectLogic.class, " scenarios: " + project.getScenarios().size());
 
 		// Load ontologies
 		List<Ontology> ontologies = ApplicationLogic.getOntologies(project);
 		project.getOntologies().clear();
 		project.getOntologies().addAll(ontologies);
-		Console.writeLine(" ontologies: " + project.getOntologies().size());
+		Console.writeInfo(ProjectLogic.class, " ontologies: " + project.getOntologies().size());
 
 		// Load sources
 		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
 		project.getSourceClasses().clear();
 		project.getSourceClasses().addAll(sourceClasses);
-		Console.writeLine(" source-classes: " + project.getSourceClasses().size());
+		Console.writeInfo(ProjectLogic.class, " source-classes: " + project.getSourceClasses().size());
 	}
 
 	/**
@@ -81,7 +81,7 @@ class ProjectLogic {
 	 */
 	public static void saveProject(Project project) {
 
-		Console.writeLine("saving application: " + project.getName());
+		Console.writeInfo(ProjectLogic.class, "saving application: " + project.getName());
 
 		// Save scenarios
 		List<Scenario> scenarios = project.getScenarios();
@@ -90,7 +90,7 @@ class ProjectLogic {
 		}
 		
 		ApplicationLogic.saveScenarios(scenarios);
-		Console.writeLine(" scenarios: " + scenarios.size());
+		Console.writeInfo(ProjectLogic.class, " scenarios: " + scenarios.size());
 
 		// Save ontologies
 		List<Ontology> ontologies = project.getOntologies();
@@ -99,7 +99,7 @@ class ProjectLogic {
 		}
 		
 		ApplicationLogic.saveOntologies(ontologies);
-		Console.writeLine(" ontologies: " + ontologies.size());
+		Console.writeInfo(ProjectLogic.class, " ontologies: " + ontologies.size());
 
 		// Save sources
 		List<SourceClass> sourceClasses = project.getSourceClasses();
@@ -108,6 +108,6 @@ class ProjectLogic {
 		}
 		
 		ApplicationLogic.saveSourceClasses(project, sourceClasses);
-		Console.writeLine(" source-classes: " + scenarios.size());
+		Console.writeInfo(ProjectLogic.class, " source-classes: " + scenarios.size());
 	}
 }

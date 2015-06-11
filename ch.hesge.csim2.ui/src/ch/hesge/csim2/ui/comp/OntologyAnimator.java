@@ -179,7 +179,7 @@ public class OntologyAnimator implements Runnable {
 				break;
 			}
 			catch (Exception e) {
-				Console.writeError(StringUtils.toString(e));
+				Console.writeError(this, StringUtils.toString(e));
 			}
 		}
 	}

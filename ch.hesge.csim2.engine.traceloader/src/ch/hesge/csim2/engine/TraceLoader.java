@@ -139,7 +139,7 @@ public class TraceLoader implements IEngine {
 				inputFile = (String) context.getProperty("filename");
 			}
 			else {
-				inputFile = Console.readLine("enter trace path: ");
+				throw new EngineException("missing trace path specified !");
 			}
 
 			// Now, check if input file exists
@@ -149,7 +149,7 @@ public class TraceLoader implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -200,7 +200,7 @@ public class TraceLoader implements IEngine {
 						trace.setSequenceNumber(++traceCounter);
 						ApplicationLogic.saveTrace(trace);
 						threadStack.push(trace);
-						Console.writeLine("  trace entering created: " + trace.getSequenceNumber());
+						Console.writeInfo(this, "  trace entering created: " + trace.getSequenceNumber());
 					}
 
 					// Trace exiting, so compute duration trace
@@ -214,26 +214,26 @@ public class TraceLoader implements IEngine {
 						trace.setSequenceNumber(++traceCounter);
 						trace.setDuration(traceDuration);
 						ApplicationLogic.saveTrace(trace);
-						Console.writeLine("  trace exiting created:  " + trace.getSequenceNumber());
+						Console.writeInfo(this, "  trace exiting created:  " + trace.getSequenceNumber());
 					}
 				}
 
 				// Otherwise show error line
 				else {
-					Console.writeError(" error in line: " + lineCounter + ", content: " + traceLine);
+					Console.writeError(this, " error in line: " + lineCounter + ", content: " + traceLine);
 					errorCounter++;
 				}
 
 				lineCounter++;
 			}
 
-			Console.writeLine("TraceLoader report:");
-			Console.writeLine("  parsed lines:   " + (lineCounter - 1));
-			Console.writeLine("  trace created:  " + traceCounter);
-			Console.writeLine("  error detected: " + errorCounter);
+			Console.writeInfo(this, "TraceLoader report:");
+			Console.writeInfo(this, "  parsed lines:   " + (lineCounter - 1));
+			Console.writeInfo(this, "  trace created:  " + traceCounter);
+			Console.writeInfo(this, "  error detected: " + errorCounter);
 		}
 		catch (Exception e) {
-			Console.writeError("unexpected error while parsing trace file: " + StringUtils.toString(e));
+			Console.writeError(this, "unexpected error while parsing trace file: " + StringUtils.toString(e));
 		}
 	}
 

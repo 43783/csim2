@@ -61,7 +61,7 @@ public class TraceDao {
 			trace = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return trace;
@@ -88,7 +88,7 @@ public class TraceDao {
 			traceList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return traceList;
@@ -115,7 +115,7 @@ public class TraceDao {
 			smallestSequenceNumber = QueryEngine.queryForScalar(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return smallestSequenceNumber;
@@ -142,7 +142,7 @@ public class TraceDao {
 			greatestSequenceNumber = QueryEngine.queryForScalar(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return greatestSequenceNumber;
@@ -175,7 +175,7 @@ public class TraceDao {
 			});
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return uniqueMethodIds;
@@ -219,7 +219,7 @@ public class TraceDao {
 			});
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return uniqueMethodIds;
@@ -248,7 +248,7 @@ public class TraceDao {
 			trace.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -271,7 +271,7 @@ public class TraceDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -295,7 +295,7 @@ public class TraceDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(TraceDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

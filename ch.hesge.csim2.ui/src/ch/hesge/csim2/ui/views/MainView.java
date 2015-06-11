@@ -54,6 +54,7 @@ import ch.hesge.csim2.ui.dialogs.AboutDialog;
 import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ProjectDialog;
 import ch.hesge.csim2.ui.dialogs.SettingsDialog;
+import ch.hesge.csim2.ui.utils.SwingConsole;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 /**
@@ -105,20 +106,6 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	private void initComponents() {
 
-		// Create the unique application instance
-		application = ApplicationLogic.createApplication();
-
-		// Load LAF specified config file (csim2.conf)
-		String defaultLAF = (String) application.getProperties().getProperty("look-and-feel");
-		if (defaultLAF != null) {
-			try {
-				UIManager.setLookAndFeel(defaultLAF);
-			}
-			catch (Exception e) {
-				Console.writeError("unable to load proper look-and-feel " + StringUtils.toString(e));
-			}
-		}
-
 		// Sets window properties
 		setTitle("Csim2 Environment");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -136,13 +123,25 @@ public class MainView extends JFrame implements ActionListener {
 		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-72x72.png")));
 		setIconImages(appIcons);
 
+		// Create the unique application instance
+		application = ApplicationLogic.createApplication();
+
+		// Load LAF specified in config file (csim2.conf)
+		String defaultLAF = (String) application.getProperties().getProperty("look-and-feel");
+		if (defaultLAF != null) {
+			try {
+				UIManager.setLookAndFeel(defaultLAF);
+			}
+			catch (Exception e) {
+				Console.writeError(this, "unable to load proper look-and-feel " + StringUtils.toString(e));
+			}
+		}
+
 		// Init main layout
 		initMenu();
 		initStatusbar();
 		initLayout();
 		initListeners();
-
-		// Clear current project
 		setProject(null);
 	}
 
@@ -176,9 +175,6 @@ public class MainView extends JFrame implements ActionListener {
 		// Populate engine table
 		List<IEngine> engineList = ApplicationLogic.getEngines();
 		engineView.setEngines(engineList);
-
-		// Redirect standard input/output to console
-		SwingUtils.redirectStandardStreams(consoleView.getLogArea());
 	}
 
 	/**
@@ -219,6 +215,7 @@ public class MainView extends JFrame implements ActionListener {
 		consoleDockable.setExternalizable(false);
 		consoleDockable.setCloseable(true);
 		consoleDockable.add(consoleView);
+		SwingConsole.setTextArea(consoleView.getLogArea());
 		consoleDockable.addCDockableStateListener(new CDockableStateListener() {
 			@Override
 			public void visibilityChanged(CDockable dockable) {
@@ -231,7 +228,7 @@ public class MainView extends JFrame implements ActionListener {
 			}
 		});
 		dockGrid.add(40, 60, 100, 40, consoleDockable);
-
+		
 		// Create engines view
 		engineView = new EngineView();
 		engineDockable = new DefaultSingleCDockable("engines");

@@ -56,7 +56,7 @@ public class SettingsDao {
 			}
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return properties;
@@ -83,7 +83,7 @@ public class SettingsDao {
 
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return settingValue;
@@ -117,7 +117,7 @@ public class SettingsDao {
 
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -148,7 +148,7 @@ public class SettingsDao {
 
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 }

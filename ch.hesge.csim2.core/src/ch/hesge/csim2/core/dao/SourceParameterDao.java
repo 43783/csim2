@@ -58,7 +58,7 @@ public class SourceParameterDao {
 			referenceList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceParameterDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return referenceList;
@@ -86,7 +86,7 @@ public class SourceParameterDao {
 			referenceList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceParameterDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return referenceList;
@@ -114,7 +114,7 @@ public class SourceParameterDao {
 			sourceParameter.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceParameterDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -137,7 +137,7 @@ public class SourceParameterDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceParameterDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -158,7 +158,7 @@ public class SourceParameterDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceParameterDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

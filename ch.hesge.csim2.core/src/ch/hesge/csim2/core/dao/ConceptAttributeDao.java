@@ -55,7 +55,7 @@ public class ConceptAttributeDao {
 			attributeList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ConceptAttributeDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return attributeList;
@@ -83,7 +83,7 @@ public class ConceptAttributeDao {
 			conceptAttribute.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ConceptAttributeDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -106,7 +106,7 @@ public class ConceptAttributeDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ConceptAttributeDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -125,7 +125,7 @@ public class ConceptAttributeDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ConceptAttributeDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

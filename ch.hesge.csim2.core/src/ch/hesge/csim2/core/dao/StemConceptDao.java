@@ -58,7 +58,7 @@ public class StemConceptDao {
 			stemList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemConceptDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return stemList;
@@ -85,7 +85,7 @@ public class StemConceptDao {
 			stemList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemConceptDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return stemList;
@@ -113,7 +113,7 @@ public class StemConceptDao {
 			stemConcept.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemConceptDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -136,7 +136,7 @@ public class StemConceptDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemConceptDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -159,7 +159,7 @@ public class StemConceptDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemConceptDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

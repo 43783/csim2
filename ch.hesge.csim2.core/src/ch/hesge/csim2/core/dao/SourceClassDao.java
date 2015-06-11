@@ -57,7 +57,7 @@ public class SourceClassDao {
 			classList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return classList;
@@ -103,7 +103,7 @@ public class SourceClassDao {
 			});
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return classnamesMap;
@@ -130,7 +130,7 @@ public class SourceClassDao {
 			sourceClass.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -152,7 +152,7 @@ public class SourceClassDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -173,7 +173,7 @@ public class SourceClassDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

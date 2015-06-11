@@ -52,7 +52,7 @@ public class ProjectDao {
 			projectList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ProjectDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return projectList;
@@ -79,7 +79,7 @@ public class ProjectDao {
 			project = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ProjectDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return project;
@@ -107,7 +107,7 @@ public class ProjectDao {
 			project.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ProjectDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -130,7 +130,7 @@ public class ProjectDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ProjectDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -153,7 +153,7 @@ public class ProjectDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ProjectDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

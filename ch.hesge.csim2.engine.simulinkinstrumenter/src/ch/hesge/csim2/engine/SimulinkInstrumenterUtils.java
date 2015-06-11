@@ -38,31 +38,31 @@ public class SimulinkInstrumenterUtils {
 
 		if (block.isParameter()) {
 			// Trace parameters
-			Console.writeLine(indentation + block.getName() + " = " + block.getValue());
+			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + block.getName() + " = " + block.getValue());
 		}
 		else {
 			
 			// Trace block elements
-			Console.writeLine(indentation + block.getNodeType() + " [" + block.getSourceLine() + "]");
+			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + block.getNodeType() + " [" + block.getSourceLine() + "]");
 
 			for (SimulinkBlock inputPort : block.getInputPorts()) {
 				for (SimulinkBlock output : inputPort.getOutputs()) {
-					Console.writeLine(indentation + "  inport:    " + inputPort.getName() + "[" + inputPort.getParent().getName() + "] => " + output.getName() + "[" + output.getParent().getName() + "]");
+					Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  inport:    " + inputPort.getName() + "[" + inputPort.getParent().getName() + "] => " + output.getName() + "[" + output.getParent().getName() + "]");
 				}
 			}
 
 			for (SimulinkBlock outputPort : block.getOutputPorts()) {
 				for (SimulinkBlock inputs : outputPort.getInputs()) {
-					Console.writeLine(indentation + "  outport:   " + inputs.getName() + "[" + inputs.getParent().getName() + "] => " + outputPort.getName() + "[" + outputPort.getParent().getName() + "]");
+					Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outport:   " + inputs.getName() + "[" + inputs.getParent().getName() + "] => " + outputPort.getName() + "[" + outputPort.getParent().getName() + "]");
 				}
 			}
 
 			for (SimulinkBlock inputs : block.getInputs()) {
-				Console.writeLine(indentation + "  input:     " + inputs.getName() + "[" + inputs.getParent().getName() + "]");
+				Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  input:     " + inputs.getName() + "[" + inputs.getParent().getName() + "]");
 			}
 
 			for (SimulinkBlock outputs : block.getOutputs()) {
-				Console.writeLine(indentation + "  outputs:   " + outputs.getName() + "[" + outputs.getParent().getName() + "]");
+				Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outputs:   " + outputs.getName() + "[" + outputs.getParent().getName() + "]");
 			}
 
 			for (SimulinkBlock child : block.getChildren()) {

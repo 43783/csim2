@@ -57,7 +57,7 @@ public class SourceMethodDao {
 			methodList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return methodList;
@@ -83,7 +83,7 @@ public class SourceMethodDao {
 			methodList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return methodList;
@@ -117,7 +117,7 @@ public class SourceMethodDao {
 			sourceMethod = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return sourceMethod;
@@ -145,7 +145,7 @@ public class SourceMethodDao {
 			sourceMethod.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -168,7 +168,7 @@ public class SourceMethodDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -189,7 +189,7 @@ public class SourceMethodDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

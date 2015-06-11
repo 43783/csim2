@@ -120,7 +120,7 @@ public class SwingUtils {
 			System.setIn(redirectedInput);
 		}
 		catch (IOException e1) {
-			Console.writeError("error while redirecting standard streams: " + StringUtils.toString(e1));
+			Console.writeError(SwingUtils.class, "error while redirecting standard streams: " + StringUtils.toString(e1));
 		}
 
 		// Redirect all key pressed to csim2 shell
@@ -157,7 +157,7 @@ public class SwingUtils {
 								}
 							}
 							catch (BadLocationException e) {
-								Console.writeError("error while starting application: " + StringUtils.toString(e));
+								Console.writeError(SwingUtils.class, "error while starting application: " + StringUtils.toString(e));
 							}
 						}
 					});

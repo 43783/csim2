@@ -33,7 +33,7 @@ public class ConsoleView extends JPanel {
 		JScrollPane scrollPanel = new JScrollPane();
 		scrollPanel.setViewportView(logArea);
 		
-		add(scrollPanel, BorderLayout.CENTER);		
+		add(scrollPanel, BorderLayout.CENTER);	
 	}
 
     /**

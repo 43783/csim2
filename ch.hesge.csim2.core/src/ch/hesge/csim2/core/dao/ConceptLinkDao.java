@@ -55,7 +55,7 @@ public class ConceptLinkDao {
 			links = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e) + " - " + queryString);
+			Console.writeError(ConceptLinkDao.class, "an unexpected error has occured: " + StringUtils.toString(e) + " - " + queryString);
 		}
 
 		return links;
@@ -82,7 +82,7 @@ public class ConceptLinkDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e) + " - " + queryString);
+			Console.writeError(ConceptLinkDao.class, "an unexpected error has occured: " + StringUtils.toString(e) + " - " + queryString);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class ConceptLinkDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ConceptLinkDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

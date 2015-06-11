@@ -155,7 +155,7 @@ public class OntologyLoader implements IEngine {
 				inputFile = (String) context.getProperty("filename");
 			}
 			else {
-				inputFile = Console.readLine("enter ontology file path: ");
+				throw new EngineException("missing ontology path specified !");
 			}
 
 			// Retrieve if input file is an action-list or entity-list
@@ -183,7 +183,7 @@ public class OntologyLoader implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -207,29 +207,30 @@ public class OntologyLoader implements IEngine {
 			else if (isActionOntology) {
 
 				// Parse action concept file
-				Console.writeLine("parsing action file " + ontologyFile.getFileName().toString() + ".");
+				Console.writeInfo(this, "parsing action file " + ontologyFile.getFileName().toString() + ".");
 				doParseActionConcepts();
 			}
 			else {
 
 				// Parse entity concept file
-				Console.writeLine("parsing rdf file " + ontologyFile.getFileName().toString() + ".");
+				Console.writeInfo(this, "parsing rdf file " + ontologyFile.getFileName().toString() + ".");
 				doParseEntityConcepts();
 			}
 
-			Console.writeLine(conceptMap.size() + " concepts found.");
+			Console.writeInfo(this, conceptMap.size() + " concepts found.");
 
 			// Add all concepts found into the ontology
 			ontology.getConcepts().clear();
 			ontology.getConcepts().addAll(conceptMap.values());
 
 			// Save the ontology and its new concepts
-			Console.writeLine("saving ontology in database...");
+			Console.writeInfo(this, "saving ontology in database...");
 			ApplicationLogic.saveOntology(ontology);
-			Console.writeLine("done.");
+			
+			Console.writeInfo(this, "done.");
 		}
 		catch (Exception e) {
-			Console.writeError("error while loading ontology: " + StringUtils.toString(e));
+			Console.writeError(this, "error while loading ontology: " + StringUtils.toString(e));
 		}
 	}
 
@@ -474,18 +475,18 @@ public class OntologyLoader implements IEngine {
 		// Dump all concepts found into the ontology
 		for (Concept concept : conceptMap.values()) {
 
-			Console.writeLine("concept: " + concept.getName());
+			Console.writeInfo(this, "concept: " + concept.getName());
 
 			for (ConceptClass conceptClass : concept.getClasses()) {
-				Console.writeLine("  class: " + conceptClass.getName() + ", id: " + conceptClass.getIdentifier());
+				Console.writeInfo(this, "  class: " + conceptClass.getName() + ", id: " + conceptClass.getIdentifier());
 			}
 
 			for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
-				Console.writeLine("  attribute: " + conceptAttribute.getName() + ", id: " + conceptAttribute.getIdentifier());
+				Console.writeInfo(this, "  attribute: " + conceptAttribute.getName() + ", id: " + conceptAttribute.getIdentifier());
 			}
 
 			for (ConceptLink conceptLink : concept.getLinks()) {
-				Console.writeLine("  link: <" + conceptLink.getQualifier() + "> " + conceptLink.getTargetConcept().getName());
+				Console.writeInfo(this, "  link: <" + conceptLink.getQualifier() + "> " + conceptLink.getTargetConcept().getName());
 			}
 		}
 	}
@@ -510,7 +511,7 @@ public class OntologyLoader implements IEngine {
 			}
 		}
 		catch (IOException e) {
-			Console.writeError("error while reading concept action file: " + StringUtils.toString(e));
+			Console.writeError(this, "error while reading concept action file: " + StringUtils.toString(e));
 		}
 	}
 

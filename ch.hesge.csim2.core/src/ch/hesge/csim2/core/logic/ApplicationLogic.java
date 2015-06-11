@@ -6,8 +6,6 @@ import java.nio.file.FileSystems;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -106,19 +104,9 @@ public class ApplicationLogic {
 	 */
 	private static void initJavaLogging() {
 
-		// Retrieve configuration path
-		String configPath = "conf/logging.properties";
-		if (System.getProperties().contains("java.util.logging.config.file")) {
-			configPath = System.getProperties().getProperty("java.util.logging.config.file");
-		}
-		System.getProperties().setProperty("java.util.logging.config.file", configPath);
-
-		try {
-			LogManager.getLogManager().readConfiguration();
-		}
-		catch (SecurityException | IOException e) {
-			Logger.getAnonymousLogger().severe(e.getLocalizedMessage());
-		}
+//		if (!System.getProperties().contains("log4j.configurationFile")) {
+//			System.getProperties().setProperty("log4j.configurationFile", "conf/log4j.xml");
+//		}
 	}
 
 	/**
@@ -138,7 +126,7 @@ public class ApplicationLogic {
 
 		Properties properties = application.getProperties();
 
-		Console.writeDebug("initializing application properties.");
+		Console.writeDebug(ApplicationLogic.class, "initializing application properties.");
 
 		// Load properties from environment variables
 		properties.setProperty(USER_NAME_PROPERTY, System.getProperty("user.name"));
@@ -156,7 +144,7 @@ public class ApplicationLogic {
 			configPath = System.getProperties().getProperty("ch.hesge.csim2.config.file");
 		}
 
-		Console.writeDebug("loading application configuration from " + configPath + ".");
+		Console.writeDebug(ApplicationLogic.class, "loading application configuration from " + configPath + ".");
 
 		// Load properties defined in csim2.conf
 		try (FileReader reader = new FileReader(configPath)) {
@@ -165,7 +153,7 @@ public class ApplicationLogic {
 			properties.putAll(confProperties);
 		}
 		catch (IOException e) {
-			Console.writeError("an unexpected error has occured: " + e.toString());
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + e.toString());
 		}
 	}
 
@@ -180,7 +168,7 @@ public class ApplicationLogic {
 
 		Properties properties = application.getProperties();
 
-		Console.writeDebug("initializing database connection.");
+		Console.writeDebug(ApplicationLogic.class, "initializing database connection.");
 
 		// Retrieve database config
 		String connectionString = properties.getProperty(DATABASE_CONNECTION_PROPERTY);

@@ -58,7 +58,7 @@ public class MethodConceptMatchDao {
 			match = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(MethodConceptMatchDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return match;
@@ -85,7 +85,7 @@ public class MethodConceptMatchDao {
 			matchList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(MethodConceptMatchDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return matchList;
@@ -113,7 +113,7 @@ public class MethodConceptMatchDao {
 			match.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(MethodConceptMatchDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -136,7 +136,7 @@ public class MethodConceptMatchDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(MethodConceptMatchDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -160,7 +160,7 @@ public class MethodConceptMatchDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(MethodConceptMatchDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

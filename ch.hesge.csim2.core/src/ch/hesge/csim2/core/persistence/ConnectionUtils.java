@@ -116,10 +116,10 @@ public class ConnectionUtils {
 				// Create a new database connection
 				dbConnection = DriverManager.getConnection(dbUrl, properties);
 
-				Console.writeDebug("connection to the database '" + dbUrl + "' created.");
+				Console.writeDebug(ConnectionUtils.class, "connection to the database '" + dbUrl + "' created.");
 			}
 			catch (SQLException e) {
-				Console.writeError("an unexpected error has occured: " + StringUtils.toString(e));
+				Console.writeError(ConnectionUtils.class, "an unexpected error has occured: " + StringUtils.toString(e));
 			}
 		}
 
@@ -136,10 +136,10 @@ public class ConnectionUtils {
 				dbConnection.close();
 				dbConnection = null;
 
-				Console.writeDebug("connection to the database closed.");
+				Console.writeDebug(ConnectionUtils.class, "connection to the database closed.");
 			}
 			catch (SQLException e) {
-				Console.writeError("an unexpected error has occured: " + StringUtils.toString(e));
+				Console.writeError(ConnectionUtils.class, "an unexpected error has occured: " + StringUtils.toString(e));
 			}
 		}
 	}

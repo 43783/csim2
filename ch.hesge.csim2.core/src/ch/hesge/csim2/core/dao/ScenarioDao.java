@@ -54,7 +54,7 @@ public class ScenarioDao {
 			scenarioList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return scenarioList;
@@ -83,7 +83,7 @@ public class ScenarioDao {
 			scenario = QueryEngine.queryForObject(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return scenario;
@@ -110,7 +110,7 @@ public class ScenarioDao {
 			scenarioList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return scenarioList;
@@ -138,7 +138,7 @@ public class ScenarioDao {
 			scenario.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -161,7 +161,7 @@ public class ScenarioDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -184,7 +184,7 @@ public class ScenarioDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(ScenarioDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

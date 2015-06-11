@@ -240,7 +240,7 @@ public class TracesView extends JPanel {
 							Desktop.getDesktop().open(filepath.toFile());
 						}
 						catch (IOException e1) {
-							Console.writeError("error while opening file " + filepath + ": " + StringUtils.toString(e1));
+							Console.writeError(this, "error while opening file " + filepath + ": " + StringUtils.toString(e1));
 						}
 					}
 
@@ -249,7 +249,7 @@ public class TracesView extends JPanel {
 			});
 		}
 		catch (IOException e1) {
-			Console.writeError("error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
+			Console.writeError(this, "error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
 		}
 	}
 
