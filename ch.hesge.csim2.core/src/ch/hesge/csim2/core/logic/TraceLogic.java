@@ -5,7 +5,7 @@ import java.util.List;
 import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.Trace;
-import ch.hesge.csim2.core.persistence.PersistanceUtils;
+import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
  * This class implement all logical rules associated to traces owned by scenarios.

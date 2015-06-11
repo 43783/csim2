@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ch.hesge.csim2.core.persistence;
+package ch.hesge.csim2.core.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,9 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-
-import ch.hesge.csim2.core.utils.Console;
-import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
  * This class provide centralized way to create a connection to the database and

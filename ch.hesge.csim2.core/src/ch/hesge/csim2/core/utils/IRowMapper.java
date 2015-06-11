@@ -1,4 +1,4 @@
-package ch.hesge.csim2.core.persistence;
+package ch.hesge.csim2.core.utils;
 
 /**
  * This interface allow mapping of a database row to a JavaBean object filled

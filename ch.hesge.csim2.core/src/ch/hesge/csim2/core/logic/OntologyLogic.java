@@ -21,8 +21,8 @@ import ch.hesge.csim2.core.model.ConceptClass;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
-import ch.hesge.csim2.core.persistence.PersistanceUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
  * This class implement all logical rules associated to ontology.

@@ -17,8 +17,8 @@ import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
-import ch.hesge.csim2.core.persistence.PersistanceUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
  * This class implement all logical rules globally associated to stem methods.

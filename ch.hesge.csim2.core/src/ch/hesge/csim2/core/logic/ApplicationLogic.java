@@ -26,7 +26,7 @@ import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
-import ch.hesge.csim2.core.persistence.ConnectionUtils;
+import ch.hesge.csim2.core.utils.ConnectionUtils;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
 

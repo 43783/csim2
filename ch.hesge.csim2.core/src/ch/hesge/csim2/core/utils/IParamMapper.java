@@ -1,4 +1,4 @@
-package ch.hesge.csim2.core.persistence;
+package ch.hesge.csim2.core.utils;
 
 import java.util.Map;
 
