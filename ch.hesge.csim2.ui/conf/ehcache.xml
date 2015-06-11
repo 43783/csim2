@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+	<cache name="csim2"
+		MaxEntriesLocalHeap="10000"
+		Eternal="false"
+		TimeToIdleSeconds="300"
+		TimeToLiveSeconds="600"
+		MemoryStoreEvictionPolicy="LFU"
+		TransactionalMode="off">
+	</cache>
+
+<!--     
+    <diskStore path="java.io.tmpdir"/>
+
+	<cache name="csim2"
+		MaxEntriesLocalHeap="10000"
+		MaxEntriesLocalDisk="10001"
+		Eternal="false"
+		DiskSpoolBufferSizeMB="20"
+		TimeToIdleSeconds="300"
+		TimeToLiveSeconds="600"
+		MemoryStoreEvictionPolicy="LFU"
+		TransactionalMode="off">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+ -->
+</ehcache>

@@ -140,7 +140,7 @@ public class MethodConceptMatcher implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -157,12 +157,12 @@ public class MethodConceptMatcher implements IEngine {
 
 		try {
 
-			Console.writeLine("loading ontologies...");
+			Console.writeInfo(this, "loading ontologies...");
 
 			// Load project and its ontologies
 			ApplicationLogic.loadProject(project);
 
-			Console.writeLine("cleaning previous matches...");
+			Console.writeInfo(this, "cleaning previous matches...");
 
 			// Clean project matchings
 			ApplicationLogic.deleteMatching(project);
@@ -189,7 +189,7 @@ public class MethodConceptMatcher implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while analyzing sources: " + StringUtils.toString(e));
+			Console.writeError(this, "error while analyzing sources: " + StringUtils.toString(e));
 		}
 	}
 
@@ -254,7 +254,7 @@ public class MethodConceptMatcher implements IEngine {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
-		Console.writeLine("loading method & concept information...");
+		Console.writeInfo(this, "loading method & concept information...");
 
 		// Load concepts, methods and stems into maps
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
@@ -262,7 +262,7 @@ public class MethodConceptMatcher implements IEngine {
 		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
 		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
 
-		Console.writeLine("analyzing potential matching elements...");
+		Console.writeInfo(this, "analyzing potential matching elements...");
 
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
@@ -317,7 +317,7 @@ public class MethodConceptMatcher implements IEngine {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
-		Console.writeLine("loading method & concept information...");
+		Console.writeInfo(this, "loading method & concept information...");
 
 		// Load concepts and stems
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
@@ -331,7 +331,7 @@ public class MethodConceptMatcher implements IEngine {
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptByTermMap.keySet());
 
-		Console.writeLine("analyzing potential matching elements...");
+		Console.writeInfo(this, "analyzing potential matching elements...");
 
 		// Retrieve the term/concept matrix (row = terms, col = concepts, cell = weight)
 		RealMatrix weightMatrix = MethodConceptMatcherUtils.getWeightMatrix(terms, concepts, conceptMap, stemConceptByTermMap);
@@ -386,7 +386,7 @@ public class MethodConceptMatcher implements IEngine {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
-		Console.writeLine("loading method & concept information...");
+		Console.writeInfo(this, "loading method & concept information...");
 
 		// Load concepts and stems
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
@@ -400,7 +400,7 @@ public class MethodConceptMatcher implements IEngine {
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptByTermMap.keySet());
 
-		Console.writeLine("analyzing potential matching elements...");
+		Console.writeInfo(this, "analyzing potential matching elements...");
 
 		// Retrieve the term/concept matrix (row = terms, col = concepts, cell = weight)
 		RealMatrix weightMatrix = MethodConceptMatcherUtils.getWeightMatrix(terms, concepts, conceptMap, stemConceptByTermMap);

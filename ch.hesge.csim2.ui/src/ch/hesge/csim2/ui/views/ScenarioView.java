@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Scenario;
@@ -42,7 +41,6 @@ public class ScenarioView extends JPanel implements ActionListener {
 	private void initComponent() {
 
 		setLayout(new BorderLayout(0, 0));
-		setBorder(new TitledBorder(null, scenario.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		scenarioTable = new ScenarioTable(scenario);
 		scenarioTable.setFocusable(true);

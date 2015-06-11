@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import ch.hesge.csim2.core.persistence.ConnectionUtils;
-import ch.hesge.csim2.core.persistence.IDataRow;
-import ch.hesge.csim2.core.persistence.QueryBuilder;
-import ch.hesge.csim2.core.persistence.QueryEngine;
+import ch.hesge.csim2.core.utils.ConnectionUtils;
 import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.IDataRow;
+import ch.hesge.csim2.core.utils.QueryBuilder;
+import ch.hesge.csim2.core.utils.QueryEngine;
 import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
@@ -56,7 +56,7 @@ public class SettingsDao {
 			}
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return properties;
@@ -83,7 +83,7 @@ public class SettingsDao {
 
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return settingValue;
@@ -117,7 +117,7 @@ public class SettingsDao {
 
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -148,7 +148,7 @@ public class SettingsDao {
 
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SettingsDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 }

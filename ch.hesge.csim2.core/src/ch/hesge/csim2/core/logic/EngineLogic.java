@@ -48,7 +48,7 @@ class EngineLogic {
 			// Load engines into a standard list
 			for (IEngine engine : engineManager) {
 				engines.add(engine);
-				Console.writeDebug("plugin " + engine.getName() + " loaded.");
+				Console.writeInfo(EngineLogic.class, "plugin " + engine.getName() + " loaded.");
 			}
 		}
 
@@ -106,17 +106,17 @@ class EngineLogic {
 				try {
 
 					long startTime = System.currentTimeMillis();
-					Console.writeLine(engine.getName() + " started.");
+					Console.writeDebug(EngineLogic.class, engine.getName() + " started.");
 
 					engine.init();
 					engine.start();
 					engine.stop();
 
 					long endTime = System.currentTimeMillis();
-					Console.writeLine(engine.getName() + " ended after " + StringUtils.getElapseTime(startTime, endTime) + ".");
+					Console.writeDebug(EngineLogic.class, engine.getName() + " ended after " + StringUtils.getElapseTime(startTime, endTime) + ".");
 				}
 				catch (Exception e) {
-					Console.writeError("error while running engine: " + StringUtils.toString(e));
+					Console.writeError(EngineLogic.class, "error while running engine: " + StringUtils.toString(e));
 				}
 				finally {
 
@@ -142,7 +142,7 @@ class EngineLogic {
 		if (isEngineRunning(engine)) {
 			Future<?> task = runningEngines.get(engine);
 			task.cancel(true);
-			Console.writeLine(engine.getName() + " cancelled.");
+			Console.writeDebug(EngineLogic.class, engine.getName() + " cancelled.");
 		}
 	}
 }

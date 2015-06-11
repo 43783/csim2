@@ -158,7 +158,7 @@ public class CppInstrumenter implements IEngine {
 				inputFolder = (String) context.getProperty("source-folder");
 			}
 			else {
-				inputFolder = Console.readLine("enter source folder: ");
+				throw new EngineException("missing source folder specified !");
 			}
 
 			// Retrieve current source folder
@@ -188,7 +188,7 @@ public class CppInstrumenter implements IEngine {
 			context.setProperty("root-path", sourceFolder.toString());
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -210,13 +210,13 @@ public class CppInstrumenter implements IEngine {
 			fileProvider = CppInstrumenterUtils.createFileProvider();
 			scannerInfo  = CppInstrumenterUtils.createScannerInfo(context);
 
-			Console.writeLine("cloning folder " + sourceFolder.getFileName().toString().toLowerCase());
+			Console.writeInfo(this, "cloning folder " + sourceFolder.getFileName().toString().toLowerCase());
 
 			// Clone source folder into target one
 			FileUtils.removeFolder(targetFolder);
 			FileUtils.copyFolder(sourceFolder, targetFolder);
 
-			Console.writeLine("source scanning started.");
+			Console.writeInfo(this, "source scanning started.");
 
 			// Scan all folder recursively to discover source file
 			Files.walkFileTree(Paths.get(targetFolder.toString()), new SimpleFileVisitor<Path>() {
@@ -253,7 +253,7 @@ public class CppInstrumenter implements IEngine {
 							visitedFiles.put(filepath.toString(), filepath.toString());
 						}
 						catch (Exception e) {
-							Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+							Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 						}
 					}
 
@@ -262,7 +262,7 @@ public class CppInstrumenter implements IEngine {
 			});
 		}
 		catch(Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -317,7 +317,7 @@ public class CppInstrumenter implements IEngine {
 		FileContent sourceFile = FileContent.createForExternalFileLocation(filepath);
 		final IASTTranslationUnit translationUnit = GPPLanguage.getDefault().getASTTranslationUnit(sourceFile, scannerInfo, fileProvider, null, ILanguage.OPTION_IS_SOURCE_UNIT, logService);
 
-		Console.writeLine("parsing file " + filename + ".");
+		Console.writeInfo(this, "parsing file " + filename + ".");
 
 		// Analyze all declared methods
 		translationUnit.accept(new ASTVisitor() {
@@ -421,10 +421,10 @@ public class CppInstrumenter implements IEngine {
 				// Modify original body content
 				originalFileContent.set(fragment.line, modifiedLine);
 				
-				Console.writeLine("instrumenting file: " + path.getFileName().toString() + ", function: " + fragment.method + ".");
+				Console.writeInfo(this, "instrumenting file: " + path.getFileName().toString() + ", function: " + fragment.method + ".");
 			}
 
-			Console.writeLine("saving file: " + path.getFileName().toString() + ".");
+			Console.writeInfo(this, "saving file: " + path.getFileName().toString() + ".");
 
 			// Finally save modified file
 			Files.write(path, originalFileContent, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);

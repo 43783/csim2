@@ -19,8 +19,8 @@ import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.SourceParameter;
 import ch.hesge.csim2.core.model.SourceReference;
-import ch.hesge.csim2.core.persistence.PersistanceUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
  * This class implement all logical rules associated to source

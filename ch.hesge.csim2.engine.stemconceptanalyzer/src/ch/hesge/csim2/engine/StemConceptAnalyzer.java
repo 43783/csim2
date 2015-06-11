@@ -159,7 +159,7 @@ public class StemConceptAnalyzer implements IEngine {
 			rejectedList = Files.readAllLines(rejectedWordsPath, Charset.defaultCharset());
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -177,14 +177,14 @@ public class StemConceptAnalyzer implements IEngine {
 
 			int stemConceptCount = 0;
 
-			Console.writeLine("cleaning previous stem concepts...");
+			Console.writeInfo(this, "cleaning previous stem concepts...");
 			ApplicationLogic.deleteStemConcepts(ontology);
 
 			// Load all ontology concepts
-			Console.writeLine("loading ontology concepts...");
+			Console.writeInfo(this, "loading ontology concepts...");
 			List<Concept> conceptList = ApplicationLogic.getConcepts(ontology);
 
-			Console.writeLine("scanning all concepts...");
+			Console.writeInfo(this, "scanning all concepts...");
 
 			// Build stem concept table
 			for (Concept concept : conceptList) {
@@ -281,10 +281,10 @@ public class StemConceptAnalyzer implements IEngine {
 				}
 			}
 
-			Console.writeLine(stemConceptCount + " stems concepts found");
+			Console.writeInfo(this, stemConceptCount + " stems concepts found");
 		}
 		catch (Exception e) {
-			Console.writeError("error while analyzing concepts: " + StringUtils.toString(e));
+			Console.writeError(this, "error while analyzing concepts: " + StringUtils.toString(e));
 		}
 	}
 

@@ -15,8 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.border.TitledBorder;
 
 import org.apache.commons.math3.linear.RealVector;
 import org.jfree.chart.ChartPanel;
@@ -77,7 +75,6 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Time series", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new BorderLayout(0, 0));
 
 		// Create the parameters panel

@@ -160,7 +160,7 @@ public class JavaAnalyzer implements IEngine {
 				inputFolder = (String) context.getProperty("source-folder");
 			}
 			else {
-				inputFolder = Console.readLine("enter source folder: ");
+				throw new EngineException("missing source folder specified !");
 			}
 
 			// Convert input string into path
@@ -172,7 +172,7 @@ public class JavaAnalyzer implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -190,7 +190,7 @@ public class JavaAnalyzer implements IEngine {
 			visitedFiles.clear();
 			parsedClasses.clear();
 
-			Console.writeLine("source scanning started.");
+			Console.writeInfo(this, "source scanning started.");
 
 			// Scan all folder recursively to discover source file
 			Files.walkFileTree(Paths.get(sourceFolder.toString()), new SimpleFileVisitor<Path>() {
@@ -213,7 +213,7 @@ public class JavaAnalyzer implements IEngine {
 							visitedFiles.put(filepath.toString(), filepath.toString());
 						}
 						catch (Exception e) {
-							Console.writeError(StringUtils.toString(e));
+							Console.writeError(this, StringUtils.toString(e));
 						}
 					}
 
@@ -222,7 +222,7 @@ public class JavaAnalyzer implements IEngine {
 			});
 
 			// Trace end of operations
-			Console.writeLine("saving " + parsedClasses.size() + " classes found...");
+			Console.writeInfo(this, "saving " + parsedClasses.size() + " classes found...");
 
 			// Updating project
 			ApplicationLogic.deleteSources(project);
@@ -231,7 +231,7 @@ public class JavaAnalyzer implements IEngine {
 			ApplicationLogic.saveSourceClasses(project, project.getSourceClasses());
 		}
 		catch (IOException e) {
-			Console.writeError("error while analyzing files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -281,7 +281,7 @@ public class JavaAnalyzer implements IEngine {
 		String fileContent = FileUtils.readFileAsString(Paths.get(filepath));
 		Document sourceDocument = new Document(fileContent);
 
-		Console.writeLine("parsing file " + filename + ".");
+		Console.writeInfo(this, "parsing file " + filename + ".");
 
 		// Create a parser
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
@@ -297,7 +297,7 @@ public class JavaAnalyzer implements IEngine {
 
 		// Display parsing problems
 		for (IProblem parsingProblem : compilationUnit.getProblems()) {
-			Console.writeError(parsingProblem.getMessage());
+			Console.writeError(this, parsingProblem.getMessage());
 		}
 
 		// Instrument all declared methods (standard and anonymous classes)
@@ -318,10 +318,10 @@ public class JavaAnalyzer implements IEngine {
 
 					parsedClasses.put(classname, sourceClass);
 
-					Console.writeLine("visiting " + sourceClass.getType() + " " + sourceClass.getName() + " in " + sourceClass.getFilename() + ".");
+					Console.writeInfo(this, "visiting " + sourceClass.getType() + " " + sourceClass.getName() + " in " + sourceClass.getFilename() + ".");
 
 					for (SourceAttribute sourceAttribute : sourceClass.getAttributes()) {
-						Console.writeLine("  attribute " + sourceAttribute.getType() + " " + sourceAttribute.getName() + ".");
+						Console.writeInfo(this, "  attribute " + sourceAttribute.getType() + " " + sourceAttribute.getName() + ".");
 					}
 				}
 
@@ -347,7 +347,7 @@ public class JavaAnalyzer implements IEngine {
 					if (!sourceClass.getMethods().contains(sourceMethod)) {
 						sourceMethod.setFilename(filename);
 						sourceClass.getMethods().add(sourceMethod);
-						Console.writeLine("  method " + sourceMethod.getReturnType() + " " + sourceClass.getName() + "::" + sourceMethod.getSignature());
+						Console.writeInfo(this, "  method " + sourceMethod.getReturnType() + " " + sourceClass.getName() + "::" + sourceMethod.getSignature());
 					}
 				}
 
@@ -380,7 +380,7 @@ public class JavaAnalyzer implements IEngine {
 						for (SourceVariable sourceVariable : sourceVariables) {
 							if (!sourceMethod.getVariables().contains(sourceVariable)) {
 								sourceMethod.getVariables().add(sourceVariable);
-								Console.writeLine("    var " + sourceVariable.getType() + " " + sourceVariable.getName());
+								Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
 							}
 						}
 					}
@@ -415,7 +415,7 @@ public class JavaAnalyzer implements IEngine {
 						for (SourceVariable sourceVariable : sourceVariables) {
 							if (!sourceMethod.getVariables().contains(sourceVariable)) {
 								sourceMethod.getVariables().add(sourceVariable);
-								Console.writeLine("    var " + sourceVariable.getType() + " " + sourceVariable.getName());
+								Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
 							}
 						}
 					}
@@ -449,7 +449,7 @@ public class JavaAnalyzer implements IEngine {
 						// And add each one to its owning method
 						if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
 							sourceMethod.getReferences().add(sourceReference);
-							Console.writeLine("    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+							Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
 						}
 					}
 				}

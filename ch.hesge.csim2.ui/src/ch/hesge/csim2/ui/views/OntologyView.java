@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
@@ -26,6 +25,7 @@ import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.ui.comp.OntologyAnimator;
 import ch.hesge.csim2.ui.comp.OntologyPanel;
 import ch.hesge.csim2.ui.dialogs.ConceptPropertiesDialog;
+import ch.hesge.csim2.ui.utils.PaintUtils;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 import com.alee.utils.swing.AncestorAdapter;
@@ -61,7 +61,6 @@ public class OntologyView extends JPanel implements ActionListener {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(null, ontology.getName(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPanel = new JScrollPane();
@@ -131,13 +130,13 @@ public class OntologyView extends JPanel implements ActionListener {
 		Concept concept = ApplicationLogic.createConcept(ontology);
 
 		// Calculate new concept bounds
-		Rectangle viewBounds = SwingUtils.getCenteredText(g, concept.getBounds(), concept.getName());
+		Rectangle viewBounds = PaintUtils.getCenteredText(g, concept.getBounds(), concept.getName());
 		viewBounds.grow(g.getFont().getSize(), g.getFont().getSize());
 		viewBounds.x = ontologyPanel.getMousePosition().x;
 		viewBounds.y = ontologyPanel.getMousePosition().y;
 
 		// Convert bounds into ontology coordinates
-		Rectangle ontoBounds = SwingUtils.convertToOriginalCoordinates(viewBounds, scaleFactor);
+		Rectangle ontoBounds = PaintUtils.convertToOriginalCoordinates(viewBounds, scaleFactor);
 
 		// Update concept bounds
 		concept.setBounds(ontoBounds);
@@ -209,7 +208,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		for (Concept concept : concepts) {
 
 			// Retrieve adjusted concept coordinates
-			Rectangle conceptBounds = SwingUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
+			Rectangle conceptBounds = PaintUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
 
 			// Recompute random position
 			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();

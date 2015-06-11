@@ -12,7 +12,7 @@ import ch.hesge.csim2.core.dao.ScenarioStepDao;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
-import ch.hesge.csim2.core.persistence.PersistanceUtils;
+import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
  * This class implement all logical rules associated to scenario.

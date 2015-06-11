@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.ui.comp.MatchingTable;
@@ -31,7 +30,6 @@ public class MatchingView extends JPanel {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(null, "Matchings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
 
 		// Initialize matching table

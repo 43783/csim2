@@ -149,7 +149,7 @@ public class StemMethodAnalyzer implements IEngine {
 			rejectedList = Files.readAllLines(rejectedWordsPath, Charset.defaultCharset());
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -168,14 +168,14 @@ public class StemMethodAnalyzer implements IEngine {
 
 			int stemMethodCount = 0;
 
-			Console.writeLine("cleaning previous stem methods...");
+			Console.writeInfo(this, "cleaning previous stem methods...");
 			ApplicationLogic.deleteStemMethods(project);
 
 			// Load all project classes
-			Console.writeLine("loading code sources information...");
+			Console.writeInfo(this, "loading code sources information...");
 			List<SourceClass> sourceClasses = ApplicationLogic.getSourceClassesWithDependencies(project, true);
 
-			Console.writeLine("scanning source classes...");
+			Console.writeInfo(this, "scanning source classes...");
 
 			// Build stem method table
 			for (SourceClass sourceClass : sourceClasses) {
@@ -275,10 +275,10 @@ public class StemMethodAnalyzer implements IEngine {
 				}
 			}
 
-			Console.writeLine(stemMethodCount + " stems methods found");
+			Console.writeInfo(this, stemMethodCount + " stems methods found");
 		}
 		catch (Exception e) {
-			Console.writeError("error while analyzing sources: " + StringUtils.toString(e));
+			Console.writeError(this, "error while analyzing sources: " + StringUtils.toString(e));
 		}
 
 	}

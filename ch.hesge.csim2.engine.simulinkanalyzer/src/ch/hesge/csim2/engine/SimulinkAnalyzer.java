@@ -148,7 +148,7 @@ public class SimulinkAnalyzer implements IEngine {
 				inputFolder = (String) context.getProperty("source-folder");
 			}
 			else {
-				inputFolder = Console.readLine("enter source folder: ");
+				throw new EngineException("missing source folder specified !");
 			}
 
 			// Convert input string into path
@@ -160,7 +160,7 @@ public class SimulinkAnalyzer implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -178,7 +178,7 @@ public class SimulinkAnalyzer implements IEngine {
 			visitedFiles.clear();
 			parsedClasses.clear();
 
-			Console.writeLine("source scanning started.");
+			Console.writeInfo(this, "source scanning started.");
 
 			// Scan all folder recursively to discover source file
 			Files.walkFileTree(Paths.get(sourceFolder.toString()), new SimpleFileVisitor<Path>() {
@@ -201,7 +201,7 @@ public class SimulinkAnalyzer implements IEngine {
 							visitedFiles.put(filepath.toString(), filepath.toString());
 						}
 						catch (Exception e) {
-							Console.writeError("error while analyzing files: " + StringUtils.toString(e));
+							Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));
 						}
 					}
 
@@ -210,7 +210,7 @@ public class SimulinkAnalyzer implements IEngine {
 			});
 
 			// Trace end of operations
-			Console.writeLine("saving " + parsedClasses.size() + " classes found...");
+			Console.writeInfo(this, "saving " + parsedClasses.size() + " classes found...");
 
 			// Updating project
 			ApplicationLogic.deleteSources(project);
@@ -219,7 +219,7 @@ public class SimulinkAnalyzer implements IEngine {
 			ApplicationLogic.saveSourceClasses(project, project.getSourceClasses());
 		}
 		catch (Exception e) {
-			Console.writeError("error while analyzing files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -265,7 +265,7 @@ public class SimulinkAnalyzer implements IEngine {
 
 		String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
 
-		Console.writeLine("parsing file " + filename + ".");
+		Console.writeInfo(this, "parsing file " + filename + ".");
 
 		SimulinkModel model = new SimulinkParser(filepath.toString()).parse();
 
@@ -296,7 +296,7 @@ public class SimulinkAnalyzer implements IEngine {
 		SourceClass sourceClass = createSourceClass(block, filename);
 
 		// Retrieve block name
-		Console.writeLine("visiting " + sourceClass.getName() + " in " + filename + ".");
+		Console.writeInfo(this, "visiting " + sourceClass.getName() + " in " + filename + ".");
 
 		// Parse children
 		for (SimulinkBlock child : block.getChildren()) {

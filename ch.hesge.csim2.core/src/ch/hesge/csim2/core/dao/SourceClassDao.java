@@ -9,13 +9,13 @@ import java.util.Map;
 
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceClass;
-import ch.hesge.csim2.core.persistence.ConnectionUtils;
-import ch.hesge.csim2.core.persistence.IDataRow;
-import ch.hesge.csim2.core.persistence.IParamMapper;
-import ch.hesge.csim2.core.persistence.IRowMapper;
-import ch.hesge.csim2.core.persistence.QueryBuilder;
-import ch.hesge.csim2.core.persistence.QueryEngine;
+import ch.hesge.csim2.core.utils.ConnectionUtils;
 import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.IDataRow;
+import ch.hesge.csim2.core.utils.IParamMapper;
+import ch.hesge.csim2.core.utils.IRowMapper;
+import ch.hesge.csim2.core.utils.QueryBuilder;
+import ch.hesge.csim2.core.utils.QueryEngine;
 import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
@@ -57,7 +57,7 @@ public class SourceClassDao {
 			classList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return classList;
@@ -103,7 +103,7 @@ public class SourceClassDao {
 			});
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return classnamesMap;
@@ -130,7 +130,7 @@ public class SourceClassDao {
 			sourceClass.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -152,7 +152,7 @@ public class SourceClassDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -173,7 +173,7 @@ public class SourceClassDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(SourceClassDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

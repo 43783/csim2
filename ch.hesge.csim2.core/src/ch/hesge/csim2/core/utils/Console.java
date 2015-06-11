@@ -1,10 +1,6 @@
 package ch.hesge.csim2.core.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * This class centralize all request to display message on the system console.
@@ -18,104 +14,79 @@ import java.util.logging.Logger;
 
 public class Console {
 
-	// Private attributes
-	private static boolean		isEchoOn;
-
-	// Create a local logger
-	private static final Logger	LOGGER	= Logger.getLogger(Console.class.getName());
-
 	/**
-	 * Static initializor
-	 */
-	static {
-		isEchoOn = true;
-	}
-
-	/**
-	 * Return true if echo is enable and if all trace are written to the
-	 * console.
+	 * Write a message on the console.
 	 * 
-	 * @return the isEchoOn
+	 * @param caller
+	 *        the object calling console method
+	 * @param message
+	 *        the string to display on the console
 	 */
-	public static boolean isEchoOn() {
-		return isEchoOn;
-	}
-
-	/**
-	 * Sets the echo state (true or false).
-	 * 
-	 * @param isEchoOn
-	 *            the isEchoOn to set
-	 */
-	public static void setEchoOn(boolean isEchoOn) {
-		Console.isEchoOn = isEchoOn;
+	public static void writeInfo(Object caller, String message) {
+		LogManager.getLogger(caller.getClass().getName()).info(message);
 	}
 
 	/**
 	 * Write a message on the console.
 	 * 
+	 * @param callerClass
+	 *        the object calling console method
 	 * @param message
-	 *            the string to display on the console
+	 *        the string to display on the console
 	 */
-	public static void writeLine(String message) {
-
-		if (isEchoOn) {
-			System.out.println(message);
-		}
-
-		LOGGER.log(Level.FINE, message);
-
+	@SuppressWarnings("rawtypes")
+	public static void writeInfo(Class callerClass, String message) {
+		LogManager.getLogger(callerClass).info(message);
 	}
 
 	/**
 	 * Write an error message on the console.
 	 * 
+	 * @param caller
+	 *        the object calling console method
 	 * @param message
-	 *            the string to display on the console
+	 *        the string to display on the console
 	 */
-	public static void writeError(String message) {
-		System.out.println(message);
-		LOGGER.log(Level.SEVERE, message);
+	public static void writeError(Object caller, String message) {
+		LogManager.getLogger(caller.getClass().getName()).error(message);
+	}
+
+	/**
+	 * Write a message on the console.
+	 * 
+	 * @param callerClass
+	 *        the object calling console method
+	 * @param message
+	 *        the string to display on the console
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void writeError(Class callerClass, String message) {
+		LogManager.getLogger(callerClass).error(message);
 	}
 
 	/**
 	 * Write a debug message on the log file.
 	 * 
+	 * @param caller
+	 *        the object calling console method
 	 * @param message
-	 *            the string to display on the console
+	 *        the string to display on the console
 	 */
-	public static void writeDebug(String message) {
-		LOGGER.log(Level.FINEST, message);
+	public static void writeDebug(Object caller, String message) {
+		LogManager.getLogger(caller.getClass().getName()).debug(message);
 	}
 
 	/**
-	 * Write a default message (if present) on the console and read user input
-	 * from the console.
+	 * Write a message on the console.
 	 * 
+	 * @param callerClass
+	 *        the object calling console method
 	 * @param message
-	 *            the string to display on the console
-	 * @return the string typed by the user
+	 *        the string to display on the console
 	 */
-	public static String readLine(String message) {
-
-		String inputLine = null;
-		BufferedReader inputReader = null;
-
-		try {
-
-			// Write user message if required
-			if (message.length() > 0 && isEchoOn) {
-				System.out.print(message);
-			}
-
-			// Read input string
-			inputReader = new BufferedReader(new InputStreamReader(System.in));
-			inputLine = inputReader.readLine();
-		}
-		catch (IOException e) {
-			Console.writeError("Console: error while reading input: " + StringUtils.toString(e));
-		}
-
-		return inputLine;
+	@SuppressWarnings("rawtypes")
+	public static void writeDebug(Class callerClass, String message) {
+		LogManager.getLogger(callerClass).debug(message);
 	}
+
 }

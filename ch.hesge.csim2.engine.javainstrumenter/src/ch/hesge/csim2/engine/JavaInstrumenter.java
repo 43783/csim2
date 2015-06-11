@@ -146,7 +146,7 @@ public class JavaInstrumenter implements IEngine {
 				inputFolder = (String) context.getProperty("source-folder");
 			}
 			else {
-				inputFolder = Console.readLine("enter source folder: ");
+				throw new EngineException("missing source folder specified !");
 			}
 
 			// Retrieve current source folder
@@ -174,7 +174,7 @@ public class JavaInstrumenter implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -191,13 +191,13 @@ public class JavaInstrumenter implements IEngine {
 			// Initialization
 			visitedFiles.clear();
 
-			Console.writeLine("cloning folder " + sourceFolder.getFileName().toString().toLowerCase());
+			Console.writeInfo(this, "cloning folder " + sourceFolder.getFileName().toString().toLowerCase());
 
 			// Clone source folder into target one
 			FileUtils.removeFolder(targetFolder);
 			FileUtils.copyFolder(sourceFolder, targetFolder);
 
-			Console.writeLine("source scanning started.");
+			Console.writeInfo(this, "source scanning started.");
 
 			// Scan all folder recursively to discover source file
 			Files.walkFileTree(Paths.get(targetFolder.toString()), new SimpleFileVisitor<Path>() {
@@ -220,7 +220,7 @@ public class JavaInstrumenter implements IEngine {
 							visitedFiles.put(filepath.toString(), filepath.toString());
 						}
 						catch (Exception e) {
-							Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+							Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 						}
 					}
 
@@ -229,7 +229,7 @@ public class JavaInstrumenter implements IEngine {
 			});
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -280,7 +280,7 @@ public class JavaInstrumenter implements IEngine {
 		String originalContent = FileUtils.readFileAsString(Paths.get(filepath));
 		Document originalSources = new Document(originalContent);
 
-		Console.writeLine("parsing file " + filename + ".");
+		Console.writeInfo(this, "parsing file " + filename + ".");
 
 		// Create a parser
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
@@ -296,7 +296,7 @@ public class JavaInstrumenter implements IEngine {
 
 		// Display parsing problems
 		for (IProblem parsingProblem : compilationUnit.getProblems()) {
-			Console.writeError(parsingProblem.getMessage());
+			Console.writeError(this, parsingProblem.getMessage());
 		}
 
 		// Start recording all AST modifications

@@ -138,7 +138,7 @@ public class SimulinkInstrumenter implements IEngine {
 				inputFolder = (String) context.getProperty("source-folder");
 			}
 			else {
-				inputFolder = Console.readLine("enter source folder: ");
+				throw new EngineException("missing source folder specified !");
 			}
 
 			// Retrieve current source folder
@@ -166,7 +166,7 @@ public class SimulinkInstrumenter implements IEngine {
 			}
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -183,13 +183,13 @@ public class SimulinkInstrumenter implements IEngine {
 			// Initialization
 			visitedFiles.clear();
 
-			Console.writeLine("cloning folder " + sourceFolder.getFileName().toString().toLowerCase());
+			Console.writeInfo(this, "cloning folder " + sourceFolder.getFileName().toString().toLowerCase());
 
 			// Clone source folder into target one
 			FileUtils.removeFolder(targetFolder);
 			FileUtils.copyFolder(sourceFolder, targetFolder);
 
-			Console.writeLine("source scanning started.");
+			Console.writeInfo(this, "source scanning started.");
 
 			// Scan all folder recursively to discover source file
 			Files.walkFileTree(Paths.get(targetFolder.toString()), new SimpleFileVisitor<Path>() {
@@ -218,7 +218,7 @@ public class SimulinkInstrumenter implements IEngine {
 							visitedFiles.put(filepath.toString(), filepath.toString());
 						}
 						catch (Exception e) {
-							Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+							Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 						}
 					}
 
@@ -227,7 +227,7 @@ public class SimulinkInstrumenter implements IEngine {
 			});
 		}
 		catch (Exception e) {
-			Console.writeError("error while instrumenting files: " + StringUtils.toString(e));
+			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
 		}
 	}
 
@@ -276,7 +276,7 @@ public class SimulinkInstrumenter implements IEngine {
 
 		final String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
 
-		Console.writeLine("parsing file " + filename + ".");
+		Console.writeInfo(this, "parsing file " + filename + ".");
 
 		// Parse mdl file and produce its model in memory 
 		SimulinkModel model = new SimulinkParser(filepath).parse();

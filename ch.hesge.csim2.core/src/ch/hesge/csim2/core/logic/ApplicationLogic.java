@@ -6,9 +6,10 @@ import java.nio.file.FileSystems;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import ch.hesge.csim2.core.dao.SettingsDao;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
@@ -25,8 +26,7 @@ import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
-import ch.hesge.csim2.core.persistence.ConnectionUtils;
-import ch.hesge.csim2.core.utils.ApplicationCache;
+import ch.hesge.csim2.core.utils.ConnectionUtils;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
 
@@ -41,10 +41,11 @@ import ch.hesge.csim2.core.utils.StringUtils;
  * @author Eric Harth
  */
 
+@SuppressWarnings("unchecked")
 public class ApplicationLogic {
 
 	// Private static attributes
-	private static ApplicationCache<String, Object> APPCACHE = new ApplicationCache<>(50);
+	private static Cache APPCACHE = CacheManager.getInstance().getCache("csim2");
 
 	public static final String USER_NAME_PROPERTY = "user-name";
 	public static final String USER_FOLDER_PROPERTY = "user-folder";
@@ -71,6 +72,16 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Shutdown an application.
+	 * 
+	 * @param application
+	 *        the new application instance
+	 */
+	public static void shutdownApplication(Application application) {
+		CacheManager.getInstance().shutdown();
+	}
+
+	/**
 	 * Retrieve the application version.
 	 * 
 	 * @return
@@ -84,7 +95,7 @@ public class ApplicationLogic {
 	 * Clear all data in cache.
 	 */
 	public static void clearCache() {
-		ApplicationLogic.APPCACHE.clear();
+		APPCACHE.removeAll();
 	}
 
 	/**
@@ -93,19 +104,9 @@ public class ApplicationLogic {
 	 */
 	private static void initJavaLogging() {
 
-		// Retrieve configuration path
-		String configPath = "conf/logging.properties";
-		if (System.getProperties().contains("java.util.logging.config.file")) {
-			configPath = System.getProperties().getProperty("java.util.logging.config.file");
-		}
-		System.getProperties().setProperty("java.util.logging.config.file", configPath);
-
-		try {
-			LogManager.getLogManager().readConfiguration();
-		}
-		catch (SecurityException | IOException e) {
-			Logger.getAnonymousLogger().severe(e.getLocalizedMessage());
-		}
+//		if (!System.getProperties().contains("log4j.configurationFile")) {
+//			System.getProperties().setProperty("log4j.configurationFile", "conf/log4j.xml");
+//		}
 	}
 
 	/**
@@ -125,7 +126,7 @@ public class ApplicationLogic {
 
 		Properties properties = application.getProperties();
 
-		Console.writeDebug("initializing application properties.");
+		Console.writeDebug(ApplicationLogic.class, "initializing application properties.");
 
 		// Load properties from environment variables
 		properties.setProperty(USER_NAME_PROPERTY, System.getProperty("user.name"));
@@ -143,7 +144,7 @@ public class ApplicationLogic {
 			configPath = System.getProperties().getProperty("ch.hesge.csim2.config.file");
 		}
 
-		Console.writeDebug("loading application configuration from " + configPath + ".");
+		Console.writeDebug(ApplicationLogic.class, "loading application configuration from " + configPath + ".");
 
 		// Load properties defined in csim2.conf
 		try (FileReader reader = new FileReader(configPath)) {
@@ -152,7 +153,7 @@ public class ApplicationLogic {
 			properties.putAll(confProperties);
 		}
 		catch (IOException e) {
-			Console.writeError("an unexpected error has occured: " + e.toString());
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + e.toString());
 		}
 	}
 
@@ -167,7 +168,7 @@ public class ApplicationLogic {
 
 		Properties properties = application.getProperties();
 
-		Console.writeDebug("initializing database connection.");
+		Console.writeDebug(ApplicationLogic.class, "initializing database connection.");
 
 		// Retrieve database config
 		String connectionString = properties.getProperty(DATABASE_CONNECTION_PROPERTY);
@@ -194,11 +195,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getProjects";
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, ProjectLogic.getProjects());
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, ProjectLogic.getProjects()));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Project>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -211,11 +212,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getOntologies";
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getOntologies());
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies()));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Ontology>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -231,11 +232,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getOntologies_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getOntologies(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Ontology>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -248,11 +249,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getScenarios";
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, ScenarioLogic.getScenarios());
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios()));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Scenario>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -265,11 +266,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getEngines";
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, EngineLogic.getEngines());
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, EngineLogic.getEngines()));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<IEngine>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -285,11 +286,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getScenarios_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, ScenarioLogic.getScenarios(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Scenario>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -305,11 +306,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getScenarioWithDependencies_" + scenario.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, ScenarioLogic.getScenarioWithDependencies(scenario));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarioWithDependencies(scenario)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Scenario) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -325,11 +326,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptsByOntology_" + ontology.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getConcepts(ontology));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(ontology)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -345,11 +346,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptsByProject_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getConcepts(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -366,11 +367,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptMapByOntology_" + ontology.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getConceptMap(ontology));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(ontology)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -386,11 +387,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptsMapByProject_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, OntologyLogic.getConceptMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -403,11 +404,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getMatchings_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getMatchings(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchings(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<MethodConceptMatch>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -420,11 +421,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getMethodMatchingMap_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getMethodMatchingMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -437,11 +438,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptMatchingMap_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getConceptMatchingMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getConceptMatchingMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -453,11 +454,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getMatchingsWidthDependencies_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, MatchingLogic.getMatchingsWithDependencies(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchingsWithDependencies(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<MethodConceptMatch>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -472,11 +473,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceClasses_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceClasses(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClasses(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -498,11 +499,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceClassesWithDependencies_" + project.getKeyId() + "_" + includeMethodParamsAndRefs;
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceClassesWithDependencies(project, includeMethodParamsAndRefs));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassesWithDependencies(project, includeMethodParamsAndRefs)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -519,11 +520,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceClassMap_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceClassMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -540,11 +541,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceMethods_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceMethodMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, SourceMethod>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -562,11 +563,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceMethodByClassAndSignature_" + sourceClass.getKeyId() + "_" + signature;
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, SourceLogic.getSourceMethodBySignature(sourceClass, signature));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodBySignature(sourceClass, signature)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (SourceMethod) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -586,11 +587,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemMethodTreeMap_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemMethodTreeMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodTreeMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, StemMethod>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -620,11 +621,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemMethodsByTermMap_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemMethodByTermMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodByTermMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<String, List<StemMethod>>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -644,11 +645,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemConceptTree_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptTreeMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptTreeMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<Integer, StemConcept>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -678,11 +679,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemConceptsByTermMap_" + project.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, StemLogic.getStemConceptByTermMap(project));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptByTermMap(project)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (Map<String, List<StemConcept>>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -695,11 +696,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getTraces_" + scenario.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, TraceLogic.getTraces(scenario));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, TraceLogic.getTraces(scenario)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (List<Trace>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -716,11 +717,11 @@ public class ApplicationLogic {
 
 		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId();
 
-		if (ApplicationLogic.APPCACHE.isCacheMissed(cacheKey)) {
-			ApplicationLogic.APPCACHE.put(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario));
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario)));
 		}
 
-		return ApplicationLogic.APPCACHE.get(cacheKey);
+		return (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**

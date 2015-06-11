@@ -11,13 +11,13 @@ import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.SourceReferenceOrigin;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
-import ch.hesge.csim2.core.persistence.ConnectionUtils;
-import ch.hesge.csim2.core.persistence.IDataRow;
-import ch.hesge.csim2.core.persistence.IParamMapper;
-import ch.hesge.csim2.core.persistence.IRowMapper;
-import ch.hesge.csim2.core.persistence.QueryBuilder;
-import ch.hesge.csim2.core.persistence.QueryEngine;
+import ch.hesge.csim2.core.utils.ConnectionUtils;
 import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.IDataRow;
+import ch.hesge.csim2.core.utils.IParamMapper;
+import ch.hesge.csim2.core.utils.IRowMapper;
+import ch.hesge.csim2.core.utils.QueryBuilder;
+import ch.hesge.csim2.core.utils.QueryEngine;
 import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
@@ -59,7 +59,7 @@ public class StemMethodDao {
 			stemList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return stemList;
@@ -86,7 +86,7 @@ public class StemMethodDao {
 			stemList = QueryEngine.queryForList(connection, queryString, getRowMapper());
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 
 		return stemList;
@@ -114,7 +114,7 @@ public class StemMethodDao {
 			stemMethod.setKeyId(QueryEngine.queryForLastInsertedIdentifier(connection));
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -137,7 +137,7 @@ public class StemMethodDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 
@@ -160,7 +160,7 @@ public class StemMethodDao {
 			QueryEngine.executeQuery(connection, queryString);
 		}
 		catch (SQLException e) {
-			Console.writeLine("an unexpected error has occured: " + StringUtils.toString(e));
+			Console.writeError(StemMethodDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
 		}
 	}
 

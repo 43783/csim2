@@ -1,7 +1,6 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -23,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -78,7 +76,6 @@ public class TracesView extends JPanel {
 	 */
 	private void initComponent() {
 
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Traces", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new BorderLayout(0, 0));
 
 		// Create the setting panel
@@ -243,7 +240,7 @@ public class TracesView extends JPanel {
 							Desktop.getDesktop().open(filepath.toFile());
 						}
 						catch (IOException e1) {
-							Console.writeError("error while opening file " + filepath + ": " + StringUtils.toString(e1));
+							Console.writeError(this, "error while opening file " + filepath + ": " + StringUtils.toString(e1));
 						}
 					}
 
@@ -252,7 +249,7 @@ public class TracesView extends JPanel {
 			});
 		}
 		catch (IOException e1) {
-			Console.writeError("error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
+			Console.writeError(this, "error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
 		}
 	}
 
