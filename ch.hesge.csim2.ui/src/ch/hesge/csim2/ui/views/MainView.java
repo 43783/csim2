@@ -111,21 +111,29 @@ public class MainView extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
+		// Create the unique application instance
+		application = ApplicationLogic.createApplication();
+
 		// Initialize docking area
 		dockingControl = new CControl(this);
 		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
 
-		// Initialize application icons
-		List<Image> appIcons = new ArrayList<>();
-		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-16x16.png")));
-		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-32x32.png")));
-		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-48x48.png")));
-		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-72x72.png")));
-		setIconImages(appIcons);
+		// Init main layout
+		initLAF();
+		initMenu();
+		initStatusbar();
+		initLayout();
+		initListeners();
+		
+		// Reset current project
+		setProject(null);
+	}
 
-		// Create the unique application instance
-		application = ApplicationLogic.createApplication();
-
+	/**
+	 * Initialize look and feel.
+	 */
+	private void initLAF() {
+		
 		// Load LAF specified in config file (csim2.conf)
 		String defaultLAF = (String) application.getProperties().getProperty("look-and-feel");
 		if (defaultLAF != null) {
@@ -136,47 +144,16 @@ public class MainView extends JFrame implements ActionListener {
 				Console.writeError(this, "unable to load proper look-and-feel " + StringUtils.toString(e));
 			}
 		}
-
-		// Init main layout
-		initMenu();
-		initStatusbar();
-		initLayout();
-		initListeners();
-		setProject(null);
+		
+		// Initialize application icons
+		List<Image> appIcons = new ArrayList<>();
+		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-16x16.png")));
+		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-32x32.png")));
+		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-48x48.png")));
+		appIcons.add(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/ch/hesge/csim2/ui/icons/csim2-72x72.png")));
+		setIconImages(appIcons);
 	}
-
-	/**
-	 * Initialize the view and its components.
-	 */
-	private void initView() {
-
-		// Retrieve windows size from csim2.conf file
-		String windowSize = (String) application.getProperties().getProperty("window-size");
-		if (windowSize != null) {
-			String[] widthHeight = windowSize.split("x");
-			defaultSize.width = Integer.parseInt(widthHeight[0].trim());
-			defaultSize.height = Integer.parseInt(widthHeight[1].trim());
-		}
-		else {
-			defaultSize.width = 1024;
-			defaultSize.height = 768;
-		}
-
-		// Compute main window size & position
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (int) (dimension.getWidth() - defaultSize.width) / 2;
-		int y = (int) (dimension.getHeight() - defaultSize.height) / 2;
-		setLocation(x, y);
-		setSize(defaultSize.width, defaultSize.height);
-
-		// Show the view
-		setVisible(true);
-
-		// Populate engine table
-		List<IEngine> engineList = ApplicationLogic.getEngines();
-		engineView.setEngines(engineList);
-	}
-
+	
 	/**
 	 * Initialize docking layout
 	 */
@@ -384,6 +361,35 @@ public class MainView extends JFrame implements ActionListener {
 				ApplicationLogic.shutdownApplication(application);
 			}
 		});
+	}
+	
+	/**
+	 * Initialize the view and its data.
+	 */
+	private void initView() {
+
+		// Retrieve windows size from csim2.conf file
+		String windowSize = (String) application.getProperties().getProperty("window-size");
+		if (windowSize != null) {
+			String[] widthHeight = windowSize.split("x");
+			defaultSize.width = Integer.parseInt(widthHeight[0].trim());
+			defaultSize.height = Integer.parseInt(widthHeight[1].trim());
+		}
+		else {
+			defaultSize.width = 1024;
+			defaultSize.height = 768;
+		}
+
+		// Compute main window size & position
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) (dimension.getWidth() - defaultSize.width) / 2;
+		int y = (int) (dimension.getHeight() - defaultSize.height) / 2;
+		setLocation(x, y);
+		setSize(defaultSize.width, defaultSize.height);
+
+		// Populate engine table
+		List<IEngine> engineList = ApplicationLogic.getEngines();
+		engineView.setEngines(engineList);
 	}
 	
 	/**
