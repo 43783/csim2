@@ -15,6 +15,7 @@ import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.IEngine;
+import ch.hesge.csim2.core.model.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
@@ -710,15 +711,16 @@ public class ApplicationLogic {
 	 *        the project owning the traces
 	 * @param scenario
 	 *        the scenario owning the traces
-	 * @return
-	 *         the TimeSeries object gathering trace information
+	 * @param matchAlgo
+	 *        the matching algorithm to use (SIMPLE, COSINE, TFIDF)
+	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
 
-		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId();
+		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matchAlgo.toString();
 
 		if (!APPCACHE.isKeyInCache(cacheKey)) {
-			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario)));
+			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matchAlgo)));
 		}
 
 		return (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();

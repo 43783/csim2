@@ -12,9 +12,13 @@ import org.apache.commons.math3.linear.RealVector;
 
 import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
+import ch.hesge.csim2.core.model.SourceMethod;
+import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.ObjectSorter;
@@ -54,11 +58,13 @@ class TimeSeriesLogic {
 	 *        the project owning the traces
 	 * @param scenario
 	 *        the scenario owning the traces
+	 * @param matchAlgo
+	 *        the matching algorithm to use (SIMPLE, COSINE, TFIDF)
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
 
-		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project);
+		Map<Integer, List<MethodConceptMatch>> matchMap = getMethodMatchingMap(project, matchAlgo);
 		Map<Integer, Concept> conceptsInTrace = new HashMap<>();
 
 		// First retrieve unique methods found in trace
@@ -93,7 +99,7 @@ class TimeSeriesLogic {
 
 		// Create a vector for global concept occurrences
 		RealVector occurrenceVector = new ArrayRealVector(traceConcepts.size());
-		
+
 		for (int i = 0; i < scenarioTraces.size(); i++) {
 
 			Trace traceStep = scenarioTraces.get(i);
@@ -106,7 +112,7 @@ class TimeSeriesLogic {
 
 					// Retrieve matching concept
 					Concept concept = match.getConcept();
-					
+
 					// And its position within the trace concepts
 					int conceptIndex = traceConcepts.indexOf(concept);
 
@@ -116,7 +122,7 @@ class TimeSeriesLogic {
 					}
 				}
 			}
-			
+
 			// Update global concept occurrences (actually global weights)
 			occurrenceVector.add(traceMatrix.getColumnVector(i));
 		}
@@ -191,39 +197,39 @@ class TimeSeriesLogic {
 	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
 
 		RealMatrix reducedMatrix = null;
-		RealVector occurrenceVector = null; 		
+		RealVector occurrenceVector = null;
 
 		// Retrieve segmented time series (for all available concepts in trace)
 		TimeSeries segmentedSeries = getSegmentedTimeSeries(timeSeries, segmentCount, threshold);
-		
+
 		List<Concept> traceConcepts = new ArrayList<>();
 
 		// Retrieve the list of concepts found in segments, based on occurrences
 		for (int i = 0; i < segmentedSeries.getOccurrences().getDimension(); i++) {
-			
+
 			if (segmentedSeries.getOccurrences().getEntry(i) > 0) {
-				
+
 				Concept elligibleConcept = segmentedSeries.getTraceConcepts().get(i);
-				
+
 				// Include concept only if specified in entry
 				if (concepts == null || concepts.isEmpty() || concepts.contains(elligibleConcept)) {
 					traceConcepts.add(elligibleConcept);
 				}
 			}
 		}
-		
+
 		// If concepts are found in trace
 		if (traceConcepts.size() > 0) {
-			
+
 			// Create a reduced matrix with a subset of all concepts
 			reducedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
 
 			// Create a vector for global concept occurrences
-			occurrenceVector = new ArrayRealVector(traceConcepts.size());		
+			occurrenceVector = new ArrayRealVector(traceConcepts.size());
 
 			// Now convert each column vector into reduced vector
 			for (int i = 0; i < segmentCount; i++) {
-				
+
 				RealVector originalVector = segmentedSeries.getTraceMatrix().getColumnVector(i);
 				RealVector reducedVector = new ArrayRealVector(traceConcepts.size());
 
@@ -238,29 +244,29 @@ class TimeSeriesLogic {
 						reducedVector.setEntry(j, conceptCount);
 					}
 				}
-				
+
 				// Update reduced matrix column with current vector
 				reducedMatrix.setColumnVector(i, reducedVector);
-				
+
 				// Update global concept occurrences
 				occurrenceVector = occurrenceVector.add(reducedVector);
 			}
-			
-//			// Retrieve matrix for all concepts
-//			RealMatrix originalMatrix = segmentedSeries.getTraceMatrix();
-//			
-//			System.out.println("originalMatrix: ");
-//			for (int i = 0; i < originalMatrix.getColumnDimension(); i++) {
-//				System.out.println("originalVector: " + originalMatrix.getColumnVector(i));
-//			}
-//			System.out.println("");
-//			
-//			System.out.println("reducedMatrix: ");
-//			for (int i = 0; i < reducedMatrix.getColumnDimension(); i++) {
-//				System.out.println("reducedVector: " + reducedMatrix.getColumnVector(i));
-//			}
-//			System.out.println("");
-			
+
+			//			// Retrieve matrix for all concepts
+			//			RealMatrix originalMatrix = segmentedSeries.getTraceMatrix();
+			//			
+			//			System.out.println("originalMatrix: ");
+			//			for (int i = 0; i < originalMatrix.getColumnDimension(); i++) {
+			//				System.out.println("originalVector: " + originalMatrix.getColumnVector(i));
+			//			}
+			//			System.out.println("");
+			//			
+			//			System.out.println("reducedMatrix: ");
+			//			for (int i = 0; i < reducedMatrix.getColumnDimension(); i++) {
+			//				System.out.println("reducedVector: " + reducedMatrix.getColumnVector(i));
+			//			}
+			//			System.out.println("");
+
 		}
 
 		TimeSeries newTimeSeries = new TimeSeries();
@@ -269,7 +275,7 @@ class TimeSeriesLogic {
 		newTimeSeries.setTraceConcepts(traceConcepts);
 		newTimeSeries.setTraceMatrix(reducedMatrix);
 		newTimeSeries.setOccurrences(occurrenceVector);
-		
+
 		return newTimeSeries;
 	}
 
@@ -331,9 +337,9 @@ class TimeSeriesLogic {
 
 		// Retrieve size of each segment (based on segment count)
 		int segmentSize = timeSeries.getTraceMatrix().getColumnDimension() / segmentCount;
-		
+
 		// Create a vector for global concept occurrences
-		RealVector occurrenceVector = new ArrayRealVector(traceConcepts.size());		
+		RealVector occurrenceVector = new ArrayRealVector(traceConcepts.size());
 
 		int traceNumber = 0;
 
@@ -366,10 +372,10 @@ class TimeSeriesLogic {
 
 			// Update matrix column for current segment
 			segmentedMatrix.setColumnVector(segmentNumber, matrixVector);
-			
+
 			// Update global concept occurrences
 			occurrenceVector = occurrenceVector.add(matrixVector);
-			
+
 			// Move to next segment
 			traceNumber += segmentSize;
 		}
@@ -383,4 +389,103 @@ class TimeSeriesLogic {
 
 		return newTimeSeries;
 	}
+
+	/**
+	 * Retrieve a map of all MethodConceptMatch classified by method Id.
+	 * 
+	 * @return
+	 *         a map of (MethodId, List<MethodConceptMatch>)
+	 */
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
+
+		List<MethodConceptMatch> matchings = new ArrayList<>();
+
+		// Load concepts, methods, stem-concepts and stem-methods
+		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
+		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
+		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
+		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
+
+		List<Concept> concepts = new ArrayList<>(conceptMap.values());
+		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
+
+		RealMatrix weightMatrix = null;
+		
+		if (matchAlgo == MatchingAlgorithm.TFIDF) {
+			weightMatrix = MatchingLogic.getTfIdfMatrix(terms, concepts, stemConceptsMap);
+		}
+		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
+			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
+		}
+		else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
+			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
+		}
+		
+		// Calculate on term vectors for each method
+		Map<Integer, RealVector> methodTermVectorMap = MatchingLogic.getMethodTermVectorMap(terms, methodMap, stemMethodsMap);
+
+		for (SourceMethod sourceMethod : methodMap.values()) {
+
+			RealVector methodTermVector = methodTermVectorMap.get(sourceMethod.getKeyId());
+			boolean isNotZeroMethodVector = MatchingLogic.isNotZeroVector(methodTermVector);
+
+			// Skip null method vector
+			if (isNotZeroMethodVector) {
+
+				// Select all concepts with similarity factor > 0
+				for (int i = 0; i < weightMatrix.getColumnDimension(); i++) {
+
+					Concept concept = concepts.get(i);
+					RealVector conceptTermVector = weightMatrix.getColumnVector(i);
+
+					double similarity = 0d;
+
+					// Calculate similarity between method and concept vectors
+					if (matchAlgo == MatchingAlgorithm.TFIDF) {
+						similarity = conceptTermVector.cosine(methodTermVector);
+					}
+					else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
+						similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
+					}
+					else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
+						similarity = conceptTermVector.cosine(methodTermVector);
+					}
+
+					// Register result within the matchMap
+					if (similarity > 0) {
+
+						MethodConceptMatch match = new MethodConceptMatch();
+
+						match.setProjectId(project.getKeyId());
+						match.setSourceMethod(sourceMethod);
+						match.setConcept(concept);
+						match.setWeight(similarity);
+
+						match.setSourceMethodId(sourceMethod.getKeyId());
+						match.setConceptId(concept.getKeyId());
+
+						matchings.add(match);
+					}
+				}
+			}
+		}
+
+		// Now build a map of matching classified by method id
+
+		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
+
+		for (MethodConceptMatch match : matchings) {
+
+			// Create an associated array if missing
+			if (!matchingMap.containsKey(match.getSourceMethodId())) {
+				matchingMap.put(match.getSourceMethodId(), new ArrayList<>());
+			}
+
+			// Add the match to the array for the specific method
+			matchingMap.get(match.getSourceMethodId()).add(match);
+		}
+
+		return matchingMap;
+	}
+
 }

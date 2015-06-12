@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -28,12 +29,15 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.dialogs.TimeSeriesDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
+
+import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
 public class TimeSeriesView extends JPanel implements ActionListener {
@@ -49,6 +53,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private boolean showLegend;
 
 	private ScenarioComboBox scenarioComboBox;
+	private JComboBox<String> algorithmComboBox;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
@@ -90,7 +95,13 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		scenarioPanel.add(scenarioLabel);
 		scenarioComboBox = new ScenarioComboBox(scenarios);
 		scenarioComboBox.setPreferredSize(new Dimension(150, scenarioComboBox.getPreferredSize().height));
-		scenarioPanel.add(scenarioComboBox);
+		scenarioPanel.add(scenarioComboBox);		
+		JLabel algoLabel = new JLabel("Matching:");
+		scenarioPanel.add(algoLabel);		
+		algorithmComboBox = new JComboBox<String>();
+		algorithmComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TFIDF", "ID_L1NORM", "ID_COSINE"}));
+		algorithmComboBox.setPreferredSize(new Dimension(100, 20));
+		scenarioPanel.add(algorithmComboBox);
 		loadBtn = new JButton("Load scenario");
 		scenarioPanel.add(loadBtn);
 		parameterPanel.add(scenarioPanel, BorderLayout.CENTER);
@@ -204,8 +215,10 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						@Override
 						public void run() {
 
+							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString((String) algorithmComboBox.getSelectedItem());
+							
 							// Retrieve timeseries associated to current scenario
-							timeSeries = ApplicationLogic.getTimeSeries(project, scenario);
+							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matchAlgo);
 
 							// Reset current settings
 							segmentCount = DEFAULT_SEGMENT_COUNT;
