@@ -18,16 +18,14 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
-import ch.hesge.csim2.core.dao.MethodConceptMatchDao;
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
-import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
-import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
  * This class implement all logical rules associated to method/concept matching.
@@ -40,49 +38,88 @@ import ch.hesge.csim2.core.utils.PersistanceUtils;
 class MatchingLogic {
 
 	/**
-	 * Retrieve all MethodConcetMatch instances in projects.
-	 * 
-	 * @return a list of MethodConceptMatch
-	 */
-	public static List<MethodConceptMatch> getMatchings(Project project) {
-		return MethodConceptMatchDao.findByProject(project);
-	}
-
-	/**
-	 * Retrieve all MethodConcetMatch instances in projects
-	 * and for each one populate their classes, methods and concepts.
-	 * 
-	 * @return a list of MethodConceptMatch
-	 */
-	public static List<MethodConceptMatch> getMatchingsWithDependencies(Project project) {
-
-		Map<Integer, SourceClass> classMap   = ApplicationLogic.getSourceClassMap(project);
-		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
-		Map<Integer, Concept> conceptMap     = ApplicationLogic.getConceptMap(project);
-
-		List<MethodConceptMatch> matchings = MethodConceptMatchDao.findByProject(project);
-
-		// Retrieve class, method and concept for each match
-		for (MethodConceptMatch match : matchings) {
-			SourceMethod sourceMethod = methodMap.get(match.getSourceMethodId());
-			match.setSourceClass(classMap.get(sourceMethod.getClassId()));
-			match.setSourceMethod(sourceMethod);
-			match.setConcept(conceptMap.get(match.getConceptId()));
-		}
-
-		return matchings;
-	}
-
-	/**
 	 * Retrieve a map of all MethodConceptMatch classified by method Id.
 	 * 
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
+
+		List<MethodConceptMatch> matchings = new ArrayList<>();
+
+		// Load concepts, methods, stem-concepts and stem-methods
+		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
+		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
+		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
+		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
+
+		List<Concept> concepts = new ArrayList<>(conceptMap.values());
+		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
+
+		RealMatrix weightMatrix = null;
+		
+		if (matchAlgo == MatchingAlgorithm.TFIDF) {
+			weightMatrix = MatchingLogic.getTfIdfMatrix(terms, concepts, stemConceptsMap);
+		}
+		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
+			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
+		}
+		else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
+			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
+		}
+		
+		// Calculate on term vectors for each method
+		Map<Integer, RealVector> methodTermVectorMap = MatchingLogic.getMethodTermVectorMap(terms, methodMap, stemMethodsMap);
+
+		for (SourceMethod sourceMethod : methodMap.values()) {
+
+			RealVector methodTermVector = methodTermVectorMap.get(sourceMethod.getKeyId());
+			boolean isNotZeroMethodVector = MatchingLogic.isNotZeroVector(methodTermVector);
+
+			// Skip null method vector
+			if (isNotZeroMethodVector) {
+
+				// Select all concepts with similarity factor > 0
+				for (int i = 0; i < weightMatrix.getColumnDimension(); i++) {
+
+					Concept concept = concepts.get(i);
+					RealVector conceptTermVector = weightMatrix.getColumnVector(i);
+
+					double similarity = 0d;
+
+					// Calculate similarity between method and concept vectors
+					if (matchAlgo == MatchingAlgorithm.TFIDF) {
+						similarity = conceptTermVector.cosine(methodTermVector);
+					}
+					else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
+						similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
+					}
+					else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
+						similarity = conceptTermVector.cosine(methodTermVector);
+					}
+
+					// Register result within the matchMap
+					if (similarity > 0) {
+
+						MethodConceptMatch match = new MethodConceptMatch();
+
+						match.setProjectId(project.getKeyId());
+						match.setSourceMethod(sourceMethod);
+						match.setConcept(concept);
+						match.setWeight(similarity);
+
+						match.setSourceMethodId(sourceMethod.getKeyId());
+						match.setConceptId(concept.getKeyId());
+
+						matchings.add(match);
+					}
+				}
+			}
+		}
+
+		// Now build a map of matching classified by method id
 
 		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
-		List<MethodConceptMatch> matchings = MatchingLogic.getMatchingsWithDependencies(project);
 
 		for (MethodConceptMatch match : matchings) {
 
@@ -97,58 +134,6 @@ class MatchingLogic {
 
 		return matchingMap;
 	}
-
-	/**
-	 * Retrieve a map of all MethodConceptMatch classified by concept Id.
-	 * 
-	 * @return
-	 *         a map of (ConceptId, List<MethodConceptMatch>)
-	 */
-	public static Map<Integer, List<MethodConceptMatch>> getConceptMatchingMap(Project project) {
-
-		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
-		List<MethodConceptMatch> matchings = MatchingLogic.getMatchingsWithDependencies(project);
-
-		for (MethodConceptMatch match : matchings) {
-
-			// Create an associated array if missing
-			if (!matchingMap.containsKey(match.getConceptId())) {
-				matchingMap.put(match.getConceptId(), new ArrayList<>());
-			}
-
-			// Add the match to the array for the specific concept
-			matchingMap.get(match.getConceptId()).add(match);
-		}
-
-		return matchingMap;
-	}
-
-	/**
-	 * Delete all MethodConcetMatch instances owned by a project.
-	 * 
-	 * @param project
-	 *        the owner
-	 */
-	public static void deleteMatching(Project project) {
-		MethodConceptMatchDao.deleteByProject(project);
-	}
-
-	/**
-	 * Save a single MethodConcetMatch.
-	 * 
-	 * @param match
-	 *        the MethodConcetMatch to save
-	 */
-	public static void saveMatching(MethodConceptMatch match) {
-
-		if (PersistanceUtils.isNewObject(match)) {
-			MethodConceptMatchDao.add(match);
-		}
-		else {
-			MethodConceptMatchDao.add(match);
-		}
-	}
-	
 
 	/**
 	 * 

@@ -16,9 +16,6 @@ import ch.hesge.csim2.core.model.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
-import ch.hesge.csim2.core.model.SourceMethod;
-import ch.hesge.csim2.core.model.StemConcept;
-import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.ObjectSorter;
@@ -64,7 +61,7 @@ class TimeSeriesLogic {
 	 */
 	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
 
-		Map<Integer, List<MethodConceptMatch>> matchMap = getMethodMatchingMap(project, matchAlgo);
+		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project, matchAlgo);
 		Map<Integer, Concept> conceptsInTrace = new HashMap<>();
 
 		// First retrieve unique methods found in trace
@@ -389,103 +386,4 @@ class TimeSeriesLogic {
 
 		return newTimeSeries;
 	}
-
-	/**
-	 * Retrieve a map of all MethodConceptMatch classified by method Id.
-	 * 
-	 * @return
-	 *         a map of (MethodId, List<MethodConceptMatch>)
-	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
-
-		List<MethodConceptMatch> matchings = new ArrayList<>();
-
-		// Load concepts, methods, stem-concepts and stem-methods
-		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
-		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
-		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
-		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
-
-		List<Concept> concepts = new ArrayList<>(conceptMap.values());
-		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
-
-		RealMatrix weightMatrix = null;
-		
-		if (matchAlgo == MatchingAlgorithm.TFIDF) {
-			weightMatrix = MatchingLogic.getTfIdfMatrix(terms, concepts, stemConceptsMap);
-		}
-		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
-			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
-		}
-		else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
-			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
-		}
-		
-		// Calculate on term vectors for each method
-		Map<Integer, RealVector> methodTermVectorMap = MatchingLogic.getMethodTermVectorMap(terms, methodMap, stemMethodsMap);
-
-		for (SourceMethod sourceMethod : methodMap.values()) {
-
-			RealVector methodTermVector = methodTermVectorMap.get(sourceMethod.getKeyId());
-			boolean isNotZeroMethodVector = MatchingLogic.isNotZeroVector(methodTermVector);
-
-			// Skip null method vector
-			if (isNotZeroMethodVector) {
-
-				// Select all concepts with similarity factor > 0
-				for (int i = 0; i < weightMatrix.getColumnDimension(); i++) {
-
-					Concept concept = concepts.get(i);
-					RealVector conceptTermVector = weightMatrix.getColumnVector(i);
-
-					double similarity = 0d;
-
-					// Calculate similarity between method and concept vectors
-					if (matchAlgo == MatchingAlgorithm.TFIDF) {
-						similarity = conceptTermVector.cosine(methodTermVector);
-					}
-					else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
-						similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
-					}
-					else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
-						similarity = conceptTermVector.cosine(methodTermVector);
-					}
-
-					// Register result within the matchMap
-					if (similarity > 0) {
-
-						MethodConceptMatch match = new MethodConceptMatch();
-
-						match.setProjectId(project.getKeyId());
-						match.setSourceMethod(sourceMethod);
-						match.setConcept(concept);
-						match.setWeight(similarity);
-
-						match.setSourceMethodId(sourceMethod.getKeyId());
-						match.setConceptId(concept.getKeyId());
-
-						matchings.add(match);
-					}
-				}
-			}
-		}
-
-		// Now build a map of matching classified by method id
-
-		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
-
-		for (MethodConceptMatch match : matchings) {
-
-			// Create an associated array if missing
-			if (!matchingMap.containsKey(match.getSourceMethodId())) {
-				matchingMap.put(match.getSourceMethodId(), new ArrayList<>());
-			}
-
-			// Add the match to the array for the specific method
-			matchingMap.get(match.getSourceMethodId()).add(match);
-		}
-
-		return matchingMap;
-	}
-
 }

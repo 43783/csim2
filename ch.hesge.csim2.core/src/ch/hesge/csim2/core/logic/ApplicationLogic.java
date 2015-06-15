@@ -384,73 +384,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all matchings in projects.
-	 * 
-	 * @return
-	 *         a list of MethodConceptMatch
-	 */
-	public static List<MethodConceptMatch> getMatchings(Project project) {
-
-		String cacheKey = "getMatchings_" + project.getKeyId();
-
-		if (!APPCACHE.isKeyInCache(cacheKey)) {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchings(project)));
-		}
-
-		return (List<MethodConceptMatch>) APPCACHE.get(cacheKey).getObjectValue();
-	}
-
-	/**
-	 * Retrieve a map of all MethodConceptMatch classified by method Id.
-	 * 
-	 * @return
-	 *         a map of (MethodId, List<MethodConceptMatch>)
-	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
-
-		String cacheKey = "getMethodMatchingMap_" + project.getKeyId();
-
-		if (!APPCACHE.isKeyInCache(cacheKey)) {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project)));
-		}
-
-		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
-	}
-
-	/**
-	 * Retrieve a map of all MethodConceptMatch classified by concept Id.
-	 * 
-	 * @return
-	 *         a map of (ConceptId, List<MethodConceptMatch>)
-	 */
-	public static Map<Integer, List<MethodConceptMatch>> getConceptMatchingMap(Project project) {
-
-		String cacheKey = "getConceptMatchingMap_" + project.getKeyId();
-
-		if (!APPCACHE.isKeyInCache(cacheKey)) {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getConceptMatchingMap(project)));
-		}
-
-		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
-	}
-
-	/**
-	 * Retrieve all matching with its dependencies SourceMethod and Concept.
-	 * 
-	 * @return a list of MethodConceptMatch
-	 */
-	public static List<MethodConceptMatch> getMatchingsWithDependencies(Project project) {
-
-		String cacheKey = "getMatchingsWidthDependencies_" + project.getKeyId();
-
-		if (!APPCACHE.isKeyInCache(cacheKey)) {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchingsWithDependencies(project)));
-		}
-
-		return (List<MethodConceptMatch>) APPCACHE.get(cacheKey).getObjectValue();
-	}
-
-	/**
 	 * Retrieve all source classes owned by a project.
 	 * 
 	 * @param project
@@ -676,6 +609,23 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Retrieve a map of all MethodConceptMatch classified by method Id.
+	 * 
+	 * @return
+	 *         a map of (MethodId, List<MethodConceptMatch>)
+	 */
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
+
+		String cacheKey = "getMethodMatchingMap_" + project.getKeyId() + "_" + matchAlgo.toString();
+
+		if (!APPCACHE.isKeyInCache(cacheKey)) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matchAlgo)));
+		}
+
+		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
+	}
+	
+	/**
 	 * Retrieve all traces owned by a scenario.
 	 * 
 	 * @param scenario
@@ -741,16 +691,6 @@ public class ApplicationLogic {
 	 */
 	public static void deleteTraces(Scenario scenario) {
 		TraceLogic.deleteTraces(scenario);
-	}
-
-	/**
-	 * Delete all MethodConcetMatch instances owned by a project.
-	 * 
-	 * @param project
-	 *        the owner
-	 */
-	public static void deleteMatching(Project project) {
-		MatchingLogic.deleteMatching(project);
 	}
 
 	/**
@@ -874,16 +814,6 @@ public class ApplicationLogic {
 	 */
 	public static void saveStemMethod(StemMethod stem) {
 		StemLogic.saveStemMethod(stem);
-	}
-
-	/**
-	 * Save a single MethodConcetMatch.
-	 * 
-	 * @param match
-	 *        the MethodConcetMatch to save
-	 */
-	public static void saveMatching(MethodConceptMatch match) {
-		MatchingLogic.saveMatching(match);
 	}
 
 	/**

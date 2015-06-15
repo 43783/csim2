@@ -42,7 +42,6 @@ import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.Context;
 import ch.hesge.csim2.core.model.IEngine;
-import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
@@ -581,24 +580,6 @@ public class MainView extends JFrame implements ActionListener {
 
 				// Create the view
 				showView("Concepts", new StemConceptsView(concepts, stemTree));
-			}
-		});
-	}
-
-	/**
-	 * Show the method concept matching view
-	 */
-	public void showMatchingView() {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-
-				// Retrieve required data from cache
-				List<MethodConceptMatch> matchings = ApplicationLogic.getMatchingsWithDependencies(project);
-
-				// Create the view
-				showView("Matchings", new MatchingView(matchings));
 			}
 		});
 	}

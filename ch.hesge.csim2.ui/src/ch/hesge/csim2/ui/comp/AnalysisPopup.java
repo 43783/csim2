@@ -121,9 +121,6 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 		else if (e.getSource() == mnuSourceStem) {
 			mainView.showSourceStems();
 		}
-		else if (e.getSource() == mnuMatching) {
-			mainView.showMatchingView();
-		}
 		else if (e.getSource() == mnuTrace) {
 			mainView.showTraceView();
 		}

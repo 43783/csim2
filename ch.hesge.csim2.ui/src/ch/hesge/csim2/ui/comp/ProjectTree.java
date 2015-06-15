@@ -103,7 +103,6 @@ public class ProjectTree extends JTree {
 		projectNode.add(analysisNode);
 		analysisNode.add(new DefaultMutableTreeNode("Sources"));
 		analysisNode.add(new DefaultMutableTreeNode("Concepts"));
-		analysisNode.add(new DefaultMutableTreeNode("Matching"));
 		analysisNode.add(new DefaultMutableTreeNode("Traces"));
 		analysisNode.add(new DefaultMutableTreeNode("TimeSeries"));
 		
@@ -153,9 +152,6 @@ public class ProjectTree extends JTree {
 				}
 				else if (userObject.toString().equals("Concepts")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concept.png")));
-				}
-				else if (userObject.toString().equals("Matching")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/match.png")));
 				}
 				else if (userObject.toString().equals("Traces")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/trace.png")));
@@ -230,10 +226,6 @@ public class ProjectTree extends JTree {
 						analysisPopup.enableConceptStemMenu();
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
-					else if (userObject.toString().equals("Matching")) {
-						analysisPopup.enableMatchingMenu();
-						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
-					}
 					else if (userObject.toString().equals("Traces")) {
 						analysisPopup.enableTraceMenu();
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
@@ -260,9 +252,6 @@ public class ProjectTree extends JTree {
 					}
 					else if (userObject.toString().equals("Concepts")) {
 						mainView.showConceptStems();
-					}
-					else if (userObject.toString().equals("Matching")) {
-						mainView.showMatchingView();
 					}
 					else if (userObject.toString().equals("Traces")) {
 						mainView.showTraceView();
