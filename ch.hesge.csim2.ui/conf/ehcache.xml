@@ -4,7 +4,7 @@
 	<cache name="csim2"
 		MaxEntriesLocalHeap="10000"
 		Eternal="false"
-		TimeToIdleSeconds="300"
+		TimeToIdleSeconds="600"
 		TimeToLiveSeconds="600"
 		MemoryStoreEvictionPolicy="LFU"
 		TransactionalMode="off">

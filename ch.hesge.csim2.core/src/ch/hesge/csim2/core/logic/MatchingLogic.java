@@ -261,7 +261,7 @@ class MatchingLogic {
 	 */
 	public static RealMatrix getTfIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
 
-		RealMatrix tfMatrix = computeTfMatrix(terms, concepts, stems);
+		RealMatrix tfMatrix  = computeTfMatrix(terms, concepts, stems);
 		RealMatrix idfMatrix = computeIdfMatrix(terms, concepts, stems);
 
 		return ebeMultiply(tfMatrix, idfMatrix);
@@ -315,7 +315,7 @@ class MatchingLogic {
 	 *  
 	 *  	we can now calculate TF = TO / TC (with matrix element-by-element division)
 	 * 
-	 * 		  						+-> relative weight of term T1 within concept C2
+	 * 		  						+-> relative frequency of term T1 within concept C2
 	 * 								|
 	 * 					|							|		
 	 * 					|	0.38	0.13	0		|		T1		

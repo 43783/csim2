@@ -6,6 +6,7 @@ package ch.hesge.csim2.core.model;
 
 /**
  * Represents a single match between a method and a concept.
+ * this class is never persisted on database.
  * 
  * Copyright HEG Geneva 2014, Switzerland
  * 
