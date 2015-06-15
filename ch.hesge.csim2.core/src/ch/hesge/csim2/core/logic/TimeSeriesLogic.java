@@ -248,22 +248,6 @@ class TimeSeriesLogic {
 				// Update global concept occurrences
 				occurrenceVector = occurrenceVector.add(reducedVector);
 			}
-
-			//			// Retrieve matrix for all concepts
-			//			RealMatrix originalMatrix = segmentedSeries.getTraceMatrix();
-			//			
-			//			System.out.println("originalMatrix: ");
-			//			for (int i = 0; i < originalMatrix.getColumnDimension(); i++) {
-			//				System.out.println("originalVector: " + originalMatrix.getColumnVector(i));
-			//			}
-			//			System.out.println("");
-			//			
-			//			System.out.println("reducedMatrix: ");
-			//			for (int i = 0; i < reducedMatrix.getColumnDimension(); i++) {
-			//				System.out.println("reducedVector: " + reducedMatrix.getColumnVector(i));
-			//			}
-			//			System.out.println("");
-
 		}
 
 		TimeSeries newTimeSeries = new TimeSeries();
