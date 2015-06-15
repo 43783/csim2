@@ -48,7 +48,6 @@ class EngineLogic {
 			// Load engines into a standard list
 			for (IEngine engine : engineManager) {
 				engines.add(engine);
-				Console.writeInfo(EngineLogic.class, "plugin " + engine.getName() + " loaded.");
 			}
 		}
 

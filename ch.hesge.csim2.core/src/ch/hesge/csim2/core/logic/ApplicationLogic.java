@@ -65,7 +65,6 @@ public class ApplicationLogic {
 
 		Application application = new Application();
 
-		initJavaLogging();
 		initAppProperties(application);
 		initDbProperties(application);
 
@@ -97,17 +96,6 @@ public class ApplicationLogic {
 	 */
 	public static void clearCache() {
 		APPCACHE.removeAll();
-	}
-
-	/**
-	 * Initialize the java standard logging system.
-	 * Can be override by specifying an -D property on java launching argument.
-	 */
-	private static void initJavaLogging() {
-
-//		if (!System.getProperties().contains("log4j.configurationFile")) {
-//			System.getProperties().setProperty("log4j.configurationFile", "conf/log4j.xml");
-//		}
 	}
 
 	/**

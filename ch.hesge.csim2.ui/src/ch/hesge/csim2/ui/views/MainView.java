@@ -124,7 +124,7 @@ public class MainView extends JFrame implements ActionListener {
 		initStatusbar();
 		initLayout();
 		initListeners();
-		
+				
 		// Reset current project
 		setProject(null);
 	}
@@ -192,7 +192,6 @@ public class MainView extends JFrame implements ActionListener {
 		consoleDockable.setExternalizable(false);
 		consoleDockable.setCloseable(true);
 		consoleDockable.add(consoleView);
-		SwingAppender.setTextArea(consoleView.getLogArea());
 		consoleDockable.addCDockableStateListener(new CDockableStateListener() {
 			@Override
 			public void visibilityChanged(CDockable dockable) {
@@ -386,6 +385,10 @@ public class MainView extends JFrame implements ActionListener {
 		int y = (int) (dimension.getHeight() - defaultSize.height) / 2;
 		setLocation(x, y);
 		setSize(defaultSize.width, defaultSize.height);
+
+		// Redirect log appender to textarea
+		SwingAppender.setTextArea(consoleView.getLogArea());
+		Console.writeInfo(this, "Csim2 v" + application.getVersion() + " initialized.");
 
 		// Populate engine table
 		List<IEngine> engineList = ApplicationLogic.getEngines();
