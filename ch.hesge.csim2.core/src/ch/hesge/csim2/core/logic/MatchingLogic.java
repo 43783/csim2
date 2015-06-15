@@ -47,9 +47,11 @@ class MatchingLogic {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
-		// Load concepts, methods, stem-concepts and stem-methods
+		// Retrieve concept and method map
 		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
 		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
+
+		// Retrieve stem map
 		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
 		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
 
@@ -61,10 +63,7 @@ class MatchingLogic {
 		if (matchAlgo == MatchingAlgorithm.TFIDF) {
 			weightMatrix = MatchingLogic.getTfIdfMatrix(terms, concepts, stemConceptsMap);
 		}
-		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
-			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
-		}
-		else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
+		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM || matchAlgo == MatchingAlgorithm.ID_COSINE) {
 			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
 		}
 		
@@ -88,18 +87,15 @@ class MatchingLogic {
 					double similarity = 0d;
 
 					// Calculate similarity between method and concept vectors
-					if (matchAlgo == MatchingAlgorithm.TFIDF) {
+					if (matchAlgo == MatchingAlgorithm.TFIDF || matchAlgo == MatchingAlgorithm.ID_COSINE) {
 						similarity = conceptTermVector.cosine(methodTermVector);
 					}
 					else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
 						similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
 					}
-					else if (matchAlgo == MatchingAlgorithm.ID_COSINE) {
-						similarity = conceptTermVector.cosine(methodTermVector);
-					}
 
 					// Register result within the matchMap
-					if (similarity > 0) {
+					if (similarity > 0d) {
 
 						MethodConceptMatch match = new MethodConceptMatch();
 
@@ -117,8 +113,7 @@ class MatchingLogic {
 			}
 		}
 
-		// Now build a map of matching classified by method id
-
+		// Now build a map of concept matching, classified by method id
 		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
 
 		for (MethodConceptMatch match : matchings) {
