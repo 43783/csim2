@@ -7,8 +7,13 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.englishStemmer;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Context;
@@ -184,7 +189,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 					// Retrieve stems for the method
 					String methodName = sourceMethod.getName();
-					List<String> methodStems = StemMethodAnalyzerUtils.getStems(methodName, rejectedList);
+					List<String> methodStems = getStems(methodName, rejectedList);
 
 					// Create a stem for the full method name
 					String methodNameFull = StringUtils.concatenate(methodStems);
@@ -203,7 +208,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 						// Retrieve stems for the parameter
 						String parameterName = sourceParameter.getName();
-						List<String> parameterStems = StemMethodAnalyzerUtils.getStems(parameterName, rejectedList);
+						List<String> parameterStems = getStems(parameterName, rejectedList);
 
 						// Create a stem for the full parameter name
 						String parameterNameFull = StringUtils.concatenate(parameterStems);
@@ -220,7 +225,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 						// Retrieve stems for the type
 						String parameterType = sourceParameter.getType();
-						List<String> typeStems = StemMethodAnalyzerUtils.getStems(parameterType, rejectedList);
+						List<String> typeStems = getStems(parameterType, rejectedList);
 
 						// Create a stem for the full type name
 						String parameterTypeFull = StringUtils.concatenate(typeStems);
@@ -240,7 +245,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 						// Retrieve stems for the reference
 						String referenceName = sourceReference.getName();
-						List<String> referenceStems = StemMethodAnalyzerUtils.getStems(referenceName, rejectedList);
+						List<String> referenceStems = getStems(referenceName, rejectedList);
 
 						// Create a stem for the full reference name
 						String referenceNameFull = StringUtils.concatenate(referenceStems);
@@ -257,7 +262,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 						// Retrieve stems for the type
 						String referenceType = sourceReference.getType();
-						List<String> typeStems = StemMethodAnalyzerUtils.getStems(referenceType, rejectedList);
+						List<String> typeStems = getStems(referenceType, rejectedList);
 						
 						// Create a stem for the full type name
 						String referenceTypeFull = StringUtils.concatenate(typeStems);
@@ -291,4 +296,60 @@ public class StemMethodAnalyzer implements IEngine {
 	@Override
 	public void stop() {
 	}
+	
+	/**
+	 * Retrieve all stems associated to a name.
+	 * Words present in rejectedList will not produce associated stems.
+	 * 
+	 * @param name
+	 *        the name to use to extract stems
+	 * @param rejectedList
+	 *        the list of forbidden words
+	 * @return
+	 *         a list of stems associated to the list of names
+	 */
+	public static List<String> getStems(String name, List<String> rejectedList) {
+		
+		List<String> stems = new ArrayList<>();
+
+		// First, clean original name (diacritic and non alphanum chars) 
+		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", "");
+		cleanName = cleanName.replaceAll("[^A-Za-z0-9]", "");
+		cleanName = cleanName != null ? cleanName.trim() : "";
+		cleanName = StringUtils.trimHungarian(cleanName);
+		
+		if (cleanName.length() > 0) {
+			
+			List<String> nameParts = new ArrayList<>();
+
+			// Then retrieve name parts (camel casing notation) 
+			List<String> words = StringUtils.splitCamelCase(cleanName);
+
+			// Filter name present in rejection list
+			for (String word : words) {
+
+				if (word != null && word.length() > 0) {
+
+					word = word.toLowerCase();
+
+					// Add only words not in reject list or not already present
+					if (!rejectedList.contains(word) && !stems.contains(word)) {
+						nameParts.add(word);
+					}
+				}
+			}
+			
+			// Finally stemmize all name parts
+			SnowballStemmer stemmer = new englishStemmer();
+			for (String word : nameParts) {
+
+				stemmer.setCurrent(word);
+				stemmer.stem();
+				stems.add(stemmer.getCurrent().toLowerCase());
+			}
+		}
+		
+		return stems;
+	}		
 }
