@@ -53,18 +53,19 @@ class MatchingLogic {
 
 		// Retrieve stem map
 		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
-		Map<String, List<StemMethod>> stemMethodsMap = ApplicationLogic.getStemMethodByTermMap(project);
+		Map<String, List<StemMethod>> stemMethodsMap   = ApplicationLogic.getStemMethodByTermMap(project);
 
+		// Get linear concepts and terms (matrix cols/rows)
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
 
 		RealMatrix weightMatrix = null;
 		
 		if (matchAlgo == MatchingAlgorithm.TFIDF) {
-			weightMatrix = MatchingLogic.getTfIdfMatrix(terms, concepts, stemConceptsMap);
+			weightMatrix = getTfIdfMatrix(terms, concepts, stemConceptsMap);
 		}
 		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM || matchAlgo == MatchingAlgorithm.ID_COSINE) {
-			weightMatrix = MatchingLogic.getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
+			weightMatrix = getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
 		}
 		
 		// Calculate on term vectors for each method
@@ -151,7 +152,7 @@ class MatchingLogic {
 	 *         a terms/concepts weight matrix
 	 */
 
-	public static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap) {
+	private static RealMatrix getWeightMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemByTermMap) {
 
 		RealMatrix weightMatrix = MatrixUtils.createRealMatrix(terms.size(), concepts.size());
 		
@@ -254,7 +255,7 @@ class MatchingLogic {
 	 * @return
 	 *         a tf-idf matrix
 	 */
-	public static RealMatrix getTfIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
+	private static RealMatrix getTfIdfMatrix(List<String> terms, List<Concept> concepts, Map<String, List<StemConcept>> stems) {
 
 		RealMatrix tfMatrix  = computeTfMatrix(terms, concepts, stems);
 		RealMatrix idfMatrix = computeIdfMatrix(terms, concepts, stems);
@@ -474,7 +475,7 @@ class MatchingLogic {
 	 * @return
 	 *         a map of all vectors associated to methods
 	 */
-	public static Map<Integer, RealVector> getMethodTermVectorMap(List<String> terms, Map<Integer, SourceMethod> methods, Map<String, List<StemMethod>> stems) {
+	private static Map<Integer, RealVector> getMethodTermVectorMap(List<String> terms, Map<Integer, SourceMethod> methods, Map<String, List<StemMethod>> stems) {
 
 		Map<Integer, RealVector> methodTermVectorMap = new HashMap<>();
 
@@ -612,7 +613,7 @@ class MatchingLogic {
 	 * @return
 	 *         true if zero vector, false otherwise
 	 */
-	public static boolean isZeroVector(RealVector v) {
+	private static boolean isZeroVector(RealVector v) {
 
 		for (int i = 0; i < v.getDimension(); i++) {
 			if (v.getEntry(i) != 0) {
@@ -631,7 +632,7 @@ class MatchingLogic {
 	 * @return
 	 *         true if not zero vector, false otherwise
 	 */
-	public static boolean isNotZeroVector(RealVector v) {
+	private static boolean isNotZeroVector(RealVector v) {
 		return !isZeroVector(v);
 	}
 	
