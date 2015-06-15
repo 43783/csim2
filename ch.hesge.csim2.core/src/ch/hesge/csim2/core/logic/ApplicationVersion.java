@@ -10,6 +10,6 @@ package ch.hesge.csim2.core.logic;
 
 class ApplicationVersion {
 
-	public static String VERSION = "1.3.14.20150504";
+	public static String VERSION = "1.3.15.20150615";
 
 }
