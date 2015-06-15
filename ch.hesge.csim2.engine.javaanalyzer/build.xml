@@ -11,7 +11,7 @@
 	<target name="copy-dependencies">
 		<echo message="Copying all required files to target folder"/>
     	<copy todir="${distrib-dir}/lib">
-    		<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*.source*.jar"/>
+    		<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	
     </target>
 	
