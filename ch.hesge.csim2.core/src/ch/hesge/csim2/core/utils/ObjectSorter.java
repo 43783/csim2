@@ -6,6 +6,7 @@ import java.util.List;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptAttribute;
 import ch.hesge.csim2.core.model.ConceptClass;
+import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.SourceAttribute;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
@@ -194,4 +195,18 @@ public class ObjectSorter {
 		});
 	}
 
+	/**
+	 * Sort a list of mathings.
+	 * 
+	 * @param matchings
+	 */
+	public static void sortMatchingByWeight(List<MethodConceptMatch> matchings) {
+
+		matchings.sort(new Comparator<MethodConceptMatch>() {
+			@Override
+			public int compare(MethodConceptMatch a, MethodConceptMatch b) {
+				return (int) ((b.getWeight() - a.getWeight()) * 100);
+			}
+		});
+	}
 }

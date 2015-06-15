@@ -87,7 +87,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		parameterPanel.setLayout(new BorderLayout(0, 0));
 		this.add(parameterPanel, BorderLayout.NORTH);
 
-		// Create the scenario panel
+		// Create the scenario selection panel
 		JPanel scenarioPanel = new JPanel();
 		FlowLayout flowLayout1 = (FlowLayout) scenarioPanel.getLayout();
 		flowLayout1.setAlignment(FlowLayout.LEFT);
@@ -102,6 +102,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		algorithmComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TFIDF", "ID_L1NORM", "ID_COSINE"}));
 		algorithmComboBox.setPreferredSize(new Dimension(100, 20));
 		scenarioPanel.add(algorithmComboBox);
+		
+		// Create the load button
 		loadBtn = new JButton("Load scenario");
 		scenarioPanel.add(loadBtn);
 		parameterPanel.add(scenarioPanel, BorderLayout.CENTER);
@@ -215,6 +217,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						@Override
 						public void run() {
 
+							// Retrieve selected matching algorithm
 							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString((String) algorithmComboBox.getSelectedItem());
 							
 							// Retrieve timeseries associated to current scenario
