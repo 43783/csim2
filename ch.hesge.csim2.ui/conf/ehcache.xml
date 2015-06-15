@@ -5,7 +5,6 @@
 		MaxEntriesLocalHeap="10000"
 		Eternal="false"
 		TimeToIdleSeconds="600"
-		TimeToLiveSeconds="600"
 		MemoryStoreEvictionPolicy="LFU"
 		TransactionalMode="off">
 	</cache>

@@ -1,5 +1,6 @@
 package ch.hesge.csim2.core.logic;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -10,6 +11,8 @@ import java.util.Properties;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.config.Configuration;
+import net.sf.ehcache.config.ConfigurationFactory;
 import ch.hesge.csim2.core.dao.SettingsDao;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
@@ -46,7 +49,8 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class ApplicationLogic {
 
 	// Private static attributes
-	private static Cache APPCACHE = CacheManager.getInstance().getCache("csim2");
+	//private static Cache APPCACHE = CacheManager.getInstance().getCache("csim2");
+	private static Cache APPCACHE;
 
 	public static final String USER_NAME_PROPERTY = "user-name";
 	public static final String USER_FOLDER_PROPERTY = "user-folder";
@@ -115,28 +119,32 @@ public class ApplicationLogic {
 
 		Properties properties = application.getProperties();
 
+		// Configuration log4j configuration
+		String log4jConfigPath = "conf/log4j2.xml";
+		System.setProperty("log4j.configurationFile", log4jConfigPath);
+
 		Console.writeDebug(ApplicationLogic.class, "initializing application properties.");
 
 		// Load properties from environment variables
 		properties.setProperty(USER_NAME_PROPERTY, System.getProperty("user.name"));
 		properties.setProperty(USER_FOLDER_PROPERTY, System.getProperty("user.home"));
-
+		 
 		// Retrieve application's base folder
 		String applicationFolder = FileSystems.getDefault().getPath(".").toAbsolutePath().toString();
 		applicationFolder = StringUtils.removeTrailString(applicationFolder, "\\");
 		applicationFolder = StringUtils.removeTrailString(applicationFolder, "\\");
 		properties.setProperty(APPLICATION_BASE_PROPERTY, applicationFolder);
 
-		// Retrieve configuration path
-		String configPath = "conf/csim2.conf";
+		// Retrieve app configuration
+		String appConfigPath = "conf/csim2.conf";
 		if (System.getProperties().contains("ch.hesge.csim2.config.file")) {
-			configPath = System.getProperties().getProperty("ch.hesge.csim2.config.file");
+			appConfigPath = System.getProperties().getProperty("ch.hesge.csim2.config.file");
 		}
-
-		Console.writeDebug(ApplicationLogic.class, "loading application configuration from " + configPath + ".");
+		
+		Console.writeDebug(ApplicationLogic.class, "loading application configuration from " + appConfigPath + ".");
 
 		// Load properties defined in csim2.conf
-		try (FileReader reader = new FileReader(configPath)) {
+		try (FileReader reader = new FileReader(appConfigPath)) {
 			Properties confProperties = new Properties();
 			confProperties.load(reader);
 			properties.putAll(confProperties);
@@ -144,6 +152,14 @@ public class ApplicationLogic {
 		catch (IOException e) {
 			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + e.toString());
 		}
+		
+		// Retrieve ehcache configuration
+		String ehConfigPath = "conf/ehcache.conf";
+		Configuration config = ConfigurationFactory.parseConfiguration(new File("conf/ehcache.xml"));
+		CacheManager cacheManager = CacheManager.create(config);
+		APPCACHE = cacheManager.getCache("csim2");
+		
+		Console.writeDebug(ApplicationLogic.class, "loading ehcache configuration from " + ehConfigPath + ".");		
 	}
 
 	/**

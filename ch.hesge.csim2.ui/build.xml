@@ -35,9 +35,7 @@ start javaw -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
 	<target name="copy-dependencies">
 		<echo message="Copying all required files to target folder"/>
     	<copy todir="${distrib-dir}/conf">
-    		<fileset dir="conf" includes="**/*.conf"/>
-    		<fileset dir="conf" includes="**/*.properties"/>
-    		<fileset dir="conf" includes="**/*.txt"/>
+			<fileset dir="conf" includes="**/*.*"/>
 		</copy>		    	
     	<copy todir="${distrib-dir}/lib">
     		<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*.source*.jar"/>
@@ -80,10 +78,8 @@ start javaw -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
 		<ant antfile="../ch.hesge.csim2.engine.javaanalyzer/build.xml"     	   dir="../ch.hesge.csim2.engine.javaanalyzer" />
 		<ant antfile="../ch.hesge.csim2.engine.javainstrumenter/build.xml" 	   dir="../ch.hesge.csim2.engine.javainstrumenter" />
 		<ant antfile="../ch.hesge.csim2.engine.traceloader/build.xml"          dir="../ch.hesge.csim2.engine.traceloader" />
-		<ant antfile="../ch.hesge.csim2.engine.scenarioplayer/build.xml"       dir="../ch.hesge.csim2.engine.scenarioplayer" />
 		<ant antfile="../ch.hesge.csim2.engine.stemconceptanalyzer/build.xml"  dir="../ch.hesge.csim2.engine.stemconceptanalyzer" />
 		<ant antfile="../ch.hesge.csim2.engine.stemmethodanalyzer/build.xml"   dir="../ch.hesge.csim2.engine.stemmethodanalyzer" />
-		<ant antfile="../ch.hesge.csim2.engine.methodconceptmatcher/build.xml" dir="../ch.hesge.csim2.engine.methodconceptmatcher" />
 	</target>
 	
 	<!-- default task -->
