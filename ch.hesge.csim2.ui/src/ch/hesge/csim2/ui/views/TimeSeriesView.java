@@ -29,7 +29,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
-import ch.hesge.csim2.core.logic.MatchingAlgorithm;
+import ch.hesge.csim2.core.logic.MyMatchingAlgorithm;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
@@ -217,7 +217,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						public void run() {
 
 							// Retrieve selected matching algorithm
-							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
+							MyMatchingAlgorithm matchAlgo = MyMatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
 							
 							// Retrieve timeseries associated to current scenario
 							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matchAlgo);

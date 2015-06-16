@@ -29,7 +29,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
-import ch.hesge.csim2.core.logic.MatchingAlgorithm;
+import ch.hesge.csim2.core.logic.MyMatchingAlgorithm;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
@@ -160,7 +160,7 @@ public class TracesView extends JPanel {
 						public void run() {
 
 							// Retrieve selected matching algorithm
-							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
+							MyMatchingAlgorithm matchAlgo = MyMatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
 
 							// Retrieve method-concept matchings
 							matchMap = ApplicationLogic.getMethodMatchingMap(project, matchAlgo);

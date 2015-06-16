@@ -58,7 +58,7 @@ class TimeSeriesLogic {
 	 *        the matching algorithm to use (SIMPLE, COSINE, TFIDF)
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MyMatchingAlgorithm matchAlgo) {
 
 		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project, matchAlgo);
 		Map<Integer, Concept> conceptsInTrace = new HashMap<>();

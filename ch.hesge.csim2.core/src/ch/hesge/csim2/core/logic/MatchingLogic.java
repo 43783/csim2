@@ -42,7 +42,7 @@ class MatchingLogic {
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MyMatchingAlgorithm matchAlgo) {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
@@ -60,10 +60,10 @@ class MatchingLogic {
 
 		RealMatrix weightMatrix = null;
 
-		if (matchAlgo == MatchingAlgorithm.TFIDF) {
+		if (matchAlgo == MyMatchingAlgorithm.TFIDF) {
 			weightMatrix = getTfIdfMatrix(terms, concepts, conceptMap, stemConceptsMap);
 		}
-		else if (matchAlgo == MatchingAlgorithm.ID_L1NORM || matchAlgo == MatchingAlgorithm.ID_COSINE) {
+		else if (matchAlgo == MyMatchingAlgorithm.ID_L1NORM || matchAlgo == MyMatchingAlgorithm.ID_COSINE) {
 			weightMatrix = getWeightMatrix(terms, concepts, conceptMap, stemConceptsMap);
 		}
 
@@ -87,10 +87,10 @@ class MatchingLogic {
 					double similarity = 0d;
 
 					// Calculate similarity between method and concept vectors
-					if (matchAlgo == MatchingAlgorithm.TFIDF || matchAlgo == MatchingAlgorithm.ID_COSINE) {
+					if (matchAlgo == MyMatchingAlgorithm.TFIDF || matchAlgo == MyMatchingAlgorithm.ID_COSINE) {
 						similarity = conceptTermVector.cosine(methodTermVector);
 					}
-					else if (matchAlgo == MatchingAlgorithm.ID_L1NORM) {
+					else if (matchAlgo == MyMatchingAlgorithm.ID_L1NORM) {
 						similarity = conceptTermVector.ebeMultiply(methodTermVector).getL1Norm();
 					}
 

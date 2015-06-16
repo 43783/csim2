@@ -629,7 +629,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MyMatchingAlgorithm matchAlgo) {
 
 		String cacheKey = "getMethodMatchingMap_" + project.getKeyId() + "_" + matchAlgo.toString();
 
@@ -668,7 +668,7 @@ public class ApplicationLogic {
 	 *        the matching algorithm to use (SIMPLE, COSINE, TFIDF)
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MyMatchingAlgorithm matchAlgo) {
 
 		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matchAlgo.toString();
 
