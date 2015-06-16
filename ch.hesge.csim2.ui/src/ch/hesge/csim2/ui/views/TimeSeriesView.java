@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,16 +29,14 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
+import ch.hesge.csim2.core.logic.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.Concept;
-import ch.hesge.csim2.core.model.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.dialogs.TimeSeriesDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
-
-import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
 public class TimeSeriesView extends JPanel implements ActionListener {
@@ -218,7 +217,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						public void run() {
 
 							// Retrieve selected matching algorithm
-							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString((String) algorithmComboBox.getSelectedItem());
+							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
 							
 							// Retrieve timeseries associated to current scenario
 							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matchAlgo);
