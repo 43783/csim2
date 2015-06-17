@@ -80,6 +80,7 @@ start javaw -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
 		<ant antfile="../ch.hesge.csim2.engine.traceloader/build.xml"          dir="../ch.hesge.csim2.engine.traceloader" />
 		<ant antfile="../ch.hesge.csim2.engine.stemconceptanalyzer/build.xml"  dir="../ch.hesge.csim2.engine.stemconceptanalyzer" />
 		<ant antfile="../ch.hesge.csim2.engine.stemmethodanalyzer/build.xml"   dir="../ch.hesge.csim2.engine.stemmethodanalyzer" />
+		<ant antfile="../ch.hesge.csim2.engine.tfidfmatcher/build.xml"         dir="../ch.hesge.csim2.engine.tfidfmatcher" />
 	</target>
 	
 	<!-- default task -->

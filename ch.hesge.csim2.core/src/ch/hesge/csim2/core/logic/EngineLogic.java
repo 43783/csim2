@@ -89,7 +89,8 @@ class EngineLogic {
 
 	/**
 	 * Start the engine passed in argument.
-	 * A new thread is allocation from pool
+	 * A new thread is allocation on pool and used to execute the engine in a
+	 * separate thread.
 	 * 
 	 * @param engine
 	 *        the engine to start

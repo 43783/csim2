@@ -6,7 +6,7 @@
     <property name="engine-version" value="1.0.2"/>
 	<property name="distrib-dir" value="${basedir}/../runtime"/>
 	
-	<!-- create a jar with all classes and resources -->
+	<!-- create a jar file -->
 
 	<target name="create-jar">
 		<echo message="Generating csim2-ontology-loader.jar file"/>
@@ -22,7 +22,7 @@
         </jar>
     </target>
 	
-	<!-- copy all required files for distribution -->
+	<!-- copy dependencies -->
 
 	<target name="copy-dependencies">
 		<echo message="Copying all required files to target folder"/>
@@ -33,7 +33,6 @@
 			
 	<!-- default task -->
 	
-	<target name="create-distrib" depends="create-jar,copy-dependencies">
-    </target>
+	<target name="create-distrib" depends="create-jar,copy-dependencies" />
 
 </project>
