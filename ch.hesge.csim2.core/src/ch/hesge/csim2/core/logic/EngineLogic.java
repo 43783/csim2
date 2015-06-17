@@ -29,26 +29,24 @@ import ch.hesge.csim2.core.utils.StringUtils;
 class EngineLogic {
 
 	// Private static attributes
-	private static List<IEngine> engines;
-
 	private static final int THREAD_NUMBER = 10;
 	private static Map<IEngine, Future<?>> runningEngines = new HashMap<>();
 	private static ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_NUMBER);
 
 	/**
-	 * Retrieves all loaded engines.
+	 * Return a list of all engines registered within the application.
+	 * 
+	 * @return
+	 *         a list of IEngine
 	 */
 	public static synchronized List<IEngine> getEngines() {
 
-		if (engines == null) {
+		List<IEngine> engines = new ArrayList<>();
+		PluginManager<IEngine> engineManager = PluginManager.loadPlugins(IEngine.class);
 
-			engines = new ArrayList<>();
-			PluginManager<IEngine> engineManager = PluginManager.loadPlugins(IEngine.class);
-
-			// Load engines into a standard list
-			for (IEngine engine : engineManager) {
-				engines.add(engine);
-			}
+		// Load engines into a standard list
+		for (IEngine engine : engineManager) {
+			engines.add(engine);
 		}
 
 		return engines;

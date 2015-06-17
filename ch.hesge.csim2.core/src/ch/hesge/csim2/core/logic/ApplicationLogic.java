@@ -18,6 +18,7 @@ import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.IEngine;
+import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
@@ -127,7 +128,7 @@ public class ApplicationLogic {
 		// Load properties from environment variables
 		properties.setProperty(USER_NAME_PROPERTY, System.getProperty("user.name"));
 		properties.setProperty(USER_FOLDER_PROPERTY, System.getProperty("user.home"));
-		 
+
 		// Retrieve application's base folder
 		String applicationFolder = FileSystems.getDefault().getPath(".").toAbsolutePath().toString();
 		applicationFolder = StringUtils.removeTrailString(applicationFolder, "\\");
@@ -139,7 +140,7 @@ public class ApplicationLogic {
 		if (System.getProperties().contains("ch.hesge.csim2.config.file")) {
 			appConfigPath = System.getProperties().getProperty("ch.hesge.csim2.config.file");
 		}
-		
+
 		Console.writeDebug(ApplicationLogic.class, "loading application configuration from " + appConfigPath + ".");
 
 		// Load properties defined in csim2.conf
@@ -151,14 +152,14 @@ public class ApplicationLogic {
 		catch (IOException e) {
 			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + e.toString());
 		}
-		
+
 		// Retrieve ehcache configuration
 		String ehConfigPath = "conf/ehcache.conf";
 		Configuration config = ConfigurationFactory.parseConfiguration(new File("conf/ehcache.xml"));
 		CacheManager cacheManager = CacheManager.create(config);
 		APPCACHE = cacheManager.getCache("csim2");
-		
-		Console.writeDebug(ApplicationLogic.class, "loading ehcache configuration from " + ehConfigPath + ".");		
+
+		Console.writeDebug(ApplicationLogic.class, "loading ehcache configuration from " + ehConfigPath + ".");
 	}
 
 	/**
@@ -199,7 +200,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getProjects";
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, ProjectLogic.getProjects()));
 		}
 
@@ -216,7 +217,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getOntologies";
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies()));
 		}
 
@@ -236,7 +237,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getOntologies_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies(project)));
 		}
 
@@ -253,7 +254,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getScenarios";
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios()));
 		}
 
@@ -264,17 +265,34 @@ public class ApplicationLogic {
 	 * Return a list of all engines registered within the application.
 	 * 
 	 * @return
-	 *         a list of engine
+	 *         a list of IEngine
 	 */
 	public static List<IEngine> getEngines() {
 
 		String cacheKey = "getEngines";
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, EngineLogic.getEngines()));
 		}
 
 		return (List<IEngine>) APPCACHE.get(cacheKey).getObjectValue();
+	}
+
+	/**
+	 * Retrieves all method concept matchers declared in configuration file.
+	 * 
+	 * @return
+	 *         a list of IMethodConceptMatcher
+	 */
+	public static synchronized List<IMethodConceptMatcher> getMatchers() {
+
+		String cacheKey = "getMatchers";
+
+		if (APPCACHE.get(cacheKey) == null) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchers()));
+		}
+
+		return (List<IMethodConceptMatcher>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**
@@ -290,7 +308,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getScenarios_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios(project)));
 		}
 
@@ -310,7 +328,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getScenarioWithDependencies_" + scenario.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarioWithDependencies(scenario)));
 		}
 
@@ -330,7 +348,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptsByOntology_" + ontology.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(ontology)));
 		}
 
@@ -350,7 +368,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptsByProject_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(project)));
 		}
 
@@ -371,7 +389,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptMapByOntology_" + ontology.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(ontology)));
 		}
 
@@ -391,7 +409,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getConceptsMapByProject_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(project)));
 		}
 
@@ -410,7 +428,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceClasses_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClasses(project)));
 		}
 
@@ -436,7 +454,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceClassesWithDependencies_" + project.getKeyId() + "_" + includeMethodParamsAndRefs;
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassesWithDependencies(project, includeMethodParamsAndRefs)));
 		}
 
@@ -457,7 +475,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceClassMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMap(project)));
 		}
 
@@ -478,7 +496,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceMethods_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodMap(project)));
 		}
 
@@ -500,7 +518,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getSourceMethodByClassAndSignature_" + sourceClass.getKeyId() + "_" + signature;
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodBySignature(sourceClass, signature)));
 		}
 
@@ -524,7 +542,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemMethodTreeMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodTreeMap(project)));
 		}
 
@@ -558,7 +576,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemMethodsByTermMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodByTermMap(project)));
 		}
 
@@ -582,7 +600,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemConceptTree_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptTreeMap(project)));
 		}
 
@@ -616,30 +634,13 @@ public class ApplicationLogic {
 
 		String cacheKey = "getStemConceptsByTermMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptByTermMap(project)));
 		}
 
 		return (Map<String, List<StemConcept>>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
-	/**
-	 * Retrieve a map of all MethodConceptMatch classified by method Id.
-	 * 
-	 * @return
-	 *         a map of (MethodId, List<MethodConceptMatch>)
-	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, MatchingAlgorithm matchAlgo) {
-
-		String cacheKey = "getMethodMatchingMap_" + project.getKeyId() + "_" + matchAlgo.toString();
-
-		if (APPCACHE.get(cacheKey) == null)  {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matchAlgo)));
-		}
-
-		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
-	}
-	
 	/**
 	 * Retrieve all traces owned by a scenario.
 	 * 
@@ -650,7 +651,7 @@ public class ApplicationLogic {
 
 		String cacheKey = "getTraces_" + scenario.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
+		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, TraceLogic.getTraces(scenario)));
 		}
 
@@ -664,16 +665,16 @@ public class ApplicationLogic {
 	 *        the project owning the traces
 	 * @param scenario
 	 *        the scenario owning the traces
-	 * @param matchAlgo
-	 *        the matching algorithm to use (SIMPLE, COSINE, TFIDF)
+	 * @param matchMap
+	 *        the matching map used to associate concepts to method
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, Map<Integer, List<MethodConceptMatch>> matchMap) {
 
-		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matchAlgo.toString();
+		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null)  {
-			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matchAlgo)));
+		if (APPCACHE.get(cacheKey) == null) {
+			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matchMap)));
 		}
 
 		return (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();

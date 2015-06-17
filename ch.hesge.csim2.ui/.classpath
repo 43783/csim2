@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.12.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-core-2.3.jar" sourcepath="lib/log4j-core-2.3-src.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.tfidfmatcher"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.idmatcher"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

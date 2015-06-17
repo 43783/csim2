@@ -54,13 +54,12 @@ class TimeSeriesLogic {
 	 *        the project owning the traces
 	 * @param scenario
 	 *        the scenario owning the traces
-	 * @param matchAlgo
-	 *        the matching algorithm to use (SIMPLE, COSINE, TFIDF)
+	 * @param matchMap
+	 *        the matching map used to associate concepts to method
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, MatchingAlgorithm matchAlgo) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, Map<Integer, List<MethodConceptMatch>> matchMap) {
 
-		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project, matchAlgo);
 		Map<Integer, Concept> conceptsInTrace = new HashMap<>();
 
 		// First retrieve unique methods found in trace
@@ -75,9 +74,9 @@ class TimeSeriesLogic {
 				// Scan all concepts matching method
 				for (MethodConceptMatch match : matchMap.get(methodId)) {
 
-					// If concept not already include, put it on map
-					if (!conceptsInTrace.containsKey(match.getConceptId())) {
-						conceptsInTrace.put(match.getConceptId(), match.getConcept());
+					// If concept is not already include, put it on map
+					if (!conceptsInTrace.containsKey(match.getConcept().getKeyId())) {
+						conceptsInTrace.put(match.getConcept().getKeyId(), match.getConcept());
 					}
 				}
 			}

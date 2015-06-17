@@ -17,9 +17,7 @@ public class MethodConceptMatch {
 
 	// Private attributes
 	private int keyId;
-	private int projectId;
-	private int conceptId;
-	private int sourceMethodId;
+	private Project project;
 	private Concept concept;
 	private SourceClass sourceClass;
 	private SourceMethod sourceMethod;
@@ -39,36 +37,12 @@ public class MethodConceptMatch {
 		this.keyId = keyId;
 	}
 
-	public int getProjectId() {
-		return projectId;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-
-	public int getSourceMethodId() {
-		return sourceMethodId;
-	}
-
-	public void setSourceMethodId(int sourceMethodId) {
-		this.sourceMethodId = sourceMethodId;
-	}
-
-	public int getConceptId() {
-		return conceptId;
-	}
-
-	public void setConceptId(int conceptId) {
-		this.conceptId = conceptId;
-	}
-
-	public double getWeight() {
-		return weight;
-	}
-
-	public void setWeight(double weight) {
-		this.weight = weight;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public Concept getConcept() {
@@ -93,5 +67,13 @@ public class MethodConceptMatch {
 
 	public void setSourceMethod(SourceMethod sourceMethod) {
 		this.sourceMethod = sourceMethod;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 }

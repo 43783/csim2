@@ -16,9 +16,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +27,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
-import ch.hesge.csim2.core.logic.MatchingAlgorithm;
+import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
@@ -37,6 +35,7 @@ import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
+import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.comp.TraceEntryTable;
 import ch.hesge.csim2.ui.comp.TraceMatchTable;
@@ -58,7 +57,7 @@ public class TracesView extends JPanel {
 	private JPanel methodPanel;
 	private JPanel conceptPanel;
 	private ScenarioComboBox scenarioComboBox;
-	private JComboBox<String> algorithmComboBox;
+	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
 	private JSplitPane splitPane;
 	private TraceEntryTable traceTable;
@@ -103,12 +102,14 @@ public class TracesView extends JPanel {
 		scenarioComboBox.setPreferredSize(new Dimension(150, scenarioComboBox.getPreferredSize().height));
 		settingsPanel.add(scenarioLabel);
 		settingsPanel.add(scenarioComboBox);
+
+		// Create the matcher selection panel
 		JLabel algoLabel = new JLabel("Matching:");
 		settingsPanel.add(algoLabel);		
-		algorithmComboBox = new JComboBox<String>();
-		algorithmComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TFIDF", "ID_L1NORM", "ID_COSINE"}));
-		algorithmComboBox.setPreferredSize(new Dimension(100, 20));
-		settingsPanel.add(algorithmComboBox);
+		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
+		matcherComboBox = new MatcherComboBox(matchers);
+		matcherComboBox.setPreferredSize(new Dimension(100, 20));
+		settingsPanel.add(matcherComboBox);
 
 		// Create the load button
 		loadBtn = new JButton("Load scenario");
@@ -152,18 +153,16 @@ public class TracesView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
+				IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
 
-				if (scenario != null) {
+				if (scenario != null && matcher != null) {
 
 					SwingUtils.invokeLongOperation(TracesView.this, new Runnable() {
 						@Override
 						public void run() {
 
-							// Retrieve selected matching algorithm
-							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
-
 							// Retrieve method-concept matchings
-							matchMap = ApplicationLogic.getMethodMatchingMap(project, matchAlgo);
+							matchMap = matcher.getMethodMatchingMap(project);
 							
 							// Retrieve required trace list for current scenario
 							traces = ApplicationLogic.getTraces(scenario);

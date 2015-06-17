@@ -10,10 +10,9 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -29,11 +28,13 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
-import ch.hesge.csim2.core.logic.MatchingAlgorithm;
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.IMethodConceptMatcher;
+import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
+import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.dialogs.TimeSeriesDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
@@ -44,6 +45,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	// Private attribute
 	private Project project;
 	private List<Scenario> scenarios;
+	private Map<Integer, List<MethodConceptMatch>> matchMap;
 	private List<Concept> selectedConcepts;
 	private TimeSeries timeSeries;
 	private TimeSeries filteredSeries;
@@ -52,7 +54,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private boolean showLegend;
 
 	private ScenarioComboBox scenarioComboBox;
-	private JComboBox<String> algorithmComboBox;
+	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
@@ -94,13 +96,15 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		scenarioPanel.add(scenarioLabel);
 		scenarioComboBox = new ScenarioComboBox(scenarios);
 		scenarioComboBox.setPreferredSize(new Dimension(150, scenarioComboBox.getPreferredSize().height));
-		scenarioPanel.add(scenarioComboBox);		
+		scenarioPanel.add(scenarioComboBox);
+		
+		// Create the matcher selection panel
 		JLabel algoLabel = new JLabel("Matching:");
 		scenarioPanel.add(algoLabel);		
-		algorithmComboBox = new JComboBox<String>();
-		algorithmComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TFIDF", "ID_L1NORM", "ID_COSINE"}));
-		algorithmComboBox.setPreferredSize(new Dimension(100, 20));
-		scenarioPanel.add(algorithmComboBox);
+		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
+		matcherComboBox = new MatcherComboBox(matchers);
+		matcherComboBox.setPreferredSize(new Dimension(100, 20));
+		scenarioPanel.add(matcherComboBox);
 		
 		// Create the load button
 		loadBtn = new JButton("Load scenario");
@@ -205,8 +209,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 
 				Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
+				IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
 
-				if (scenario == null) {
+				if (scenario == null || matcher == null) {
 					filteredSeries = null;
 					initChartPanel();
 				}
@@ -216,11 +221,11 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						@Override
 						public void run() {
 
-							// Retrieve selected matching algorithm
-							MatchingAlgorithm matchAlgo = MatchingAlgorithm.fromString(algorithmComboBox.getSelectedItem().toString());
+							// Retrieve method-concept matchings
+							matchMap = matcher.getMethodMatchingMap(project);
 							
 							// Retrieve timeseries associated to current scenario
-							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matchAlgo);
+							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matchMap);
 
 							// Reset current settings
 							segmentCount = DEFAULT_SEGMENT_COUNT;
