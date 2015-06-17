@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ch.hesge.csim2.engine.tfidfmatcher</name>
+	<name>ch.hesge.csim2.matcher.tfidfmatcher</name>
 	<comment></comment>
 	<projects>
 	</projects>
