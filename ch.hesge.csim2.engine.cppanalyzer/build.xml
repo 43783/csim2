@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="csim2 cpp analyzer script builder" basedir="." default="create-distrib">
+<project name="engine script builder" basedir="." default="create-distrib">
 	
     <!-- script properties -->
 
+	<property name="engine-name" value="cpp-analyzer"/>
     <property name="engine-version" value="1.0.20"/>
-	<property name="distrib-dir" value="${basedir}/../runtime"/>
+	<property name="engine-author" value="Eric Harth"/>
+    <property name="engine-classpath" value=". com.ibm.icu_50.1.1.v201304230130.jar org.eclipse.cdt.core_5.5.0.201309180223.jar org.eclipse.equinox.common_3.6.200.v20130402-1505.jar"/>
+	<available file="${basedir}/lib" type="dir" property="lib-folder-present"/>
+	
+	<!-- copy all dependencies -->
 
-	<!-- copy all required files for distribution -->
-
-	<target name="copy-dependencies">
-		<echo message="Copying all required files to target folder"/>
-    	<copy todir="${distrib-dir}/lib">
-    		<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
+	<target name="copy-dependencies" if="lib-folder-present">		
+		<echo message="copying dependencies"/>
+		<copy todir="${distrib-dir}/lib">
+			<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	
     </target>
 			
-	<!-- create a jar with all classes and resources -->
+	<!-- create engine jar file -->
 
 	<target name="create-jar">
-		<echo message="Generating csim2-cpp-analyzer.jar file"/>
-        <jar destfile="${distrib-dir}/bin/csim2-cpp-analyzer-${engine-version}.jar">
+		<echo message="generating engine jar file"/>
+        <jar destfile="${distrib-dir}/bin/${engine-name}-${engine-version}.jar">
             <manifest>
 		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
-		        <attribute name="Implementation-Title" value="CPP analyzer" />
+		        <attribute name="Implementation-Title" value="${engine-name}" />
 		        <attribute name="Implementation-Version" value="${engine-version}" />
-        		<attribute name="Built-By" value="Eric Harth" />
-                <attribute name="Class-Path" value=". com.ibm.icu_50.1.1.v201304230130.jar org.eclipse.cdt.core_5.5.0.201309180223.jar org.eclipse.equinox.common_3.6.200.v20130402-1505.jar"/>
+        		<attribute name="Built-By" value="${engine-author}" />
+                <attribute name="Class-Path" value="${engine-classpath}"/>
             </manifest>
             <fileset dir="${basedir}/bin" includes="**/*.class"/>
         </jar>
@@ -33,7 +36,6 @@
 	
 	<!-- default task -->
 	
-	<target name="create-distrib" depends="create-jar,copy-dependencies">
-    </target>
+	<target name="create-distrib" depends="create-jar,copy-dependencies" />
 
 </project>
