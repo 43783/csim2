@@ -178,11 +178,11 @@ public class MatchingView extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 
 				// Retrieve selected trace
-				SourceMethod method = methodTable.getSelectedValue();
+				SourceMethod sourceMethod = methodTable.getSelectedValue();
 
 				// Retrieve the matching list
-				if (method != null) {
-					List<MethodConceptMatch> matchings = matchMap.get(method.getKeyId());
+				if (sourceMethod != null) {
+					List<MethodConceptMatch> matchings = matchMap.get(sourceMethod.getKeyId());
 					matchTable.setMatchings(matchings);
 				}
 				else {
