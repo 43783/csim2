@@ -520,11 +520,6 @@ public class MainView extends JFrame implements ActionListener {
 		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Retrieve step associated to the scenario
-				ApplicationLogic.getScenarioWithDependencies(scenario);
-
-				// Create the view
 				showView(scenario.getName(), new ScenarioView(scenario));
 			}
 		});
@@ -540,8 +535,6 @@ public class MainView extends JFrame implements ActionListener {
 		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Create the view
 				showView(ontology.getName(), new OntologyView(ontology));
 			}
 		});
@@ -557,7 +550,7 @@ public class MainView extends JFrame implements ActionListener {
 			public void run() {
 
 				// Retrieve required data from cache
-				List<SourceClass> classes = ApplicationLogic.getSourceClassesWithDependencies(project, false);
+				List<SourceClass> classes = ApplicationLogic.getSourceClasses(project);
 
 				// Create the view
 				showView("Sources", new StemSourcesView(project, classes));
@@ -580,6 +573,24 @@ public class MainView extends JFrame implements ActionListener {
 
 				// Create the view
 				showView("Concepts", new StemConceptsView(concepts, stemTree));
+			}
+		});
+	}
+
+	/**
+	 * Show the matching view
+	 */
+	public void showMatching() {
+
+		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
+			@Override
+			public void run() {
+
+				// Retrieve required data from cache
+				List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
+
+				// Create the view
+				showView("Matching", new MatchingView(project, scenarios));
 			}
 		});
 	}

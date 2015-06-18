@@ -28,23 +28,23 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 
 		this.owner = owner;
 
-		mnuSourceStem = new JMenuItem("Show source stems");
+		mnuSourceStem = new JMenuItem("Show stem sources");
 		mnuSourceStem.addActionListener(this);
 		add(mnuSourceStem);
 
-		mnuConceptStem = new JMenuItem("Show concept stems");
+		mnuConceptStem = new JMenuItem("Show stem concepts");
 		mnuConceptStem.addActionListener(this);
 		add(mnuConceptStem);
 
-		mnuMatching = new JMenuItem("Show matching view");
+		mnuMatching = new JMenuItem("Show matching");
 		mnuMatching.addActionListener(this);
 		add(mnuMatching);
 
-		mnuTrace = new JMenuItem("Show trace analysis");
+		mnuTrace = new JMenuItem("Show traces");
 		mnuTrace.addActionListener(this);
 		add(mnuTrace);
 		
-		mnuTimeSeries = new JMenuItem("Show chart view");
+		mnuTimeSeries = new JMenuItem("Show timeseries");
 		mnuTimeSeries.addActionListener(this);
 		add(mnuTimeSeries);
 		

@@ -46,7 +46,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getName() {
-		return "IdfMatcher";
+		return "IdMatcher";
 	}
 
 	/**

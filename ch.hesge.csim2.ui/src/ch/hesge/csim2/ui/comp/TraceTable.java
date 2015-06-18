@@ -18,17 +18,17 @@ import javax.swing.table.TableColumnModel;
 import ch.hesge.csim2.core.model.Trace;
 
 @SuppressWarnings("serial")
-public class TraceEntryTable extends JTable implements ActionListener {
+public class TraceTable extends JTable implements ActionListener {
 
 	// Private attributes
 	private List<Trace> traces;
-	private TraceEntryPopup contextMenu;
+	private SourceMethodPopup contextMenu;
 	private ListSelectionListener doubleClickListener;
 
 	/**
 	 * Default constructor
 	 */
-	public TraceEntryTable() {
+	public TraceTable() {
 		initComponent();
 	}
 
@@ -42,7 +42,7 @@ public class TraceEntryTable extends JTable implements ActionListener {
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		// Create a context menu
-		contextMenu = new TraceEntryPopup(this);
+		contextMenu = new SourceMethodPopup(this);
 		contextMenu.addActionListener(this);
 
 		initModel();
@@ -149,16 +149,6 @@ public class TraceEntryTable extends JTable implements ActionListener {
 		TableColumnModel columnModel = getColumnModel();
 		columnModel.getColumn(0).setMaxWidth(100);
 		columnModel.getColumn(0).setMinWidth(100);
-	}
-
-	/**
-	 * Retrieve the list this table is displaying.
-	 * 
-	 * @return
-	 *         a list of Trace objects
-	 */
-	public List<Trace> getTraces() {
-		return traces;
 	}
 
 	/**

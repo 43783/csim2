@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 @SuppressWarnings("serial")
-public class TraceEntryPopup extends JPopupMenu implements ActionListener {
+public class SourceMethodPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private JMenuItem mnuOpenFile;
@@ -17,7 +17,7 @@ public class TraceEntryPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public TraceEntryPopup(JComponent owner) {
+	public SourceMethodPopup(JComponent owner) {
 		initComponent();
 	}
 

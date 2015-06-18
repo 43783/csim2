@@ -84,9 +84,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		// Create the parameters panel
-		JPanel parameterPanel = new JPanel();
-		parameterPanel.setLayout(new BorderLayout(0, 0));
-		this.add(parameterPanel, BorderLayout.NORTH);
+		JPanel paramsPanel = new JPanel();
+		paramsPanel.setLayout(new BorderLayout(0, 0));
+		this.add(paramsPanel, BorderLayout.NORTH);
 
 		// Create the scenario selection panel
 		JPanel scenarioPanel = new JPanel();
@@ -99,17 +99,17 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		scenarioPanel.add(scenarioComboBox);
 		
 		// Create the matcher selection panel
-		JLabel algoLabel = new JLabel("Matching:");
-		scenarioPanel.add(algoLabel);		
+		JLabel matchingLabel = new JLabel("Matching:");
+		scenarioPanel.add(matchingLabel);		
 		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
 		matcherComboBox = new MatcherComboBox(matchers);
 		matcherComboBox.setPreferredSize(new Dimension(100, 20));
 		scenarioPanel.add(matcherComboBox);
 		
 		// Create the load button
-		loadBtn = new JButton("Load scenario");
+		loadBtn = new JButton("Load");
 		scenarioPanel.add(loadBtn);
-		parameterPanel.add(scenarioPanel, BorderLayout.CENTER);
+		paramsPanel.add(scenarioPanel, BorderLayout.CENTER);
 
 		// Create the settings panel
 		JPanel settingsPanel = new JPanel();
@@ -119,7 +119,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		settingsBtn.setEnabled(false);
 		settingsBtn.addActionListener(this);
 		settingsPanel.add(settingsBtn);
-		parameterPanel.add(settingsPanel, BorderLayout.EAST);
+		paramsPanel.add(settingsPanel, BorderLayout.EAST);
 
 		initChartPanel();
 		initListeners();

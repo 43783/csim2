@@ -316,26 +316,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all scenario with its steps.
-	 * 
-	 * @param scenario
-	 *        the owner
-	 * 
-	 * @return
-	 *         a scenario with its steps
-	 */
-	public static Scenario getScenarioWithDependencies(Scenario scenario) {
-
-		String cacheKey = "getScenarioWithDependencies_" + scenario.getKeyId();
-
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarioWithDependencies(scenario)));
-		}
-
-		return (Scenario) APPCACHE.get(cacheKey).getObjectValue();
-	}
-
-	/**
 	 * Retrieve a list of all concepts owned by an ontology.
 	 * 
 	 * @param ontology
@@ -422,7 +402,7 @@ public class ApplicationLogic {
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return a list of source classes
+	 * @return a list of SourceClass
 	 */
 	public static List<SourceClass> getSourceClasses(Project project) {
 
@@ -436,40 +416,32 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all source classes owned by a project with the following
-	 * dependencies:
-	 * 
-	 * - its attributes
-	 * - its methods
-	 * - its subclasses
+	 * Retrieve all source methods owned by a project.
 	 * 
 	 * @param project
 	 *        the owner
-	 * @param includeMethodParamsAndRefs
-	 *        true to retrieve also method parameters & references
 	 * 
-	 * @return a list of source classes
+	 * @return a list of SourceMethod
 	 */
-	public static List<SourceClass> getSourceClassesWithDependencies(Project project, boolean includeMethodParamsAndRefs) {
+	public static List<SourceMethod> getSourceMethods(Project project) {
 
-		String cacheKey = "getSourceClassesWithDependencies_" + project.getKeyId() + "_" + includeMethodParamsAndRefs;
+		String cacheKey = "getSourceMethods_" + project.getKeyId();
 
 		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassesWithDependencies(project, includeMethodParamsAndRefs)));
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethods(project)));
 		}
 
-		return (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
+		return (List<SourceMethod>) APPCACHE.get(cacheKey).getObjectValue();
 	}
-
+	
 	/**
-	 * Retrieve all source classes owned by a project as a (keyId, SourceClass)
-	 * map.
+	 * Retrieve all source class owned by a project as a map of (classId,
+	 * SourceClass).
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return
-	 *         a map of source classe
+	 * @return a map of (classId, SourceClass)
 	 */
 	public static Map<Integer, SourceClass> getSourceClassMap(Project project) {
 
@@ -483,18 +455,17 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all source methods owned by a project as a (keyId, SourceMethod)
-	 * map.
+	 * Retrieve all source methods owned by a project as a map of (methodId,
+	 * SourceMethod).
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return
-	 *         a map of source method
+	 * @return a map of (methodId, SourceMethod)
 	 */
 	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
-		String cacheKey = "getSourceMethods_" + project.getKeyId();
+		String cacheKey = "getSourceMethodMap_" + project.getKeyId();
 
 		if (APPCACHE.get(cacheKey) == null) {
 			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodMap(project)));

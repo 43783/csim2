@@ -39,40 +39,28 @@ class SourceLogic {
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return a list of source classes
+	 * @return a list of SourceClass
 	 */
 	public static List<SourceClass> getSourceClasses(Project project) {
-		return SourceClassDao.findByProject(project);
-	}
 
-	/**
-	 * Retrieve all source classes owned by a project with the following
-	 * dependencies:
-	 * 
-	 * - its attributes
-	 * - its methods
-	 * - its subclasses
-	 * 
-	 * @param project
-	 *        the owner
-	 * @param includeMethodParamsAndRefs
-	 *        true to retrieve also method dependencies (parameters &
-	 *        references)
-	 * 
-	 * @return a list of source classes
-	 */
-	public static List<SourceClass> getSourceClassesWithDependencies(Project project, boolean includeMethodParamsAndRefs) {
+		List<SourceClass> sourceClasses = SourceClassDao.findByProject(project);
 
-		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
-
-		// Create a map of class with identical instances
+		// Create a map of class
 		Map<Integer, SourceClass> classMap = new HashMap<>();
 		for (SourceClass concept : sourceClasses) {
 			classMap.put(concept.getKeyId(), concept);
 		}
 
-		// Populate each class with its dependencies
+		// Now populate classes with attributes, methods and superclass
 		for (SourceClass sourceClass : sourceClasses) {
+
+			// Populate superclass
+			SourceClass superclass = classMap.get(sourceClass.getSuperClassId());
+			if (superclass != null) {
+				sourceClass.setSuperClass(superclass);
+				superclass.getSubClasses().add(sourceClass);
+				ObjectSorter.sortSourceClasses(superclass.getSubClasses());
+			}
 
 			// Populate attributes
 			sourceClass.getAttributes().clear();
@@ -84,65 +72,67 @@ class SourceLogic {
 			sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
 			ObjectSorter.sortSourceMethods(sourceClass.getMethods());
 
-			// Populate superclass
-			sourceClass.setSuperClass(classMap.get(sourceClass.getSuperClassId()));
-
-			if (sourceClass.getSuperClass() != null) {
-				sourceClass.getSuperClass().getSubClasses().add(sourceClass);
-				ObjectSorter.sortSourceClasses(sourceClass.getSuperClass().getSubClasses());
-			}
-			
-			if (includeMethodParamsAndRefs) {
-				populateMethodParamsAndRefs(sourceClass, classMap);
-			}
+//			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
+//
+//				// Populate method parameters
+//				sourceMethod.getParameters().clear();
+//				sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
+//				ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
+//
+//				// Populate method references
+//				sourceMethod.getReferences().clear();
+//				sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
+//				ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
+//			}
 		}
 
 		return sourceClasses;
 	}
 
 	/**
-	 * Populate a source class will the following dependencies:
-	 * 
-	 * - its attributes
-	 * - its methods
-	 * - its subclasses
-	 * 
-	 * @param sourceClass
-	 *        the source class to populate
-	 * @param conceptMap
-	 *        the map of all source classes
-	 */
-	private static void populateMethodParamsAndRefs(SourceClass sourceClass, Map<Integer, SourceClass> classMap) {
-
-		for (SourceMethod sourceMethod : sourceClass.getMethods()) {
-
-			// Populate parameters
-			sourceMethod.getParameters().clear();
-			sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
-			ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
-
-			// Populate references
-			sourceMethod.getReferences().clear();
-			sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
-			ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
-		}
-	}
-
-	/**
-	 * Retrieve all source class owned by a project as a (keyId,SourceClass)
-	 * map.
+	 * Retrieve all source methods owned by a project.
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return a map of source attribute
+	 * @return a list of SourceMethod
+	 */
+	public static List<SourceMethod> getSourceMethods(Project project) {
+
+		List<SourceMethod> sourceMethods = SourceMethodDao.findByProject(project);
+
+//		// Now populate methods with parameters and references
+//		for (SourceMethod sourceMethod: sourceMethods) {
+//
+//			// Populate method parameters
+//			sourceMethod.getParameters().clear();
+//			sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
+//			ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
+//
+//			// Populate method references
+//			sourceMethod.getReferences().clear();
+//			sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
+//			ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
+//		}
+
+		return sourceMethods;
+	}
+
+	/**
+	 * Retrieve all source class owned by a project as a map of (classId,
+	 * SourceClass).
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return a map of (classId, SourceClass)
 	 */
 	public static Map<Integer, SourceClass> getSourceClassMap(Project project) {
 
-		List<SourceClass> sourceClasses = SourceClassDao.findByProject(project);
-		Map<Integer, SourceClass> classMap = new HashMap<Integer, SourceClass>();
+		Map<Integer, SourceClass> classMap = new HashMap<>();
 
-		for (SourceClass sourceClass : sourceClasses) {
+		// Populate the map
+		for (SourceClass sourceClass : ApplicationLogic.getSourceClasses(project)) {
 			classMap.put(sourceClass.getKeyId(), sourceClass);
 		}
 
@@ -150,20 +140,20 @@ class SourceLogic {
 	}
 
 	/**
-	 * Retrieve all source methods owned by a project as a (keyId, SourceMethod)
-	 * map.
+	 * Retrieve all source methods owned by a project as a map of (methodId,
+	 * SourceMethod).
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return a map of source method
+	 * @return a map of (methodId, SourceMethod)
 	 */
 	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
 		Map<Integer, SourceMethod> methodMap = new HashMap<>();
-		List<SourceMethod> sourceMethods = SourceMethodDao.findByProject(project);
 
-		for (SourceMethod sourceMethod : sourceMethods) {
+		// Populate the map
+		for (SourceMethod sourceMethod : ApplicationLogic.getSourceMethods(project)) {
 			methodMap.put(sourceMethod.getKeyId(), sourceMethod);
 		}
 

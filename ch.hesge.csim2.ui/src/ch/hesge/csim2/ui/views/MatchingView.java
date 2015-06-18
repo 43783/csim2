@@ -1,6 +1,7 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -31,46 +34,43 @@ import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
+import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
-import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.ui.comp.MatcherComboBox;
-import ch.hesge.csim2.ui.comp.ScenarioComboBox;
-import ch.hesge.csim2.ui.comp.TraceTable;
 import ch.hesge.csim2.ui.comp.MatchingTable;
+import ch.hesge.csim2.ui.comp.SourceMethodTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
-public class TracesView extends JPanel {
+public class MatchingView extends JPanel {
 
 	// Private attribute	
 	private String rootSourceFolder;
 	private Project project;
-	private List<Scenario> scenarios;
-	private List<Trace> traces;
+	private Map<Integer, SourceClass> classMap;
+	private List<SourceMethod> sourceMethods;
 	private Map<Integer, List<MethodConceptMatch>> matchMap;
-	private Map<Integer, SourceMethod> methodMap;
 
 	private JPanel paramsPanel;
 	private JPanel mainPanel;
 	private JPanel methodPanel;
 	private JPanel conceptPanel;
-	private ScenarioComboBox scenarioComboBox;
 	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
 	private JSplitPane splitPane;
-	private TraceTable traceTable;
+	private SourceMethodTable methodTable;
 	private MatchingTable matchTable;
 
 	/**
 	 * Default constructor.
 	 */
-	public TracesView(Project project, List<Scenario> scenarios) {
+	public MatchingView(Project project, List<Scenario> scenarios) {
 
-		this.project   = project;
-		this.scenarios = scenarios;
-		this.methodMap = ApplicationLogic.getSourceMethodMap(project);
+		this.project = project;
+		this.sourceMethods = new ArrayList<>(ApplicationLogic.getSourceMethodMap(project).values());
+		this.classMap = ApplicationLogic.getSourceClassMap(project);
 
 		initComponent();
 	}
@@ -96,16 +96,9 @@ public class TracesView extends JPanel {
 		splitPane.setResizeWeight(0.7);
 		mainPanel.add(splitPane, BorderLayout.CENTER);
 
-		// Create the scenario selection panel
-		JLabel scenarioLabel = new JLabel("Scenario:");
-		scenarioComboBox = new ScenarioComboBox(scenarios);
-		scenarioComboBox.setPreferredSize(new Dimension(150, scenarioComboBox.getPreferredSize().height));
-		paramsPanel.add(scenarioLabel);
-		paramsPanel.add(scenarioComboBox);
-
 		// Create the matcher selection panel
-		JLabel matchingLabel = new JLabel("Matching:");
-		paramsPanel.add(matchingLabel);		
+		JLabel matchingLabel = new JLabel("Matching algorithm:");
+		paramsPanel.add(matchingLabel);
 		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
 		matcherComboBox = new MatcherComboBox(matchers);
 		matcherComboBox.setPreferredSize(new Dimension(100, 20));
@@ -117,7 +110,7 @@ public class TracesView extends JPanel {
 
 		// Create the method panel
 		methodPanel = new JPanel();
-		methodPanel.setBorder(new TitledBorder(null, "Method sequence", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		methodPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Methods", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		splitPane.setLeftComponent(methodPanel);
 		methodPanel.setLayout(new BorderLayout(0, 0));
 
@@ -128,9 +121,9 @@ public class TracesView extends JPanel {
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 
 		// Create trace table
-		traceTable = new TraceTable();
+		methodTable = new SourceMethodTable();
 		JScrollPane scrollPane1 = new JScrollPane();
-		scrollPane1.setViewportView(traceTable);
+		scrollPane1.setViewportView(methodTable);
 		methodPanel.add(scrollPane1, BorderLayout.CENTER);
 
 		// Create match table
@@ -152,44 +145,41 @@ public class TracesView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
 				IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
 
-				if (scenario != null && matcher != null) {
+				if (matcher != null) {
 
-					SwingUtils.invokeLongOperation(TracesView.this, new Runnable() {
+					SwingUtils.invokeLongOperation(MatchingView.this, new Runnable() {
 						@Override
 						public void run() {
 
 							// Retrieve method-concept matchings
 							matchMap = matcher.getMethodMatchingMap(project);
-							
-							// Retrieve required trace list for current scenario
-							traces = ApplicationLogic.getTraces(scenario);
 
-							// Initialize trace table
-							traceTable.setTraces(traces);
+							// Initialize method table
+							methodTable.setSourceClasses(classMap);
+							methodTable.setSourceMethods(sourceMethods);
 						}
 					});
 				}
 				else {
-					traceTable.setTraces(null);
+					methodTable.setSourceMethods(null);
 				}
 			}
 		});
 
 		// Add listener to trace selection
-		traceTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
+		methodTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				
+
 				// Retrieve selected trace
-				Trace trace = traceTable.getSelectedValue();
+				SourceMethod method = methodTable.getSelectedValue();
 
 				// Retrieve the matching list
-				if (trace != null) {
-					List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
+				if (method != null) {
+					List<MethodConceptMatch> matchings = matchMap.get(method.getKeyId());
 					matchTable.setMatchings(matchings);
 				}
 				else {
@@ -197,26 +187,21 @@ public class TracesView extends JPanel {
 				}
 			}
 		});
-		
-		traceTable.addDoubleClickListener(new ListSelectionListener() {
+
+		methodTable.addDoubleClickListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
-				Trace trace = traceTable.getSelectedValue();
+				SourceMethod method = methodTable.getSelectedValue();
 
-				if (trace != null) {
+				if (method != null && method.getFilename() != null) {
 
-					SourceMethod method = methodMap.get(trace.getMethodId());
+					if (rootSourceFolder == null) {
+						selectRootFolderFile();
+					}
 
-					if (method != null && method.getFilename() != null) {
-
-						if (rootSourceFolder == null) {
-							selectRootFolderFile();
-						}
-
-						if (rootSourceFolder != null) {
-							openFile(method.getFilename());
-						}
+					if (rootSourceFolder != null) {
+						openFile(method.getFilename());
 					}
 				}
 			}
@@ -232,7 +217,7 @@ public class TracesView extends JPanel {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-		if (fileChooser.showOpenDialog(TracesView.this) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showOpenDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
 			rootSourceFolder = fileChooser.getSelectedFile().getAbsolutePath();
 		}
 	}

@@ -13,7 +13,7 @@ import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.utils.ObjectSorter;
 
 @SuppressWarnings("serial")
-public class TraceMatchTable extends JTable {
+public class MatchingTable extends JTable {
 
 	// Private attributes
 	private List<MethodConceptMatch> matchings;
@@ -21,7 +21,7 @@ public class TraceMatchTable extends JTable {
 	/**
 	 * Default constructor
 	 */
-	public TraceMatchTable() {
+	public MatchingTable() {
 		initComponent();
 	}
 

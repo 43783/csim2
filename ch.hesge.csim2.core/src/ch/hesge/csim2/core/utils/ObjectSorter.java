@@ -7,6 +7,7 @@ import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptAttribute;
 import ch.hesge.csim2.core.model.ConceptClass;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
+import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.core.model.SourceAttribute;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
@@ -25,6 +26,21 @@ import ch.hesge.csim2.core.model.StemMethod;
  */
 
 public class ObjectSorter {
+
+	/**
+	 * Sort a list of step within a scenario.
+	 * 
+	 * @param scenario steps
+	 */
+	public static void sortScenarioSteps(List<ScenarioStep> steps) {
+
+		steps.sort(new Comparator<ScenarioStep>() {
+			@Override
+			public int compare(ScenarioStep a, ScenarioStep b) {
+				return a.getName().compareTo(b.getName());
+			}
+		});
+	}
 
 	/**
 	 * Sort a list of concepts.

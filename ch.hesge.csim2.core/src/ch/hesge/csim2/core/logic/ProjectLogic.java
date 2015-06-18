@@ -66,11 +66,11 @@ class ProjectLogic {
 		project.getOntologies().addAll(ontologies);
 		Console.writeInfo(ProjectLogic.class, " ontologies: " + project.getOntologies().size());
 
-		// Load sources
-		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
-		project.getSourceClasses().clear();
-		project.getSourceClasses().addAll(sourceClasses);
-		Console.writeInfo(ProjectLogic.class, " source-classes: " + project.getSourceClasses().size());
+//		// Load sources
+//		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
+//		project.getSourceClasses().clear();
+//		project.getSourceClasses().addAll(sourceClasses);
+//		Console.writeInfo(ProjectLogic.class, " source-classes: " + project.getSourceClasses().size());
 	}
 
 	/**

@@ -178,7 +178,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 			// Load all project classes
 			Console.writeInfo(this, "loading code sources information...");
-			List<SourceClass> sourceClasses = ApplicationLogic.getSourceClassesWithDependencies(project, true);
+			List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
 
 			Console.writeInfo(this, "scanning source classes...");
 
