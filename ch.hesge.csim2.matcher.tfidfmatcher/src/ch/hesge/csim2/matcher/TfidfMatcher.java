@@ -369,13 +369,13 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 						match.setConcept(concept);
 						match.setWeight(similarity);
 
-						@SuppressWarnings("unchecked")
-						List<StemConcept> stemConcepts = (List<StemConcept>) conceptTermVector.getData();
-						match.getStemConcepts().addAll(stemConcepts);
-
-						@SuppressWarnings("unchecked")
-						List<StemMethod> stemMethods = (List<StemMethod>) methodTermVector.getData();
-						match.getStemMethods().addAll(stemMethods);
+//						@SuppressWarnings("unchecked")
+//						List<StemConcept> stemConcepts = (List<StemConcept>) conceptTermVector.getData();
+//						match.getStemConcepts().addAll(stemConcepts);
+//
+//						@SuppressWarnings("unchecked")
+//						List<StemMethod> stemMethods = (List<StemMethod>) methodTermVector.getData();
+//						match.getStemMethods().addAll(stemMethods);
 
 						matchings.add(match);
 					}
@@ -439,7 +439,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 
 					// Update term counter in current concept vector
 					methodTermVectorMap.get(method.getKeyId()).addValue(i, 1d);
-					methodTermVectorMap.get(method.getKeyId()).addData(i, stem);
+//					methodTermVectorMap.get(method.getKeyId()).addData(i, stem);
 				}
 			}
 		}
@@ -524,7 +524,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 
 				// Count term occurrences in concept
 				termOccurrenceInConcept.addValue(i, conceptIndex, 1d);
-				termOccurrenceInConcept.addData(i, conceptIndex, stem);
+//				termOccurrenceInConcept.addData(i, conceptIndex, stem);
 
 				// Adjust total term count in concept
 				totalTermInConcept.addValue(conceptIndex, 1d);
@@ -543,9 +543,9 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 
 		// Calculate the inverse term frequency: idf = log(totalTermCount/(occurrenceInConcept+1)
 		for (int i = 0; i < idfMatrix.getRowDimension(); i++) {
-			SimpleVector totalTermCount = new SimpleVector(terms.size(), terms.size());
+			SimpleVector totalTermCount = new SimpleVector(concepts.size(), terms.size());
 			SimpleVector occurrenceInConcept = termOccurrenceInConcept.getRowVector(i);
-			occurrenceInConcept.ebeAdd(1d);
+			occurrenceInConcept = occurrenceInConcept.ebeAdd(1d);
 			idfMatrix.setRowVector(i, totalTermCount.ebeDivide(occurrenceInConcept));
 		}
 		idfMatrix = idfMatrix.log10();

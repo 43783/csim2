@@ -9,7 +9,7 @@ public class SimpleMatrix {
 	private int rows;
 	private int cols;
 	private double[][] values;
-	private List<Object>[][] data;
+	//private List<Object>[][] data;
 
 	/**
 	 * Construct a matrix of zeros.
@@ -24,15 +24,15 @@ public class SimpleMatrix {
 	public SimpleMatrix(int rows, int cols) {
 
 		this.rows = rows;
-		this.rows = cols;
+		this.cols = cols;
 		this.values = new double[rows][cols];
-		this.data   = new ArrayList[rows][cols];
-
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				data[i][j] = new ArrayList<>();
-			}
-		}
+//		this.data   = new ArrayList[rows][cols];
+//
+//		for (int i = 0; i < rows; i++) {
+//			for (int j = 0; j < cols; j++) {
+//				data[i][j] = new ArrayList<>();
+//			}
+//		}
 	}
 
 	/**
@@ -52,14 +52,14 @@ public class SimpleMatrix {
 		this.rows = rows;
 		this.cols = cols;
 		this.values = new double[rows][cols];
-		this.data   = new ArrayList[rows][cols];
-
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				values[i][j] = value;
-				data[i][j] = new ArrayList<>();
-			}
-		}
+//		this.data   = new ArrayList[rows][cols];
+//
+//		for (int i = 0; i < rows; i++) {
+//			for (int j = 0; j < cols; j++) {
+//				values[i][j] = value;
+//				data[i][j] = new ArrayList<>();
+//			}
+//		}
 	}
 
 	/**
@@ -144,9 +144,9 @@ public class SimpleMatrix {
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
 
-	public List<Object> getData(int i, int j) {
-		return data[i][j];
-	}
+//	public List<Object> getData(int i, int j) {
+//		return data[i][j];
+//	}
 
 	/**
 	 * Add an element to the data associated to a cell.
@@ -160,9 +160,9 @@ public class SimpleMatrix {
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
 
-	public void addData(int i, int j, Object item) {
-		data[i][j].add(item);
-	}
+//	public void addData(int i, int j, Object item) {
+//		data[i][j].add(item);
+//	}
 
 	/**
 	 * Compute the sum of {@code this} and {@code m}.
@@ -182,8 +182,8 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] + m.values[i][j];
-				result.data[i][j].addAll(data[i][j]);
-				result.data[i][j].addAll(m.data[i][j]);
+//				result.data[i][j].addAll(data[i][j]);
+//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -208,8 +208,8 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] - m.values[i][j];
-				result.data[i][j].addAll(data[i][j]);
-				result.data[i][j].addAll(m.data[i][j]);
+//				result.data[i][j].addAll(data[i][j]);
+//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -235,7 +235,7 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] * scalar;
-				result.data[i][j].addAll(data[i][j]);
+//				result.data[i][j].addAll(data[i][j]);
 			}
 		}
 
@@ -254,7 +254,7 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = Math.log10(values[i][j]);
-				result.data[i][j].addAll(data[i][j]);
+//				result.data[i][j].addAll(data[i][j]);
 			}
 		}
 
@@ -319,8 +319,8 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] * m.values[i][j];
-				result.data[i][j].addAll(data[i][j]);
-				result.data[i][j].addAll(m.data[i][j]);
+//				result.data[i][j].addAll(data[i][j]);
+//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -345,8 +345,8 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] / m.values[i][j];
-				result.data[i][j].addAll(data[i][j]);
-				result.data[i][j].addAll(m.data[i][j]);
+//				result.data[i][j].addAll(data[i][j]);
+//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -365,11 +365,11 @@ public class SimpleMatrix {
 	 */
 	public SimpleVector getRowVector(int row) throws ArrayIndexOutOfBoundsException {
 
-		SimpleVector result = new SimpleVector(rows, cols);
+		SimpleVector result = new SimpleVector(cols);
 
 		for (int i = 0; i < cols; ++i) {
 			result.setValue(i, values[row][i]);
-			result.getData(i).addAll(data[row][i]);
+//			result.getData(i).addAll(data[row][i]);
 		}
 
 		return result;
@@ -398,8 +398,8 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < cols; ++i) {
 			values[row][i] = v.getValue(i);
-			data[row][i].clear();
-			data[row][i].addAll(v.getData(i));
+//			data[row][i].clear();
+//			data[row][i].addAll(v.getData(i));
 		}
 	}
 
@@ -419,7 +419,7 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < rows; ++i) {
 			result.setValue(i, values[i][col]);
-			result.getData(i).addAll(data[i][col]);
+//			result.getData(i).addAll(data[i][col]);
 		}
 
 		return result;
@@ -448,8 +448,8 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < rows; ++i) {
 			values[i][col] = v.getValue(i);
-			data[i][col].clear();
-			data[i][col].addAll(v.getData(i));
+//			data[i][col].clear();
+//			data[i][col].addAll(v.getData(i));
 		}
 	}
 

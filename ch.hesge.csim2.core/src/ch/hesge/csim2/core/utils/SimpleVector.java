@@ -11,7 +11,7 @@ public class SimpleVector {
 	// Private attribute
 	private int size;
 	private double values[];
-	private List<Object>[] data;
+	//private List<Object>[] data;
 
 	/**
 	 * Construct a vector of zeroes.
@@ -23,11 +23,11 @@ public class SimpleVector {
 	public SimpleVector(int size) {
 		this.size = size;
 		this.values = new double[size];
-		this.data   = new ArrayList[size];
-
-		for (int i = 0; i < size; i++) {
-			data[i] = new ArrayList<>();
-		}
+//		this.data   = new ArrayList[size];
+//
+//		for (int i = 0; i < size; i++) {
+//			data[i] = new ArrayList<>();
+//		}
 	}
 
 	/**
@@ -42,12 +42,12 @@ public class SimpleVector {
 	public SimpleVector(int size, double preset) {
 		this.size = size;
 		this.values = new double[size];
-		this.data   = new ArrayList[size];
+//		this.data   = new ArrayList[size];
 		Arrays.fill(values, preset);
 
-		for (int i = 0; i < size; i++) {
-			data[i] = new ArrayList<>();
-		}
+//		for (int i = 0; i < size; i++) {
+//			data[i] = new ArrayList<>();
+//		}
 	}
 
 	/**
@@ -69,7 +69,6 @@ public class SimpleVector {
 	 *         a scalar value
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
 	public double getValue(int i) {
 		return values[i];
 	}
@@ -83,7 +82,6 @@ public class SimpleVector {
 	 *        the scalar value to add
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
 	public void addValue(int i, double value) {
 		values[i] += value;
 	}
@@ -97,7 +95,6 @@ public class SimpleVector {
 	 *        a scalar value
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
 	public void setValue(int i, double value) {
 		values[i] = value;
 	}
@@ -112,9 +109,9 @@ public class SimpleVector {
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
 
-	public List<Object> getData(int i) {
-		return data[i];
-	}
+//	public List<Object> getData(int i) {
+//		return data[i];
+//	}
 
 	/**
 	 * Get all data associated to the vector.
@@ -122,17 +119,16 @@ public class SimpleVector {
 	 * @return
 	 *         a list of object
 	 */
-
-	public List<?> getData() {
-		
-		List<Object> dataObjects = new ArrayList<>();
-		
-		for (int i = 0; i < size; i++) {
-			dataObjects.addAll(data[i]);
-		}
-		
-		return dataObjects;
-	}
+//	public List<?> getData() {
+//		
+//		List<Object> dataObjects = new ArrayList<>();
+//		
+//		for (int i = 0; i < size; i++) {
+//			dataObjects.addAll(data[i]);
+//		}
+//		
+//		return dataObjects;
+//	}
 
 	/**
 	 * Add an element to the data associated to a coordinate.
@@ -143,10 +139,9 @@ public class SimpleVector {
 	 *         the object to add
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
-	public void addData(int i, Object item) {
-		data[i].add(item);
-	}
+//	public void addData(int i, Object item) {
+//		data[i].add(item);
+//	}
 	
 	/**
 	 * Compute the sum of this vector and {@code v}.
@@ -165,8 +160,8 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] + v.values[i];
-			result.data[i].addAll(data[i]);
-			result.data[i].addAll(v.getData(i));
+//			result.data[i].addAll(data[i]);
+//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -189,8 +184,8 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] - v.values[i];
-			result.data[i].addAll(data[i]);
-			result.data[i].addAll(v.getData(i));
+//			result.data[i].addAll(data[i]);
+//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -211,7 +206,7 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] + scalar;
-			result.data[i].addAll(data[i]);
+//			result.data[i].addAll(data[i]);
 		}
 
 		return result;
@@ -233,8 +228,8 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] * v.values[i];
-			result.data[i].addAll(data[i]);
-			result.data[i].addAll(v.getData(i));
+//			result.data[i].addAll(data[i]);
+//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -256,8 +251,8 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] / v.values[i];
-			result.data[i].addAll(data[i]);
-			result.data[i].addAll(v.getData(i));
+//			result.data[i].addAll(data[i]);
+//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
