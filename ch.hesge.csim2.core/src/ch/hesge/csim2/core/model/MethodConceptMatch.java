@@ -4,6 +4,9 @@
  */
 package ch.hesge.csim2.core.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a single match between a method and a concept.
  * this class is never persisted on database.
@@ -21,12 +24,16 @@ public class MethodConceptMatch {
 	private Concept concept;
 	private SourceClass sourceClass;
 	private SourceMethod sourceMethod;
+	private List<StemConcept> stemConcepts;
+	private List<StemMethod> stemMethods;
 	private double weight;
 
 	/**
 	 * Default constructor
 	 */
 	public MethodConceptMatch() {
+		stemConcepts = new ArrayList<>();
+		stemMethods = new ArrayList<>();
 	}
 
 	public int getKeyId() {
@@ -75,5 +82,13 @@ public class MethodConceptMatch {
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public List<StemConcept> getStemConcepts() {
+		return stemConcepts;
+	}
+
+	public List<StemMethod> getStemMethods() {
+		return stemMethods;
 	}
 }
