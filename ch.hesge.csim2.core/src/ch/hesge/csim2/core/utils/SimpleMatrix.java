@@ -1,7 +1,6 @@
 package ch.hesge.csim2.core.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class SimpleMatrix {
 
@@ -9,57 +8,36 @@ public class SimpleMatrix {
 	private int rows;
 	private int cols;
 	private double[][] values;
-	//private List<Object>[][] data;
 
 	/**
-	 * Construct a matrix of zeros.
+	 * Construct a matrix with zero values.
 	 * 
 	 * @param rows
 	 *        number of rows.
-	 * @param cols
-	 *        number of colums.
+	 * @param rows
+	 *        number of columns.
 	 */
-
-	@SuppressWarnings("unchecked")
 	public SimpleMatrix(int rows, int cols) {
-
 		this.rows = rows;
 		this.cols = cols;
 		this.values = new double[rows][cols];
-//		this.data   = new ArrayList[rows][cols];
-//
-//		for (int i = 0; i < rows; i++) {
-//			for (int j = 0; j < cols; j++) {
-//				data[i][j] = new ArrayList<>();
-//			}
-//		}
 	}
 
 	/**
-	 * Construct a constant matrix.
+	 * Construct a matrix with initialized values.
 	 * 
 	 * @param rows
-	 *        Number of rows.
+	 *        number of rows.
 	 * @param rows
-	 *        Number of colums.
-	 * @param value
-	 *        Fill the matrix with this scalar value.
+	 *        number of columns.
+	 * @param initialValue
+	 *        all entries will be set with this value.
 	 */
-
-	@SuppressWarnings("unchecked")
-	public SimpleMatrix(int rows, int cols, double value) {
-
+	public SimpleMatrix(int rows, int cols, double initialValue) {
 		this.rows = rows;
 		this.cols = cols;
 		this.values = new double[rows][cols];
-//		this.data   = new ArrayList[rows][cols];
-//
-//		for (int i = 0; i < rows; i++) {
-//			for (int j = 0; j < cols; j++) {
-//				values[i][j] = value;
-//				data[i][j] = new ArrayList<>();
-//			}
-//		}
+		Arrays.fill(values, initialValue);
 	}
 
 	/**
@@ -68,7 +46,6 @@ public class SimpleMatrix {
 	 * @return
 	 *         the number of rows.
 	 */
-
 	public int getRowDimension() {
 		return rows;
 	}
@@ -79,7 +56,6 @@ public class SimpleMatrix {
 	 * @return
 	 *         the number of columns.
 	 */
-
 	public int getColumnDimension() {
 		return cols;
 	}
@@ -92,10 +68,9 @@ public class SimpleMatrix {
 	 * @param j
 	 *        column index.
 	 * @return
-	 *         a scalar value
+	 *         the cell value
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
 	public double getValue(int i, int j) {
 		return values[i][j];
 	}
@@ -108,16 +83,15 @@ public class SimpleMatrix {
 	 * @param j
 	 *        column index
 	 * @param value
-	 *        a scalar value
+	 *        the cell value
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
 	public void setValue(int i, int j, double value) {
 		values[i][j] = value;
 	}
 
 	/**
-	 * Add a scalar to a single cell value.
+	 * Add a value to a single cell value.
 	 * 
 	 * @param i
 	 *        row index
@@ -127,42 +101,9 @@ public class SimpleMatrix {
 	 *        the scalar value to add
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
-
 	public void addValue(int i, int j, double scalar) {
 		values[i][j] += scalar;
 	}
-
-	/**
-	 * Get the data associated to a cell.
-	 * 
-	 * @param i
-	 *        row index.
-	 * @param j
-	 *        column index.
-	 * @return
-	 *         a list of object
-	 * @exception ArrayIndexOutOfBoundsException
-	 */
-
-//	public List<Object> getData(int i, int j) {
-//		return data[i][j];
-//	}
-
-	/**
-	 * Add an element to the data associated to a cell.
-	 * 
-	 * @param i
-	 *        row index.
-	 * @param j
-	 *        column index.
-	 * @return
-	 *         the object to add
-	 * @exception ArrayIndexOutOfBoundsException
-	 */
-
-//	public void addData(int i, int j, Object item) {
-//		data[i][j].add(item);
-//	}
 
 	/**
 	 * Compute the sum of {@code this} and {@code m}.
@@ -182,8 +123,6 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] + m.values[i][j];
-//				result.data[i][j].addAll(data[i][j]);
-//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -208,53 +147,6 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] - m.values[i][j];
-//				result.data[i][j].addAll(data[i][j]);
-//				result.data[i][j].addAll(m.data[i][j]);
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Returns {@code this} multiplied by the scalar {@code factor}.
-	 *
-	 * @param i
-	 *        row index.
-	 * @param j
-	 *        column index.
-	 * @param scalar
-	 *        the scalar to multiply.
-	 * @return {@code this * factor}
-	 * @exception ArrayIndexOutOfBoundsException
-	 */
-	public SimpleMatrix multiply(double scalar) {
-
-		SimpleMatrix result = new SimpleMatrix(rows, cols);
-
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				result.values[i][j] = values[i][j] * scalar;
-//				result.data[i][j].addAll(data[i][j]);
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Returns {@code this} log, that is for each element of {@code this} a
-	 * log10 is calculated element-by-element.
-	 * @return log10({@code this})
-	 */
-	public SimpleMatrix log10() {
-
-		SimpleMatrix result = new SimpleMatrix(rows, cols);
-
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				result.values[i][j] = Math.log10(values[i][j]);
-//				result.data[i][j].addAll(data[i][j]);
 			}
 		}
 
@@ -300,6 +192,49 @@ public class SimpleMatrix {
 
 		return result;
 	}
+	
+	/**
+	 * Returns {@code this} multiplied by the scalar {@code factor}.
+	 *
+	 * @param i
+	 *        row index.
+	 * @param j
+	 *        column index.
+	 * @param scalar
+	 *        the scalar to multiply.
+	 * @return {@code this * factor}
+	 * @exception ArrayIndexOutOfBoundsException
+	 */
+	public SimpleMatrix multiply(double scalar) {
+
+		SimpleMatrix result = new SimpleMatrix(rows, cols);
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				result.values[i][j] = values[i][j] * scalar;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Returns {@code this} log, that is for each element of {@code this} a
+	 * log10 is calculated element-by-element.
+	 * @return log10({@code this})
+	 */
+	public SimpleMatrix log10() {
+
+		SimpleMatrix result = new SimpleMatrix(rows, cols);
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				result.values[i][j] = Math.log10(values[i][j]);
+			}
+		}
+
+		return result;
+	}
 
 	/**
 	 * Returns the result of multiplying element-by-element {@code this} by
@@ -319,8 +254,6 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] * m.values[i][j];
-//				result.data[i][j].addAll(data[i][j]);
-//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -345,8 +278,6 @@ public class SimpleMatrix {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result.values[i][j] = values[i][j] / m.values[i][j];
-//				result.data[i][j].addAll(data[i][j]);
-//				result.data[i][j].addAll(m.data[i][j]);
 			}
 		}
 
@@ -369,7 +300,6 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < cols; ++i) {
 			result.setValue(i, values[row][i]);
-//			result.getData(i).addAll(data[row][i]);
 		}
 
 		return result;
@@ -398,8 +328,6 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < cols; ++i) {
 			values[row][i] = v.getValue(i);
-//			data[row][i].clear();
-//			data[row][i].addAll(v.getData(i));
 		}
 	}
 
@@ -419,7 +347,6 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < rows; ++i) {
 			result.setValue(i, values[i][col]);
-//			result.getData(i).addAll(data[i][col]);
 		}
 
 		return result;
@@ -448,8 +375,6 @@ public class SimpleMatrix {
 
 		for (int i = 0; i < rows; ++i) {
 			values[i][col] = v.getValue(i);
-//			data[i][col].clear();
-//			data[i][col].addAll(v.getData(i));
 		}
 	}
 

@@ -1,8 +1,6 @@
 package ch.hesge.csim2.core.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.math3.linear.RealVector;
 
@@ -11,7 +9,6 @@ public class SimpleVector {
 	// Private attribute
 	private int size;
 	private double values[];
-	//private List<Object>[] data;
 
 	/**
 	 * Construct a vector of zeroes.
@@ -19,15 +16,9 @@ public class SimpleVector {
 	 * @param size
 	 *        size of the vector.
 	 */
-	@SuppressWarnings("unchecked")
 	public SimpleVector(int size) {
 		this.size = size;
 		this.values = new double[size];
-//		this.data   = new ArrayList[size];
-//
-//		for (int i = 0; i < size; i++) {
-//			data[i] = new ArrayList<>();
-//		}
 	}
 
 	/**
@@ -35,19 +26,13 @@ public class SimpleVector {
 	 *
 	 * @param size
 	 *        size of the vector
-	 * @param preset
+	 * @param initialValue
 	 *        all entries will be set with this value.
 	 */
-	@SuppressWarnings("unchecked")
-	public SimpleVector(int size, double preset) {
+	public SimpleVector(int size, double initialValue) {
 		this.size = size;
 		this.values = new double[size];
-//		this.data   = new ArrayList[size];
-		Arrays.fill(values, preset);
-
-//		for (int i = 0; i < size; i++) {
-//			data[i] = new ArrayList<>();
-//		}
+		Arrays.fill(values, initialValue);
 	}
 
 	/**
@@ -100,50 +85,6 @@ public class SimpleVector {
 	}
 
 	/**
-	 * Get the data associated to a coordinate.
-	 * 
-	 * @param i
-	 *        row index.
-	 * @return
-	 *         a list of object
-	 * @exception ArrayIndexOutOfBoundsException
-	 */
-
-//	public List<Object> getData(int i) {
-//		return data[i];
-//	}
-
-	/**
-	 * Get all data associated to the vector.
-	 * 
-	 * @return
-	 *         a list of object
-	 */
-//	public List<?> getData() {
-//		
-//		List<Object> dataObjects = new ArrayList<>();
-//		
-//		for (int i = 0; i < size; i++) {
-//			dataObjects.addAll(data[i]);
-//		}
-//		
-//		return dataObjects;
-//	}
-
-	/**
-	 * Add an element to the data associated to a coordinate.
-	 * 
-	 * @param i
-	 *        row index.
-	 * @return
-	 *         the object to add
-	 * @exception ArrayIndexOutOfBoundsException
-	 */
-//	public void addData(int i, Object item) {
-//		data[i].add(item);
-//	}
-	
-	/**
 	 * Compute the sum of this vector and {@code v}.
 	 * Returns a new vector. Does not change instance data.
 	 *
@@ -160,8 +101,6 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] + v.values[i];
-//			result.data[i].addAll(data[i]);
-//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -184,8 +123,6 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] - v.values[i];
-//			result.data[i].addAll(data[i]);
-//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -206,7 +143,6 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] + scalar;
-//			result.data[i].addAll(data[i]);
 		}
 
 		return result;
@@ -228,8 +164,6 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] * v.values[i];
-//			result.data[i].addAll(data[i]);
-//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -251,8 +185,6 @@ public class SimpleVector {
 
 		for (int i = 0; i < size; i++) {
 			result.values[i] = values[i] / v.values[i];
-//			result.data[i].addAll(data[i]);
-//			result.data[i].addAll(v.getData(i));
 		}
 
 		return result;
@@ -464,7 +396,7 @@ public class SimpleVector {
 	 *         if the matrices are not compatible.
 	 */
 	private void checkVectorDimensions(SimpleVector a, SimpleVector b) {
-		if ((a.size != b.size) || (a.size != b.size)) {
+		if (a.size != b.size || a.size != b.size) {
 			throw new IllegalArgumentException("Vector dimension mismatch.");
 		}
 	}
