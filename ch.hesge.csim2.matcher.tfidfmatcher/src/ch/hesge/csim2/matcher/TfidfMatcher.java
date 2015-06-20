@@ -89,11 +89,11 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<SourceMethod> methods = new ArrayList<>(methodMap.values());
 
-		// Calculate term vector for each concept, i.e. a term-concept matrix
+		// Calculate term-concept matrix with tfidf algorithm
 		StemMatrix<StemConcept> stemConceptMatrix = new StemMatrix<StemConcept>(StemConcept.class, terms.size(), concepts.size());
 		SimpleMatrix termConceptMatrix = getTermConceptMatrix(terms, concepts, conceptMap, stemConceptsMap, stemConceptMatrix);
 
-		// Calculate term vector for each method, i.e. a term-method matrix
+		// Calculate term-method matrix
 		StemMatrix<StemMethod> stemMethodMatrix = new StemMatrix<StemMethod>(StemMethod.class, terms.size(), methods.size());
 		SimpleMatrix termMethodMatrix = getTermMethodMatrix(terms, methods, methodMap, stemMethodsMap, stemMethodMatrix);
 
