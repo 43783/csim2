@@ -122,4 +122,23 @@ public class MatchingTable extends JTable {
 		initModel();
 		initRenderer();
 	}
+	
+	/**
+	 * Return the current selection
+	 * 
+	 * @return
+	 *         a SourceMethod object
+	 */
+	public MethodConceptMatch getSelectedValue() {
+
+		int row = getSelectedRow();
+
+		if (row > -1) {
+			return matchings.get(row);
+		}
+
+		return null;
+	}
+
+	
 }

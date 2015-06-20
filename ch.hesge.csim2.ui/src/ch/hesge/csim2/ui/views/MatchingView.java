@@ -42,6 +42,8 @@ import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.MatchingTable;
 import ch.hesge.csim2.ui.comp.SourceMethodTable;
+import ch.hesge.csim2.ui.comp.StemConceptTable;
+import ch.hesge.csim2.ui.comp.StemMethodTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -55,14 +57,17 @@ public class MatchingView extends JPanel {
 	private Map<Integer, List<MethodConceptMatch>> matchMap;
 
 	private JPanel paramsPanel;
-	private JPanel mainPanel;
-	private JPanel methodPanel;
-	private JPanel conceptPanel;
 	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
-	private JSplitPane splitPane;
+	private JPanel mainPanel;
+	private JPanel methodPanel;
+	private JPanel stemConceptPanel;
+	private JPanel stemMethodPanel;
+	private JPanel conceptPanel;
 	private SourceMethodTable methodTable;
 	private MatchingTable matchTable;
+	private StemConceptTable stemConceptTable;
+	private StemMethodTable stemMethodTable;
 
 	/**
 	 * Default constructor.
@@ -87,43 +92,55 @@ public class MatchingView extends JPanel {
 
 		// Create the setting panel
 		paramsPanel = new JPanel();
-		FlowLayout fl_paramsPanel = (FlowLayout) paramsPanel.getLayout();
-		fl_paramsPanel.setAlignment(FlowLayout.LEFT);
+		((FlowLayout)paramsPanel.getLayout()).setAlignment(FlowLayout.LEFT);
+		paramsPanel.add(new JLabel("Matching algorithm:"));
+		matcherComboBox = new MatcherComboBox(ApplicationLogic.getMatchers());
+		matcherComboBox.setPreferredSize(new Dimension(100, 20));
+		paramsPanel.add(matcherComboBox);		
+		loadBtn = new JButton("Load");
+		paramsPanel.add(loadBtn);
 		this.add(paramsPanel, BorderLayout.NORTH);
 
 		// Create the main panel
 		mainPanel = new JPanel();
-		this.add(mainPanel, BorderLayout.CENTER);
 		mainPanel.setLayout(new BorderLayout(0, 0));
-		splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.7);
-		mainPanel.add(splitPane, BorderLayout.CENTER);
-
-		// Create the matcher selection panel
-		JLabel matchingLabel = new JLabel("Matching algorithm:");
-		paramsPanel.add(matchingLabel);
-		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
-		matcherComboBox = new MatcherComboBox(matchers);
-		matcherComboBox.setPreferredSize(new Dimension(100, 20));
-		paramsPanel.add(matcherComboBox);
-
-		// Create the load button
-		loadBtn = new JButton("Load");
-		paramsPanel.add(loadBtn);
-
+		JSplitPane splitPane1 = new JSplitPane();
+		splitPane1.setResizeWeight(0.3);	
+		JSplitPane splitPane2 = new JSplitPane();
+		splitPane2.setResizeWeight(0.5);	
+		splitPane1.setRightComponent(splitPane2);
+		JSplitPane splitPane3 = new JSplitPane();
+		splitPane3.setResizeWeight(0.5);	
+		splitPane3.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		splitPane2.setRightComponent(splitPane3);
+		mainPanel.add(splitPane1, BorderLayout.CENTER);
+		this.add(mainPanel, BorderLayout.CENTER);
+		
 		// Create the method panel
 		methodPanel = new JPanel();
 		methodPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Methods", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		splitPane.setLeftComponent(methodPanel);
 		methodPanel.setLayout(new BorderLayout(0, 0));
+		splitPane1.setLeftComponent(methodPanel);
 
 		// Create the concept panel
 		conceptPanel = new JPanel();
 		conceptPanel.setBorder(new TitledBorder(null, "Concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		splitPane.setRightComponent(conceptPanel);
 		conceptPanel.setLayout(new BorderLayout(0, 0));
+		splitPane2.setLeftComponent(conceptPanel);
+		
+		// Create the stem-concept panel
+		stemConceptPanel = new JPanel();
+		stemConceptPanel.setBorder(new TitledBorder(null, "Stem Concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		stemConceptPanel.setLayout(new BorderLayout(0, 0));
+		splitPane3.setLeftComponent(stemConceptPanel);
 
-		// Create trace table
+		// Create the stem-method panel
+		stemMethodPanel = new JPanel();
+		stemMethodPanel.setBorder(new TitledBorder(null, "Stem Methods", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		stemMethodPanel.setLayout(new BorderLayout(0, 0));
+		splitPane3.setRightComponent(stemMethodPanel);
+
+		// Create method table
 		methodTable = new SourceMethodTable();
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setViewportView(methodTable);
@@ -134,6 +151,18 @@ public class MatchingView extends JPanel {
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(matchTable);
 		conceptPanel.add(scrollPane2, BorderLayout.CENTER);
+		
+		// Create stem-concept table
+		stemConceptTable = new StemConceptTable();
+		JScrollPane scrollPane3 = new JScrollPane();
+		scrollPane3.setViewportView(stemConceptTable);
+		stemConceptPanel.add(scrollPane3, BorderLayout.CENTER);
+
+		// Create stem-concept table
+		stemMethodTable = new StemMethodTable();
+		JScrollPane scrollPane4 = new JScrollPane();
+		scrollPane4.setViewportView(stemMethodTable);
+		stemMethodPanel.add(scrollPane4, BorderLayout.CENTER);
 
 		initListeners();
 	}
@@ -187,6 +216,27 @@ public class MatchingView extends JPanel {
 				}
 				else {
 					matchTable.setMatchings(null);
+				}
+			}
+		});
+
+		// Add listener to concept selection
+		matchTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				// Retrieve selected match
+				MethodConceptMatch match = matchTable.getSelectedValue();
+
+				// Retrieve the matching list
+				if (match != null) {
+					stemConceptTable.setStemList(match.getStemConcepts());
+					stemMethodTable.setStemList(match.getStemMethods());
+				}
+				else {
+					stemConceptTable.setStemList(null);
+					stemConceptTable.setStemList(null);
 				}
 			}
 		});

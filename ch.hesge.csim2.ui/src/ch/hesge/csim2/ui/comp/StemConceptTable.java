@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
+import ch.hesge.csim2.core.utils.ObjectSorter;
 
 @SuppressWarnings("serial")
 public class StemConceptTable extends JTable {
@@ -196,12 +197,29 @@ public class StemConceptTable extends JTable {
 	public void setStemTree(StemConcept stemTree) {
 
 		if (stemTree != null) {
-			this.stemConcepts = ApplicationLogic.inflateStemConcepts(stemTree);
+			stemConcepts = ApplicationLogic.inflateStemConcepts(stemTree);
 		}
 		else {
-			this.stemConcepts = null;
+			stemConcepts = null;
 		}
 		
+		initModel();
+	}
+
+	/**
+	 * Set the stems to display in this table.
+	 * 
+	 * @param stem
+	 *        the list of stem to display
+	 */
+	public void setStemList(List<StemConcept> stems) {
+		
+		stemConcepts = stems;
+		
+		if (stemConcepts != null) {
+			ObjectSorter.sortStemConcepts(stemConcepts);
+		}
+
 		initModel();
 	}
 }

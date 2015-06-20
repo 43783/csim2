@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
+import ch.hesge.csim2.core.utils.ObjectSorter;
 
 @SuppressWarnings("serial")
 public class StemMethodTable extends JTable {
@@ -211,10 +212,27 @@ public class StemMethodTable extends JTable {
 	public void setStemTree(StemMethod stemTree) {
 
 		if (stemTree != null) {
-			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+			stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
 		}
 		else {
-			this.stemMethods = null;
+			stemMethods = null;
+		}
+
+		initModel();
+	}
+	
+	/**
+	 * Set the stems to display in this table.
+	 * 
+	 * @param stem
+	 *        the list of stem to display
+	 */
+	public void setStemList(List<StemMethod> stems) {
+		
+		stemMethods = stems;
+		
+		if (stemMethods != null) {
+			ObjectSorter.sortStemMethods(stemMethods);
 		}
 
 		initModel();
