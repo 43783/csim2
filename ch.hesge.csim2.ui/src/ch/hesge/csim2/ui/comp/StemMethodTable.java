@@ -164,40 +164,13 @@ public class StemMethodTable extends JTable {
 
 				if (col == 0) {
 
-					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-
-					if (stemType == StemMethodType.METHOD_NAME_FULL) {
+					if (stemType == StemMethodType.METHOD_NAME_FULL || stemType == StemMethodType.PARAMETER_NAME_FULL || stemType == StemMethodType.REFERENCE_NAME_FULL) {
 						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
 						cellRenderer.setText(value.toString());
 					}
-					else if (stemType == StemMethodType.METHOD_NAME_PART) {
+					else {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
 						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
-						cellRenderer.setText(value.toString());
-					}
-					else if (stemType == StemMethodType.PARAMETER_NAME_PART) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemMethodType.PARAMETER_TYPE_FULL) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemMethodType.PARAMETER_TYPE_PART) {
-						cellRenderer.setText("    " + value.toString());
-					}
-					else if (stemType == StemMethodType.REFERENCE_NAME_FULL) {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
-						cellRenderer.setText(value.toString());
-					}
-					else if (stemType == StemMethodType.REFERENCE_NAME_PART) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemMethodType.REFERENCE_TYPE_FULL) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemMethodType.REFERENCE_TYPE_PART) {
-						cellRenderer.setText("    " + value.toString());
 					}
 				}
 				else if (col == 1) {

@@ -378,7 +378,7 @@ public class SimpleVector {
 	 */
 	public boolean isNullVector() {
 
-		if (getL1Norm() == 0) {
+		if (getNorm() == 0) {
 			return true;
 		}
 

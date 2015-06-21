@@ -114,10 +114,10 @@ public class StemConceptTable extends JTable {
 							return "identifier part";
 						}
 						else if (stemType == StemConceptType.CLASS_NAME_FULL) {
-							return "class name";
+							return "class";
 						}
 						else if (stemType == StemConceptType.CLASS_NAME_PART) {
-							return "class name part";
+							return "class part";
 						}
 						else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
 							return "class identifier";
@@ -149,40 +149,13 @@ public class StemConceptTable extends JTable {
 
 				if (col == 0) {
 
-					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-
-					if (stemType == StemConceptType.CONCEPT_NAME_FULL) {
+					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.CLASS_NAME_FULL) {
 						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
 						cellRenderer.setText(value.toString());
 					}
-					else if (stemType == StemConceptType.CONCEPT_NAME_PART) {
+					else {
+						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
 						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL) {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
-						cellRenderer.setText(value.toString());
-					}
-					else if (stemType == StemConceptType.ATTRIBUTE_NAME_PART) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
-						cellRenderer.setText("    " + value.toString());
-					}
-					else if (stemType == StemConceptType.CLASS_NAME_FULL) {
-						cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.BOLD));
-						cellRenderer.setText(value.toString());
-					}
-					else if (stemType == StemConceptType.CLASS_NAME_PART) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
-						cellRenderer.setText("  " + value.toString());
-					}
-					else if (stemType == StemConceptType.CLASS_IDENTIFIER_PART) {
-						cellRenderer.setText("    " + value.toString());
 					}
 				}
 				else if (col == 1) {
@@ -210,7 +183,7 @@ public class StemConceptTable extends JTable {
 		else {
 			stemConcepts = null;
 		}
-		
+
 		initModel();
 	}
 
@@ -221,9 +194,9 @@ public class StemConceptTable extends JTable {
 	 *        the list of stem to display
 	 */
 	public void setStemList(List<StemConcept> stems) {
-		
+
 		stemConcepts = stems;
-		
+
 		if (stemConcepts != null) {
 			ObjectSorter.sortStemConcepts(stemConcepts);
 		}

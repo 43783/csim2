@@ -89,7 +89,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<SourceMethod> methods = new ArrayList<>(methodMap.values());
 
-		// Calculate term-concept matrix with tfidf algorithm
+		// Calculate term-concept matrix with identifier weight algorithm
 		StemMatrix<StemConcept> stemConceptMatrix = new StemMatrix<StemConcept>(StemConcept.class, terms.size(), concepts.size());
 		SimpleMatrix termConceptMatrix = getTermConceptMatrix(terms, concepts, conceptMap, stemConceptsMap, stemConceptMatrix);
 
@@ -103,7 +103,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 			SourceMethod sourceMethod = methods.get(i);
 			SimpleVector termMethodVector = termMethodMatrix.getColumnVector(i);
 
-			// If null vector, skip
+			// If method vector is null, skip
 			if (!termMethodVector.isNullVector()) {
 
 				// Select all concepts with similarity factor > 0
@@ -113,35 +113,33 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 					Concept concept = concepts.get(j);
 					SimpleVector termConceptVector = termConceptMatrix.getColumnVector(j);
 
-					// Calculate similarity between method and concept vectors
-					double similarity = termConceptVector.cosine(termMethodVector);
-
-					// Register result within the matchMap
-					if (similarity > 0d) {
-
-						MethodConceptMatch match = new MethodConceptMatch();
-
-						match.setProject(project);
-						match.setSourceMethod(sourceMethod);
-						match.setConcept(concept);
-						match.setWeight(similarity);
-
-						// Gather concept stems found for concept vector
-						List<StemConcept> stemConcepts = new ArrayList<>();
-						for (int k = 0; k < stemConceptMatrix.getRowDimension(); k++) {
-							stemConcepts.addAll(stemConceptMatrix.get(k, j));
-						}
+					// If concept vector is null, skip
+					if (!termConceptVector.isNullVector()) {
 						
-						// Gather method stems found for method vector
-						List<StemMethod> stemMethods = new ArrayList<>();
-						for (int k = 0; k < stemMethodMatrix.getRowDimension(); k++) {
-							stemMethods.addAll(stemMethodMatrix.get(k, i));
+						// Calculate similarity between method and concept vectors
+						double similarity = termMethodVector.cosine(termConceptVector);
+
+						// Register result within the matchMap
+						if (similarity > 0d) {
+
+							MethodConceptMatch match = new MethodConceptMatch();
+
+							match.setProject(project);
+							match.setSourceMethod(sourceMethod);
+							match.setConcept(concept);
+							match.setWeight(similarity);
+
+							// Gather concept and method stems found for matching
+							for (int k = 0; k < terms.size(); k++) {
+								
+								if (termMethodVector.getValue(k) > 0) {
+									match.getStemConcepts().addAll(stemConceptMatrix.get(k, j));
+									match.getStemMethods().addAll(stemMethodMatrix.get(k, i));
+								}
+							}
+
+							matchings.add(match);
 						}
-
-						match.getStemConcepts().addAll(stemConcepts);
-						match.getStemMethods().addAll(stemMethods);
-
-						matchings.add(match);
 					}
 				}
 			}
@@ -333,5 +331,4 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 
 		return methodMatrix;
 	}
-
 }
