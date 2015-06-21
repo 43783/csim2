@@ -198,6 +198,7 @@ public class StemConceptTable extends JTable {
 
 		if (stemTree != null) {
 			stemConcepts = ApplicationLogic.inflateStemConcepts(stemTree);
+			ObjectSorter.sortStemConcepts(stemConcepts);
 		}
 		else {
 			stemConcepts = null;

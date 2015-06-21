@@ -179,6 +179,11 @@ public class MatchingView extends JPanel {
 
 				IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
 
+				methodTable.setSourceMethods(null);
+				matchTable.setMatchings(null);
+				stemConceptTable.setStemList(null);
+				stemMethodTable.setStemList(null);
+
 				if (matcher != null) {
 
 					SwingUtils.invokeLongOperation(MatchingView.this, new Runnable() {
@@ -194,9 +199,6 @@ public class MatchingView extends JPanel {
 						}
 					});
 				}
-				else {
-					methodTable.setSourceMethods(null);
-				}
 			}
 		});
 
@@ -206,6 +208,10 @@ public class MatchingView extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
+				matchTable.setMatchings(null);
+				stemConceptTable.setStemList(null);
+				stemMethodTable.setStemList(null);
+				
 				// Retrieve selected trace
 				SourceMethod sourceMethod = methodTable.getSelectedValue();
 
@@ -213,9 +219,6 @@ public class MatchingView extends JPanel {
 				if (sourceMethod != null) {
 					List<MethodConceptMatch> matchings = matchMap.get(sourceMethod.getKeyId());
 					matchTable.setMatchings(matchings);
-				}
-				else {
-					matchTable.setMatchings(null);
 				}
 			}
 		});
@@ -226,6 +229,9 @@ public class MatchingView extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
+				stemConceptTable.setStemList(null);
+				stemMethodTable.setStemList(null);
+
 				// Retrieve selected match
 				MethodConceptMatch match = matchTable.getSelectedValue();
 
@@ -233,10 +239,6 @@ public class MatchingView extends JPanel {
 				if (match != null) {
 					stemConceptTable.setStemList(match.getStemConcepts());
 					stemMethodTable.setStemList(match.getStemMethods());
-				}
-				else {
-					stemConceptTable.setStemList(null);
-					stemConceptTable.setStemList(null);
 				}
 			}
 		});
@@ -290,6 +292,8 @@ public class MatchingView extends JPanel {
 				@Override
 				public FileVisitResult visitFile(Path filepath, BasicFileAttributes attrs) throws IOException {
 
+					Console.writeError(this, "looking for file: " + filepath);
+					
 					if (filepath.getFileName().toString().equals(filename)) {
 						try {
 							Desktop.getDesktop().open(filepath.toFile());

@@ -111,19 +111,34 @@ public class StemMethodTable extends JTable {
 						return stem.getTerm();
 					case 1:
 						if (stemType == StemMethodType.METHOD_NAME_FULL) {
-							return "method";
+							return "method name";
+						}
+						else if (stemType == StemMethodType.METHOD_NAME_FULL) {
+							return "method part";
 						}
 						else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
-							return "parameter";
+							return "parameter name";
+						}
+						else if (stemType == StemMethodType.PARAMETER_NAME_PART) {
+							return "parameter part";
 						}
 						else if (stemType == StemMethodType.PARAMETER_TYPE_FULL) {
-							return "type";
+							return "param type";
+						}
+						else if (stemType == StemMethodType.PARAMETER_TYPE_PART) {
+							return "param type part";
 						}
 						else if (stemType == StemMethodType.REFERENCE_NAME_FULL) {
 							return "reference";
 						}
+						else if (stemType == StemMethodType.REFERENCE_NAME_PART) {
+							return "reference part";
+						}
 						else if (stemType == StemMethodType.REFERENCE_TYPE_FULL) {
-							return "type";
+							return "ref type";
+						}
+						else if (stemType == StemMethodType.REFERENCE_TYPE_PART) {
+							return "ref type part";
 						}
 				}
 
@@ -188,14 +203,15 @@ public class StemMethodTable extends JTable {
 				else if (col == 1) {
 
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
+					cellRenderer.setText(value.toString());
 
-					// Detect full names
-					if (stemType.getValue() % 2 == 0) {
-						cellRenderer.setText(value.toString());
-					}
-					else {
-						cellRenderer.setText(null);
-					}
+//					// Detect full names
+//					if (stemType.getValue() % 2 == 0) {
+//						cellRenderer.setText(value.toString());
+//					}
+//					else {
+//						cellRenderer.setText(null);
+//					}
 				}
 
 				return this;
@@ -213,6 +229,7 @@ public class StemMethodTable extends JTable {
 
 		if (stemTree != null) {
 			stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+			ObjectSorter.sortStemMethods(stemMethods);
 		}
 		else {
 			stemMethods = null;
