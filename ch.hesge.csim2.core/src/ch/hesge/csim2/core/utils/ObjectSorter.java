@@ -211,9 +211,7 @@ public class ObjectSorter {
 		stems.sort(new Comparator<StemMethod>() {
 			@Override
 			public int compare(StemMethod a, StemMethod b) {
-				if (a.getStemType().getValue() == b.getStemType().getValue())
-					return a.getTerm().compareTo(b.getTerm());
-				return a.getStemType().getValue() - b.getStemType().getValue();
+				return a.getKeyId() - b.getKeyId();
 			}
 		});
 	}
@@ -228,9 +226,7 @@ public class ObjectSorter {
 		stems.sort(new Comparator<StemConcept>() {
 			@Override
 			public int compare(StemConcept a, StemConcept b) {
-				if (a.getStemType().getValue() == b.getStemType().getValue())
-					return a.getTerm().compareTo(b.getTerm());
-				return a.getStemType().getValue() - b.getStemType().getValue();
+				return a.getKeyId() - b.getKeyId();
 			}
 		});
 	}
