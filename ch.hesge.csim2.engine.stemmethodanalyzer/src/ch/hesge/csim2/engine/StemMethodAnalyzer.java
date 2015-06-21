@@ -93,7 +93,7 @@ public class StemMethodAnalyzer implements IEngine {
 		Properties params = new Properties();
 
 		params.put("project", "project");
-		params.put("rejected-words", "file");
+		params.put("rejected-methods", "file");
 
 		return params;
 	}
@@ -137,21 +137,21 @@ public class StemMethodAnalyzer implements IEngine {
 			}
 
 			// Retrieve path to rejected words file
-			Path rejectedWordsPath = Paths.get("conf", "rejected-word-list.txt").toAbsolutePath();
-			if (context.containsKey("rejected-words")) {
-				String rejectedWordsFileParam = (String) context.getProperty("rejected-words");
-				if (rejectedWordsFileParam != null && rejectedWordsFileParam.trim().length() > 0) {
-					rejectedWordsPath = Paths.get(rejectedWordsFileParam);
+			Path rejectedPath = Paths.get("conf", "rejected-methods.txt").toAbsolutePath();
+			if (context.containsKey("rejected-methods")) {
+				String rejectedFileParam = (String) context.getProperty("rejected-methods");
+				if (rejectedFileParam != null && rejectedFileParam.trim().length() > 0) {
+					rejectedPath = Paths.get(rejectedFileParam);
 				}
 			}
 
 			// Check if rejected word file exists
-			if (!rejectedWordsPath.toFile().exists()) {
-				throw new EngineException("file '" + rejectedWordsPath.getFileName().toString() + "' doesn't not exist !");
+			if (!rejectedPath.toFile().exists()) {
+				throw new EngineException("file '" + rejectedPath.getFileName().toString() + "' doesn't not exist !");
 			}
 
 			// Load rejected word list
-			rejectedList = Files.readAllLines(rejectedWordsPath, Charset.defaultCharset());
+			rejectedList = Files.readAllLines(rejectedPath, Charset.defaultCharset());
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
@@ -190,6 +190,8 @@ public class StemMethodAnalyzer implements IEngine {
 					// Retrieve stems for the method
 					String methodName = sourceMethod.getName();
 					List<String> methodStems = getStems(methodName, rejectedList);
+					
+					if (methodStems.isEmpty()) continue;
 
 					// Create a stem for the full method name
 					String methodNameFull = StringUtils.concatenate(methodStems);
@@ -210,6 +212,8 @@ public class StemMethodAnalyzer implements IEngine {
 						String parameterName = sourceParameter.getName();
 						List<String> parameterStems = getStems(parameterName, rejectedList);
 
+						if (parameterStems.isEmpty()) continue;
+						
 						// Create a stem for the full parameter name
 						String parameterNameFull = StringUtils.concatenate(parameterStems);
 						StemMethod stemParameterNameFull = new StemMethod(project, stemMethodNameFull, sourceMethod, parameterNameFull, StemMethodType.PARAMETER_NAME_FULL, null);
@@ -227,6 +231,8 @@ public class StemMethodAnalyzer implements IEngine {
 						String parameterType = sourceParameter.getType();
 						List<String> typeStems = getStems(parameterType, rejectedList);
 
+						if (typeStems.isEmpty()) continue;
+						
 						// Create a stem for the full type name
 						String parameterTypeFull = StringUtils.concatenate(typeStems);
 						StemMethod stemParameterTypeFull = new StemMethod(project, stemParameterNameFull, sourceMethod, parameterTypeFull, StemMethodType.PARAMETER_TYPE_FULL, null);
@@ -247,6 +253,8 @@ public class StemMethodAnalyzer implements IEngine {
 						String referenceName = sourceReference.getName();
 						List<String> referenceStems = getStems(referenceName, rejectedList);
 
+						if (referenceStems.isEmpty()) continue;
+						
 						// Create a stem for the full reference name
 						String referenceNameFull = StringUtils.concatenate(referenceStems);
 						StemMethod stemReferenceNameFull = new StemMethod(project, stemMethodNameFull, sourceMethod, referenceNameFull, StemMethodType.REFERENCE_NAME_FULL, sourceReference.getOrigin());
@@ -263,6 +271,8 @@ public class StemMethodAnalyzer implements IEngine {
 						// Retrieve stems for the type
 						String referenceType = sourceReference.getType();
 						List<String> typeStems = getStems(referenceType, rejectedList);
+						
+						if (typeStems.isEmpty()) continue;
 						
 						// Create a stem for the full type name
 						String referenceTypeFull = StringUtils.concatenate(typeStems);
@@ -311,12 +321,15 @@ public class StemMethodAnalyzer implements IEngine {
 	public static List<String> getStems(String name, List<String> rejectedList) {
 		
 		List<String> stems = new ArrayList<>();
+		
+		if (name.isEmpty() || name.startsWith("_")) return stems;
 
 		// First, clean original name (diacritic and non alphanum chars) 
 		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", "");
-		cleanName = cleanName.replaceAll("[^A-Za-z0-9]", "");
-		cleanName = cleanName != null ? cleanName.trim() : "";
+		cleanName = cleanName.replaceAll("\\s+", " ");
+		cleanName = cleanName.replaceAll("[^A-Za-z0-9\\s]", "");
+		cleanName = cleanName.trim();
 		cleanName = StringUtils.trimHungarian(cleanName);
 		
 		if (cleanName.length() > 0) {
@@ -329,7 +342,7 @@ public class StemMethodAnalyzer implements IEngine {
 			// Filter name present in rejection list
 			for (String word : words) {
 
-				if (word != null && word.length() > 0) {
+				if (word != null && word.length() > 1) {
 
 					word = word.toLowerCase();
 

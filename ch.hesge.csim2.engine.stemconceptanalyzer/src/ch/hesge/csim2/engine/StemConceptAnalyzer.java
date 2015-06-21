@@ -95,7 +95,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 		params.put("project", "project");
 		params.put("ontology", "ontology");
-		params.put("rejected-words", "file");
+		params.put("rejected-names", "file");
 
 		return params;
 	}
@@ -147,21 +147,21 @@ public class StemConceptAnalyzer implements IEngine {
 			}
 
 			// Retrieve path to rejected words file
-			Path rejectedWordsPath = Paths.get("conf", "rejected-word-list.txt").toAbsolutePath();
-			if (context.containsKey("rejected-words")) {
-				String rejectedWordsFileParam = (String) context.getProperty("rejected-words");
-				if (rejectedWordsFileParam != null && rejectedWordsFileParam.trim().length() > 0) {
-					rejectedWordsPath = Paths.get(rejectedWordsFileParam);
+			Path rejectedPath = Paths.get("conf", "rejected-names.txt").toAbsolutePath();
+			if (context.containsKey("rejected-names")) {
+				String rejectedFileParam = (String) context.getProperty("rejected-names");
+				if (rejectedFileParam != null && rejectedFileParam.trim().length() > 0) {
+					rejectedPath = Paths.get(rejectedFileParam);
 				}
 			}
 
 			// Check if rejected word file exists
-			if (!rejectedWordsPath.toFile().exists()) {
-				throw new EngineException("file '" + rejectedWordsPath.getFileName().toString() + "' doesn't not exist !");
+			if (!rejectedPath.toFile().exists()) {
+				throw new EngineException("file '" + rejectedPath.getFileName().toString() + "' doesn't not exist !");
 			}
 
 			// Load rejected word list
-			rejectedList = Files.readAllLines(rejectedWordsPath, Charset.defaultCharset());
+			rejectedList = Files.readAllLines(rejectedPath, Charset.defaultCharset());
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
@@ -198,6 +198,8 @@ public class StemConceptAnalyzer implements IEngine {
 				String conceptName = concept.getName();
 				List<String> conceptStems = getStems(conceptName, rejectedList);
 
+				if (conceptStems.isEmpty()) continue;
+				
 				// Create a stem for the full concept name
 				String conceptNameFull = StringUtils.concatenate(conceptStems);
 				StemConcept stemConceptNameFull = new StemConcept(project, null, concept, conceptNameFull, StemConceptType.CONCEPT_NAME_FULL);
@@ -217,6 +219,8 @@ public class StemConceptAnalyzer implements IEngine {
 					String attributeName = conceptAttribute.getName();
 					List<String> attributeStems = getStems(attributeName, rejectedList);
 
+					if (attributeStems.isEmpty()) continue;
+
 					// Create a stem for the full attribute name
 					String attributeNameFull = StringUtils.concatenate(attributeStems);
 					StemConcept stemAttributNameFull = new StemConcept(project, stemConceptNameFull, concept, attributeNameFull, StemConceptType.ATTRIBUTE_NAME_FULL);
@@ -233,6 +237,8 @@ public class StemConceptAnalyzer implements IEngine {
 					// Retrieve stems for the identifier
 					String identifierName = conceptAttribute.getIdentifier();
 					List<String> identifierStems = getStems(identifierName, rejectedList);
+
+					if (identifierStems.isEmpty()) continue;
 
 					// Create a stem for the full identifier name
 					String identifierNameFull = StringUtils.concatenate(identifierStems);
@@ -254,6 +260,8 @@ public class StemConceptAnalyzer implements IEngine {
 					String className = conceptClass.getName();
 					List<String> classStems = getStems(className, rejectedList);
 
+					if (classStems.isEmpty()) continue;
+
 					// Create a stem for the full class name
 					String classNameFull = StringUtils.concatenate(classStems);
 					StemConcept stemClassNameFull = new StemConcept(project, stemConceptNameFull, concept, classNameFull, StemConceptType.CLASS_NAME_FULL);
@@ -270,6 +278,8 @@ public class StemConceptAnalyzer implements IEngine {
 					// Retrieve stems for the class identifier
 					String identifierName = conceptClass.getIdentifier();
 					List<String> identifierStems = getStems(identifierName, rejectedList);
+
+					if (identifierStems.isEmpty()) continue;
 
 					// Create a stem for the full identifier name
 					String identifierNameFull = StringUtils.concatenate(identifierStems);
@@ -317,11 +327,14 @@ public class StemConceptAnalyzer implements IEngine {
 		
 		List<String> stems = new ArrayList<>();
 
+		if (name.isEmpty()) return stems;
+		
 		// First, clean original name (diacritic and non alphanum chars) 
 		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", "");
-		cleanName = cleanName.replaceAll("[^A-Za-z0-9]", "");
-		cleanName = cleanName != null ? cleanName.trim() : "";
+		cleanName = cleanName.replaceAll("\\s+", " ");
+		cleanName = cleanName.replaceAll("[^A-Za-z0-9\\s]", "");
+		cleanName = cleanName.trim();
 		cleanName = StringUtils.trimHungarian(cleanName);
 		
 		if (cleanName.length() > 0) {
@@ -334,7 +347,7 @@ public class StemConceptAnalyzer implements IEngine {
 			// Filter name present in rejection list
 			for (String word : words) {
 
-				if (word != null && word.length() > 0) {
+				if (word != null && word.length() > 1) {
 
 					word = word.toLowerCase();
 
@@ -357,4 +370,37 @@ public class StemConceptAnalyzer implements IEngine {
 		
 		return stems;
 	}	
+	
+	/**
+	 * Testcase to study how names are splitted through camel casing.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		String name = "dE";
+		
+		/**
+		 * 		Données de calcul Propriété physique 	=	donne, de, calcul, propriet,  physiqu
+		 * 
+		 * 		CamelCasingTest      = Camel, Casing, Test
+		 * 		methodRemoveProperty = method, Remove, Property
+		 * 		ConceptNumber328Real = Concept, Number328, Real
+		 * 		TestCPTSmall         = Test, CPT, Small
+		 * 		CBatFluM0            = Bat, Flu, M0
+		 * 		CCircBatLiqCalcul    = Circ, Bat, Liq, Calcul
+		 *  	Petits_Calculs       = Petits, Calculs
+		 *  	_Petits_Calculs_     = Petits, Calculs
+		 *  	Petits Calculs       = Petits, Calculs
+		 *      dE                   = d, E
+		 */
+		
+		System.out.println(name);
+		
+		List<String> stems = getStems(name, new ArrayList<String>());
+		
+		for (String stem : stems) {
+			System.out.println(" " + stem);
+		}
+	}
 }
