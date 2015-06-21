@@ -128,17 +128,13 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 						// Gather concept stems
 						List<StemConcept> stemConcepts = new ArrayList<>();
 						for (int k = 0; k < termConceptVector.getDimension(); k++) {
-							if (termConceptVector.getValue(k) > 0) {
-								stemConcepts.addAll(stemConceptMatrix.get(k, j));
-							}
+							stemConcepts.addAll(stemConceptMatrix.get(k, j));
 						}
 						
 						// Gather method stems
 						List<StemMethod> stemMethods = new ArrayList<>();
 						for (int k = 0; k < termMethodVector.getDimension(); k++) {
-							if (termMethodVector.getValue(k) > 0) {
-								stemMethods.addAll(stemMethodMatrix.get(k, j));
-							}
+							stemMethods.addAll(stemMethodMatrix.get(k, j));
 						}
 
 						match.getStemConcepts().addAll(stemConcepts);
