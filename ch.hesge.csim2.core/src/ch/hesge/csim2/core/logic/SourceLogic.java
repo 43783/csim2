@@ -71,51 +71,39 @@ class SourceLogic {
 			sourceClass.getMethods().clear();
 			sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
 			ObjectSorter.sortSourceMethods(sourceClass.getMethods());
-
-//			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
-//
-//				// Populate method parameters
-//				sourceMethod.getParameters().clear();
-//				sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
-//				ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
-//
-//				// Populate method references
-//				sourceMethod.getReferences().clear();
-//				sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
-//				ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
-//			}
 		}
 
 		return sourceClasses;
 	}
 
 	/**
-	 * Retrieve all source methods owned by a project.
+	 * Retrieve all source class with methods, parameters and references owned by a project.
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return a list of SourceMethod
+	 * @return a list of SourceClass
 	 */
-	public static List<SourceMethod> getSourceMethods(Project project) {
+	public static List<SourceClass> getSourceClassMethodParam(Project project) {
+		
+		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
+		
+		for (SourceClass sourceClass : sourceClasses) {
+			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
-		List<SourceMethod> sourceMethods = SourceMethodDao.findByProject(project);
-
-//		// Now populate methods with parameters and references
-//		for (SourceMethod sourceMethod: sourceMethods) {
-//
-//			// Populate method parameters
-//			sourceMethod.getParameters().clear();
-//			sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
-//			ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
-//
-//			// Populate method references
-//			sourceMethod.getReferences().clear();
-//			sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
-//			ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
-//		}
-
-		return sourceMethods;
+				// Populate method parameters
+				sourceMethod.getParameters().clear();
+				sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
+				ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
+	
+				// Populate method references
+				sourceMethod.getReferences().clear();
+				sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
+				ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
+			}
+		}
+		
+		return sourceClasses;
 	}
 
 	/**
@@ -151,9 +139,10 @@ class SourceLogic {
 	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
 		Map<Integer, SourceMethod> methodMap = new HashMap<>();
+		List<SourceMethod> sourceMethods = SourceMethodDao.findByProject(project);
 
 		// Populate the map
-		for (SourceMethod sourceMethod : ApplicationLogic.getSourceMethods(project)) {
+		for (SourceMethod sourceMethod : sourceMethods) {
 			methodMap.put(sourceMethod.getKeyId(), sourceMethod);
 		}
 

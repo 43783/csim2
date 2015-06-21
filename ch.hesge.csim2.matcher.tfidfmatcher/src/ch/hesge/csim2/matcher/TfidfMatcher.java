@@ -52,7 +52,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.1";
+		return "1.0.4";
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 		for (int i = 0; i < methods.size(); i++) {
 
 			// Retrieve current method vector
-			SimpleVector termMethodVector = termMethodMatrix.getColumnVector(i);
 			SourceMethod sourceMethod = methods.get(i);
+			SimpleVector termMethodVector = termMethodMatrix.getColumnVector(i);
 
 			// If null vector, skip
 			if (!termMethodVector.isNullVector()) {
@@ -109,8 +109,9 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 				// Select all concepts with similarity factor > 0
 				for (int j = 0; j < termConceptMatrix.getColumnDimension(); j++) {
 
-					SimpleVector termConceptVector = termConceptMatrix.getColumnVector(j);
+					// Retrieve current concept vector
 					Concept concept = concepts.get(j);
+					SimpleVector termConceptVector = termConceptMatrix.getColumnVector(j);
 
 					// Calculate similarity between method and concept vectors
 					double similarity = termConceptVector.cosine(termMethodVector);
@@ -125,16 +126,16 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 						match.setConcept(concept);
 						match.setWeight(similarity);
 
-						// Gather concept stems
+						// Gather concept stems found for concept vector
 						List<StemConcept> stemConcepts = new ArrayList<>();
-						for (int k = 0; k < termConceptVector.getDimension(); k++) {
+						for (int k = 0; k < stemConceptMatrix.getRowDimension(); k++) {
 							stemConcepts.addAll(stemConceptMatrix.get(k, j));
 						}
 						
-						// Gather method stems
+						// Gather method stems found for method vector
 						List<StemMethod> stemMethods = new ArrayList<>();
-						for (int k = 0; k < termMethodVector.getDimension(); k++) {
-							stemMethods.addAll(stemMethodMatrix.get(k, j));
+						for (int k = 0; k < stemMethodMatrix.getRowDimension(); k++) {
+							stemMethods.addAll(stemMethodMatrix.get(k, i));
 						}
 
 						match.getStemConcepts().addAll(stemConcepts);

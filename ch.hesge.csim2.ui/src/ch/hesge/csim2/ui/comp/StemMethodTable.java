@@ -111,13 +111,13 @@ public class StemMethodTable extends JTable {
 						return stem.getTerm();
 					case 1:
 						if (stemType == StemMethodType.METHOD_NAME_FULL) {
-							return "method name";
+							return "method";
 						}
-						else if (stemType == StemMethodType.METHOD_NAME_FULL) {
+						else if (stemType == StemMethodType.METHOD_NAME_PART) {
 							return "method part";
 						}
 						else if (stemType == StemMethodType.PARAMETER_NAME_FULL) {
-							return "parameter name";
+							return "parameter";
 						}
 						else if (stemType == StemMethodType.PARAMETER_NAME_PART) {
 							return "parameter part";
@@ -201,17 +201,8 @@ public class StemMethodTable extends JTable {
 					}
 				}
 				else if (col == 1) {
-
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
 					cellRenderer.setText(value.toString());
-
-//					// Detect full names
-//					if (stemType.getValue() % 2 == 0) {
-//						cellRenderer.setText(value.toString());
-//					}
-//					else {
-//						cellRenderer.setText(null);
-//					}
 				}
 
 				return this;

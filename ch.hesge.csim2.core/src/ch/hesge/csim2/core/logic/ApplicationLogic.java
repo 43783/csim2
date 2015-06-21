@@ -416,22 +416,22 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all source methods owned by a project.
+	 * Retrieve all source class with methods, parameters and references owned by a project.
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return a list of SourceMethod
+	 * @return a list of SourceClass
 	 */
-	public static List<SourceMethod> getSourceMethods(Project project) {
+	public static List<SourceClass> getSourceClassMethodParam(Project project) {
 
-		String cacheKey = "getSourceMethods_" + project.getKeyId();
+		String cacheKey = "getSourceClassMethodParam_" + project.getKeyId();
 
 		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethods(project)));
+			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMethodParam(project)));
 		}
 
-		return (List<SourceMethod>) APPCACHE.get(cacheKey).getObjectValue();
+		return (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 	
 	/**

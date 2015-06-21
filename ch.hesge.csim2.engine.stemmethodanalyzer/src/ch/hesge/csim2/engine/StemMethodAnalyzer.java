@@ -64,7 +64,7 @@ public class StemMethodAnalyzer implements IEngine {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.2";
+		return "1.0.3";
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 			// Load all project classes
 			Console.writeInfo(this, "loading code sources information...");
-			List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
+			List<SourceClass> sourceClasses = ApplicationLogic.getSourceClassMethodParam(project);
 
 			Console.writeInfo(this, "scanning source classes...");
 

@@ -1,6 +1,5 @@
 package ch.hesge.csim2.core.utils;
 
-import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +24,6 @@ public class StemMatrix<T> {
 		this.rows = rows;
 		this.cols = cols;
 		this.entrySets = new Set[rows][cols];
-//		this.entrySets = (Set<T>[][]) Array.newInstance(Set<T.>, rows, cols);
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {

@@ -98,17 +98,32 @@ public class StemConceptTable extends JTable {
 						if (stemType == StemConceptType.CONCEPT_NAME_FULL) {
 							return "concept";
 						}
+						else if (stemType == StemConceptType.CONCEPT_NAME_PART) {
+							return "concept part";
+						}
 						else if (stemType == StemConceptType.ATTRIBUTE_NAME_FULL) {
 							return "attribute";
+						}
+						else if (stemType == StemConceptType.ATTRIBUTE_NAME_PART) {
+							return "attribute part";
 						}
 						else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
 							return "identifier";
 						}
+						else if (stemType == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
+							return "identifier part";
+						}
 						else if (stemType == StemConceptType.CLASS_NAME_FULL) {
-							return "class";
+							return "class name";
+						}
+						else if (stemType == StemConceptType.CLASS_NAME_PART) {
+							return "class name part";
 						}
 						else if (stemType == StemConceptType.CLASS_IDENTIFIER_FULL) {
-							return "identifier";
+							return "class identifier";
+						}
+						else if (stemType == StemConceptType.CLASS_IDENTIFIER_PART) {
+							return "class identifier part";
 						}
 				}
 
@@ -171,16 +186,8 @@ public class StemConceptTable extends JTable {
 					}
 				}
 				else if (col == 1) {
-
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-
-					// Detect full names
-					if (stemType.getValue() % 2 == 0) {
-						cellRenderer.setText(value.toString());
-					}
-					else {
-						cellRenderer.setText(null);
-					}
+					cellRenderer.setText(value.toString());
 				}
 
 				return this;
