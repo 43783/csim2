@@ -497,6 +497,21 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Retrieve all stems associated to a name.
+	 * Words present in rejectedList will not produce associated stems.
+	 * 
+	 * @param name
+	 *        the name to use to extract stems
+	 * @param rejectedList
+	 *        the list of forbidden words
+	 * @return
+	 *         a list of stems associated to the list of names
+	 */
+	public static List<String> getStems(String name, List<String> rejectedList) {
+		return StemLogic.getStems(name, rejectedList);
+	}
+	
+	/**
 	 * Retrieve a hierarchy of stem methods defined for a project.
 	 * 
 	 * More specifically allows one stem hierarchy to be retrieved for a

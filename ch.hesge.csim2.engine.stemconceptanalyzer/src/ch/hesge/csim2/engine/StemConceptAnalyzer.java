@@ -7,13 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.tartarus.snowball.SnowballStemmer;
-import org.tartarus.snowball.ext.englishStemmer;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
@@ -196,7 +192,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 				// Retrieve stems for the concept
 				String conceptName = concept.getName();
-				List<String> conceptStems = getStems(conceptName, rejectedList);
+				List<String> conceptStems = ApplicationLogic.getStems(conceptName, rejectedList);
 
 				if (conceptStems.isEmpty()) continue;
 				
@@ -217,7 +213,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 					// Retrieve stems for the attribute
 					String attributeName = conceptAttribute.getName();
-					List<String> attributeStems = getStems(attributeName, rejectedList);
+					List<String> attributeStems = ApplicationLogic.getStems(attributeName, rejectedList);
 
 					if (attributeStems.isEmpty()) continue;
 
@@ -236,7 +232,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 					// Retrieve stems for the identifier
 					String identifierName = conceptAttribute.getIdentifier();
-					List<String> identifierStems = getStems(identifierName, rejectedList);
+					List<String> identifierStems = ApplicationLogic.getStems(identifierName, rejectedList);
 
 					if (identifierStems.isEmpty()) continue;
 
@@ -258,7 +254,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 					// Retrieve stems for the class
 					String className = conceptClass.getName();
-					List<String> classStems = getStems(className, rejectedList);
+					List<String> classStems = ApplicationLogic.getStems(className, rejectedList);
 
 					if (classStems.isEmpty()) continue;
 
@@ -277,7 +273,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 					// Retrieve stems for the class identifier
 					String identifierName = conceptClass.getIdentifier();
-					List<String> identifierStems = getStems(identifierName, rejectedList);
+					List<String> identifierStems = ApplicationLogic.getStems(identifierName, rejectedList);
 
 					if (identifierStems.isEmpty()) continue;
 
@@ -313,65 +309,6 @@ public class StemConceptAnalyzer implements IEngine {
 	}
 	
 	/**
-	 * Retrieve all stems associated to a name.
-	 * Words present in rejectedList will not produce associated stems.
-	 * 
-	 * @param name
-	 *        the name to use to extract stems
-	 * @param rejectedList
-	 *        the list of forbidden words
-	 * @return
-	 *         a list of stems associated to the list of names
-	 */
-	public static List<String> getStems(String name, List<String> rejectedList) {
-		
-		List<String> stems = new ArrayList<>();
-
-		if (name.isEmpty()) return stems;
-		
-		// First, clean original name (diacritic and non alphanum chars) 
-		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", "");
-		cleanName = cleanName.replaceAll("\\s+", " ");
-		cleanName = cleanName.replaceAll("[^A-Za-z0-9\\s]", "");
-		cleanName = cleanName.trim();
-		cleanName = StringUtils.trimHungarian(cleanName);
-		
-		if (cleanName.length() > 0) {
-			
-			List<String> nameParts = new ArrayList<>();
-
-			// Then retrieve name parts (camel casing notation) 
-			List<String> words = StringUtils.splitCamelCase(cleanName);
-
-			// Filter name present in rejection list
-			for (String word : words) {
-
-				if (word != null && word.length() > 1) {
-
-					word = word.toLowerCase();
-
-					// Add only words not in reject list or not already present
-					if (!rejectedList.contains(word) && !stems.contains(word)) {
-						nameParts.add(word);
-					}
-				}
-			}
-			
-			// Finally stemmize all name parts
-			SnowballStemmer stemmer = new englishStemmer();
-			for (String word : nameParts) {
-
-				stemmer.setCurrent(word);
-				stemmer.stem();
-				stems.add(stemmer.getCurrent().toLowerCase());
-			}
-		}
-		
-		return stems;
-	}	
-	
-	/**
 	 * Testcase to study how names are splitted through camel casing.
 	 * 
 	 * @param args
@@ -397,7 +334,7 @@ public class StemConceptAnalyzer implements IEngine {
 		
 		System.out.println(name);
 		
-		List<String> stems = getStems(name, new ArrayList<String>());
+		List<String> stems = ApplicationLogic.getStems(name, new ArrayList<String>());
 		
 		for (String stem : stems) {
 			System.out.println(" " + stem);
