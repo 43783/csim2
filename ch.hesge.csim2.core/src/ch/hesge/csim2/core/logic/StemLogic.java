@@ -56,7 +56,7 @@ class StemLogic {
 		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", "");
 		cleanName = cleanName.replaceAll("\\s+", " ");
-		cleanName = cleanName.replaceAll("[^A-Za-z0-9\\s]", "");
+		cleanName = cleanName.replaceAll("[^_A-Za-z0-9\\s]", "");
 		cleanName = cleanName.trim();
 		cleanName = StringUtils.trimHungarian(cleanName);
 		
@@ -104,35 +104,28 @@ class StemLogic {
 	 * 
 	 * 		StemTree for a single concept:
 	 * 
-	 * 			CONCEPT_NAME_FULL
-	 * 				CONCEPT_NAME_PART
-	 * 				CONCEPT_NAME_PART
+	 * 		CONCEPT_NAME_FULL
+	 * 			CONCEPT_NAME_PART
+	 * 			CONCEPT_NAME_PART
 	 * 
-	 * 				ATTRIBUTE_ONE_FULL
-	 * 					ATTRIBUTE_ONE_PART
-	 * 					ATTRIBUTE_ONE_PART
+	 * 			ATTRIBUTE_FULL
+	 * 				ATTRIBUTE_PART
+	 * 				ATTRIBUTE_PART
 	 * 
-	 * 					ATTRIBUTE_ONE_IDENTIFIER_FULL
-	 * 						ATTRIBUTE_ONE_IDENTIFIER_PART
-	 * 						ATTRIBUTE_ONE_IDENTIFIER_PART
+	 * 				ATTRIBUTE_IDENTIFIER_FULL
+	 * 					ATTRIBUTE_IDENTIFIER_PART
+	 * 					ATTRIBUTE_IDENTIFIER_PART
 	 * 
-	 * 				ATTRIBUTE_TWO_NAME_FULL
-	 * 					ATTRIBUTE_TWO_NAME_PART
-	 * 					ATTRIBUTE_TWO_NAME_PART
+	 * 			CLASS_NAME_FULL
+	 * 				CLASS_NAME_PART
+	 * 				CLASS_NAME_PART
 	 * 
-	 * 					ATTRIBUTE_TWO_IDENTIFIER_FULL
-	 * 						ATTRIBUTE_TWO_IDENTIFIER_PART
-	 * 						ATTRIBUTE_TWO_IDENTIFIER_PART
-	 * 
-	 * 				CLASS_NAME_FULL
-	 * 					CLASS_NAME_PART
-	 * 					CLASS_NAME_PART
-	 * 
-	 * 					CLASS_IDENTIFIER_FULL
-	 * 						CLASS_IDENTIFIER_PART
-	 * 						CLASS_IDENTIFIER_PART
+	 * 				CLASS_IDENTIFIER_FULL
+	 * 					CLASS_IDENTIFIER_PART
+	 * 					CLASS_IDENTIFIER_PART
 	 * 
 	 * So entries are of the form (conceptId, root of StemConcept tree).
+	 * 
 	 * </pre>
 	 * 
 	 * @param project
@@ -293,24 +286,26 @@ class StemLogic {
 	 * 
 	 * 		METHOD_NAME_FULL
 	 * 			METHOD_NAME_PART
+	 * 			METHOD_NAME_PART
 	 * 
 	 * 			PARAMETER_NAME_FULL
 	 * 				PARAMETER_NAME_PART
 	 * 				PARAMETER_NAME_PART
 	 * 
-	 * 		PARAMETER_TYPE_FULL
-	 * 			PARAMETER_TYPE_PART
-	 * 			PARAMETER_TYPE_PART
+	 * 				PARAMETER_TYPE_FULL
+	 * 					PARAMETER_TYPE_PART
+	 * 					PARAMETER_TYPE_PART
 	 * 
-	 * 		REFERENCE_NAME_FULL
-	 * 			REFERENCE_NAME_PART
-	 * 			REFERENCE_NAME_PART
+	 * 			REFERENCE_NAME_FULL
+	 * 				REFERENCE_NAME_PART
+	 * 				REFERENCE_NAME_PART
 	 * 
-	 * 		REFERENCE_TYPE_FULL
-	 * 			REFERENCE_TYPE_PART
-	 * 			REFERENCE_TYPE_PART
+	 * 				REFERENCE_TYPE_FULL
+	 * 					REFERENCE_TYPE_PART
+	 * 					REFERENCE_TYPE_PART
 	 * 
 	 * So entries are of the form (methodId, root of StemMethod tree).
+	 * 
 	 * </pre>
 	 * 
 	 * @param project
