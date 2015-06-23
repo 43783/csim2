@@ -58,6 +58,8 @@ public class MatchingTable extends JTable {
 						return "Concept";
 					case 1:
 						return "Weight";
+					case 2:
+						return "Validation";
 				}
 
 				return null;
@@ -85,6 +87,8 @@ public class MatchingTable extends JTable {
 						return match.getConcept().getName();
 					case 1:
 						return String.format("%.2f", match.getWeight());
+					case 2:
+						return match.isValidated();
 				}
 
 				return null;

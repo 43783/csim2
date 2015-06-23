@@ -27,6 +27,7 @@ public class MethodConceptMatch {
 	private List<StemConcept> stemConcepts;
 	private List<StemMethod> stemMethods;
 	private double weight;
+	private boolean isValidated;
 
 	/**
 	 * Default constructor
@@ -79,11 +80,19 @@ public class MethodConceptMatch {
 	public double getWeight() {
 		return weight;
 	}
-
+	
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
+	public boolean isValidated() {
+		return isValidated;
+	}
+
+	public void setValidated(boolean isValidated) {
+		this.isValidated = isValidated;
+	}
+	
 	public List<StemConcept> getStemConcepts() {
 		return stemConcepts;
 	}

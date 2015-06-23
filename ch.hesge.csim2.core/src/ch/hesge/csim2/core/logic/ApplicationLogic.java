@@ -938,5 +938,15 @@ public class ApplicationLogic {
 	public static void removeConceptLink(Ontology ontology, Concept concept, ConceptLink link) {
 		OntologyLogic.removeConceptLink(ontology, concept, link);
 	}
+	
+	/**
+	 * Export all matchings passed in argument in a CSV file.
+	 * 
+	 * @param matchings
+	 * @param filename
+	 */
+	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+		MatchingLogic.exportMatchings(matchMap, filename);
+	}
 
 }

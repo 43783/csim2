@@ -56,9 +56,9 @@ public class MatchingView extends JPanel {
 	private List<SourceMethod> sourceMethods;
 	private Map<Integer, List<MethodConceptMatch>> matchMap;
 
-	private JPanel paramsPanel;
 	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
+	private JButton exportBtn;
 	private JPanel mainPanel;
 	private JPanel methodPanel;
 	private JPanel stemConceptPanel;
@@ -88,10 +88,15 @@ public class MatchingView extends JPanel {
 	 */
 	private void initComponent() {
 
-		setLayout(new BorderLayout(0, 0));
+		this.setLayout(new BorderLayout(0, 0));
 
-		// Create the setting panel
-		paramsPanel = new JPanel();
+		// Create settings panel
+		JPanel settingsPanel = new JPanel();
+		settingsPanel.setLayout(new BorderLayout(0, 0));
+		this.add(settingsPanel, BorderLayout.NORTH);
+
+		// Create the params panel
+		JPanel paramsPanel = new JPanel();
 		((FlowLayout)paramsPanel.getLayout()).setAlignment(FlowLayout.LEFT);
 		paramsPanel.add(new JLabel("Matching algorithm:"));
 		matcherComboBox = new MatcherComboBox(ApplicationLogic.getMatchers());
@@ -99,7 +104,14 @@ public class MatchingView extends JPanel {
 		paramsPanel.add(matcherComboBox);		
 		loadBtn = new JButton("Load");
 		paramsPanel.add(loadBtn);
-		this.add(paramsPanel, BorderLayout.NORTH);
+		settingsPanel.add(paramsPanel, BorderLayout.CENTER);
+
+		// Create export panel
+		JPanel exportPanel = new JPanel();
+		((FlowLayout)exportPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
+		exportBtn = new JButton("Export");
+		exportPanel.add(exportBtn);
+		settingsPanel.add(exportPanel, BorderLayout.EAST);
 
 		// Create the main panel
 		mainPanel = new JPanel();
@@ -202,6 +214,15 @@ public class MatchingView extends JPanel {
 			}
 		});
 
+		// Add listener to export button
+		exportBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+				String filepath = selectFileFolder();
+				ApplicationLogic.exportMatchings(matchMap, filepath);
+			}
+		});
+
 		// Add listener to trace selection
 		methodTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -252,7 +273,7 @@ public class MatchingView extends JPanel {
 				if (method != null && method.getFilename() != null) {
 
 					if (rootSourceFolder == null) {
-						selectRootFolderFile();
+						rootSourceFolder = selectFileFolder();
 					}
 
 					if (rootSourceFolder != null) {
@@ -265,16 +286,18 @@ public class MatchingView extends JPanel {
 
 	/**
 	 * Open the folder selection dialog
-	 * and set root source dialog.
+	 * and ask user to select a folder.
 	 */
-	private void selectRootFolderFile() {
+	private String selectFileFolder() {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		if (fileChooser.showOpenDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
-			rootSourceFolder = fileChooser.getSelectedFile().getAbsolutePath();
+			return fileChooser.getSelectedFile().getAbsolutePath();
 		}
+		
+		return null;
 	}
 
 	/**
@@ -311,5 +334,4 @@ public class MatchingView extends JPanel {
 			Console.writeError(this, "error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
 		}
 	}
-
 }
