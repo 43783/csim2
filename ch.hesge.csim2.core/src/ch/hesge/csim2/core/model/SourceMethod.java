@@ -22,9 +22,9 @@ public class SourceMethod {
 	private int classId;
 	private String filename;
 	private String name;
-	private String classname;
 	private String signature;
 	private String returnType;
+	private SourceClass sourceClass;
 	private List<SourceParameter> parameters;
 	private List<SourceReference> references;
 
@@ -73,12 +73,12 @@ public class SourceMethod {
 		this.classId = classId;
 	}
 
-	public String getClassName() {
-		return classname;
+	public SourceClass getSourceClass() {
+		return sourceClass;
 	}
 
-	public void setClassname(String classname) {
-		this.classname = classname;
+	public void setSourceClass(SourceClass sourceClass) {
+		this.sourceClass = sourceClass;
 	}
 
 	public String getSignature() {

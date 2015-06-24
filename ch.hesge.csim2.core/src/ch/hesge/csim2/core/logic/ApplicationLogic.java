@@ -7,6 +7,7 @@ import java.nio.file.FileSystems;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -628,6 +629,19 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Return a set of all terms which are intersecting among stem concepts and stem methods.	 
+	 *  
+	 * @param stemConcepts
+	 *        the stem concepts
+	 * @param stemMethods
+	 *        the stem methods
+	 * @return a set of string (each item are stem term)
+	 */
+	public static Set<String> getTermsIntersection(List<StemConcept> stemConcepts, List<StemMethod> stemMethods) {
+		return StemLogic.getTermIntersection(stemConcepts, stemMethods);
+	}
+	
+	/**
 	 * Retrieve all traces owned by a scenario.
 	 * 
 	 * @param scenario
@@ -799,6 +813,18 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Export all matchings passed in argument in a CSV file.
+	 * 
+	 * @param matchings
+	 *        the MethodConceptMatch to save
+	 * @param filename
+	 *        the csv filename target
+	 */
+	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+		MatchingLogic.saveMatchings(matchMap, filename);
+	}
+	
+	/**
 	 * Save a single stem concept.
 	 * 
 	 * @param stem
@@ -937,16 +963,5 @@ public class ApplicationLogic {
 	 */
 	public static void removeConceptLink(Ontology ontology, Concept concept, ConceptLink link) {
 		OntologyLogic.removeConceptLink(ontology, concept, link);
-	}
-	
-	/**
-	 * Export all matchings passed in argument in a CSV file.
-	 * 
-	 * @param matchings
-	 * @param filename
-	 */
-	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
-		MatchingLogic.exportMatchings(matchMap, filename);
-	}
-
+	}	
 }

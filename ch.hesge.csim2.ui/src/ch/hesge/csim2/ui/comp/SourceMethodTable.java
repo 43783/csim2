@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -16,14 +15,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
 
 @SuppressWarnings("serial")
 public class SourceMethodTable extends JTable implements ActionListener {
 
 	// Private attributes
-	private Map<Integer, SourceClass> classMap;
 	private List<SourceMethod> sourceMethods;
 	private SourceMethodPopup contextMenu;
 	private ListSelectionListener doubleClickListener;
@@ -128,7 +125,7 @@ public class SourceMethodTable extends JTable implements ActionListener {
 				
 				switch (col) {
 					case 0:
-						return classMap.get(method.getClassId()).getName();
+						return method.getSourceClass().getName();
 					case 1:
 						return method.getSignature();
 				}
@@ -160,15 +157,6 @@ public class SourceMethodTable extends JTable implements ActionListener {
 		repaint();
 	}
 	
-	/**
-	 * Sets the class map owning methods.
-	 * 
-	 * @param classMap
-	 */
-	public void setSourceClasses(Map<Integer, SourceClass> classMap) {
-		this.classMap = classMap;
-	}
-
 	/**
 	 * Return the current selection
 	 * 

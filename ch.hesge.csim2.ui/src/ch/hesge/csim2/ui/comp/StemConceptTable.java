@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -20,6 +21,7 @@ import ch.hesge.csim2.core.utils.ObjectSorter;
 public class StemConceptTable extends JTable {
 
 	// Private attributes
+	private Set<String> termsIntersection;
 	private List<StemConcept> stemConcepts;
 
 	/**
@@ -147,6 +149,13 @@ public class StemConceptTable extends JTable {
 				StemConcept stem = stemConcepts.get(row);
 				StemConceptType stemType = stem.getStemType();
 
+				if (termsIntersection.contains(stem.getTerm())) {
+					cellRenderer.setForeground(Color.RED);					
+				}
+				else {
+					cellRenderer.setForeground(Color.BLACK);					
+				}
+
 				if (col == 0) {
 
 					if (stemType == StemConceptType.CONCEPT_NAME_FULL || stemType == StemConceptType.ATTRIBUTE_NAME_FULL || stemType == StemConceptType.CLASS_NAME_FULL) {
@@ -169,6 +178,17 @@ public class StemConceptTable extends JTable {
 	}
 
 	/**
+	 * Set the term intersection between concept and method stem.
+	 * All stem included in this intersection will be display in red.
+	 * 
+	 * @param term
+	 *        the set of term intersection between concept and method stems
+	 */
+	public void setTermsIntersection(Set<String> termsIntersection) {
+		this.termsIntersection = termsIntersection;
+	}
+
+	/**
 	 * Set the stems to display in this table.
 	 * 
 	 * @param stemTree
@@ -182,23 +202,6 @@ public class StemConceptTable extends JTable {
 		}
 		else {
 			stemConcepts = null;
-		}
-
-		initModel();
-	}
-
-	/**
-	 * Set the stems to display in this table.
-	 * 
-	 * @param stem
-	 *        the list of stem to display
-	 */
-	public void setStemList(List<StemConcept> stems) {
-
-		stemConcepts = stems;
-
-		if (stemConcepts != null) {
-			ObjectSorter.sortStemConcepts(stemConcepts);
 		}
 
 		initModel();

@@ -269,7 +269,6 @@ public class CppInstrumenterUtils {
 	 */
 	public static SourceMethod createMethod(ICPPASTFunctionDefinition definition) {
 
-		String classname = CppInstrumenterUtils.getClassName(definition);
 		String filename = Paths.get(definition.getContainingFilename()).getFileName().toString().toLowerCase();
 		String methodName = CppInstrumenterUtils.getMethodName(definition);
 		String methodSignature = CppInstrumenterUtils.getMethodSignature(definition);
@@ -281,7 +280,6 @@ public class CppInstrumenterUtils {
 
 		SourceMethod sourceMethod = new SourceMethod();
 
-		sourceMethod.setClassname(classname);
 		sourceMethod.setName(methodName);
 		sourceMethod.setSignature(methodSignature);
 		sourceMethod.setReturnType(returnType);

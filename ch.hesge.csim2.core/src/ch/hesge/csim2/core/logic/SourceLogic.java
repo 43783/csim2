@@ -138,11 +138,17 @@ class SourceLogic {
 	 */
 	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
-		Map<Integer, SourceMethod> methodMap = new HashMap<>();
-		List<SourceMethod> sourceMethods = SourceMethodDao.findByProject(project);
+		// Create a map of class
+		Map<Integer, SourceClass> classMap = new HashMap<>();
+		for (SourceClass concept : SourceClassDao.findByProject(project)) {
+			classMap.put(concept.getKeyId(), concept);
+		}
 
-		// Populate the map
-		for (SourceMethod sourceMethod : sourceMethods) {
+		// Create the matp of method
+		Map<Integer, SourceMethod> methodMap = new HashMap<>();
+
+		for (SourceMethod sourceMethod : SourceMethodDao.findByProject(project)) {
+			sourceMethod.setSourceClass(classMap.get(sourceMethod.getClassId()));
 			methodMap.put(sourceMethod.getKeyId(), sourceMethod);
 		}
 

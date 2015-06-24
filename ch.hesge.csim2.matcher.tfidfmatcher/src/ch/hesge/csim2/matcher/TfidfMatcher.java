@@ -105,7 +105,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 
 			// If method vector is null, skip
 			if (!termMethodVector.isNullVector()) {
-
+				
 				// Select all concepts with similarity factor > 0
 				for (int j = 0; j < termConceptMatrix.getColumnDimension(); j++) {
 
@@ -125,6 +125,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 							MethodConceptMatch match = new MethodConceptMatch();
 
 							match.setProject(project);
+							match.setSourceClass(sourceMethod.getSourceClass());
 							match.setSourceMethod(sourceMethod);
 							match.setConcept(concept);
 							match.setWeight(similarity);

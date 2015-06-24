@@ -17,6 +17,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -34,8 +35,9 @@ import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
-import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
+import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.ObjectSorter;
 import ch.hesge.csim2.core.utils.StringUtils;
@@ -52,8 +54,9 @@ public class MatchingView extends JPanel {
 	// Private attribute	
 	private String rootSourceFolder;
 	private Project project;
-	private Map<Integer, SourceClass> classMap;
 	private List<SourceMethod> sourceMethods;
+	private Map<Integer, StemConcept> stemConceptMap;
+	private Map<Integer, StemMethod> stemMethodMap;
 	private Map<Integer, List<MethodConceptMatch>> matchMap;
 
 	private MatcherComboBox matcherComboBox;
@@ -75,10 +78,11 @@ public class MatchingView extends JPanel {
 	public MatchingView(Project project, List<Scenario> scenarios) {
 
 		this.project = project;
-		this.classMap = ApplicationLogic.getSourceClassMap(project);
-
 		this.sourceMethods = new ArrayList<>(ApplicationLogic.getSourceMethodMap(project).values());
-		ObjectSorter.sortSourceMethods(sourceMethods, classMap);
+		ObjectSorter.sortSourceMethods(sourceMethods);
+		
+		stemConceptMap = ApplicationLogic.getStemConceptTreeMap(project);
+		stemMethodMap = ApplicationLogic.getStemMethodTreeMap(project);
 		
 		initComponent();
 	}
@@ -110,6 +114,7 @@ public class MatchingView extends JPanel {
 		JPanel exportPanel = new JPanel();
 		((FlowLayout)exportPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
 		exportBtn = new JButton("Export");
+		exportBtn.setEnabled(false);
 		exportPanel.add(exportBtn);
 		settingsPanel.add(exportPanel, BorderLayout.EAST);
 
@@ -193,8 +198,8 @@ public class MatchingView extends JPanel {
 
 				methodTable.setSourceMethods(null);
 				matchTable.setMatchings(null);
-				stemConceptTable.setStemList(null);
-				stemMethodTable.setStemList(null);
+				stemConceptTable.setStemTree(null);
+				stemMethodTable.setStemTree(null);
 
 				if (matcher != null) {
 
@@ -206,8 +211,10 @@ public class MatchingView extends JPanel {
 							matchMap = matcher.getMethodMatchingMap(project);
 
 							// Initialize method table
-							methodTable.setSourceClasses(classMap);
 							methodTable.setSourceMethods(sourceMethods);
+							
+							// Enable export button
+							exportBtn.setEnabled(true);
 						}
 					});
 				}
@@ -217,9 +224,11 @@ public class MatchingView extends JPanel {
 		// Add listener to export button
 		exportBtn.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {				
-				String filepath = selectFileFolder();
-				ApplicationLogic.exportMatchings(matchMap, filepath);
+			public void actionPerformed(ActionEvent e) {	
+				JFileChooser saveFileDialog = new JFileChooser();
+				if (saveFileDialog.showSaveDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
+					ApplicationLogic.exportMatchings(matchMap, saveFileDialog.getSelectedFile().getAbsolutePath());
+				}
 			}
 		});
 
@@ -230,8 +239,8 @@ public class MatchingView extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 
 				matchTable.setMatchings(null);
-				stemConceptTable.setStemList(null);
-				stemMethodTable.setStemList(null);
+				stemConceptTable.setStemTree(null);
+				stemMethodTable.setStemTree(null);
 				
 				// Retrieve selected trace
 				SourceMethod sourceMethod = methodTable.getSelectedValue();
@@ -250,16 +259,24 @@ public class MatchingView extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
-				stemConceptTable.setStemList(null);
-				stemMethodTable.setStemList(null);
+				stemConceptTable.setStemTree(null);
+				stemMethodTable.setStemTree(null);
 
 				// Retrieve selected match
 				MethodConceptMatch match = matchTable.getSelectedValue();
 
 				// Retrieve the matching list
 				if (match != null) {
-					stemConceptTable.setStemList(match.getStemConcepts());
-					stemMethodTable.setStemList(match.getStemMethods());
+					
+					Set<String> termsIntersection = ApplicationLogic.getTermsIntersection(match.getStemConcepts(), match.getStemMethods());
+										
+					StemConcept rootStemConcept = stemConceptMap.get(match.getConcept().getKeyId());
+					stemConceptTable.setTermsIntersection(termsIntersection);
+					stemConceptTable.setStemTree(rootStemConcept);
+					
+					StemMethod rootStemMethod = stemMethodMap.get(match.getSourceMethod().getKeyId());
+					stemMethodTable.setTermsIntersection(termsIntersection);
+					stemMethodTable.setStemTree(rootStemMethod);
 				}
 			}
 		});
@@ -273,7 +290,13 @@ public class MatchingView extends JPanel {
 				if (method != null && method.getFilename() != null) {
 
 					if (rootSourceFolder == null) {
-						rootSourceFolder = selectFileFolder();
+						
+						JFileChooser selectFolderDialog = new JFileChooser();
+						selectFolderDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+						if (selectFolderDialog.showOpenDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
+							rootSourceFolder = selectFolderDialog.getSelectedFile().getAbsolutePath();
+						}
 					}
 
 					if (rootSourceFolder != null) {
@@ -282,22 +305,6 @@ public class MatchingView extends JPanel {
 				}
 			}
 		});
-	}
-
-	/**
-	 * Open the folder selection dialog
-	 * and ask user to select a folder.
-	 */
-	private String selectFileFolder() {
-
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-		if (fileChooser.showOpenDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
-			return fileChooser.getSelectedFile().getAbsolutePath();
-		}
-		
-		return null;
 	}
 
 	/**

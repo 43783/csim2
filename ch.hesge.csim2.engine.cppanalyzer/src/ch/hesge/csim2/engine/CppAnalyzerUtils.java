@@ -269,7 +269,6 @@ public class CppAnalyzerUtils {
 	 */
 	public static SourceMethod createMethod(ICPPASTFunctionDefinition definition) {
 
-		String classname = CppAnalyzerUtils.getClassName(definition);
 		String filename = Paths.get(definition.getContainingFilename()).getFileName().toString().toLowerCase();
 		String methodName = CppAnalyzerUtils.getMethodName(definition);
 		String methodSignature = CppAnalyzerUtils.getMethodSignature(definition);
@@ -281,7 +280,6 @@ public class CppAnalyzerUtils {
 
 		SourceMethod sourceMethod = new SourceMethod();
 
-		sourceMethod.setClassname(classname);
 		sourceMethod.setName(methodName);
 		sourceMethod.setSignature(methodSignature);
 		sourceMethod.setReturnType(returnType);

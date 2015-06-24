@@ -2,7 +2,6 @@ package ch.hesge.csim2.core.utils;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptAttribute;
@@ -128,30 +127,12 @@ public class ObjectSorter {
 		methods.sort(new Comparator<SourceMethod>() {
 			@Override
 			public int compare(SourceMethod a, SourceMethod b) {
-				return a.getName().compareTo(b.getName());
-			}
-		});
-	}
-
-	/**
-	 * Sort a list of source methods.
-	 * 
-	 * @param methods
-	 */
-	public static void sortSourceMethods(List<SourceMethod> methods, Map<Integer, SourceClass> classMap) {
-
-		methods.sort(new Comparator<SourceMethod>() {
-			@Override
-			public int compare(SourceMethod a, SourceMethod b) {
 				
 				if (a.getClassId() == b.getClassId()) {
 					return a.getName().compareTo(b.getName());
 				}
 				
-				SourceClass aClass = classMap.get(a.getClassId());
-				SourceClass bClass = classMap.get(b.getClassId());
-				
-				return aClass.getName().compareTo(bClass.getName());
+				return a.getSourceClass().getName().compareTo(b.getSourceClass().getName());
 			}
 		});
 	}

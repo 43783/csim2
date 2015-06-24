@@ -7,8 +7,10 @@ package ch.hesge.csim2.core.logic;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
@@ -447,6 +449,34 @@ class StemLogic {
 		}
 
 		return stemMap;
+	}
+
+	/**
+	 * Return a set of all terms which are intersecting among stem concepts and stem methods.	 
+	 * 
+	 * @param stemConcepts
+	 *        the stem concepts
+	 * @param stemMethods
+	 *        the stem methods
+	 * @return a set of string (each item are stem term)
+	 */
+	public static Set<String> getTermIntersection(List<StemConcept> stemConcepts, List<StemMethod> stemMethods) {
+
+		// Create a set of stem concept terms
+		Set<String> stemConceptSet = new HashSet<>();
+		for (StemConcept stem : stemConcepts) {
+			stemConceptSet.add(stem.getTerm());
+		}
+
+		// Create a set of stem method terms
+		Set<String> stemMethodSet = new HashSet<>();
+		for (StemMethod stem : stemMethods) {
+			stemMethodSet.add(stem.getTerm());
+		}
+
+		stemConceptSet.retainAll(stemMethodSet);
+
+		return stemConceptSet;
 	}
 
 	/**

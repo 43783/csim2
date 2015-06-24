@@ -90,15 +90,11 @@ public class JavaAnalyzerUtils {
 
 		SourceMethod sourceMethod = new SourceMethod();
 
-		// Retrieve class owning the method
-		String classname = JavaAnalyzerUtils.getClassName(declaration);
-		sourceMethod.setClassname(classname);
-
 		// Retrieve method type (return type)
 		String methodType = (declaration.getReturnType2() == null ? null : declaration.getReturnType2().toString());
 		sourceMethod.setReturnType(JavaAnalyzerUtils.getSimpleName(methodType));
 
-		// Retrieve all method 's parameters
+		// Retrieve all method's parameters
 		for (Object p : declaration.parameters()) {
 
 			SingleVariableDeclaration param = (SingleVariableDeclaration) p;
