@@ -47,7 +47,7 @@ public class MatchingTable extends JTable {
 
 			@Override
 			public int getColumnCount() {
-				return 2;
+				return 3;
 			}
 
 			@Override
@@ -59,7 +59,7 @@ public class MatchingTable extends JTable {
 					case 1:
 						return "Weight";
 					case 2:
-						return "Validation";
+						return "Validated";
 				}
 
 				return null;
@@ -73,8 +73,15 @@ public class MatchingTable extends JTable {
 			}
 
 			@Override
+			public Class<?> getColumnClass(int col) {
+			    if (col == 2)
+			        return Boolean.class;
+			    return super.getColumnClass(col);
+			}
+			
+			@Override
 			public boolean isCellEditable(int row, int col) {
-				return false;
+				return col == 2;
 			}
 
 			@Override
@@ -93,6 +100,15 @@ public class MatchingTable extends JTable {
 
 				return null;
 			}
+			
+			@Override
+			public void setValueAt(Object value, int row, int col) {
+
+				if (value != null) {
+					MethodConceptMatch match = matchings.get(row);
+					match.setValidated((boolean)value);
+				}
+			}			
 		});
 	}
 
