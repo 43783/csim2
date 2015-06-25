@@ -187,7 +187,7 @@ public class StemMethodAnalyzer implements IEngine {
 					List<String> methodStems = ApplicationLogic.getStems(methodName, rejectedList);
 					
 					if (methodStems.isEmpty()) continue;
-
+					
 					// Create a stem for the full method name
 					String methodNameFull = StringUtils.concatenate(methodStems);
 					StemMethod stemMethodNameFull = new StemMethod(project, null, sourceMethod, methodNameFull, StemMethodType.METHOD_NAME_FULL, null);
@@ -195,10 +195,12 @@ public class StemMethodAnalyzer implements IEngine {
 					stemMethodCount++;
 
 					// Create a stem for each part of the method name
-					for (String methodNamePart : methodStems) {
-						StemMethod stemMethodNamePart = new StemMethod(project, stemMethodNameFull, sourceMethod, methodNamePart, StemMethodType.METHOD_NAME_PART, null);
-						ApplicationLogic.saveStemMethod(stemMethodNamePart);
-						stemMethodCount++;
+					if (methodStems.size() > 1) {
+						for (String methodNamePart : methodStems) {
+							StemMethod stemMethodNamePart = new StemMethod(project, stemMethodNameFull, sourceMethod, methodNamePart, StemMethodType.METHOD_NAME_PART, null);
+							ApplicationLogic.saveStemMethod(stemMethodNamePart);
+							stemMethodCount++;
+						}
 					}
 
 					for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
@@ -208,7 +210,7 @@ public class StemMethodAnalyzer implements IEngine {
 						List<String> parameterStems = ApplicationLogic.getStems(parameterName, null);
 
 						if (parameterStems.isEmpty()) continue;
-						
+
 						// Create a stem for the full parameter name
 						String parameterNameFull = StringUtils.concatenate(parameterStems);
 						StemMethod stemParameterNameFull = new StemMethod(project, stemMethodNameFull, sourceMethod, parameterNameFull, StemMethodType.PARAMETER_NAME_FULL, null);
@@ -216,10 +218,12 @@ public class StemMethodAnalyzer implements IEngine {
 						stemMethodCount++;
 
 						// Create a stem for each part of the parameter name
-						for (String parameterNamePart : parameterStems) {
-							StemMethod stemParameterNamePart = new StemMethod(project, stemParameterNameFull, sourceMethod, parameterNamePart, StemMethodType.PARAMETER_NAME_PART, null);
-							ApplicationLogic.saveStemMethod(stemParameterNamePart);
-							stemMethodCount++;
+						if (parameterStems.size() > 1) {
+							for (String parameterNamePart : parameterStems) {
+								StemMethod stemParameterNamePart = new StemMethod(project, stemParameterNameFull, sourceMethod, parameterNamePart, StemMethodType.PARAMETER_NAME_PART, null);
+								ApplicationLogic.saveStemMethod(stemParameterNamePart);
+								stemMethodCount++;
+							}
 						}
 
 						// Retrieve stems for the type
@@ -227,7 +231,7 @@ public class StemMethodAnalyzer implements IEngine {
 						List<String> typeStems = ApplicationLogic.getStems(parameterType, null);
 
 						if (typeStems.isEmpty()) continue;
-						
+
 						// Create a stem for the full type name
 						String parameterTypeFull = StringUtils.concatenate(typeStems);
 						StemMethod stemParameterTypeFull = new StemMethod(project, stemParameterNameFull, sourceMethod, parameterTypeFull, StemMethodType.PARAMETER_TYPE_FULL, null);
@@ -235,10 +239,12 @@ public class StemMethodAnalyzer implements IEngine {
 						stemMethodCount++;
 
 						// Create a stem for each part of the type name
-						for (String parameterTypePart : typeStems) {
-							StemMethod stemParameterTypePart = new StemMethod(project, stemParameterTypeFull, sourceMethod, parameterTypePart, StemMethodType.PARAMETER_TYPE_PART, null);
-							ApplicationLogic.saveStemMethod(stemParameterTypePart);
-							stemMethodCount++;
+						if (parameterStems.size() > 1) {
+							for (String parameterTypePart : typeStems) {
+								StemMethod stemParameterTypePart = new StemMethod(project, stemParameterTypeFull, sourceMethod, parameterTypePart, StemMethodType.PARAMETER_TYPE_PART, null);
+								ApplicationLogic.saveStemMethod(stemParameterTypePart);
+								stemMethodCount++;
+							}
 						}
 					}
 
@@ -249,7 +255,7 @@ public class StemMethodAnalyzer implements IEngine {
 						List<String> referenceStems = ApplicationLogic.getStems(referenceName, null);
 
 						if (referenceStems.isEmpty()) continue;
-						
+
 						// Create a stem for the full reference name
 						String referenceNameFull = StringUtils.concatenate(referenceStems);
 						StemMethod stemReferenceNameFull = new StemMethod(project, stemMethodNameFull, sourceMethod, referenceNameFull, StemMethodType.REFERENCE_NAME_FULL, sourceReference.getOrigin());
@@ -257,10 +263,12 @@ public class StemMethodAnalyzer implements IEngine {
 						stemMethodCount++;
 
 						// Create a stem for each part of the reference name
-						for (String referenceNamePart : referenceStems) {
-							StemMethod stemReferenceNamePart = new StemMethod(project, stemReferenceNameFull, sourceMethod, referenceNamePart, StemMethodType.REFERENCE_NAME_PART, sourceReference.getOrigin());
-							ApplicationLogic.saveStemMethod(stemReferenceNamePart);
-							stemMethodCount++;
+						if (referenceStems.size() > 1) {
+							for (String referenceNamePart : referenceStems) {
+								StemMethod stemReferenceNamePart = new StemMethod(project, stemReferenceNameFull, sourceMethod, referenceNamePart, StemMethodType.REFERENCE_NAME_PART, sourceReference.getOrigin());
+								ApplicationLogic.saveStemMethod(stemReferenceNamePart);
+								stemMethodCount++;
+							}
 						}
 
 						// Retrieve stems for the type
@@ -268,7 +276,7 @@ public class StemMethodAnalyzer implements IEngine {
 						List<String> typeStems = ApplicationLogic.getStems(referenceType, null);
 						
 						if (typeStems.isEmpty()) continue;
-						
+
 						// Create a stem for the full type name
 						String referenceTypeFull = StringUtils.concatenate(typeStems);
 						StemMethod stemReferenceTypeFull = new StemMethod(project, stemReferenceNameFull, sourceMethod, referenceTypeFull, StemMethodType.REFERENCE_TYPE_FULL, sourceReference.getOrigin());
@@ -276,10 +284,12 @@ public class StemMethodAnalyzer implements IEngine {
 						stemMethodCount++;
 
 						// Create a stem for each part of the type name
-						for (String referenceTypePart : typeStems) {
-							StemMethod stemReferenceTypePart = new StemMethod(project, stemReferenceTypeFull, sourceMethod, referenceTypePart, StemMethodType.REFERENCE_TYPE_PART, sourceReference.getOrigin());
-							ApplicationLogic.saveStemMethod(stemReferenceTypePart);
-							stemMethodCount++;
+						if (typeStems.size() > 1) {
+							for (String referenceTypePart : typeStems) {
+								StemMethod stemReferenceTypePart = new StemMethod(project, stemReferenceTypeFull, sourceMethod, referenceTypePart, StemMethodType.REFERENCE_TYPE_PART, sourceReference.getOrigin());
+								ApplicationLogic.saveStemMethod(stemReferenceTypePart);
+								stemMethodCount++;
+							}
 						}
 					}
 				}

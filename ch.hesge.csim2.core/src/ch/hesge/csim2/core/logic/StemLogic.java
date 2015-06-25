@@ -63,33 +63,37 @@ class StemLogic {
 		cleanName = StringUtils.trimHungarian(cleanName);
 		
 		if (cleanName.length() > 0) {
-			
-			List<String> nameParts = new ArrayList<>();
 
-			// Then retrieve name parts (camel casing notation) 
-			List<String> words = StringUtils.splitCamelCase(cleanName);
+			// Skip name included in rejected list
+			if (rejectedList == null || !rejectedList.contains(cleanName.toLowerCase())) {
+				
+				List<String> nameParts = new ArrayList<>();
 
-			// Filter name present in rejection list
-			for (String word : words) {
+				// Then retrieve name parts (camel casing notation) 
+				List<String> words = StringUtils.splitCamelCase(cleanName);
 
-				if (word != null && word.length() > 1) {
+				// Filter name present in rejection list
+				for (String word : words) {
 
-					word = word.toLowerCase();
+					if (word != null && word.length() > 1) {
 
-					// Add only words not in reject list and not already present
-					if ((rejectedList == null || !rejectedList.contains(word)) && !stems.contains(word)) {
-						nameParts.add(word);
+						word = word.toLowerCase();
+
+						// Add only words not in reject list and not already present
+						if ((rejectedList == null || !rejectedList.contains(word)) && !stems.contains(word)) {
+							nameParts.add(word);
+						}
 					}
 				}
-			}
-			
-			// Finally stemmize all name parts
-			SnowballStemmer stemmer = new englishStemmer();
-			for (String word : nameParts) {
+				
+				// Finally stemmize all name parts
+				SnowballStemmer stemmer = new englishStemmer();
+				for (String word : nameParts) {
 
-				stemmer.setCurrent(word);
-				stemmer.stem();
-				stems.add(stemmer.getCurrent().toLowerCase());
+					stemmer.setCurrent(word);
+					stemmer.stem();
+					stems.add(stemmer.getCurrent().toLowerCase());
+				}
 			}
 		}
 		

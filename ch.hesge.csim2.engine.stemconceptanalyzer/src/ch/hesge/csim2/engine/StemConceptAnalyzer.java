@@ -203,10 +203,12 @@ public class StemConceptAnalyzer implements IEngine {
 				stemConceptCount++;
 
 				// Create a stem for each part of the concept name
-				for (String conceptNamePart : conceptStems) {
-					StemConcept stemConceptNamePart = new StemConcept(project, stemConceptNameFull, concept, conceptNamePart, StemConceptType.CONCEPT_NAME_PART);
-					ApplicationLogic.saveStemConcept(stemConceptNamePart);
-					stemConceptCount++;
+				if (conceptStems.size() > 1) {
+					for (String conceptNamePart : conceptStems) {
+						StemConcept stemConceptNamePart = new StemConcept(project, stemConceptNameFull, concept, conceptNamePart, StemConceptType.CONCEPT_NAME_PART);
+						ApplicationLogic.saveStemConcept(stemConceptNamePart);
+						stemConceptCount++;
+					}
 				}
 
 				for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
@@ -224,10 +226,12 @@ public class StemConceptAnalyzer implements IEngine {
 					stemConceptCount++;
 
 					// Create a stem for each part of the attribute
-					for (String attributNamePart : attributeStems) {
-						StemConcept stemAttributeNamePart = new StemConcept(project, stemAttributNameFull, concept, attributNamePart, StemConceptType.ATTRIBUTE_NAME_PART);
-						ApplicationLogic.saveStemConcept(stemAttributeNamePart);
-						stemConceptCount++;
+					if (attributeStems.size() > 1) {
+						for (String attributNamePart : attributeStems) {
+							StemConcept stemAttributeNamePart = new StemConcept(project, stemAttributNameFull, concept, attributNamePart, StemConceptType.ATTRIBUTE_NAME_PART);
+							ApplicationLogic.saveStemConcept(stemAttributeNamePart);
+							stemConceptCount++;
+						}
 					}
 
 					// Retrieve stems for the identifier
@@ -243,10 +247,12 @@ public class StemConceptAnalyzer implements IEngine {
 					stemConceptCount++;
 
 					// Create a stem for each part of the identifier
-					for (String identifierNamePart : identifierStems) {
-						StemConcept stemIdentifierNamePart = new StemConcept(project, stemIdentifierNameFull, concept, identifierNamePart, StemConceptType.ATTRIBUTE_IDENTIFIER_PART);
-						ApplicationLogic.saveStemConcept(stemIdentifierNamePart);
-						stemConceptCount++;
+					if (identifierStems.size() > 1) {
+						for (String identifierNamePart : identifierStems) {
+							StemConcept stemIdentifierNamePart = new StemConcept(project, stemIdentifierNameFull, concept, identifierNamePart, StemConceptType.ATTRIBUTE_IDENTIFIER_PART);
+							ApplicationLogic.saveStemConcept(stemIdentifierNamePart);
+							stemConceptCount++;
+						}
 					}
 				}
 
@@ -265,10 +271,12 @@ public class StemConceptAnalyzer implements IEngine {
 					stemConceptCount++;
 
 					// Create a stem for each part of the class
-					for (String classNamePart : classStems) {
-						StemConcept stemClassNamePart = new StemConcept(project, stemClassNameFull, concept, classNamePart, StemConceptType.CLASS_NAME_PART);
-						ApplicationLogic.saveStemConcept(stemClassNamePart);
-						stemConceptCount++;
+					if (classStems.size() > 1) {
+						for (String classNamePart : classStems) {
+							StemConcept stemClassNamePart = new StemConcept(project, stemClassNameFull, concept, classNamePart, StemConceptType.CLASS_NAME_PART);
+							ApplicationLogic.saveStemConcept(stemClassNamePart);
+							stemConceptCount++;
+						}
 					}
 
 					// Retrieve stems for the class identifier
@@ -284,10 +292,12 @@ public class StemConceptAnalyzer implements IEngine {
 					stemConceptCount++;
 
 					// Create a stem for each part of the identifier
-					for (String identifierNamePart : identifierStems) {
-						StemConcept stemIdentifierNamePart = new StemConcept(project, stemIdentifierNameFull, concept, identifierNamePart, StemConceptType.CLASS_IDENTIFIER_PART);
-						ApplicationLogic.saveStemConcept(stemIdentifierNamePart);
-						stemConceptCount++;
+					if (identifierStems.size() > 1) {
+						for (String identifierNamePart : identifierStems) {
+							StemConcept stemIdentifierNamePart = new StemConcept(project, stemIdentifierNameFull, concept, identifierNamePart, StemConceptType.CLASS_IDENTIFIER_PART);
+							ApplicationLogic.saveStemConcept(stemIdentifierNamePart);
+							stemConceptCount++;
+						}
 					}
 				}
 			}

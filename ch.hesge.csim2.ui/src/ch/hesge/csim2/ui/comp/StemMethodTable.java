@@ -164,7 +164,7 @@ public class StemMethodTable extends JTable {
 				StemMethod stem = stemMethods.get(row);
 				StemMethodType stemType = stem.getStemType();
 
-				if (termsIntersection.contains(stem.getTerm())) {
+				if (termsIntersection != null && termsIntersection.contains(stem.getTerm())) {
 					cellRenderer.setForeground(Color.RED);					
 				}
 				else {

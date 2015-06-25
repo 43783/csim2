@@ -149,7 +149,7 @@ public class StemConceptTable extends JTable {
 				StemConcept stem = stemConcepts.get(row);
 				StemConceptType stemType = stem.getStemType();
 
-				if (termsIntersection.contains(stem.getTerm())) {
+				if (termsIntersection != null && termsIntersection.contains(stem.getTerm())) {
 					cellRenderer.setForeground(Color.RED);					
 				}
 				else {
