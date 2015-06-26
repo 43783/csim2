@@ -54,46 +54,47 @@ class StemLogic {
 
 		if (name.isEmpty() || name.startsWith("_")) return stems;
 		
-		// First, clean original name (diacritic and non alphanum chars) 
-		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", "");
-		cleanName = cleanName.replaceAll("\\s+", " ");
-		cleanName = cleanName.replaceAll("[^_A-Za-z0-9\\s]", "");
-		cleanName = cleanName.trim();
-		cleanName = StringUtils.trimHungarian(cleanName);
+		// Clean name before stemmisation 
+		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""); // remove accentuated chars
+		cleanName = cleanName.replaceAll("\\s+", " "); // remove multiple consecutive spaces
+		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", ""); // remove [, ], {, }, (, )
+		cleanName = cleanName.replaceAll("[^_\\-\\s\\sA-Za-z0-9]", ""); // remove non alphabetics chars
+		cleanName = cleanName.trim(); // trim left/right space
+		cleanName = StringUtils.trimHungarian(cleanName); // remove lpsz, sz, etc...
 		
 		if (cleanName.length() > 0) {
+			
+			List<String> nameParts = new ArrayList<>();
 
-			// Skip name included in rejected list
-			if (rejectedList == null || !rejectedList.contains(cleanName.toLowerCase())) {
-				
-				List<String> nameParts = new ArrayList<>();
+			// Split name parts (camel casing notation) 
+			List<String> words = StringUtils.splitCamelCase(cleanName);
+			
+			// Skip forbidden names
+			if (rejectedList != null && rejectedList.contains(StringUtils.concatenate(words).toLowerCase())) {
+				return stems;
+			}
+			
+			// Skip part name included in rejection list
+			for (String word : words) {
 
-				// Then retrieve name parts (camel casing notation) 
-				List<String> words = StringUtils.splitCamelCase(cleanName);
+				if (word != null && word.length() > 1) {
 
-				// Filter name present in rejection list
-				for (String word : words) {
-
-					if (word != null && word.length() > 1) {
-
-						word = word.toLowerCase();
-
-						// Add only words not in reject list and not already present
-						if ((rejectedList == null || !rejectedList.contains(word)) && !stems.contains(word)) {
-							nameParts.add(word);
-						}
+					word = word.toLowerCase();
+					
+					// Add only words not in reject list and not already present
+					if (!stems.contains(word) && (rejectedList == null || !rejectedList.contains(word))) {
+						nameParts.add(word);
 					}
 				}
-				
-				// Finally stemmize all name parts
-				SnowballStemmer stemmer = new englishStemmer();
-				for (String word : nameParts) {
+			}
+			
+			// Finally stemmize all name parts found
+			SnowballStemmer stemmer = new englishStemmer();
+			for (String word : nameParts) {
 
-					stemmer.setCurrent(word);
-					stemmer.stem();
-					stems.add(stemmer.getCurrent().toLowerCase());
-				}
+				stemmer.setCurrent(word);
+				stemmer.stem();
+				stems.add(stemmer.getCurrent().toLowerCase());
 			}
 		}
 		

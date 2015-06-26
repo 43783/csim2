@@ -31,4 +31,6 @@ lmaxl
 dump
 max
 min
-code
+cintarray
+clongarray
+cmatrix2d
