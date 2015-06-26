@@ -58,9 +58,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
-	public static int DEFAULT_SEGMENT_COUNT = 36;
-	public static double DEFAULT_THRESHOLD = 0.36d;
-	public static int MAX_SEGMENT_COUNT = 1000;
+	public static int DEFAULT_SEGMENT_COUNT = 50;
+	public static double DEFAULT_THRESHOLD = 0.4d;
 
 	/**
 	 * Default constructor.

@@ -416,7 +416,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setSegmentCount(int segmentCount) {
 		
 		this.segmentCount = segmentCount;
-		segmentSize = traceSize / segmentCount;
+		this.segmentSize = (int) ((double)traceSize / segmentCount);
 		
 		segmentCountSlider.setValue(segmentCount);
 		segmentCountField.setText(String.format("%d", segmentCount));
@@ -433,13 +433,13 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setSegmentSize(int segmentSize) {
 
 		this.segmentSize = segmentSize;
-		segmentCount = traceSize / segmentSize;
+		this.segmentCount = (int) ((double) traceSize / segmentSize);
 
-		segmentSizeSlider.setValue(segmentSize);
-		segmentSizeField.setText(String.format("%d", segmentSize));
-		
 		segmentCountSlider.setValue(segmentCount);
 		segmentCountField.setText(String.format("%d", segmentCount));
+
+		segmentSizeSlider.setValue(segmentSize);
+		segmentSizeField.setText(String.format("%d", segmentSize));		
 	}
 
 	/**
@@ -456,7 +456,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		traceSizeField.setText(String.format("%d", traceSize));
 		
 		segmentCountSlider.setMinimum(1);
-		segmentCountSlider.setMaximum(TimeSeriesView.MAX_SEGMENT_COUNT);
+		segmentCountSlider.setMaximum(this.traceSize);
 				
 		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
 		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
