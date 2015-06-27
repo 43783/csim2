@@ -46,15 +46,13 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private int segmentSize;
 	private boolean isShowLegend;
 	private boolean isClearSelection;
+	private boolean isUpdatingView;
 
 	private JTextField thresholdField;
-	private JSlider thresholdSlider;
-	
-	private JTextField segmentCountField;
-	private JSlider segmentCountSlider;
-	
 	private JTextField segmentSizeField;
-	private JSlider segmentSizeSlider;
+	private JTextField segmentCountField;
+	private JSlider thresholdSlider;	
+	private JSlider segmentCountSlider;
 
 	private JButton btnReset;
 	private JButton btnSelection;
@@ -75,8 +73,10 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public TimeSeriesDialog(Window parent) {
 		super(parent);
 		
-		this.isClearSelection = false;
-		this.isShowLegend = false;
+		isUpdatingView = false;
+		isClearSelection = false;
+		isShowLegend = false;
+		
 		this.segmentCount = TimeSeriesView.DEFAULT_SEGMENT_COUNT;
 		this.threshold = TimeSeriesView.DEFAULT_THRESHOLD;
 
@@ -138,16 +138,16 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		// Create threshold fields
 		JLabel thresholdLabel = new JLabel("Weight threshold:");
 		thresholdLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		thresholdLabel.setBounds(10, 58, 115, 23);
+		thresholdLabel.setBounds(10, 126, 115, 23);
 		mainPane.add(thresholdLabel);
 		thresholdField = new JTextField();
-		thresholdField.setBounds(130, 58, 61, 23);
+		thresholdField.setBounds(130, 126, 61, 23);
 		thresholdField.setColumns(10);
 		mainPane.add(thresholdField);
 		thresholdSlider = new JSlider(1, 1000);
-		thresholdSlider.setBounds(201, 58, 244, 23);
+		thresholdSlider.setBounds(201, 126, 244, 23);
 		thresholdSlider.setMajorTickSpacing(200);
-		thresholdSlider.setMinorTickSpacing(100);
+		thresholdSlider.setMinorTickSpacing(1000);
 		thresholdSlider.setPaintTicks(true);
 		thresholdSlider.addChangeListener(this);
 		mainPane.add(thresholdSlider);
@@ -169,16 +169,12 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		// Create segment size field
 		JLabel segmentSizeLabel = new JLabel("Segment size:");
 		segmentSizeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		segmentSizeLabel.setBounds(10, 126, 115, 23);
+		segmentSizeLabel.setBounds(10, 58, 115, 23);
 		mainPane.add(segmentSizeLabel);
 		segmentSizeField = new JTextField();
 		segmentSizeField.setColumns(10);
-		segmentSizeField.setBounds(130, 126, 61, 23);
+		segmentSizeField.setBounds(130, 58, 61, 23);
 		mainPane.add(segmentSizeField);
-		segmentSizeSlider = new JSlider(1, 1000);
-		segmentSizeSlider.setBounds(201, 126, 244, 23);
-		segmentSizeSlider.addChangeListener(this);
-		mainPane.add(segmentSizeSlider);				
 		
 		// Create concept panel
 		JPanel conceptPanel = new JPanel();
@@ -292,14 +288,23 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public void stateChanged(ChangeEvent e) {
 
-		if (e.getSource() == thresholdSlider) {
-			setThreshold(thresholdSlider.getValue() / 1000d);
-		}
-		else if (e.getSource() == segmentCountSlider) {
-			setSegmentCount(segmentCountSlider.getValue());
-		}
-		else if (e.getSource() == segmentSizeSlider) {
-			setSegmentSize(segmentSizeSlider.getValue());
+		if (!isUpdatingView) {
+			
+			try {
+				isUpdatingView = true;
+
+				if (e.getSource() == thresholdSlider) {
+					double newThreshold = thresholdSlider.getValue() / 1000d;
+					setThreshold(newThreshold);
+				}
+				else if (e.getSource() == segmentCountSlider) {
+					int newSegmentCount = (int) Math.max(1, ((double)segmentCountSlider.getValue()) / segmentCountSlider.getMaximum() * traceSize);
+					setSegmentCount(newSegmentCount);
+				}
+			}
+			finally {
+				isUpdatingView = false;
+			}
 		}
 	}
 
@@ -334,8 +339,8 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		else if (e.getSource() == btnReset) {
 			
 			setShowLegend(false);
-			setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 			setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
+			setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 			setSelectedConcepts(new ArrayList<>());
 		}
 	}
@@ -416,12 +421,12 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	public void setSegmentCount(int segmentCount) {
 		
 		this.segmentCount = segmentCount;
-		this.segmentSize = (int) ((double)traceSize / segmentCount);
-		
-		segmentCountSlider.setValue(segmentCount);
-		segmentCountField.setText(String.format("%d", segmentCount));
+		this.segmentSize  = (int) Math.round(((double)traceSize) / segmentCount);
 
-		segmentSizeSlider.setValue(segmentSize);
+		int sliderValue = (int) Math.max(1, ((double)segmentCount) / traceSize * segmentCountSlider.getMaximum());
+		segmentCountSlider.setValue(sliderValue);
+
+		segmentCountField.setText(String.format("%d", segmentCount));
 		segmentSizeField.setText(String.format("%d", segmentSize));
 	}
 
@@ -432,14 +437,14 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	 */
 	public void setSegmentSize(int segmentSize) {
 
-		this.segmentSize = segmentSize;
-		this.segmentCount = (int) ((double) traceSize / segmentSize);
+		this.segmentSize  = segmentSize;
+		this.segmentCount = (int) Math.round(((double)traceSize) / segmentSize);
 
-		segmentCountSlider.setValue(segmentCount);
+		int sliderValue = (int) Math.max(1, ((double)segmentCount) / traceSize * segmentCountSlider.getMaximum());
+		segmentCountSlider.setValue(sliderValue);
+
 		segmentCountField.setText(String.format("%d", segmentCount));
-
-		segmentSizeSlider.setValue(segmentSize);
-		segmentSizeField.setText(String.format("%d", segmentSize));		
+		segmentSizeField.setText(String.format("%d", segmentSize));
 	}
 
 	/**
@@ -455,9 +460,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		conceptTable.setConcepts(timeSeries.getTraceConcepts());
 		traceSizeField.setText(String.format("%d", traceSize));
 		
-		segmentCountSlider.setMinimum(1);
-		segmentCountSlider.setMaximum(this.traceSize);
-				
 		setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
 		setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
 	}
