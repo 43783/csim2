@@ -2,12 +2,24 @@ package ch.hesge.csim2.ui.utils;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
+
+import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.StringUtils;
 
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -112,5 +124,56 @@ public class SwingUtils {
 		}
 
 		return (T) parent;
+	}
+
+	/**
+	 * Open a dialog to select a folder.
+	 * 
+	 * @return
+	 *         the path of the folder selected or null
+	 */
+	public static String selectFolder(Component owner) {
+
+		JFileChooser selectFolderDialog = new JFileChooser();
+		selectFolderDialog.setCurrentDirectory(null);
+		selectFolderDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+		if (selectFolderDialog.showOpenDialog(owner) == JFileChooser.APPROVE_OPTION) {
+			return selectFolderDialog.getSelectedFile().getAbsolutePath();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Open a file with default system editor.
+	 * 
+	 * @param rootFolder
+	 * @param filename
+	 */
+	public static void openFile(String rootFolder, String filename) {
+
+		if (rootFolder != null) {
+			
+			try {
+				Files.walkFileTree(Paths.get(rootFolder), new SimpleFileVisitor<Path>() {
+
+					@Override
+					public FileVisitResult visitFile(Path filepath, BasicFileAttributes attrs) throws IOException {
+
+						String fileFound = filepath.getFileName().toString().toLowerCase();
+						
+						if (fileFound.equals(filename.toLowerCase())) {
+								Desktop.getDesktop().open(filepath.toFile());
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+				});
+			}
+			catch (IOException e1) {
+				Console.writeError(SwingUtils.class, "error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
+			}
+		}
 	}
 }

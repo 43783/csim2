@@ -2,18 +2,10 @@ package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +30,7 @@ import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
-import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.MatchingTable;
 import ch.hesge.csim2.ui.comp.SourceMethodTable;
@@ -290,55 +280,12 @@ public class MatchingView extends JPanel {
 				if (method != null && method.getFilename() != null) {
 
 					if (rootSourceFolder == null) {
-						
-						JFileChooser selectFolderDialog = new JFileChooser();
-						selectFolderDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-						if (selectFolderDialog.showOpenDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
-							rootSourceFolder = selectFolderDialog.getSelectedFile().getAbsolutePath();
-						}
+						rootSourceFolder = SwingUtils.selectFolder(MatchingView.this);
 					}
-
-					if (rootSourceFolder != null) {
-						openFile(method.getFilename());
-					}
+					
+					SwingUtils.openFile(rootSourceFolder, method.getFilename());
 				}
 			}
 		});
-	}
-
-	/**
-	 * Open the file specified in argument.
-	 * 
-	 * @param filename
-	 *        the name of the file to open
-	 */
-	private void openFile(String filename) {
-
-		// Scan all folder recursively to discover filename full path
-		try {
-			Files.walkFileTree(Paths.get(rootSourceFolder), new SimpleFileVisitor<Path>() {
-
-				@Override
-				public FileVisitResult visitFile(Path filepath, BasicFileAttributes attrs) throws IOException {
-
-					Console.writeError(this, "looking for file: " + filepath);
-					
-					if (filepath.getFileName().toString().equals(filename)) {
-						try {
-							Desktop.getDesktop().open(filepath.toFile());
-						}
-						catch (IOException e1) {
-							Console.writeError(this, "error while opening file " + filepath + ": " + StringUtils.toString(e1));
-						}
-					}
-
-					return FileVisitResult.CONTINUE;
-				}
-			});
-		}
-		catch (IOException e1) {
-			Console.writeError(this, "error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
-		}
 	}
 }
