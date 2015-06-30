@@ -97,7 +97,7 @@ public class TracesView extends JPanel {
 		paramsPanel.add(matchingLabel);		
 		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
 		matcherComboBox = new MatcherComboBox(matchers);
-		matcherComboBox.setPreferredSize(new Dimension(100, 20));
+		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		paramsPanel.add(matcherComboBox);
 
 		// Create the load button

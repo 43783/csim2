@@ -94,7 +94,7 @@ public class MatchingView extends JPanel {
 		((FlowLayout)paramsPanel.getLayout()).setAlignment(FlowLayout.LEFT);
 		paramsPanel.add(new JLabel("Matching algorithm:"));
 		matcherComboBox = new MatcherComboBox(ApplicationLogic.getMatchers());
-		matcherComboBox.setPreferredSize(new Dimension(100, 20));
+		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		paramsPanel.add(matcherComboBox);		
 		loadBtn = new JButton("Load");
 		paramsPanel.add(loadBtn);
