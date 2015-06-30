@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,7 +29,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
-import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
@@ -45,7 +43,6 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	// Private attribute
 	private Project project;
 	private List<Scenario> scenarios;
-	private Map<Integer, List<MethodConceptMatch>> matchMap;
 	private List<Concept> selectedConcepts;
 	private TimeSeries timeSeries;
 	private TimeSeries filteredSeries;
@@ -220,11 +217,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						@Override
 						public void run() {
 
-							// Retrieve method-concept matchings
-							matchMap = matcher.getMethodMatchingMap(project);
-							
 							// Retrieve timeseries associated to current scenario
-							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matchMap);
+							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matcher);
 
 							// Reset current settings
 							segmentCount = DEFAULT_SEGMENT_COUNT;

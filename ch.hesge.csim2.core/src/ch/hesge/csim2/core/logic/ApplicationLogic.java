@@ -669,15 +669,36 @@ public class ApplicationLogic {
 	 *        the matching map used to associate concepts to method
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, Map<Integer, List<MethodConceptMatch>> matchMap) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
 
-		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId();
+		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matcher.toString();
 
 		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matchMap)));
+			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matcher)));
 		}
 
 		return (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();
+	}
+
+	/**
+	 * Retrieve all matchings between a method and a concept.
+	 * 
+	 * @param project
+	 *        the project to analyse
+	 * @param matcher
+	 *        the matcher to use to compute matching
+	 * @return
+	 *         a map of (MethodId, List<MethodConceptMatch>)
+	 */
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
+
+		String cacheKey = "getMethodConceptMap_" + project.getKeyId() + "_" + matcher.toString();
+
+		if (APPCACHE.get(cacheKey) == null) {
+			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matcher)));
+		}
+
+		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
 	}
 
 	/**

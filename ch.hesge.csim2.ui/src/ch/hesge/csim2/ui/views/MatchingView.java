@@ -208,7 +208,7 @@ public class MatchingView extends JPanel {
 						public void run() {
 
 							// Retrieve method-concept matchings
-							matchMap = matcher.getMethodMatchingMap(project);
+							matchMap = ApplicationLogic.getMethodMatchingMap(project,  matcher);
 
 							// Initialize method table
 							methodTable.setSourceMethods(sourceMethods);

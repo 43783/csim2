@@ -163,44 +163,14 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 		return matchingMap;
 	}
 
-	/**
-	 * <pre>
-	 * 
-	 * Compute the weight matrix based on terms and concepts passed in argument.
-	 * 
-	 * For instance:
-	 * 
-	 * 		  						+->  weight for term T1, concept C2
-	 * 								|
-	 * 					|						|		
-	 * 					|	0.3		3		0	|		T1		
-	 * 		WEIGHT	=	|	1.5		0		7	|		T2		terms
-	 * 					|	0		0		8	|		T3
-	 * 					|	0		20		5	|		T4
-	 * 					|						|
-	 * 
-	 * 						C1		C2		C3		--> concepts
-	 * 
-	 * The term weight for a specific concept is computed as:
-	 * 
-	 * 
-	 * ...
-	 * 
-	 * 
-	 * @param terms
-	 *        the terms used to compute weights
-	 * @param concepts
-	 *        the concepts used to compute weights
-	 * @param conceptMap
-	 *        a map of all concepts classified by their keyId
-	 * @param stems
-	 *        the stems allowing links between terms and concepts
-	 * @return
-	 * a terms/concepts weight matrix
-	 */
 	private static SimpleMatrix getTermConceptMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stems, StemMatrix<StemConcept> stemMatrix) {
 
-		SimpleMatrix weightMatrix = new SimpleMatrix(terms.size(), concepts.size());
+		SimpleMatrix tfMatrix    = new SimpleMatrix(terms.size(), concepts.size());
+		SimpleMatrix idfMatrix   = new SimpleMatrix(terms.size(), concepts.size());
+		SimpleMatrix tfidfMatrix = new SimpleMatrix(terms.size(), concepts.size());
+
+		SimpleMatrix termOccurrenceInConcept = new SimpleMatrix(terms.size(), concepts.size());
+		SimpleVector totalTermInConcept      = new SimpleVector(concepts.size());
 
 		// Scan all terms and build an occurrence matrix
 		for (int i = 0; i < terms.size(); i++) {
@@ -213,65 +183,54 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 				// Loop over all concepts referring a term
 				for (StemConcept stem : stems.get(term)) {
 
-					double conceptWeight = 0d;
-
-					// Retrieve stem concept and stem parent
+					// Retrieve concept index in row
 					StemConcept parent = stem.getParent();
-					Concept concept = conceptMap.get(stem.getConceptId());
-					int conceptIndex = concepts.indexOf(concept);
+					//Concept concept = conceptMap.get(stem.getConceptId());
+					int j = concepts.indexOf(conceptMap.get(stem.getConceptId()));
+
+					double conceptWeight = 0d;
 
 					// Evaluate for current term, the stem matching weight
 					if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
-						conceptWeight = 1.0;
+						conceptWeight = 3d;
 					}
 					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
 						int attrCount = parent.getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getAttributes().size();
-						conceptWeight = 0.9 / attrCount;
+						conceptWeight = 2d / attrCount;
 					}
-					/*
-					else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
-						int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
-						conceptWeight = 0.9 / partCount;
+					else {
+						conceptWeight = 1d;
 					}
-					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
-						int attrCount = parent.getParent().getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getParent().getAttributes().size();
-						int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
-						conceptWeight = 0.9 / attrCount / partCount;
-					}
-					else if (stem.getStemType() == StemConceptType.CLASS_NAME_FULL) {
-						conceptWeight = 0.8;
-					}
-					else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
-						int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
-						conceptWeight = 0.8 / partSize;
-					}
-					else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
-						conceptWeight = 0.7;
-					}
-					else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-						int partCount = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
-						conceptWeight = 0.7 / partCount;
-					}
-					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
-						int attrCount = parent.getAttributes().isEmpty() ? 1 : parent.getAttributes().size();
-						conceptWeight = 0.6 / attrCount;
-					}
-					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
-						int attrCount = parent.getParent().getAttributes().isEmpty() ? 1 : parent.getParent().getAttributes().size();
-						int partSize = parent.getParts().isEmpty() ? 1 : parent.getParts().size();
-						conceptWeight = 0.6 / attrCount / partSize;
-					}
-					*/
 
-					// Update matrix weight for concept
-					weightMatrix.addValue(i, conceptIndex, conceptWeight);
-					stemMatrix.add(i, conceptIndex, stem);
+					// Count term occurrences in concept
+					termOccurrenceInConcept.addValue(i, j, conceptWeight);
+					totalTermInConcept.addValue(j, conceptWeight);
+					stemMatrix.add(i, j, stem);
 				}
 			}
 		}
 
-		return weightMatrix;
-	}
+		// Calculate the term frequency: tf = termOccurrenceInConcept / totalTermInConcept
+		for (int i = 0; i < tfMatrix.getRowDimension(); i++) {
+			SimpleVector occurrenceInConcept = termOccurrenceInConcept.getRowVector(i);
+			tfMatrix.setRowVector(i, occurrenceInConcept.ebeDivide(totalTermInConcept));
+		}
+
+		// Calculate the inverse term frequency: idf = log(totalTermCount/(occurrenceInConcept+1)
+		for (int i = 0; i < idfMatrix.getRowDimension(); i++) {
+			SimpleVector totalTermCount = new SimpleVector(concepts.size(), terms.size());
+			SimpleVector occurrenceInConcept = termOccurrenceInConcept.getRowVector(i);
+			occurrenceInConcept = occurrenceInConcept.ebeAdd(1d);
+			idfMatrix.setRowVector(i, totalTermCount.ebeDivide(occurrenceInConcept));
+		}
+		
+		idfMatrix = idfMatrix.log10();
+
+		// Finally calculate final matrix: tfidf = tf * idf
+		tfidfMatrix = tfMatrix.ebeMultiply(idfMatrix);
+
+		return tfidfMatrix;
+	}	
 
 	/**
 	 * <pre>

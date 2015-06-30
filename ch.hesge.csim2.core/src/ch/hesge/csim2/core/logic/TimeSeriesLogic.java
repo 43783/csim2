@@ -12,6 +12,7 @@ import org.apache.commons.math3.linear.RealVector;
 
 import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
@@ -58,9 +59,10 @@ class TimeSeriesLogic {
 	 *        the matching map used to associate concepts to method
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, Map<Integer, List<MethodConceptMatch>> matchMap) {
+	public static TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
 
 		Map<Integer, Concept> conceptsInTrace = new HashMap<>();
+		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project, matcher);
 
 		// First retrieve unique methods found in trace
 		List<Integer> uniqueIds = TraceDao.findDistinctMethodIds(scenario);

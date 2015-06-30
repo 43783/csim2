@@ -13,6 +13,8 @@ import java.util.Set;
 
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
+import ch.hesge.csim2.core.model.Project;
+import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.PluginManager;
 import ch.hesge.csim2.core.utils.StringUtils;
 
@@ -47,6 +49,20 @@ class MatchingLogic {
 	}
 
 	/**
+	 * Retrieve all matchings between a method and a concept.
+	 * 
+	 * @param project
+	 *        the project to analyse
+	 * @param matcher
+	 *        the matcher to use to compute matching
+	 * @return
+	 *         a map of (MethodId, List<MethodConceptMatch>)
+	 */
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
+		return matcher.getMethodMatchingMap(project);
+	}
+
+	/**
 	 * Export all matchings passed in argument in a CSV file.
 	 * 
 	 * @param matchings
@@ -58,17 +74,24 @@ class MatchingLogic {
 
 		if (matchMap != null && filename != null) {
 
+			FileWriter writer = null;
+
 			try {
 
 				String fieldSeparator = ";";
-				FileWriter writer = new FileWriter(filename);
+				writer = new FileWriter(filename);
 				writer.append("Class" + fieldSeparator + "Method" + fieldSeparator + "Concept" + fieldSeparator + "Weight" + fieldSeparator + "Validated" + fieldSeparator + "Stems\n");
 
 				for (Integer matchKey : matchMap.keySet()) {
 					for (MethodConceptMatch match : matchMap.get(matchKey)) {
 
-						//writer.append(match.getSourceClass().getName() + ",");
-						writer.append(match.getSourceClass().getName() + fieldSeparator);
+						if (match.getSourceClass() != null) {
+							writer.append(match.getSourceClass().getName() + fieldSeparator);
+						}
+						else {
+							writer.append("n/a" + fieldSeparator);
+						}
+
 						writer.append(match.getSourceMethod().getSignature() + fieldSeparator);
 						writer.append(match.getConcept().getName() + fieldSeparator);
 						writer.append(match.getWeight() + fieldSeparator);
@@ -89,7 +112,15 @@ class MatchingLogic {
 				writer.close();
 			}
 			catch (IOException e) {
-				// Do nothing
+
+				if (writer != null) {
+					try {
+						writer.close();
+					}
+					catch (IOException e1) {
+						Console.writeError(MatchingLogic.class, StringUtils.toString(e));
+					}
+				}
 			}
 		}
 	}
