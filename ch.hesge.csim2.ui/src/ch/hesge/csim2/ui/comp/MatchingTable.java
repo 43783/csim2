@@ -108,8 +108,6 @@ public class MatchingTable extends JTable {
 				
 				if (match != null) {
 					boolean boolValue = (boolean) value;
-					
-					System.out.println("boolValue: " + boolValue);
 					match.setValidated(boolValue);
 				}
 			}			
