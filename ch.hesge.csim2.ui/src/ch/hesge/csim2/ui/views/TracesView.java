@@ -200,7 +200,7 @@ public class TracesView extends JPanel {
 					if (method != null && method.getFilename() != null) {
 
 						if (rootSourceFolder == null) {
-							rootSourceFolder = SwingUtils.selectFolder(TracesView.this);
+							rootSourceFolder = SwingUtils.selectFolder(TracesView.this, null);
 						}
 						
 						SwingUtils.openFile(rootSourceFolder, method.getFilename());

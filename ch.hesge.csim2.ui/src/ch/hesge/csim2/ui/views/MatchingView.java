@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -215,9 +214,15 @@ public class MatchingView extends JPanel {
 		exportBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {	
-				JFileChooser saveFileDialog = new JFileChooser();
-				if (saveFileDialog.showSaveDialog(MatchingView.this) == JFileChooser.APPROVE_OPTION) {
-					ApplicationLogic.exportMatchings(matchMap, saveFileDialog.getSelectedFile().getAbsolutePath());
+				
+				String filename = SwingUtils.selectSaveFile(MatchingView.this, null);
+				
+				if (filename != null) {
+					
+					MainView mainView = (MainView) SwingUtils.getFirstParent(MatchingView.this, MainView.class);
+					
+					// Export matchings
+					ApplicationLogic.exportMatchings(matchMap, filename);
 				}
 			}
 		});
@@ -280,7 +285,7 @@ public class MatchingView extends JPanel {
 				if (method != null && method.getFilename() != null) {
 
 					if (rootSourceFolder == null) {
-						rootSourceFolder = SwingUtils.selectFolder(MatchingView.this);
+						rootSourceFolder = SwingUtils.selectFolder(MatchingView.this, null);
 					}
 					
 					SwingUtils.openFile(rootSourceFolder, method.getFilename());

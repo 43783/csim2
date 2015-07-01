@@ -104,9 +104,13 @@ public class MatchingTable extends JTable {
 			@Override
 			public void setValueAt(Object value, int row, int col) {
 
-				if (value != null) {
-					MethodConceptMatch match = matchings.get(row);
-					match.setValidated((boolean)value);
+				MethodConceptMatch match = matchings.get(row);
+				
+				if (match != null) {
+					boolean boolValue = (boolean) value;
+					
+					System.out.println("boolValue: " + boolValue);
+					match.setValidated(boolValue);
 				}
 			}			
 		});

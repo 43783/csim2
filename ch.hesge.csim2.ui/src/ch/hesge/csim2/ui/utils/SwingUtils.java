@@ -3,6 +3,7 @@ package ch.hesge.csim2.ui.utils;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -127,19 +128,75 @@ public class SwingUtils {
 	}
 
 	/**
-	 * Open a dialog to select a folder.
+	 * Open the file dialog to select a folder.
 	 * 
-	 * @return
-	 *         the path of the folder selected or null
+	 * @param owner
+	 *        dialog owner
+	 * @param startFolder
+	 *        initial folder to display
+	 * @return a string if a folder is selected, otherwise null
 	 */
-	public static String selectFolder(Component owner) {
+	public static String selectFolder(Component owner, String startFolder) {
 
-		JFileChooser selectFolderDialog = new JFileChooser();
-		selectFolderDialog.setCurrentDirectory(null);
-		selectFolderDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		JFileChooser dialog = new JFileChooser();
+		dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		if (startFolder != null) {
+			dialog.setCurrentDirectory(new File(startFolder));
+		}
 
-		if (selectFolderDialog.showOpenDialog(owner) == JFileChooser.APPROVE_OPTION) {
-			return selectFolderDialog.getSelectedFile().getAbsolutePath();
+		if (dialog.showOpenDialog(owner) == JFileChooser.APPROVE_OPTION) {
+			return dialog.getSelectedFile().getAbsolutePath();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Open file dialog to select a single file to open.
+	 * 
+	 * @param owner
+	 *        dialog owner
+	 * @param startFolder
+	 *        initial folder to display
+	 * @return a string if a file is selected, otherwise null
+	 */
+	public static String selectOpenFile(Component owner, String startFolder) {
+
+		JFileChooser dialog = new JFileChooser();
+		dialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		if (startFolder != null) {
+			dialog.setCurrentDirectory(new File(startFolder));
+		}
+
+		if (dialog.showOpenDialog(owner) == JFileChooser.APPROVE_OPTION) {
+			return dialog.getSelectedFile().getAbsolutePath();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Open file dialog to select a single file to open.
+	 * 
+	 * @param owner
+	 *        dialog owner
+	 * @param startFolder
+	 *        initial folder to display
+	 * @return a string if a file is selected, otherwise null
+	 */
+	public static String selectSaveFile(Component owner, String startFolder) {
+
+		JFileChooser dialog = new JFileChooser();
+		dialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		if (startFolder != null) {
+			dialog.setCurrentDirectory(new File(startFolder));
+		}
+
+		if (dialog.showSaveDialog(owner) == JFileChooser.APPROVE_OPTION) {
+			return dialog.getSelectedFile().getAbsolutePath();
 		}
 
 		return null;
@@ -147,14 +204,17 @@ public class SwingUtils {
 
 	/**
 	 * Open a file with default system editor.
+	 * The file can be located in all the hierarchy.
 	 * 
 	 * @param rootFolder
+	 *        root folder to start lookup up
 	 * @param filename
+	 *        the filename to open
 	 */
 	public static void openFile(String rootFolder, String filename) {
 
 		if (rootFolder != null) {
-			
+
 			try {
 				Files.walkFileTree(Paths.get(rootFolder), new SimpleFileVisitor<Path>() {
 
@@ -162,9 +222,9 @@ public class SwingUtils {
 					public FileVisitResult visitFile(Path filepath, BasicFileAttributes attrs) throws IOException {
 
 						String fileFound = filepath.getFileName().toString().toLowerCase();
-						
+
 						if (fileFound.equals(filename.toLowerCase())) {
-								Desktop.getDesktop().open(filepath.toFile());
+							Desktop.getDesktop().open(filepath.toFile());
 						}
 
 						return FileVisitResult.CONTINUE;
