@@ -188,12 +188,12 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 					int j = concepts.indexOf(conceptMap.get(stem.getConceptId()));
 					
 					// Create a weight array (inverse fibonacci)
-					double[] weightArray = { 1.0, 2.0, 3.0, 5.0, 8.0, 13.0, 21.0, 34.0, 55.0, 89.0, 144.0 };
+					double[] weightArray = { 1d, 2d, 3d, 5d, 8d, 13d, 21d, 34d, 55d, 89d, 144d };
 					for (int k = 0; k < weightArray.length; k++) weightArray[k] = 1d / weightArray[k];
 					
 					double conceptWeight = 0d;
 					
-					// Evaluate for current term, the stem matching weight
+					// Evaluate stem matching weight for full terms
 					if (stem.getStemType() == StemConceptType.CLASS_NAME_FULL) {
 						conceptWeight = weightArray[0];
 					}
@@ -216,20 +216,22 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 						int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
 						conceptWeight = weightArray[4] / attrCount;
 					}
+
+					// Evaluate stem matching weight for part terms
 					else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
 						StemConcept stemClassFull = stem.getParent();
 						int partCount = stemClassFull.getParts().isEmpty() ? 1 : stemClassFull.getParts().size();
-						conceptWeight = weightArray[0] / partCount;
+						conceptWeight = weightArray[5] / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
 						StemConcept stemNameFull = stem.getParent();
 						int partCount = stemNameFull.getParts().isEmpty() ? 1 : stemNameFull.getParts().size();
-						conceptWeight = weightArray[1] / partCount;
+						conceptWeight = weightArray[6] / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
 						StemConcept stemClassIdFull = stem.getParent();
 						int partCount = stemClassIdFull.getParts().isEmpty() ? 1 : stemClassIdFull.getParts().size();
-						conceptWeight = weightArray[2] / partCount;
+						conceptWeight = weightArray[7] / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
 						StemConcept stemAttrIdFull = stem.getParent();
@@ -237,7 +239,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 						Concept concept = conceptMap.get(conceptNameFull.getConceptId());
 						int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
 						int partCount = stemAttrIdFull.getParts().isEmpty() ? 1 : stemAttrIdFull.getParts().size();
-						conceptWeight = weightArray[3] / attrCount / partCount;
+						conceptWeight = weightArray[8] / attrCount / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
 						StemConcept stemAttrNameFull = stem.getParent();
@@ -245,7 +247,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 						Concept concept = conceptMap.get(conceptNameFull.getConceptId());
 						int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
 						int partCount = stemAttrNameFull.getParts().isEmpty() ? 1 : stemAttrNameFull.getParts().size();
-						conceptWeight = weightArray[4] / attrCount / partCount;
+						conceptWeight = weightArray[9] / attrCount / partCount;
 					}
 					
 					// Count term occurrences in concept
