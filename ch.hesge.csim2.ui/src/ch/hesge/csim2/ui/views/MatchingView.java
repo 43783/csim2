@@ -219,8 +219,6 @@ public class MatchingView extends JPanel {
 				
 				if (filename != null) {
 					
-					MainView mainView = (MainView) SwingUtils.getFirstParent(MatchingView.this, MainView.class);
-					
 					// Export matchings
 					ApplicationLogic.exportMatchings(matchMap, filename);
 				}
