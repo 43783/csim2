@@ -221,17 +221,17 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 					else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
 						StemConcept stemClassFull = stem.getParent();
 						int partCount = stemClassFull.getParts().isEmpty() ? 1 : stemClassFull.getParts().size();
-						conceptWeight = weightArray[5] / partCount;
+						conceptWeight = weightArray[1] / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
 						StemConcept stemNameFull = stem.getParent();
 						int partCount = stemNameFull.getParts().isEmpty() ? 1 : stemNameFull.getParts().size();
-						conceptWeight = weightArray[6] / partCount;
+						conceptWeight = weightArray[2] / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
 						StemConcept stemClassIdFull = stem.getParent();
 						int partCount = stemClassIdFull.getParts().isEmpty() ? 1 : stemClassIdFull.getParts().size();
-						conceptWeight = weightArray[7] / partCount;
+						conceptWeight = weightArray[3] / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
 						StemConcept stemAttrIdFull = stem.getParent();
@@ -239,7 +239,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 						Concept concept = conceptMap.get(conceptNameFull.getConceptId());
 						int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
 						int partCount = stemAttrIdFull.getParts().isEmpty() ? 1 : stemAttrIdFull.getParts().size();
-						conceptWeight = weightArray[8] / attrCount / partCount;
+						conceptWeight = weightArray[4] / attrCount / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
 						StemConcept stemAttrNameFull = stem.getParent();
@@ -247,7 +247,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 						Concept concept = conceptMap.get(conceptNameFull.getConceptId());
 						int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
 						int partCount = stemAttrNameFull.getParts().isEmpty() ? 1 : stemAttrNameFull.getParts().size();
-						conceptWeight = weightArray[9] / attrCount / partCount;
+						conceptWeight = weightArray[5] / attrCount / partCount;
 					}
 					
 					// Count term occurrences in concept
