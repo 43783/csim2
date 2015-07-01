@@ -213,7 +213,7 @@ public class ObjectSorter {
 	}
 
 	/**
-	 * Sort a list of mathings.
+	 * Sort a list of matchings.
 	 * 
 	 * @param matchings
 	 */
@@ -222,7 +222,7 @@ public class ObjectSorter {
 		matchings.sort(new Comparator<MethodConceptMatch>() {
 			@Override
 			public int compare(MethodConceptMatch a, MethodConceptMatch b) {
-				return (int) ((b.getWeight() - a.getWeight()) * 100);
+				return (int) ((b.getWeight() - a.getWeight()) * 1000);
 			}
 		});
 	}
