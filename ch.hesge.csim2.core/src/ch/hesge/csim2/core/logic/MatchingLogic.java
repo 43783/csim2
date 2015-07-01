@@ -6,6 +6,8 @@ package ch.hesge.csim2.core.logic;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.PluginManager;
 import ch.hesge.csim2.core.utils.StringUtils;
 
@@ -78,6 +81,10 @@ class MatchingLogic {
 
 			try {
 
+				if (FileUtils.exists(filename)) {
+					Files.delete(Paths.get(filename));
+				}
+				
 				String fieldSeparator = ";";
 				writer = new FileWriter(filename);
 				writer.append("Class" + fieldSeparator + "Method" + fieldSeparator + "Concept" + fieldSeparator + "Weight" + fieldSeparator + "Validated" + fieldSeparator + "Stems\n");
@@ -85,13 +92,7 @@ class MatchingLogic {
 				for (Integer matchKey : matchMap.keySet()) {
 					for (MethodConceptMatch match : matchMap.get(matchKey)) {
 
-						if (match.getSourceClass() != null) {
-							writer.append(match.getSourceClass().getName() + fieldSeparator);
-						}
-						else {
-							writer.append("n/a" + fieldSeparator);
-						}
-
+						writer.append(match.getSourceClass().getName() + fieldSeparator);
 						writer.append(match.getSourceMethod().getSignature() + fieldSeparator);
 						writer.append(match.getConcept().getName() + fieldSeparator);
 						writer.append(match.getWeight() + fieldSeparator);
@@ -118,9 +119,11 @@ class MatchingLogic {
 						writer.close();
 					}
 					catch (IOException e1) {
-						Console.writeError(MatchingLogic.class, StringUtils.toString(e));
+						// Close silently
 					}
 				}
+				
+				Console.writeError(MatchingLogic.class, StringUtils.toString(e));
 			}
 		}
 	}
