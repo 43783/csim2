@@ -23,7 +23,7 @@ public class ConsolePopup extends JPopupMenu implements ActionListener {
 
 		this.owner = owner;
 
-		mnuClear = new JMenuItem("Clear");
+		mnuClear = new JMenuItem("Clear console");
 		mnuClear.addActionListener(this);
 		add(mnuClear);
 	}
