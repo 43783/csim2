@@ -91,11 +91,11 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 		List<SourceMethod> methods = new ArrayList<>(methodMap.values());
 
 		// Calculate term-concept matrix with identifier weight algorithm
-		StemMatrix<StemConcept> stemConceptMatrix = new StemMatrix<StemConcept>(StemConcept.class, terms.size(), concepts.size());
+		StemMatrix<StemConcept> stemConceptMatrix = new StemMatrix<>(StemConcept.class, terms.size(), concepts.size());
 		SimpleMatrix termConceptMatrix = getTermConceptMatrix(terms, concepts, conceptMap, stemConceptsMap, stemConceptMatrix);
 
 		// Calculate term-method matrix
-		StemMatrix<StemMethod> stemMethodMatrix = new StemMatrix<StemMethod>(StemMethod.class, terms.size(), methods.size());
+		StemMatrix<StemMethod> stemMethodMatrix = new StemMatrix<>(StemMethod.class, terms.size(), methods.size());
 		SimpleMatrix termMethodMatrix = getTermMethodMatrix(terms, methods, methodMap, stemMethodsMap, stemMethodMatrix);
 
 		for (int i = 0; i < methods.size(); i++) {
