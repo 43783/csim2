@@ -40,20 +40,24 @@ class StemLogic {
 	/**
 	 * Retrieve all stems associated to a name.
 	 * Words present in rejectedList will not produce associated stems.
+	 * The first item is the full-name-stem of the name passed in argument,
+	 * all other items are subpart items retrieve with camel-case splitting.
 	 * 
 	 * @param name
 	 *        the name to use to extract stems
 	 * @param rejectedList
 	 *        the list of forbidden words
 	 * @return
-	 *         a list of stems associated to the list of names
+	 *         a list of stems associated to name passed in argument or an empty
+	 *         list
 	 */
 	public static List<String> getStems(String name, List<String> rejectedList) {
-		
+
 		List<String> stems = new ArrayList<>();
 
-		if (name.isEmpty() || name.startsWith("_")) return stems;
-		
+		if (name.isEmpty() || name.startsWith("_"))
+			return stems;
+
 		// Clean name before stemmisation 
 		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""); // remove accentuated chars
 		cleanName = cleanName.replaceAll("\\s+", " "); // remove multiple consecutive spaces
@@ -61,33 +65,37 @@ class StemLogic {
 		cleanName = cleanName.replaceAll("[^_\\-\\s\\sA-Za-z0-9]", ""); // remove non alphabetics chars
 		cleanName = cleanName.trim(); // trim left/right space
 		cleanName = StringUtils.trimHungarian(cleanName); // remove lpsz, sz, etc...
-		
+
 		if (cleanName.length() > 0) {
-			
+
 			List<String> nameParts = new ArrayList<>();
 
 			// Split name parts (camel casing notation) 
 			List<String> words = StringUtils.splitCamelCase(cleanName);
-			
+
+			// The first stem/word is always the full name
+			String fullName = cleanName.replaceAll(" ", "").toLowerCase();
+			words.add(0, fullName);
+
 			// Skip forbidden names
-			if (rejectedList != null && rejectedList.contains(StringUtils.concatenate(words).toLowerCase())) {
+			if (rejectedList != null && rejectedList.contains(fullName)) {
 				return stems;
 			}
-			
+
 			// Skip part name included in rejection list
 			for (String word : words) {
 
 				if (word != null && word.length() > 1) {
 
 					word = word.toLowerCase();
-					
+
 					// Add only words not in reject list and not already present
 					if (!stems.contains(word) && (rejectedList == null || !rejectedList.contains(word))) {
 						nameParts.add(word);
 					}
 				}
 			}
-			
+
 			// Finally stemmize all name parts found
 			SnowballStemmer stemmer = new englishStemmer();
 			for (String word : nameParts) {
@@ -97,9 +105,10 @@ class StemLogic {
 				stems.add(stemmer.getCurrent().toLowerCase());
 			}
 		}
-		
+
 		return stems;
-	}			
+	}
+
 	/**
 	 * <pre>
 	 * Retrieve a hierarchy of stem concepts defined for a project.
@@ -154,7 +163,7 @@ class StemLogic {
 		for (StemConcept stem : stemMap.values()) {
 
 			// Retrieve stem parent
-			StemConcept parent = stemMap.get(stem.getParentId()); 
+			StemConcept parent = stemMap.get(stem.getParentId());
 			stem.setParent(parent);
 
 			if (stem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
@@ -457,7 +466,8 @@ class StemLogic {
 	}
 
 	/**
-	 * Return a set of all terms which are intersecting among stem concepts and stem methods.	 
+	 * Return a set of all terms which are intersecting among stem concepts and
+	 * stem methods.
 	 * 
 	 * @param stemConcepts
 	 *        the stem concepts

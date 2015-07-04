@@ -197,13 +197,13 @@ public class StemConceptAnalyzer implements IEngine {
 				if (conceptStems.isEmpty()) continue;
 				
 				// Create a stem for the full concept name
-				String conceptNameFull = StringUtils.concatenate(conceptStems);
+				String conceptNameFull = conceptStems.remove(0);
 				StemConcept stemConceptNameFull = new StemConcept(project, null, concept, conceptNameFull, StemConceptType.CONCEPT_NAME_FULL);
 				ApplicationLogic.saveStemConcept(stemConceptNameFull);
 				stemConceptCount++;
 
 				// Create a stem for each part of the concept name
-				if (conceptStems.size() > 1) {
+				if (!conceptStems.isEmpty()) {
 					for (String conceptNamePart : conceptStems) {
 						StemConcept stemConceptNamePart = new StemConcept(project, stemConceptNameFull, concept, conceptNamePart, StemConceptType.CONCEPT_NAME_PART);
 						ApplicationLogic.saveStemConcept(stemConceptNamePart);
@@ -220,13 +220,13 @@ public class StemConceptAnalyzer implements IEngine {
 					if (attributeStems.isEmpty()) continue;
 
 					// Create a stem for the full attribute name
-					String attributeNameFull = StringUtils.concatenate(attributeStems);
+					String attributeNameFull = attributeStems.remove(0);
 					StemConcept stemAttributNameFull = new StemConcept(project, stemConceptNameFull, concept, attributeNameFull, StemConceptType.ATTRIBUTE_NAME_FULL);
 					ApplicationLogic.saveStemConcept(stemAttributNameFull);
 					stemConceptCount++;
 
 					// Create a stem for each part of the attribute
-					if (attributeStems.size() > 1) {
+					if (!attributeStems.isEmpty()) {
 						for (String attributNamePart : attributeStems) {
 							StemConcept stemAttributeNamePart = new StemConcept(project, stemAttributNameFull, concept, attributNamePart, StemConceptType.ATTRIBUTE_NAME_PART);
 							ApplicationLogic.saveStemConcept(stemAttributeNamePart);
@@ -240,20 +240,11 @@ public class StemConceptAnalyzer implements IEngine {
 
 					if (identifierStems.isEmpty()) continue;
 
-					// Create a stem for the full identifier name
-					String identifierNameFull = StringUtils.concatenate(identifierStems);
+					// Create only one stem for the full identifier name
+					String identifierNameFull = identifierStems.remove(0);
 					StemConcept stemIdentifierNameFull = new StemConcept(project, stemAttributNameFull, concept, identifierNameFull, StemConceptType.ATTRIBUTE_IDENTIFIER_FULL);
 					ApplicationLogic.saveStemConcept(stemIdentifierNameFull);
 					stemConceptCount++;
-
-					// Create a stem for each part of the identifier
-					if (identifierStems.size() > 1) {
-						for (String identifierNamePart : identifierStems) {
-							StemConcept stemIdentifierNamePart = new StemConcept(project, stemIdentifierNameFull, concept, identifierNamePart, StemConceptType.ATTRIBUTE_IDENTIFIER_PART);
-							ApplicationLogic.saveStemConcept(stemIdentifierNamePart);
-							stemConceptCount++;
-						}
-					}
 				}
 
 				for (ConceptClass conceptClass : concept.getClasses()) {
@@ -265,19 +256,10 @@ public class StemConceptAnalyzer implements IEngine {
 					if (classStems.isEmpty()) continue;
 
 					// Create a stem for the full class name
-					String classNameFull = StringUtils.concatenate(classStems);
+					String classNameFull = classStems.remove(0);
 					StemConcept stemClassNameFull = new StemConcept(project, stemConceptNameFull, concept, classNameFull, StemConceptType.CLASS_NAME_FULL);
 					ApplicationLogic.saveStemConcept(stemClassNameFull);
 					stemConceptCount++;
-
-					// Create a stem for each part of the class
-					if (classStems.size() > 1) {
-						for (String classNamePart : classStems) {
-							StemConcept stemClassNamePart = new StemConcept(project, stemClassNameFull, concept, classNamePart, StemConceptType.CLASS_NAME_PART);
-							ApplicationLogic.saveStemConcept(stemClassNamePart);
-							stemConceptCount++;
-						}
-					}
 
 					// Retrieve stems for the class identifier
 					String identifierName = conceptClass.getIdentifier();
@@ -286,19 +268,10 @@ public class StemConceptAnalyzer implements IEngine {
 					if (identifierStems.isEmpty()) continue;
 
 					// Create a stem for the full identifier name
-					String identifierNameFull = StringUtils.concatenate(identifierStems);
+					String identifierNameFull = identifierStems.remove(0);
 					StemConcept stemIdentifierNameFull = new StemConcept(project, stemClassNameFull, concept, identifierNameFull, StemConceptType.CLASS_IDENTIFIER_FULL);
 					ApplicationLogic.saveStemConcept(stemIdentifierNameFull);
 					stemConceptCount++;
-
-					// Create a stem for each part of the identifier
-					if (identifierStems.size() > 1) {
-						for (String identifierNamePart : identifierStems) {
-							StemConcept stemIdentifierNamePart = new StemConcept(project, stemIdentifierNameFull, concept, identifierNamePart, StemConceptType.CLASS_IDENTIFIER_PART);
-							ApplicationLogic.saveStemConcept(stemIdentifierNamePart);
-							stemConceptCount++;
-						}
-					}
 				}
 			}
 
