@@ -69,25 +69,32 @@ class StemLogic {
 		if (cleanName.length() > 0) {
 
 			List<String> nameParts = new ArrayList<>();
-
-			// Split name parts (camel casing notation) 
-			List<String> words = StringUtils.splitCamelCase(cleanName);
+			List<String> splitWords = new ArrayList<>();
 
 			// The first stem/word is always the full name
 			String fullName = cleanName.replaceAll(" ", "").toLowerCase();
-			words.add(0, fullName);
 
 			// Skip forbidden names
 			if (rejectedList != null && rejectedList.contains(fullName)) {
 				return stems;
 			}
+			else {
+				splitWords.add(fullName);
+			}
 
+			// Split name into its parts (camel casing notation) 
+			List<String> camelWords = StringUtils.splitCamelCase(cleanName);
+
+			if (camelWords.size() > 1) {
+				for (String word : camelWords) {
+					splitWords.add(word.toLowerCase());
+				}
+			}
+			
 			// Skip part name included in rejection list
-			for (String word : words) {
+			for (String word : splitWords) {
 
-				if (word != null && word.length() > 1) {
-
-					word = word.toLowerCase();
+				if (word.length() > 1) {
 
 					// Add only words not in reject list and not already present
 					if (!stems.contains(word) && (rejectedList == null || !rejectedList.contains(word))) {

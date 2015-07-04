@@ -39,7 +39,8 @@ public class StemMethodAnalyzer implements IEngine {
 	private Context context;
 
 	private Project project;
-	private List<String> rejectedList;
+	private List<String> rejectedMethodList;
+	private List<String> rejectedTypeList;
 
 	/**
 	 * Default constructor.
@@ -89,6 +90,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 		params.put("project", "project");
 		params.put("rejected-methods", "file");
+		params.put("rejected-types", "file");
 
 		return params;
 	}
@@ -131,22 +133,41 @@ public class StemMethodAnalyzer implements IEngine {
 				throw new EngineException("missing project specified !");
 			}
 
-			// Retrieve path to rejected words file
-			Path rejectedPath = Paths.get("conf", "rejected-methods.txt").toAbsolutePath();
+			// Retrieve path to rejected methods file
+			Path rejectedMethodPath = Paths.get("conf", "rejected-methods.txt").toAbsolutePath();
 			if (context.containsKey("rejected-methods")) {
 				String rejectedFileParam = (String) context.getProperty("rejected-methods");
 				if (rejectedFileParam != null && rejectedFileParam.trim().length() > 0) {
-					rejectedPath = Paths.get(rejectedFileParam);
+					rejectedMethodPath = Paths.get(rejectedFileParam);
 				}
 			}
 
-			// Check if rejected word file exists
-			if (!rejectedPath.toFile().exists()) {
-				throw new EngineException("file '" + rejectedPath.getFileName().toString() + "' doesn't not exist !");
+			// Retrieve path to rejected types file
+			Path rejectedTypePath = Paths.get("conf", "rejected-types.txt").toAbsolutePath();
+			if (context.containsKey("rejected-types")) {
+				String rejectedFileParam = (String) context.getProperty("rejected-types");
+				if (rejectedFileParam != null && rejectedFileParam.trim().length() > 0) {
+					rejectedTypePath = Paths.get(rejectedFileParam);
+				}
 			}
 
-			// Load rejected word list
-			rejectedList = Files.readAllLines(rejectedPath, Charset.defaultCharset());
+			// Check if rejected methods file exists
+			if (!rejectedMethodPath.toFile().exists()) {
+				throw new EngineException("file '" + rejectedMethodPath.getFileName().toString() + "' doesn't not exist !");
+			}
+			else {
+				// Load rejected method list
+				rejectedMethodList = Files.readAllLines(rejectedMethodPath, Charset.defaultCharset());
+			}
+
+			// Check if rejected types file exists
+			if (!rejectedTypePath.toFile().exists()) {
+				throw new EngineException("file '" + rejectedTypePath.getFileName().toString() + "' doesn't not exist !");
+			}
+			else {
+				// Load rejected types list
+				rejectedTypeList = Files.readAllLines(rejectedTypePath, Charset.defaultCharset());
+			}
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
@@ -184,7 +205,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 					// Retrieve stems for the method
 					String methodName = sourceMethod.getName();
-					List<String> methodStems = ApplicationLogic.getStems(methodName, rejectedList);
+					List<String> methodStems = ApplicationLogic.getStems(methodName, rejectedMethodList);
 					
 					if (methodStems.isEmpty()) continue;
 					
@@ -228,7 +249,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 						// Retrieve stems for the type
 						String parameterType = sourceParameter.getType();
-						List<String> typeStems = ApplicationLogic.getStems(parameterType, null);
+						List<String> typeStems = ApplicationLogic.getStems(parameterType, rejectedTypeList);
 
 						if (typeStems.isEmpty()) continue;
 
@@ -264,7 +285,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 						// Retrieve stems for the type
 						String referenceType = sourceReference.getType();
-						List<String> typeStems = ApplicationLogic.getStems(referenceType, null);
+						List<String> typeStems = ApplicationLogic.getStems(referenceType, rejectedTypeList);
 						
 						if (typeStems.isEmpty()) continue;
 
