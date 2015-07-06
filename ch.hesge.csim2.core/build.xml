@@ -8,11 +8,11 @@
 	<property name="library.author" value="Eric Harth"/>
     <property name="library.classpath" value=". mysql-connector-java-5.1.25.jar"/>
 	
-	<available file="${base.dir}/lib" type="dir" property="is-lib-folder-present"/>
+	<available file="${base.dir}/lib" type="dir" property="lib-folder-present"/>
 	
 	<!-- copy dependencies -->
 
-	<target name="copy-dependencies" if="is-lib-folder-present">		
+	<target name="copy-dependencies" if="lib-folder-present">		
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="${base.dir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	

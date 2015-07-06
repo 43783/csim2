@@ -11,7 +11,7 @@
     <property name="mainclass" value="ch.hesge.csim2.ui.swing.Csim2Startup"/>
     <property name="classpath" value="."/>
 	
-	<available file="${base.dir}/lib" type="dir" property="is-lib-folder-present"/>
+	<available file="${base.dir}/lib" type="dir" property="lib-folder-present2"/>
 
 	<!-- initialization -->
 
@@ -40,10 +40,15 @@
 
 	<!-- copy dependencies -->
 
-	<target name="copy-dependencies" if="is-lib-folder-present">		
+	<target name="copy-dependencies" if="lib-folder-present2">		
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	
+    </target>
+	
+	<!-- copy configuration -->
+
+	<target name="copy-conf">		
     	<copy todir="${dist.dir}/conf">
 			<fileset dir="conf" includes="**/*.*" />
 		</copy>		    	
@@ -69,7 +74,7 @@
 
 	<!-- distribution -->
 	
-	<target name="dist" depends="create-script,copy-dependencies,copy-engines">
+	<target name="dist" depends="create-script,copy-conf,copy-dependencies,copy-engines">
         <jar destfile="${dist.dir}/bin/${name}-${version}.v${DSTAMP}${TSTAMP}.jar">
             <manifest>
 		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />

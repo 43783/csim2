@@ -12,7 +12,7 @@
 	
 	<!-- copy dependencies -->
 
-	<target name="copy-dependencies" if="is-lib-folder-present">		
+	<target name="copy-dependencies" if="lib-folder-present">		
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="${base.dir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	

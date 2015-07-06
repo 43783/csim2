@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="engine script builder" default="default">
-	
-    <!-- script properties -->
+
+	<!-- script properties -->
 
 	<property name="engine-name" value="simulink-analyzer"/>
-    <property name="engine-version" value="1.0.2"/>
+	<property name="engine-version" value="1.0.2"/>
 	<property name="engine-author" value="Eric Harth"/>
-    <property name="engine-classpath" value="."/>
+	<property name="engine-classpath" value="."/>
 
 	<available file="${base.dir}/lib" type="dir" property="lib-folder-present"/>
-	
+
 	<!-- copy dependencies -->
 
-	<target name="copy-dependencies" if="is-lib-folder-present">		
+	<target name="copy-dependencies" if="lib-folder-present">		
 		<copy todir="${dist.dir}/lib">
-			<fileset dir="${base.dir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
+			<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	
     </target>
-			
+
 	<!-- distribution -->
-	
+
 	<target name="dist" depends="copy-dependencies">
 		<jar destfile="${dist.dir}/bin/${engine-name}-${engine-version}.v${DSTAMP}${TSTAMP}.jar">
-            <manifest>
-		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
-		        <attribute name="Implementation-Title" value="${engine-name}" />
-		        <attribute name="Implementation-Version" value="${engine-version}" />
-        		<attribute name="Built-By" value="${engine-author}" />
-                <attribute name="Class-Path" value="${engine-classpath}"/>
-            </manifest>
-            <fileset dir="bin" includes="**/*.class"/>
-        </jar>
-    </target>
-	
+			<manifest>
+				<attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
+				<attribute name="Implementation-Title" value="${engine-name}" />
+				<attribute name="Implementation-Version" value="${engine-version}" />
+				<attribute name="Built-By" value="${engine-author}" />
+				<attribute name="Class-Path" value="${engine-classpath}"/>
+			</manifest>
+			<fileset dir="bin" includes="**/*.class"/>
+		</jar>
+	</target>
+
 	<!-- default task -->
-	
+
 	<target name="default" depends="dist" />
 
 </project>
