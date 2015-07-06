@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="engine script builder" basedir="." default="create-distrib">
+<project name="engine script builder" default="default">
 	
     <!-- script properties -->
 
@@ -7,22 +7,21 @@
     <property name="engine-version" value="1.0.9"/>
 	<property name="engine-author" value="Eric Harth"/>
     <property name="engine-classpath" value="."/>
-	<available file="${basedir}/lib" type="dir" property="lib-folder-present"/>
-	
-	<!-- copy all dependencies -->
 
-	<target name="copy-dependencies" if="lib-folder-present">		
-		<echo message="copying dependencies"/>
-		<copy todir="${distrib-dir}/lib">
-			<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
+	<available file="${base.dir}/lib" type="dir" property="lib-folder-present"/>
+	
+	<!-- copy dependencies -->
+
+	<target name="copy-dependencies" if="is-lib-folder-present">		
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="${base.dir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	
     </target>
 			
-	<!-- create engine jar file -->
-
-	<target name="create-jar">
-		<echo message="generating engine jar file"/>
-        <jar destfile="${distrib-dir}/bin/${engine-name}-${engine-version}.jar">
+	<!-- distribution -->
+	
+	<target name="dist" depends="copy-dependencies">
+		<jar destfile="${dist.dir}/bin/${engine-name}-${engine-version}.v${DSTAMP}${TSTAMP}.jar">
             <manifest>
 		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
 		        <attribute name="Implementation-Title" value="${engine-name}" />
@@ -30,12 +29,12 @@
         		<attribute name="Built-By" value="${engine-author}" />
                 <attribute name="Class-Path" value="${engine-classpath}"/>
             </manifest>
-            <fileset dir="${basedir}/bin" includes="**/*.class"/>
+            <fileset dir="bin" includes="**/*.class"/>
         </jar>
     </target>
 	
 	<!-- default task -->
 	
-	<target name="create-distrib" depends="create-jar,copy-dependencies" />
+	<target name="default" depends="dist" />
 
 </project>
