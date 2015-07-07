@@ -280,7 +280,7 @@ class StemLogic {
 		// Populate map
 		for (StemConcept rootStem : stemTreeMap.values()) {
 
-			// Get all stem is hierarchy
+			// Get all stem in hierarchy
 			List<StemConcept> stems = ApplicationLogic.inflateStemConcepts(rootStem);
 
 			for (StemConcept stem : stems) {
