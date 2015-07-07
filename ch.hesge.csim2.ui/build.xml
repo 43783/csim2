@@ -8,7 +8,7 @@
 	<property name="author" value="Eric Harth"/>
 	<property name="base.dir" value="."/>
 	<property name="dist.dir" location="dist"/>
-    <property name="mainclass" value="ch.hesge.csim2.ui.swing.Csim2Startup"/>
+    <property name="mainclass" value="ch.hesge.csim2.ui.AppStartup"/>
     <property name="classpath" value="."/>
 	
 	<available file="${base.dir}/lib" type="dir" property="lib-folder-present2"/>
@@ -34,7 +34,7 @@
     <target name="create-script">
 		<echo file="${dist.dir}/csim2.cmd" append="false">
 		@echo off
-		start javaw -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
+		start javaw -splash:conf/spashscreen.png -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
 		</echo>    	
     </target>
 
