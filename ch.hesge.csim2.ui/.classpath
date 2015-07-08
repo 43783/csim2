@@ -29,5 +29,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.identifiermatcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.tfidfmatcher"/>
 	<classpathentry kind="lib" path="lib/snowball-20150621.jar" sourcepath="lib/snowball-20150621-src.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.structurematcher"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

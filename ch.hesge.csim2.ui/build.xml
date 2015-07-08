@@ -70,6 +70,7 @@
 		<ant antfile="../ch.hesge.csim2.engine.stemmethodanalyzer/build.xml"   dir="../ch.hesge.csim2.engine.stemmethodanalyzer" />
 		<ant antfile="../ch.hesge.csim2.matcher.tfidfmatcher/build.xml"        dir="../ch.hesge.csim2.matcher.tfidfmatcher" />
 		<ant antfile="../ch.hesge.csim2.matcher.identifiermatcher/build.xml"   dir="../ch.hesge.csim2.matcher.identifiermatcher" />
+		<ant antfile="../ch.hesge.csim2.matcher.structurematcher/build.xml"    dir="../ch.hesge.csim2.matcher.structurematcher" />
 	</target>
 
 	<!-- distribution -->

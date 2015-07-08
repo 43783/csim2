@@ -53,7 +53,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.4";
+		return "1.0.6";
 	}
 
 	/**
