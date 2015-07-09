@@ -186,7 +186,7 @@ public class JavaInstrumenterUtils {
 
 		// Create method invocation with proper parameters
 		MethodInvocation methodInvocation = ast.newMethodInvocation();
-		methodInvocation.setExpression(ast.newName("ch.hesge.csim2.engine.javainstrumenter.TraceLogger"));
+		methodInvocation.setExpression(ast.newName("ch.hesge.csim2.engine.TraceLogger"));
 		methodInvocation.setName(ast.newSimpleName(methodName));
 		methodInvocation.arguments().add(staticPackageNameLiteral);
 		methodInvocation.arguments().add(staticClassNameLiteral);
