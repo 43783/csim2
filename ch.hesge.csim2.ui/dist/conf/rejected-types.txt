@@ -1,0 +1,11 @@
+void
+bool
+char
+tchar
+word
+short
+int
+long
+float
+double
+uint
