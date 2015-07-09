@@ -71,7 +71,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getDescription() {
-		return "method concept matcher based on stems comparison.";
+		return "method concept matcher based on method/concept stems comparison.";
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
 		List<StemConcept> conceptStems = ApplicationLogic.inflateStemConcepts(conceptRootStem);
 
-		// Build a map of all method term
+		// Build a map of all concept term
 		Map<String, List<StemConcept>> conceptTermMap = new HashMap<>();
 		for (StemConcept stem : conceptStems) {
 			if (!conceptTermMap.containsKey(stem.getTerm())) {

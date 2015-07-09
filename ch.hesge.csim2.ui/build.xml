@@ -69,8 +69,9 @@
 		<ant antfile="../ch.hesge.csim2.engine.stemconceptanalyzer/build.xml"  dir="../ch.hesge.csim2.engine.stemconceptanalyzer" />
 		<ant antfile="../ch.hesge.csim2.engine.stemmethodanalyzer/build.xml"   dir="../ch.hesge.csim2.engine.stemmethodanalyzer" />
 		<ant antfile="../ch.hesge.csim2.matcher.tfidfmatcher/build.xml"        dir="../ch.hesge.csim2.matcher.tfidfmatcher" />
-		<ant antfile="../ch.hesge.csim2.matcher.identifiermatcher/build.xml"   dir="../ch.hesge.csim2.matcher.identifiermatcher" />
-		<ant antfile="../ch.hesge.csim2.matcher.structurematcher/build.xml"    dir="../ch.hesge.csim2.matcher.structurematcher" />
+		<ant antfile="../ch.hesge.csim2.matcher.wtfidfmatcher/build.xml"       dir="../ch.hesge.csim2.matcher.wtfidfmatcher" />
+		<ant antfile="../ch.hesge.csim2.matcher.sourcematcher/build.xml"       dir="../ch.hesge.csim2.matcher.sourcematcher" />
+		<ant antfile="../ch.hesge.csim2.matcher.jaccardmatcher/build.xml"      dir="../ch.hesge.csim2.matcher.jaccardmatcher" />
 	</target>
 
 	<!-- distribution -->
