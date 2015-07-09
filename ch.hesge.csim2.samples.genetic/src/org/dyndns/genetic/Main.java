@@ -8,10 +8,11 @@ public class Main {
 	public static void main(String[] args) {
 
 		// Set a candidate solution
-		Skill.setSolution("1111000000000000000000000000001111100000000000000000000000001111");		
+		//Skill.setSolution("1111000000000000000000000000001111100000000000000000000000001111");		
+		Skill.setSolution("110001100011");
 
 		// Create an initial population
-		Population population = new Population(100, true);
+		Population population = new Population(50, true);
 
 		int generation = 0;
 
