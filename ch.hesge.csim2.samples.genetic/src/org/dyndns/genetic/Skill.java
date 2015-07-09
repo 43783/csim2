@@ -2,7 +2,7 @@ package org.dyndns.genetic;
 
 public class Skill {
 
-	static byte[] solution = new byte[64];
+	static byte[] solution;
 
 	// 
 	/**

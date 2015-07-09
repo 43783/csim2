@@ -2,16 +2,15 @@ package org.dyndns.genetic;
 
 public class Individual {
 
-	static int DEFAULT_GENE_LENGTH = 64;
-
 	// Private attributes
 	private int competence = -1;
-	private Genes genes = new Genes(DEFAULT_GENE_LENGTH);
+	private Genes genes;
 
 	/**
 	 * Default constructor
 	 */
 	public Individual() {
+		 genes = new Genes(Skill.getMaxSkill());
 	}
 
 	/**
