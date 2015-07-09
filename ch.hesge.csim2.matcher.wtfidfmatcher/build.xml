@@ -3,8 +3,8 @@
 	
     <!-- script properties -->
 
-	<property name="engine-name" value="structure-matcher"/>
-    <property name="engine-version" value="1.0.1"/>
+	<property name="engine-name" value="wtfidf-matcher"/>
+    <property name="engine-version" value="1.0.5"/>
 	<property name="engine-author" value="Eric Harth"/>
     <property name="engine-classpath" value="."/>
 	

@@ -72,7 +72,7 @@ class StemLogic {
 			List<String> splitWords = new ArrayList<>();
 
 			// The first stem/word is always the full name
-			String fullName = cleanName.replaceAll(" ", "").toLowerCase();
+			String fullName = cleanName.replaceAll("[\\_\\-\\s]", "").toLowerCase();
 
 			// Skip forbidden names
 			if (rejectedList != null && rejectedList.contains(fullName)) {

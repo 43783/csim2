@@ -61,7 +61,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getDescription() {
-		return "tfidf method concept matcher.";
+		return "method concept matcher based on tfidf algorithm.";
 	}
 
 	/**

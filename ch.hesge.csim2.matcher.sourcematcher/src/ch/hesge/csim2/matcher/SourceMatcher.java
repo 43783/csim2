@@ -28,7 +28,7 @@ import ch.hesge.csim2.core.model.StemMethodType;
  * @author Eric Harth
  *
  */
-public class StructureMatcher implements IMethodConceptMatcher {
+public class SourceMatcher implements IMethodConceptMatcher {
 
 	// Private attributes
 	private Map<Integer, Concept> conceptMap;
@@ -42,7 +42,7 @@ public class StructureMatcher implements IMethodConceptMatcher {
 	/**
 	 * Default constructor
 	 */
-	public StructureMatcher() {
+	public SourceMatcher() {
 		matchingMethodStems = new ArrayList<>();
 		matchingConceptStems = new ArrayList<>();
 	}
@@ -53,7 +53,7 @@ public class StructureMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getName() {
-		return "StructureMatcher";
+		return "SourceMatcher";
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class StructureMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getDescription() {
-		return "structure method concept matcher.";
+		return "method concept matcher based on stems comparison.";
 	}
 
 	/**
@@ -91,6 +91,8 @@ public class StructureMatcher implements IMethodConceptMatcher {
 		methodMap = ApplicationLogic.getSourceMethodMap(project);
 		stemConceptTreeMap = ApplicationLogic.getStemConceptTreeMap(project);
 		stemMethodTreeMap = ApplicationLogic.getStemMethodTreeMap(project);
+
+		double maxWeight = 0d;
 
 		// Scan all method and lookup for matching concepts
 		for (SourceMethod method : methodMap.values()) {
@@ -115,14 +117,9 @@ public class StructureMatcher implements IMethodConceptMatcher {
 					match.getStemConcepts().addAll(matchingConceptStems);
 
 					matchings.add(match);
+					maxWeight = Math.max(maxWeight, similarity);
 				}
 			}
-		}
-
-		// Retrieve max weight
-		double maxWeight = 0d;
-		for (MethodConceptMatch match : matchings) {
-			maxWeight = Math.max(maxWeight, match.getWeight());
 		}
 
 		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
@@ -130,10 +127,10 @@ public class StructureMatcher implements IMethodConceptMatcher {
 		// Now build a map of concept matching, classified by method id
 		for (MethodConceptMatch match : matchings) {
 
-			// Normalize all weights
+			// Normalize weights
 			match.setWeight(match.getWeight() / maxWeight);
 
-			if (match.getWeight() > 0.001) {
+			if (match.getWeight() > 0d) {
 
 				// Create an method list if not already initialized
 				if (!matchingMap.containsKey(match.getSourceMethod().getKeyId())) {
@@ -157,7 +154,8 @@ public class StructureMatcher implements IMethodConceptMatcher {
 	 */
 	private double getMethodConceptSimilarity(SourceMethod method, Concept concept) {
 
-		double weight = 0d;
+		double similarity = 0d;
+		int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
 
 		StemMethod methodRootStem = stemMethodTreeMap.get(method.getKeyId());
 		List<StemMethod> methodStems = ApplicationLogic.inflateStemMethods(methodRootStem);
@@ -168,112 +166,82 @@ public class StructureMatcher implements IMethodConceptMatcher {
 		// Build a map of all method term
 		Map<String, List<StemConcept>> conceptTermMap = new HashMap<>();
 		for (StemConcept stem : conceptStems) {
-
 			if (!conceptTermMap.containsKey(stem.getTerm())) {
 				conceptTermMap.put(stem.getTerm(), new ArrayList<>());
 			}
-
 			conceptTermMap.get(stem.getTerm()).add(stem);
 		}
 
-		// Loop over all concepts referring a term
+		// For each one, try to retrieve a referenced concept
 		for (StemMethod methodStem : methodStems) {
 
-			StemMethodType methodStemType = methodStem.getStemType();
+			StemMethodType methodStemType = methodStem.getStemType();			
+			if (!conceptTermMap.containsKey(methodStem.getTerm())) continue;			
 
-			if (conceptTermMap.containsKey(methodStem.getTerm())) {
+			for (StemConcept conceptStem : conceptTermMap.get(methodStem.getTerm())) {
 
-				for (StemConcept conceptStem : conceptTermMap.get(methodStem.getTerm())) {
+				double stemWeight = 0d;
+				StemConceptType conceptStemType = conceptStem.getStemType();
 
-					StemConceptType conceptStemType = conceptStem.getStemType();
+				// Evaluate full matching for parameter and reference types
+				if (methodStemType == StemMethodType.PARAMETER_TYPE_FULL || methodStemType == StemMethodType.REFERENCE_TYPE_FULL) {
 
-					// Evaluate full matching for parameter and reference types
-					if (methodStemType == StemMethodType.PARAMETER_TYPE_FULL || methodStemType == StemMethodType.REFERENCE_TYPE_FULL) {
-
-						if (conceptStemType == StemConceptType.CLASS_NAME_FULL) {
-							weight += 1d;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
+					if (conceptStemType == StemConceptType.CLASS_NAME_FULL) {
+						stemWeight += 1d;
 					}
+				}
 
-					// Evaluate full matching for parameter and reference names
-					else if (methodStemType == StemMethodType.PARAMETER_NAME_FULL || methodStemType == StemMethodType.REFERENCE_NAME_FULL) {
+				// Evaluate full matching for parameter and reference names
+				else if (methodStemType == StemMethodType.PARAMETER_NAME_FULL || methodStemType == StemMethodType.REFERENCE_NAME_FULL) {
 
-						if (conceptStem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
-							weight += 1d;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
-						else if (conceptStem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
-							weight += 1d;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
-						else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
-							int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
-							weight += 1d / attrCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
-						else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
-							int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
-							weight += 1d / attrCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
+					if (conceptStem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+						stemWeight += 1d;
 					}
-
-					// Evaluate partial matching of method name
-					else if (methodStemType == StemMethodType.METHOD_NAME_PART) {
-
-						if (conceptStem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-							StemConcept stemNameFull = conceptStem.getParent();
-							int partCount = stemNameFull.getParts().isEmpty() ? 1 : stemNameFull.getParts().size();
-							weight += 1d / partCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
+					else if (conceptStem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
+						stemWeight += 1d;
 					}
-
-					// Evaluate partial matching for parameter and reference names
-					else if (methodStemType == StemMethodType.PARAMETER_NAME_PART || methodStemType == StemMethodType.REFERENCE_NAME_PART) {
-
-						if (conceptStem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
-							StemConcept stemNameFull = conceptStem.getParent();
-							int partCount = stemNameFull.getParts().isEmpty() ? 1 : stemNameFull.getParts().size();
-							weight += 1d / partCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
-						else if (conceptStem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
-							StemConcept stemNameFull = conceptStem.getParent();
-							int partCount = stemNameFull.getParts().isEmpty() ? 1 : stemNameFull.getParts().size();
-							weight += 1d / partCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
-						else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
-							StemConcept stemAttrIdFull = conceptStem.getParent();
-							int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
-							int partCount = stemAttrIdFull.getParts().isEmpty() ? 1 : stemAttrIdFull.getParts().size();
-							weight += 1d / attrCount / partCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
-						else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
-							StemConcept stemAttrNameFull = conceptStem.getParent();
-							int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
-							int partCount = stemAttrNameFull.getParts().isEmpty() ? 1 : stemAttrNameFull.getParts().size();
-							weight += 1d / attrCount / partCount;
-							matchingMethodStems.add(methodStem);
-							matchingConceptStems.add(conceptStem);
-						}
+					else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_FULL) {
+						stemWeight += 1d / attrCount;
 					}
+					else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+						stemWeight += 1d / attrCount;
+					}
+				}
+
+				// Evaluate partial matching for parameter and reference names
+				else if (methodStemType == StemMethodType.METHOD_NAME_PART || methodStemType == StemMethodType.PARAMETER_NAME_PART || methodStemType == StemMethodType.REFERENCE_NAME_PART) {
+
+					if (conceptStem.getStemType() == StemConceptType.CONCEPT_NAME_FULL) {
+						stemWeight += 1d;
+					}
+					else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_NAME_FULL) {
+						StemConcept stemFullName = conceptStem.getParent();
+						int partCount = stemFullName.getParts().isEmpty() ? 1 : stemFullName.getParts().size();
+						stemWeight += 1d / attrCount / partCount;
+					}
+					else if (conceptStem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
+						StemConcept stemFullName = conceptStem.getParent();
+						int partCount = stemFullName.getParts().isEmpty() ? 1 : stemFullName.getParts().size();
+						stemWeight += 1d / partCount;
+					}
+					else if (conceptStem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
+						StemConcept stemFullName = conceptStem.getParent();
+						int partCount = stemFullName.getParts().isEmpty() ? 1 : stemFullName.getParts().size();
+						stemWeight += 1d / attrCount / partCount;
+					}
+				}
+
+				// Keep stem if a matching is found
+				if (stemWeight > 0d) {
+					
+					similarity += stemWeight;
+
+					matchingMethodStems.add(methodStem);
+					matchingConceptStems.add(conceptStem);						
 				}
 			}
 		}
 
-		return weight;
+		return similarity;
 	}
 }

@@ -26,9 +26,9 @@
 	<classpathentry kind="lib" path="lib/log4j-api-2.3.jar" sourcepath="lib/log4j-api-2.3-src.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.12.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-core-2.3.jar" sourcepath="lib/log4j-core-2.3-src.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.identifiermatcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.tfidfmatcher"/>
 	<classpathentry kind="lib" path="lib/snowball-20150621.jar" sourcepath="lib/snowball-20150621-src.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.structurematcher"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.wtfidfmatcher"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.sourcematcher"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

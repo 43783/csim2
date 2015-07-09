@@ -93,7 +93,7 @@ public class MatchingTable extends JTable {
 					case 0:
 						return match.getConcept().getName();
 					case 1:
-						return String.format("%.2f", match.getWeight());
+						return String.format("%.3f", match.getWeight());
 					case 2:
 						return match.isValidated();
 				}

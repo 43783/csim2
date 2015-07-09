@@ -1,7 +1,8 @@
+package ch.hesge.csim2.matcher;
 /**
  * 
  */
-package ch.hesge.csim2.matcher;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,12 +31,12 @@ import ch.hesge.csim2.core.utils.StemMatrix;
  * @author Eric Harth
  *
  */
-public class IdentifierMatcher implements IMethodConceptMatcher {
+public class WeightedTfidfMatcher implements IMethodConceptMatcher {
 
 	/**
 	 * Default constructor
 	 */
-	public IdentifierMatcher() {
+	public WeightedTfidfMatcher() {
 	}
 
 	/**
@@ -44,7 +45,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getName() {
-		return "IdentifierMatcher";
+		return "WeightedTfidfMatcher";
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.6";
+		return "1.0.5";
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getDescription() {
-		return "identifier method concept matcher.";
+		return "method concept matcher based on weighted tfidf algorithm.";
 	}
 
 	/**
@@ -214,28 +215,10 @@ public class IdentifierMatcher implements IMethodConceptMatcher {
 					}
 
 					// Evaluate stem matching weight for part terms
-					else if (stem.getStemType() == StemConceptType.CLASS_NAME_PART) {
-						StemConcept stemClassFull = stem.getParent();
-						int partCount = stemClassFull.getParts().isEmpty() ? 1 : stemClassFull.getParts().size();
-						conceptWeight = 1d / partCount;
-					}
 					else if (stem.getStemType() == StemConceptType.CONCEPT_NAME_PART) {
 						StemConcept stemNameFull = stem.getParent();
 						int partCount = stemNameFull.getParts().isEmpty() ? 1 : stemNameFull.getParts().size();
 						conceptWeight = 1d / partCount;
-					}
-					else if (stem.getStemType() == StemConceptType.CLASS_IDENTIFIER_PART) {
-						StemConcept stemClassIdFull = stem.getParent();
-						int partCount = stemClassIdFull.getParts().isEmpty() ? 1 : stemClassIdFull.getParts().size();
-						conceptWeight = 1d / partCount;
-					}
-					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_IDENTIFIER_PART) {
-						StemConcept stemAttrIdFull = stem.getParent();
-						StemConcept conceptNameFull = stemAttrIdFull.getParent();
-						Concept concept = conceptMap.get(conceptNameFull.getConceptId());
-						int attrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
-						int partCount = stemAttrIdFull.getParts().isEmpty() ? 1 : stemAttrIdFull.getParts().size();
-						conceptWeight = 1d / attrCount / partCount;
 					}
 					else if (stem.getStemType() == StemConceptType.ATTRIBUTE_NAME_PART) {
 						StemConcept stemAttrNameFull = stem.getParent();
