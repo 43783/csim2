@@ -179,7 +179,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		}
 
 		// Now compute term intersection count
-		int intersectionCount = 0;
+		double intersectionCount = 0;
 		
 		for (String term : methodTermMap.keySet()) {
 			
