@@ -20,12 +20,28 @@ import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.ArrayAccess;
+import org.eclipse.jdt.core.dom.Assignment;
+import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ExpressionStatement;
+import org.eclipse.jdt.core.dom.FieldAccess;
+import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.PostfixExpression;
+import org.eclipse.jdt.core.dom.PrefixExpression;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.internal.compiler.ast.FieldReference;
+import org.eclipse.jdt.internal.compiler.ast.OperatorExpression;
+import org.eclipse.jdt.internal.compiler.ast.Reference;
 import org.eclipse.jface.text.Document;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
@@ -44,6 +60,8 @@ import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
  * This engine allow JAVA analysing and class parsing.
+ * Reference: http://www.programcreek.com/2011/01/a-complete-standalone-example-of-astparser/
+ * http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
  * 
  * Copyright HEG Geneva 2014, Switzerland
  * 
@@ -426,30 +444,73 @@ public class JavaAnalyzer implements IEngine {
 
 			public boolean visit(SimpleName name) {
 
-				// Parse enclosing class name
-				String classname = JavaAnalyzerUtils.getClassName(name);
+				boolean referenceFound = false;
+				
+				if (name.getParent() instanceof Expression) {
+					
+					Expression expression = (Expression) name.getParent();
+					
+					if (expression instanceof Assignment) {
+						Console.writeDebug(this, "Assignment: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof InfixExpression) {
+						Console.writeDebug(this, "InfixExpression: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof PostfixExpression) {
+						Console.writeDebug(this, "PostExpression: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof PrefixExpression) {
+						Console.writeDebug(this, "PrefixExpression: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof ClassInstanceCreation) {
+						Console.writeDebug(this, "PrefixExpression: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof FieldAccess) {
+						Console.writeDebug(this, "FieldAccess: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof SuperFieldAccess) {
+						Console.writeDebug(this, "SuperFieldAccess: " + name);
+						referenceFound = true;
+					}
+					else if (expression instanceof ArrayAccess) {
+						Console.writeDebug(this, "ArrayAccess: " + name);
+						referenceFound = true;
+					}
+				}
 
-				// Check if class is already parsed
-				if (parsedClasses.containsKey(classname)) {
+				if (referenceFound) {
+					
+					// Parse enclosing class name
+					String classname = JavaAnalyzerUtils.getClassName(name);
 
-					// Retrieve the enclosing class
-					SourceClass sourceClass = parsedClasses.get(classname);
+					// Check if class is already parsed
+					if (parsedClasses.containsKey(classname)) {
 
-					// Retrieve the owning method
-					String methodSignature = JavaAnalyzerUtils.getMethodSignature(name);
-					SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+						// Retrieve the enclosing class
+						SourceClass sourceClass = parsedClasses.get(classname);
 
-					// Check if method is already parsed
-					if (sourceMethod != null) {
+						// Retrieve the owning method
+						String methodSignature = JavaAnalyzerUtils.getMethodSignature(name);
+						SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
 
-						// Parse reference defininition
-						String referenceName = name.getIdentifier();
-						SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
+						// Check if method is already parsed
+						if (sourceMethod != null) {
 
-						// And add each one to its owning method
-						if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
-							sourceMethod.getReferences().add(sourceReference);
-							Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+							// Parse reference defininition
+							String referenceName = name.getIdentifier();
+							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
+
+							// And add each one to its owning method
+							if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
+								sourceMethod.getReferences().add(sourceReference);
+								Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+							}
 						}
 					}
 				}

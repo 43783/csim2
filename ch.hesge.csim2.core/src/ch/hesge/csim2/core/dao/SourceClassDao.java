@@ -29,7 +29,7 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class SourceClassDao {
 
 	// Private static SQL queries
-	private static String INSERT = "INSERT INTO source_classes SET project_id=?projectId, superclass_id=?superclassId, filename='?filename', name='?name', type='?type', parent_id=?parentId";
+	private static String INSERT = "INSERT INTO source_classes SET project_id=?projectId, superclass_id=?superclassId, filename='?filename', name='?name', type='?type'";
 	private static String UPDATE = "UPDATE source_classes SET project_id=?projectId, superclass_id=?superclassId, filename='?filename', name='?name', type='?type' WHERE key_id=?keyId";
 	private static String DELETE = "DELETE FROM source_classes WHERE project_id=?projectId";
 

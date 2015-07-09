@@ -197,7 +197,7 @@ class OntologyLogic {
 			concept.getLinks().add(link);
 
 			// Detect concept hierarchy
-			if (link.getQualifier().equals("subclass-of") && link.getTargetConcept() != null) {
+			if (link.getQualifier() != null && link.getTargetConcept() != null && link.getQualifier().equals("subclass-of")) {
 				concept.setSuperConcept(link.getTargetConcept());
 				link.getTargetConcept().getSubConcepts().add(concept);
 				ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());

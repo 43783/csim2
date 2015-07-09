@@ -84,9 +84,12 @@ public class ScenarioView extends JPanel implements ActionListener {
 	 *        the index of the step to select
 	 */
 	private void selectScenarioStep(int stepIndex) {
-		scenarioTable.setRowSelectionInterval(stepIndex, stepIndex);
-		scenarioTable.scrollRectToVisible(scenarioTable.getCellRect(stepIndex, 0, true));
-		scenarioTable.invalidate();
+		
+		if (stepIndex < scenario.getSteps().size()) {
+			scenarioTable.setRowSelectionInterval(stepIndex, stepIndex);
+			scenarioTable.scrollRectToVisible(scenarioTable.getCellRect(stepIndex, 0, true));
+			scenarioTable.invalidate();
+		}
 	}
 	
 	/**
