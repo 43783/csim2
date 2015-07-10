@@ -25,23 +25,16 @@ import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.PostfixExpression;
 import org.eclipse.jdt.core.dom.PrefixExpression;
 import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
-import org.eclipse.jdt.internal.compiler.ast.FieldReference;
-import org.eclipse.jdt.internal.compiler.ast.OperatorExpression;
-import org.eclipse.jdt.internal.compiler.ast.Reference;
 import org.eclipse.jface.text.Document;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
@@ -60,9 +53,27 @@ import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
  * This engine allow JAVA analysing and class parsing.
- * Reference: http://www.programcreek.com/2011/01/a-complete-standalone-example-of-astparser/
- * http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
+ * Reference: 
  * 
+ * 	http://www.programcreek.com/2011/01/a-complete-standalone-example-of-astparser/
+ * 	http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
+ * 
+ * SQL to select sources informations:
+ * 
+ * 	classes:	SELECT * FROM source_classes WHERE project_id = 6
+ *  attrs:		SELECT * FROM source_attributes WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6)
+ * 	methods:	SELECT * FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6)
+ * 	params:		SELECT * FROM source_parameters WHERE method_id in (SELECT key_id FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6));
+ * 	refs:		SELECT * FROM source_references WHERE method_id in (SELECT key_id FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6));
+ * 
+ * To delete source information for project 6:
+ * 
+ * DELETE FROM source_attributes WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6);
+ * DELETE FROM source_references WHERE method_id in (SELECT key_id FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6));
+ * DELETE FROM source_parameters WHERE method_id in (SELECT key_id FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6));
+ * DELETE FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id = 6);
+ * DELETE FROM source_classes WHERE project_id = 6;
+
  * Copyright HEG Geneva 2014, Switzerland
  * 
  * @author Eric Harth
@@ -83,7 +94,7 @@ public class JavaAnalyzer implements IEngine {
 	 * Default constructor.
 	 */
 	public JavaAnalyzer() {
-		visitedFiles = new HashMap<>();
+		visitedFiles  = new HashMap<>();
 		parsedClasses = new HashMap<>();
 	}
 
@@ -407,6 +418,65 @@ public class JavaAnalyzer implements IEngine {
 				return true;
 			}
 
+			public boolean visit(Assignment assignment) {
+				
+				Console.writeDebug(this, "assignment: " + assignment);
+
+				SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(assignment, parsedClasses);
+				
+				if (sourceMethod != null) {
+					
+					// Parse reference definition
+					String referenceName = assignment.getLeftHandSide().toString();
+					SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(assignment, parsedClasses);
+					SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
+
+					// And add new reference, if not already present
+					if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
+						sourceMethod.getReferences().add(sourceReference);
+						Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+					}
+				}
+				
+				return true;
+			}
+			
+			public boolean visit(InfixExpression infixExpression) {
+				Console.writeDebug(this, "infixExpression: " + infixExpression);
+				return true;
+			}
+
+			public boolean visit(PostfixExpression postfixExpression) {
+				Console.writeDebug(this, "postfixExpression: " + postfixExpression);
+				return true;
+			}
+
+			public boolean visit(PrefixExpression prefixExpression) {
+				Console.writeDebug(this, "prefixExpression: " + prefixExpression);
+				return true;
+			}
+
+			public boolean visit(ClassInstanceCreation classInstanceCreation) {
+				Console.writeDebug(this, "classInstanceCreation: " + classInstanceCreation);
+				return true;
+			}
+
+			public boolean visit(FieldAccess fieldAccess) {
+				Console.writeDebug(this, "fieldAccess: " + fieldAccess);
+				return true;
+			}
+
+			public boolean visit(SuperFieldAccess superFieldAccess) {
+				Console.writeDebug(this, "superFieldAccess: " + superFieldAccess);
+				return true;
+			}
+
+			public boolean visit(ArrayAccess arrayAccess) {
+				Console.writeDebug(this, "arrayAccess: " + arrayAccess);
+				return true;
+			}
+			
+			/*
 			// Analyze variable declaration in expression
 			public boolean visit(VariableDeclarationExpression declaration) {
 
@@ -441,82 +511,63 @@ public class JavaAnalyzer implements IEngine {
 
 				return true;
 			}
-
+			
 			public boolean visit(SimpleName name) {
 
-				boolean referenceFound = false;
-				
 				if (name.getParent() instanceof Expression) {
 					
 					Expression expression = (Expression) name.getParent();
 					
-					if (expression instanceof Assignment) {
-						Console.writeDebug(this, "Assignment: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof InfixExpression) {
-						Console.writeDebug(this, "InfixExpression: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof PostfixExpression) {
-						Console.writeDebug(this, "PostExpression: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof PrefixExpression) {
-						Console.writeDebug(this, "PrefixExpression: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof ClassInstanceCreation) {
-						Console.writeDebug(this, "PrefixExpression: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof FieldAccess) {
-						Console.writeDebug(this, "FieldAccess: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof SuperFieldAccess) {
-						Console.writeDebug(this, "SuperFieldAccess: " + name);
-						referenceFound = true;
-					}
-					else if (expression instanceof ArrayAccess) {
-						Console.writeDebug(this, "ArrayAccess: " + name);
-						referenceFound = true;
-					}
-				}
+					if (expression instanceof Assignment || 
+						expression instanceof InfixExpression || 
+						expression instanceof PostfixExpression || 
+						expression instanceof PrefixExpression || 
+						expression instanceof ClassInstanceCreation || 
+						expression instanceof FieldAccess || 
+						expression instanceof SuperFieldAccess || 
+						expression instanceof ArrayAccess) {
+						
+						// Parse enclosing class name
+						String classname = JavaAnalyzerUtils.getClassName(name);
 
-				if (referenceFound) {
-					
-					// Parse enclosing class name
-					String classname = JavaAnalyzerUtils.getClassName(name);
+						// Check if class is already parsed
+						if (parsedClasses.containsKey(classname)) {
 
-					// Check if class is already parsed
-					if (parsedClasses.containsKey(classname)) {
+							// Retrieve the enclosing class
+							SourceClass sourceClass = parsedClasses.get(classname);
 
-						// Retrieve the enclosing class
-						SourceClass sourceClass = parsedClasses.get(classname);
+							// Retrieve the owning method
+							String methodSignature = JavaAnalyzerUtils.getMethodSignature(name);
+							SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
 
-						// Retrieve the owning method
-						String methodSignature = JavaAnalyzerUtils.getMethodSignature(name);
-						SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+							// Check if method is already parsed
+							if (sourceMethod != null) {
 
-						// Check if method is already parsed
-						if (sourceMethod != null) {
+								// Parse reference defininition
+								String referenceName = name.getIdentifier();
+								SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
 
-							// Parse reference defininition
-							String referenceName = name.getIdentifier();
-							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
-
-							// And add each one to its owning method
-							if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
-								sourceMethod.getReferences().add(sourceReference);
-								Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+								// And add each one to its owning method
+								if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
+									sourceMethod.getReferences().add(sourceReference);
+									Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+								}
 							}
 						}
 					}
+					else {
+						Console.writeDebug(this, "expression: " + expression.getClass() + ", name: " + name.getIdentifier());
+					}
 				}
+				else {
+					Console.writeDebug(this, "node: " + name.getParent().getClass() + ", name: " + name.getIdentifier());
+				}
+				
 
 				return true;
 			}
+			 */
+
 		});
 	}
 }
