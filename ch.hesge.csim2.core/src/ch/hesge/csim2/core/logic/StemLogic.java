@@ -522,17 +522,21 @@ class StemLogic {
 	}
 
 	/**
-	 * Save a single stem concept.
+	 * Save a list of stem concept.
 	 * 
 	 * @param stem
 	 *        the StemConcept to save
 	 */
-	public static void saveStemConcept(StemConcept stem) {
-		if (PersistanceUtils.isNewObject(stem)) {
-			StemConceptDao.add(stem);
-		}
-		else {
-			StemConceptDao.update(stem);
+	public static void saveStemConcepts(List<StemConcept> stems) {
+		
+		for (StemConcept stem : stems) {
+			
+			if (PersistanceUtils.isNewObject(stem)) {
+				StemConceptDao.add(stem);
+			}
+			else {
+				StemConceptDao.update(stem);
+			}
 		}
 	}
 
@@ -544,15 +548,12 @@ class StemLogic {
 	 */
 	public static void saveStemMethods(List<StemMethod> stems) {
 		
-		// SELECT * FROM stem_methods WHERE project_id = 6
-		
-		// First save stems (to create keyId)
 		for (StemMethod stem : stems) {
 			
-			// Update parent keyId, if not already done
-			if (stem.getParentId() == 0 && stem.getParent() != null) {
-				stem.setParentId(stem.getParent().getKeyId());
-			}
+			// Update dependency ids
+			stem.setProjectId(stem.getProject().getKeyId());
+			stem.setParentId(stem.getParent() == null ? -1 : stem.getParent().getKeyId());
+			stem.setSourceMethodId(stem.getSourceMethod().getKeyId());
 			
 			if (PersistanceUtils.isNewObject(stem)) {
 				StemMethodDao.add(stem);
@@ -561,10 +562,5 @@ class StemLogic {
 				StemMethodDao.update(stem);
 			}
 		}
-
-//		// Then update stems (to refresh keyId)
-//		for (StemMethod stem : stems) {
-//			StemMethodDao.update(stem);
-//		}
 	}
 }

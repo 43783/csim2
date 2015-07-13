@@ -1076,13 +1076,13 @@ public class ApplicationLogic {
 	}
 	
 	/**
-	 * Save a single stem concept.
+	 * Save a list of stem concept.
 	 * 
 	 * @param stem
 	 *        the StemConcept to save
 	 */
-	public static void saveStemConcept(StemConcept stem) {
-		StemLogic.saveStemConcept(stem);
+	public static void saveStemConcepts(List<StemConcept> stems) {
+		StemLogic.saveStemConcepts(stems);
 	}
 
 	/**

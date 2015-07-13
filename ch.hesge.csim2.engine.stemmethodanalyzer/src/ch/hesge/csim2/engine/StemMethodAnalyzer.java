@@ -190,7 +190,6 @@ public class StemMethodAnalyzer implements IEngine {
 
 		try {
 
-			int stemMethodCount = 0;
 			List<StemMethod> stems = new ArrayList<>();
 
 			Console.writeInfo(this, "cleaning previous stem methods...");
@@ -207,14 +206,14 @@ public class StemMethodAnalyzer implements IEngine {
 				for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
 					int stemCount = 0;
-
-					// Retrieve stems for the method
+					
+					// Retrieve stems for the method name
 					List<StemMethod> methodStems = getMethodStems(sourceMethod);
 					
 					if (methodStems.size() > 0) {
 						
-						stems.addAll(methodStems);						
-						stemCount =+ methodStems.size();
+						stems.addAll(methodStems);			
+						stemCount += methodStems.size();
 						
 						StemMethod rootStem = methodStems.get(0);
 						
@@ -222,7 +221,7 @@ public class StemMethodAnalyzer implements IEngine {
 						for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
 							List<StemMethod> parameterStems = getParameterStems(sourceParameter, sourceMethod, rootStem);
 							stems.addAll(parameterStems);
-							stemCount =+ parameterStems.size();
+							stemCount += methodStems.size();
 						}
 
 						// Retrieve all unique references			
@@ -233,18 +232,17 @@ public class StemMethodAnalyzer implements IEngine {
 								referenceMap.put(refName, refName);
 								List<StemMethod> referenceStems = getReferenceStems(sourceReference, sourceMethod, rootStem);
 								stems.addAll(referenceStems);
-								stemCount =+ referenceStems.size();
+								stemCount += methodStems.size();
 							}
 						}
 					}
 					
 					Console.writeInfo(this, stemCount + " stems found in method: " + sourceMethod.getName());
-					stemMethodCount += stemCount;
 				}
 			}
 
 			ApplicationLogic.saveStemMethods(stems);
-			Console.writeInfo(this, stemMethodCount + " total stem-method found");
+			Console.writeInfo(this, stems.size() + " stems found");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing sources: " + StringUtils.toString(e));
@@ -262,7 +260,7 @@ public class StemMethodAnalyzer implements IEngine {
 	}	
 	
 	/**
-	 * Extract stems from method.
+	 * Extract stems from method name.
 	 * 
 	 * @param sourceMethod
 	 * @return a list of StemMethod

@@ -176,7 +176,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 		try {
 
-			int stemConceptCount = 0;
+			List<StemConcept> stems = new ArrayList<>();
 
 			Console.writeInfo(this, "cleaning previous stem concepts...");
 			ApplicationLogic.deleteStemConcepts(ontology);
@@ -190,92 +190,37 @@ public class StemConceptAnalyzer implements IEngine {
 			// Build stem concept table
 			for (Concept concept : conceptList) {
 
-				// Retrieve stems for the concept
-				String conceptName = concept.getName();
-				List<String> conceptStems = ApplicationLogic.getStems(conceptName, rejectedList);
-
-				if (conceptStems.isEmpty()) continue;
+				int stemCount = 0;
 				
-				// Create a stem for the full concept name
-				String conceptNameFull = conceptStems.remove(0);
-				StemConcept stemConceptNameFull = new StemConcept(project, null, concept, conceptNameFull, StemConceptType.CONCEPT_NAME_FULL);
-				ApplicationLogic.saveStemConcept(stemConceptNameFull);
-				stemConceptCount++;
+				// Retrieve stems for the method name
+				List<StemConcept> conceptStems = getConceptStems(concept);
+				
+				if (conceptStems.size() > 0) {
+					
+					stems.addAll(conceptStems);						
+					stemCount =+ conceptStems.size();
+					
+					StemConcept rootStem = conceptStems.get(0);
 
-				// Create a stem for each part of the concept name
-				if (!conceptStems.isEmpty()) {
-					for (String conceptNamePart : conceptStems) {
-						StemConcept stemConceptNamePart = new StemConcept(project, stemConceptNameFull, concept, conceptNamePart, StemConceptType.CONCEPT_NAME_PART);
-						ApplicationLogic.saveStemConcept(stemConceptNamePart);
-						stemConceptCount++;
+					// Retrieve stems for the attributes
+					for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
+						List<StemConcept> attributeStems = getAttributeStems(conceptAttribute, concept, rootStem);
+						stems.addAll(attributeStems);
+						stemCount += attributeStems.size();
 					}
+					
+					for (ConceptClass conceptClass : concept.getClasses()) {
+						List<StemConcept> classStems = getClassStems(conceptClass, concept, rootStem);
+						stems.addAll(classStems);
+						stemCount += classStems.size();
+					}					
 				}
-
-				for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
-
-					// Retrieve stems for the attribute
-					String attributeName = conceptAttribute.getName();
-					List<String> attributeStems = ApplicationLogic.getStems(attributeName, rejectedList);
-
-					if (attributeStems.isEmpty()) continue;
-
-					// Create a stem for the full attribute name
-					String attributeNameFull = attributeStems.remove(0);
-					StemConcept stemAttributNameFull = new StemConcept(project, stemConceptNameFull, concept, attributeNameFull, StemConceptType.ATTRIBUTE_NAME_FULL);
-					ApplicationLogic.saveStemConcept(stemAttributNameFull);
-					stemConceptCount++;
-
-					// Create a stem for each part of the attribute
-					if (!attributeStems.isEmpty()) {
-						for (String attributNamePart : attributeStems) {
-							StemConcept stemAttributeNamePart = new StemConcept(project, stemAttributNameFull, concept, attributNamePart, StemConceptType.ATTRIBUTE_NAME_PART);
-							ApplicationLogic.saveStemConcept(stemAttributeNamePart);
-							stemConceptCount++;
-						}
-					}
-
-					// Retrieve stems for the identifier
-					String identifierName = conceptAttribute.getIdentifier();
-					List<String> identifierStems = ApplicationLogic.getStems(identifierName, rejectedList);
-
-					if (identifierStems.isEmpty()) continue;
-
-					// Create only one stem for the full identifier name
-					String identifierNameFull = identifierStems.remove(0);
-					StemConcept stemIdentifierNameFull = new StemConcept(project, stemAttributNameFull, concept, identifierNameFull, StemConceptType.ATTRIBUTE_IDENTIFIER_FULL);
-					ApplicationLogic.saveStemConcept(stemIdentifierNameFull);
-					stemConceptCount++;
-				}
-
-				for (ConceptClass conceptClass : concept.getClasses()) {
-
-					// Retrieve stems for the class
-					String className = conceptClass.getName();
-					List<String> classStems = ApplicationLogic.getStems(className, rejectedList);
-
-					if (classStems.isEmpty()) continue;
-
-					// Create a stem for the full class name
-					String classNameFull = classStems.remove(0);
-					StemConcept stemClassNameFull = new StemConcept(project, stemConceptNameFull, concept, classNameFull, StemConceptType.CLASS_NAME_FULL);
-					ApplicationLogic.saveStemConcept(stemClassNameFull);
-					stemConceptCount++;
-
-					// Retrieve stems for the class identifier
-					String identifierName = conceptClass.getIdentifier();
-					List<String> identifierStems = ApplicationLogic.getStems(identifierName, rejectedList);
-
-					if (identifierStems.isEmpty()) continue;
-
-					// Create a stem for the full identifier name
-					String identifierNameFull = identifierStems.remove(0);
-					StemConcept stemIdentifierNameFull = new StemConcept(project, stemClassNameFull, concept, identifierNameFull, StemConceptType.CLASS_IDENTIFIER_FULL);
-					ApplicationLogic.saveStemConcept(stemIdentifierNameFull);
-					stemConceptCount++;
-				}
+				
+				Console.writeInfo(this, stemCount + " stems found in concept: " + concept.getName());
 			}
 
-			Console.writeInfo(this, stemConceptCount + " stems concepts found");
+			ApplicationLogic.saveStemConcepts(stems);
+			Console.writeInfo(this, stems.size() + " stems found");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing concepts: " + StringUtils.toString(e));
@@ -290,9 +235,127 @@ public class StemConceptAnalyzer implements IEngine {
 	@Override
 	public void stop() {
 	}
+
+	/**
+	 * Extract stems from concept name.
+	 * 
+	 * @param concept
+	 * @return a list of StemConcept
+	 */
+	private List<StemConcept> getConceptStems(Concept concept) {
+
+		List<StemConcept> result = new ArrayList<>();
+		
+		// Retrieve stems for the concept name
+		String conceptName = concept.getName();
+		List<String> stems = ApplicationLogic.getStems(conceptName, rejectedList);
+
+		if (stems.size() > 0) {
+			
+			// Create a stem for the full concept name
+			String fullName = stems.remove(0);
+			StemConcept fullStem = new StemConcept(project, null, concept, fullName, StemConceptType.CONCEPT_NAME_FULL);
+			result.add(fullStem);
+			
+			// Create sub-stems for parts
+			if (stems.size() > 0) {
+				
+				for (String partName : stems) {
+					result.add(new StemConcept(project, fullStem, concept, partName, StemConceptType.CONCEPT_NAME_PART));
+				}
+			}
+		}
+		
+		return result;
+	}
 	
 	/**
-	 * Testcase to study how names are splitted through camel casing.
+	 * Extract stems from attribute.
+	 * 
+	 * @param conceptAttribute
+	 * @param concept
+	 * @param parent
+	 * @return a list of StemConcept
+	 */
+	private List<StemConcept> getAttributeStems(ConceptAttribute conceptAttribute, Concept concept, StemConcept parent) {
+
+		List<StemConcept> result = new ArrayList<>();
+		
+		// Retrieve stems for the attribute
+		String attributeName = conceptAttribute.getName();
+		List<String> stems = ApplicationLogic.getStems(attributeName, rejectedList);
+
+		if (stems.size() > 0) {
+			
+			// Create a stem for the full attribute name
+			String fullName = stems.remove(0);
+			StemConcept fullStem = new StemConcept(project, parent, concept, fullName, StemConceptType.ATTRIBUTE_NAME_FULL);
+			result.add(fullStem);
+			
+			// Create sub-stems for parts
+			if (stems.size() > 0) {
+				
+				for (String partName : stems) {
+					result.add(new StemConcept(project, fullStem, concept, partName, StemConceptType.ATTRIBUTE_NAME_PART));
+				}
+			}
+
+			// Retrieve stems for the identifier
+			String identifierName = conceptAttribute.getIdentifier();
+			stems = ApplicationLogic.getStems(identifierName, rejectedList);
+			
+			if (stems.size() > 0) {
+
+				// Create a stem for the the parameter type
+				String fullIdentifierName = stems.remove(0);
+				result.add(new StemConcept(project, fullStem, concept, fullIdentifierName, StemConceptType.ATTRIBUTE_IDENTIFIER_FULL));
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Extract stems from concept class.
+	 * 
+	 * @param conceptClass
+	 * @param concept
+	 * @param parent
+	 * @return a list of StemConcept
+	 */
+	private List<StemConcept> getClassStems(ConceptClass conceptClass, Concept concept, StemConcept parent) {
+
+		List<StemConcept> result = new ArrayList<>();
+		
+		// Retrieve stems for the class
+		String className = conceptClass.getName();
+		List<String> stems = ApplicationLogic.getStems(className, rejectedList);
+
+		if (stems.size() > 0) {
+			
+			// Create a stem for the full class name
+			String fullName = stems.remove(0);
+			StemConcept fullStem = new StemConcept(project, parent, concept, fullName, StemConceptType.CLASS_NAME_FULL);
+			result.add(fullStem);
+
+			// Retrieve stems for the class identifier
+			String identifierName = conceptClass.getIdentifier();
+			stems = ApplicationLogic.getStems(identifierName, rejectedList);
+
+			if (stems.size() > 0) {
+				
+				// Create a stem for the full identifier name
+				String fullIdentifierName = stems.remove(0);
+				result.add(new StemConcept(project, fullStem, concept, fullIdentifierName, StemConceptType.CLASS_IDENTIFIER_FULL));
+			}
+		}
+
+		return result;
+	}
+	
+	
+	/**
+	 * TestCase to study how names are splitted through camel casing.
 	 * 
 	 * @param args
 	 */
