@@ -14,7 +14,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.simulinkanalyzer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javaanalyzer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javainstrumenter"/>
-	<classpathentry kind="lib" path="lib/commons-math-3.3.5.jar" sourcepath="lib/commons-math-3.3.5-src.jar"/>
 	<classpathentry kind="lib" path="lib/docking-frames-common-1.1.2p14d.jar" sourcepath="lib/docking-frames-common-1.1.2p14d-src.jar"/>
 	<classpathentry kind="lib" path="lib/docking-frames-core-1.1.2p14d.jar" sourcepath="lib/docking-frames-core-1.1.2p14d-src.jar"/>
 	<classpathentry kind="lib" path="lib/ehcache-2.10.0.jar" sourcepath="lib/ehcache-2.10.0-src.zip"/>

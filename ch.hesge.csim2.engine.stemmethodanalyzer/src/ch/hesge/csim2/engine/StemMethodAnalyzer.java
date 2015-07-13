@@ -7,7 +7,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
@@ -188,6 +191,7 @@ public class StemMethodAnalyzer implements IEngine {
 		try {
 
 			int stemMethodCount = 0;
+			List<StemMethod> stems = new ArrayList<>();
 
 			Console.writeInfo(this, "cleaning previous stem methods...");
 			ApplicationLogic.deleteStemMethods(project);
@@ -200,105 +204,47 @@ public class StemMethodAnalyzer implements IEngine {
 
 			// Build stem method table
 			for (SourceClass sourceClass : sourceClasses) {
-
 				for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
+					int stemCount = 0;
+
 					// Retrieve stems for the method
-					String methodName = sourceMethod.getName();
-					List<String> methodStems = ApplicationLogic.getStems(methodName, rejectedMethodList);
+					List<StemMethod> methodStems = getMethodStems(sourceMethod);
 					
-					if (methodStems.isEmpty()) continue;
-					
-					// Create a stem for the full method name
-					String methodNameFull = methodStems.remove(0);
-					StemMethod stemMethodNameFull = new StemMethod(project, null, sourceMethod, methodNameFull, StemMethodType.METHOD_NAME_FULL, null);
-					ApplicationLogic.saveStemMethod(stemMethodNameFull);
-					stemMethodCount++;
-
-					// Create a stem for each part of the method name
-					if (!methodStems.isEmpty()) {
-						for (String methodNamePart : methodStems) {
-							StemMethod stemMethodNamePart = new StemMethod(project, stemMethodNameFull, sourceMethod, methodNamePart, StemMethodType.METHOD_NAME_PART, null);
-							ApplicationLogic.saveStemMethod(stemMethodNamePart);
-							stemMethodCount++;
-						}
-					}
-
-					for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
-
-						// Retrieve stems for the parameter
-						String parameterName = sourceParameter.getName();
-						List<String> parameterStems = ApplicationLogic.getStems(parameterName, null);
-
-						if (parameterStems.isEmpty()) continue;
-
-						// Create a stem for the full parameter name
-						String parameterNameFull = parameterStems.remove(0);
-						StemMethod stemParameterNameFull = new StemMethod(project, stemMethodNameFull, sourceMethod, parameterNameFull, StemMethodType.PARAMETER_NAME_FULL, null);
-						ApplicationLogic.saveStemMethod(stemParameterNameFull);
-						stemMethodCount++;
-
-						// Create a stem for each part of the parameter name
-						if (!parameterStems.isEmpty()) {
-							for (String parameterNamePart : parameterStems) {
-								StemMethod stemParameterNamePart = new StemMethod(project, stemParameterNameFull, sourceMethod, parameterNamePart, StemMethodType.PARAMETER_NAME_PART, null);
-								ApplicationLogic.saveStemMethod(stemParameterNamePart);
-								stemMethodCount++;
-							}
-						}
-
-						// Retrieve stems for the type
-						String parameterType = sourceParameter.getType();
-						List<String> typeStems = ApplicationLogic.getStems(parameterType, rejectedTypeList);
-
-						if (typeStems.isEmpty()) continue;
-
-						// Create a stem for the full type name
-						String parameterTypeFull = typeStems.remove(0);
-						StemMethod stemParameterTypeFull = new StemMethod(project, stemParameterNameFull, sourceMethod, parameterTypeFull, StemMethodType.PARAMETER_TYPE_FULL, null);
-						ApplicationLogic.saveStemMethod(stemParameterTypeFull);
-						stemMethodCount++;
-					}
-
-					for (SourceReference sourceReference : sourceMethod.getReferences()) {
-
-						// Retrieve stems for the reference
-						String referenceName = sourceReference.getName();
-						List<String> referenceStems = ApplicationLogic.getStems(referenceName, null);
-
-						if (referenceStems.isEmpty()) continue;
-
-						// Create a stem for the full reference name
-						String referenceNameFull = referenceStems.remove(0);
-						StemMethod stemReferenceNameFull = new StemMethod(project, stemMethodNameFull, sourceMethod, referenceNameFull, StemMethodType.REFERENCE_NAME_FULL, sourceReference.getOrigin());
-						ApplicationLogic.saveStemMethod(stemReferenceNameFull);
-						stemMethodCount++;
-
-						// Create a stem for each part of the reference name
-						if (!referenceStems.isEmpty()) {
-							for (String referenceNamePart : referenceStems) {
-								StemMethod stemReferenceNamePart = new StemMethod(project, stemReferenceNameFull, sourceMethod, referenceNamePart, StemMethodType.REFERENCE_NAME_PART, sourceReference.getOrigin());
-								ApplicationLogic.saveStemMethod(stemReferenceNamePart);
-								stemMethodCount++;
-							}
-						}
-
-						// Retrieve stems for the type
-						String referenceType = sourceReference.getType();
-						List<String> typeStems = ApplicationLogic.getStems(referenceType, rejectedTypeList);
+					if (methodStems.size() > 0) {
 						
-						if (typeStems.isEmpty()) continue;
+						stems.addAll(methodStems);						
+						stemCount =+ methodStems.size();
+						
+						StemMethod rootStem = methodStems.get(0);
+						
+						// Retrieve all parameters
+						for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
+							List<StemMethod> parameterStems = getParameterStems(sourceParameter, sourceMethod, rootStem);
+							stems.addAll(parameterStems);
+							stemCount =+ parameterStems.size();
+						}
 
-						// Create a stem for the full type name
-						String referenceTypeFull = typeStems.remove(0);
-						StemMethod stemReferenceTypeFull = new StemMethod(project, stemReferenceNameFull, sourceMethod, referenceTypeFull, StemMethodType.REFERENCE_TYPE_FULL, sourceReference.getOrigin());
-						ApplicationLogic.saveStemMethod(stemReferenceTypeFull);
-						stemMethodCount++;
+						// Retrieve all unique references			
+						Map<String, String> referenceMap = new HashMap<>();
+						for (SourceReference sourceReference : sourceMethod.getReferences()) {
+							String refName = sourceReference.getName();
+							if (!referenceMap.containsKey(refName)) {
+								referenceMap.put(refName, refName);
+								List<StemMethod> referenceStems = getReferenceStems(sourceReference, sourceMethod, rootStem);
+								stems.addAll(referenceStems);
+								stemCount =+ referenceStems.size();
+							}
+						}
 					}
+					
+					Console.writeInfo(this, stemCount + " stems found in method: " + sourceMethod.getName());
+					stemMethodCount += stemCount;
 				}
 			}
 
-			Console.writeInfo(this, stemMethodCount + " stems methods found");
+			ApplicationLogic.saveStemMethods(stems);
+			Console.writeInfo(this, stemMethodCount + " total stem-method found");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing sources: " + StringUtils.toString(e));
@@ -314,4 +260,132 @@ public class StemMethodAnalyzer implements IEngine {
 	@Override
 	public void stop() {
 	}	
+	
+	/**
+	 * Extract stems from method.
+	 * 
+	 * @param sourceMethod
+	 * @return a list of StemMethod
+	 */
+	private List<StemMethod> getMethodStems(SourceMethod sourceMethod) {
+		
+		List<StemMethod> result = new ArrayList<>();
+
+		// Retrieve stems for the method name
+		String methodName = sourceMethod.getName();
+		List<String> stems = ApplicationLogic.getStems(methodName, rejectedMethodList);
+
+		if (stems.size() > 0) {
+
+			// Create a stem for the method name
+			String fullName = stems.remove(0);
+			StemMethod fullStem = new StemMethod(project, null, sourceMethod, fullName, StemMethodType.METHOD_NAME_FULL, null);
+			result.add(fullStem);
+
+			// Create sub-stems for parts
+			if (stems.size() > 0) {
+				
+				for (String partName : stems) {
+					result.add(new StemMethod(project, fullStem, sourceMethod, partName, StemMethodType.METHOD_NAME_PART, null));
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Extract stems from parameter.
+	 * 
+	 * @param sourceParameter
+	 * @param sourceMethod
+	 * @param parent
+	 * @return
+	 */
+	private List<StemMethod> getParameterStems(SourceParameter sourceParameter, SourceMethod sourceMethod, StemMethod parent) {
+
+		List<StemMethod> result = new ArrayList<>();
+		
+		// Retrieve stems for parameter name
+		String parameterName = sourceParameter.getName();
+		List<String> stems = ApplicationLogic.getStems(parameterName, null);
+
+		if (stems.size() > 0) {
+
+			// Create a stem for the parameter name
+			String fullName = stems.remove(0);
+			StemMethod fullStem = new StemMethod(project, parent, sourceMethod, fullName, StemMethodType.PARAMETER_NAME_FULL, null);
+			result.add(fullStem);
+
+			// Create sub-stems for parts
+			if (stems.size() > 0) {
+				
+				for (String partName : stems) {
+					result.add(new StemMethod(project, fullStem, sourceMethod, partName, StemMethodType.PARAMETER_NAME_PART, null));
+				}
+			}
+			
+			// Retrieve stems for parameter type
+			String parameterType = sourceParameter.getType();
+			stems = ApplicationLogic.getStems(parameterType, rejectedTypeList);
+			
+			if (stems.size() > 0) {
+
+				// Create a stem for the the parameter type
+				String paramType = stems.remove(0);
+				StemMethod typeStem = new StemMethod(project, fullStem, sourceMethod, paramType, StemMethodType.PARAMETER_TYPE_FULL, null);
+				result.add(typeStem);
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Extract stems from reference.
+	 * 
+	 * @param sourceReference
+	 * @param sourceMethod
+	 * @param parent
+	 * @return
+	 */
+	private List<StemMethod> getReferenceStems(SourceReference sourceReference, SourceMethod sourceMethod, StemMethod parent) {
+
+		List<StemMethod> result = new ArrayList<>();
+		
+		// Retrieve stems for reference name
+		String referenceName = sourceReference.getName();
+		List<String> stems = ApplicationLogic.getStems(referenceName, null);
+
+		if (stems.size() > 0) {
+
+			// Create a stem for the reference name
+			String fullName = stems.remove(0);
+			StemMethod fullStem = new StemMethod(project, parent, sourceMethod, fullName, StemMethodType.REFERENCE_NAME_FULL, sourceReference.getOrigin());
+			result.add(fullStem);
+			
+			// Create sub-stems for parts
+			if (stems.size() > 0) {
+				
+				for (String partName : stems) {
+					result.add(new StemMethod(project, fullStem, sourceMethod, partName, StemMethodType.REFERENCE_NAME_PART, sourceReference.getOrigin()));
+				}
+			}
+			
+			// Retrieve stems for reference type
+			String referenceType = sourceReference.getType();
+			stems = ApplicationLogic.getStems(referenceType, rejectedTypeList);
+			
+			if (stems.size() > 0) {
+
+				// Create a stem for the the reference type
+				String refType = stems.remove(0);
+				StemMethod typeStem = new StemMethod(project, fullStem, sourceMethod, refType, StemMethodType.REFERENCE_TYPE_FULL, sourceReference.getOrigin());
+				result.add(typeStem);
+			}				
+		}			
+		
+		return result;
+	}
+	
 }

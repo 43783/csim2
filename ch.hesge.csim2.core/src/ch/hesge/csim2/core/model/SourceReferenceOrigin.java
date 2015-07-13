@@ -12,9 +12,10 @@ package ch.hesge.csim2.core.model;
 
 public enum SourceReferenceOrigin {
 
-	CLASS_ATTRIBUTE(0), 
+	CLASS_FIELD(0), 
 	METHOD_PARAMETER(1), 
 	LOCAL_VARIABLE(2),
+	DECLARATION(3),
 	UNKOWN_ORIGIN(255);
 
 	// Private attributes
@@ -45,11 +46,15 @@ public enum SourceReferenceOrigin {
     	
         switch (value) {
         	case 0:
-        		return CLASS_ATTRIBUTE;
+        		return CLASS_FIELD;
         	case 1:
         		return METHOD_PARAMETER;
-        	default:
+        	case 2:
         		return LOCAL_VARIABLE;
+        	case 3:
+        		return DECLARATION;
+        	default:
+        		return UNKOWN_ORIGIN;
        }
     }	
 }

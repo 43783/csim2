@@ -31,9 +31,11 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.PostfixExpression;
 import org.eclipse.jdt.core.dom.PrefixExpression;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jface.text.Document;
 
@@ -336,7 +338,7 @@ public class JavaAnalyzer implements IEngine {
 			public boolean visit(TypeDeclaration declaration) {
 
 				// Parse class name
-				String classname = JavaAnalyzerUtils.getClassName(declaration);
+				String classname = declaration.getName().getIdentifier();
 
 				// Add class if not already parsed
 				if (!parsedClasses.containsKey(classname)) {
@@ -360,15 +362,11 @@ public class JavaAnalyzer implements IEngine {
 			// Analyze method declaration
 			public boolean visit(MethodDeclaration declaration) {
 
-				// Parse owning class name
-				String classname = JavaAnalyzerUtils.getClassName(declaration);
-
-				// Check if class is already parsed
-				if (parsedClasses.containsKey(classname)) {
-
-					// Retrieve the owning class
-					SourceClass sourceClass = parsedClasses.get(classname);
-
+				// Retrieve enclosing class
+				SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(declaration, parsedClasses);
+						
+				if (sourceClass != null) {
+					
 					// Parse method declaration 
 					SourceMethod sourceMethod = JavaAnalyzerUtils.createSourceMethod(declaration);
 
@@ -383,128 +381,27 @@ public class JavaAnalyzer implements IEngine {
 				return true;
 			}
 
-			// Analyze variable declaration in methods
+			// Analyze variable declared in methods
 			public boolean visit(VariableDeclarationStatement declaration) {
 
-				// Parse enclosing class name
-				String classname = JavaAnalyzerUtils.getClassName(declaration);
+				// Retrieve enclosing class and method
+				SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(declaration, parsedClasses);
+				SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(declaration,  parsedClasses);
+						
+				if (sourceClass != null && sourceMethod != null) {
 
-				// Check if class is already parsed
-				if (parsedClasses.containsKey(classname)) {
-
-					// Retrieve the enclosing class
-					SourceClass sourceClass = parsedClasses.get(classname);
-
-					// Retrieve the owning method
-					String methodSignature = JavaAnalyzerUtils.getMethodSignature(declaration);
-					SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
-
-					// Check if method is already parsed
-					if (sourceMethod != null) {
-
-						// Parse variables declaration
-						List<SourceVariable> sourceVariables = JavaAnalyzerUtils.createSourceVariables(declaration);
-
-						// And add each one to its owning method
-						for (SourceVariable sourceVariable : sourceVariables) {
-							if (!sourceMethod.getVariables().contains(sourceVariable)) {
-								sourceMethod.getVariables().add(sourceVariable);
-								Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
-							}
-						}
-					}
-				}
-
-				return true;
-			}
-
-			public boolean visit(Assignment assignment) {
-				
-				Console.writeDebug(this, "assignment: " + assignment);
-
-				SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(assignment, parsedClasses);
-				
-				if (sourceMethod != null) {
-					
-					// Parse reference definition
-					String referenceName = assignment.getLeftHandSide().toString();
-					SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(assignment, parsedClasses);
-					SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
-
-					// And add new reference, if not already present
-					if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
-						sourceMethod.getReferences().add(sourceReference);
-						Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
-					}
-				}
-				
-				return true;
-			}
-			
-			public boolean visit(InfixExpression infixExpression) {
-				Console.writeDebug(this, "infixExpression: " + infixExpression);
-				return true;
-			}
-
-			public boolean visit(PostfixExpression postfixExpression) {
-				Console.writeDebug(this, "postfixExpression: " + postfixExpression);
-				return true;
-			}
-
-			public boolean visit(PrefixExpression prefixExpression) {
-				Console.writeDebug(this, "prefixExpression: " + prefixExpression);
-				return true;
-			}
-
-			public boolean visit(ClassInstanceCreation classInstanceCreation) {
-				Console.writeDebug(this, "classInstanceCreation: " + classInstanceCreation);
-				return true;
-			}
-
-			public boolean visit(FieldAccess fieldAccess) {
-				Console.writeDebug(this, "fieldAccess: " + fieldAccess);
-				return true;
-			}
-
-			public boolean visit(SuperFieldAccess superFieldAccess) {
-				Console.writeDebug(this, "superFieldAccess: " + superFieldAccess);
-				return true;
-			}
-
-			public boolean visit(ArrayAccess arrayAccess) {
-				Console.writeDebug(this, "arrayAccess: " + arrayAccess);
-				return true;
-			}
-			
-			/*
-			// Analyze variable declaration in expression
-			public boolean visit(VariableDeclarationExpression declaration) {
-
-				// Parse enclosing class name
-				String classname = JavaAnalyzerUtils.getClassName(declaration);
-
-				// Check if class is already parsed
-				if (parsedClasses.containsKey(classname)) {
-
-					// Retrieve the enclosing class
-					SourceClass sourceClass = parsedClasses.get(classname);
-
-					// Retrieve the owning method
-					String methodSignature = JavaAnalyzerUtils.getMethodSignature(declaration);
-					SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
-
-					// Check if method is already parsed
-					if (sourceMethod != null) {
-
-						// Parse variables declaration
-						List<SourceVariable> sourceVariables = JavaAnalyzerUtils.createSourceVariables(declaration);
-
-						// And add each one to its owning method
-						for (SourceVariable sourceVariable : sourceVariables) {
-							if (!sourceMethod.getVariables().contains(sourceVariable)) {
-								sourceMethod.getVariables().add(sourceVariable);
-								Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
-							}
+					// Parse variables declaration
+					List<SourceVariable> sourceVariables = JavaAnalyzerUtils.createSourceVariables(declaration);
+	
+					// And add each one to its owning method
+					for (SourceVariable sourceVariable : sourceVariables) {
+						if (!sourceMethod.getVariables().contains(sourceVariable)) {
+							
+							sourceMethod.getVariables().add(sourceVariable);
+							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, sourceVariable);
+							sourceMethod.getReferences().add(sourceReference);
+							
+							Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
 						}
 					}
 				}
@@ -512,9 +409,86 @@ public class JavaAnalyzer implements IEngine {
 				return true;
 			}
 			
+			// Analyze variable declared within expression (in for loop for instance)
+			public boolean visit(VariableDeclarationExpression expression) {
+
+				// Retrieve enclosing class and method
+				SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(expression, parsedClasses);
+				SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(expression,  parsedClasses);
+						
+				if (sourceClass != null && sourceMethod != null) {
+
+					// Parse variables declaration
+					List<SourceVariable> sourceVariables = JavaAnalyzerUtils.createSourceVariables(expression);
+
+					// And add each one to its owning method
+					for (SourceVariable sourceVariable : sourceVariables) {
+						if (!sourceMethod.getVariables().contains(sourceVariable)) {
+							
+							sourceMethod.getVariables().add(sourceVariable);
+							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, sourceVariable);
+							sourceMethod.getReferences().add(sourceReference);
+							
+							Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
+						}
+					}
+				}
+
+				return true;
+			}
+
+			// Visible all names within expression
 			public boolean visit(SimpleName name) {
 
-				if (name.getParent() instanceof Expression) {
+				// Detect variable reference within a fragment initializer
+				if (name.getParent() instanceof VariableDeclarationFragment) {
+					
+					VariableDeclarationFragment fragment = (VariableDeclarationFragment) name.getParent();
+					
+					if (fragment.getInitializer() == name) {
+						
+						// Retrieve enclosing class and method
+						SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(name, parsedClasses);
+						SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(name,  parsedClasses);
+
+						if (sourceClass != null && sourceMethod != null) {
+
+							// Parse reference definition
+							String referenceName = name.getIdentifier();
+							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
+
+							// And add each one to its owning method
+							if (sourceReference != null) {
+								sourceMethod.getReferences().add(sourceReference);
+								Console.writeInfo(this, "    ref(frag) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+							}
+						}
+					}
+				}
+				
+				// Detect reference within statement
+				else if (name.getParent() instanceof Statement) {
+					
+					// Retrieve enclosing class and method
+					SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(name, parsedClasses);
+					SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(name,  parsedClasses);
+
+					if (sourceClass != null && sourceMethod != null) {
+
+						// Parse reference definition
+						String referenceName = name.getIdentifier();
+						SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
+
+						// And add each one to its owning method
+						if (sourceReference != null) {
+							sourceMethod.getReferences().add(sourceReference);
+							Console.writeInfo(this, "    ref(stmt) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+						}
+					}
+				}
+				
+				// Detect reference within expression
+				else if (name.getParent() instanceof Expression) {
 					
 					Expression expression = (Expression) name.getParent();
 					
@@ -527,47 +501,27 @@ public class JavaAnalyzer implements IEngine {
 						expression instanceof SuperFieldAccess || 
 						expression instanceof ArrayAccess) {
 						
-						// Parse enclosing class name
-						String classname = JavaAnalyzerUtils.getClassName(name);
+						// Retrieve enclosing class and method
+						SourceClass sourceClass = JavaAnalyzerUtils.getSourceClass(name, parsedClasses);
+						SourceMethod sourceMethod = JavaAnalyzerUtils.getSourceMethod(name,  parsedClasses);
 
-						// Check if class is already parsed
-						if (parsedClasses.containsKey(classname)) {
+						if (sourceClass != null && sourceMethod != null) {
 
-							// Retrieve the enclosing class
-							SourceClass sourceClass = parsedClasses.get(classname);
+							// Parse reference definition
+							String referenceName = name.getIdentifier();
+							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
 
-							// Retrieve the owning method
-							String methodSignature = JavaAnalyzerUtils.getMethodSignature(name);
-							SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
-
-							// Check if method is already parsed
-							if (sourceMethod != null) {
-
-								// Parse reference defininition
-								String referenceName = name.getIdentifier();
-								SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, referenceName);
-
-								// And add each one to its owning method
-								if (sourceReference != null && !sourceMethod.getReferences().contains(sourceReference)) {
-									sourceMethod.getReferences().add(sourceReference);
-									Console.writeInfo(this, "    ref " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
-								}
+							// And add each one to its owning method
+							if (sourceReference != null) {
+								sourceMethod.getReferences().add(sourceReference);
+								Console.writeInfo(this, "    ref(expr) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
 							}
 						}
 					}
-					else {
-						Console.writeDebug(this, "expression: " + expression.getClass() + ", name: " + name.getIdentifier());
-					}
 				}
-				else {
-					Console.writeDebug(this, "node: " + name.getParent().getClass() + ", name: " + name.getIdentifier());
-				}
-				
 
 				return true;
 			}
-			 */
-
 		});
 	}
 }

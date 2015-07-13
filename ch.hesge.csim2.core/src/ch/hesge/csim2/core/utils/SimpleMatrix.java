@@ -2,6 +2,12 @@ package ch.hesge.csim2.core.utils;
 
 import java.util.Arrays;
 
+
+/**
+ * This class represents a simple matrix storing doubles.
+ * 
+ * @author Eric Harth
+ */
 public class SimpleMatrix {
 
 	// Private attributes

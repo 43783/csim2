@@ -2,6 +2,7 @@ package ch.hesge.csim2.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -12,6 +13,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.SourceAttribute;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
@@ -31,7 +33,7 @@ public class JavaAnalyzerUtils {
 	 * TypeDeclaration passed in argument.
 	 * 
 	 * @param declaration
-	 *            the class declaration
+	 *        the class declaration
 	 * @return a source class
 	 */
 	public static SourceClass createSourceClass(TypeDeclaration declaration) {
@@ -47,7 +49,7 @@ public class JavaAnalyzerUtils {
 		String superclass = "Object";
 
 		if (declaration.getSuperclassType() != null) {
-			superclass = JavaAnalyzerUtils.getSimpleName(declaration.getSuperclassType().toString());
+			superclass = JavaAnalyzerUtils.getSimpleTypeName(declaration.getSuperclassType().toString());
 		}
 
 		sourceClass.setSuperClassName(superclass);
@@ -80,7 +82,7 @@ public class JavaAnalyzerUtils {
 	 * MethodDeclaration passed in argument.
 	 * 
 	 * @param declaration
-	 *            the method declaration
+	 *        the method declaration
 	 * @return a source class
 	 */
 	public static SourceMethod createSourceMethod(MethodDeclaration declaration) {
@@ -92,7 +94,7 @@ public class JavaAnalyzerUtils {
 
 		// Retrieve method type (return type)
 		String methodType = (declaration.getReturnType2() == null ? null : declaration.getReturnType2().toString());
-		sourceMethod.setReturnType(JavaAnalyzerUtils.getSimpleName(methodType));
+		sourceMethod.setReturnType(JavaAnalyzerUtils.getSimpleTypeName(methodType));
 
 		// Retrieve all method's parameters
 		for (Object p : declaration.parameters()) {
@@ -101,7 +103,7 @@ public class JavaAnalyzerUtils {
 
 			SourceParameter sourceParameter = new SourceParameter();
 			sourceParameter.setName(param.getName().getIdentifier());
-			sourceParameter.setType(JavaAnalyzerUtils.getSimpleName(param.getType().toString()));
+			sourceParameter.setType(JavaAnalyzerUtils.getSimpleTypeName(param.getType().toString()));
 
 			if (!sourceMethod.getParameters().contains(sourceParameter)) {
 				sourceMethod.getParameters().add(sourceParameter);
@@ -111,6 +113,7 @@ public class JavaAnalyzerUtils {
 		// Retrieve method signature
 		String signature = JavaAnalyzerUtils.getMethodSignature(declaration);
 		sourceMethod.setSignature(signature);
+		sourceMethod.setName(declaration.getName().getIdentifier());
 
 		return sourceMethod;
 	}
@@ -120,11 +123,11 @@ public class JavaAnalyzerUtils {
 	 * specific method and class.
 	 * 
 	 * @param sourceClass
-	 *            the class owning the reference
+	 *        the class owning the reference
 	 * @param sourceMethod
-	 *            the method owning the reference
+	 *        the method owning the reference
 	 * @param referenceName
-	 *            the name of the reference
+	 *        the name of the reference
 	 * @return an instance of SourceReference or null
 	 */
 	public static SourceReference createSourceReference(SourceClass sourceClass, SourceMethod sourceMethod, String referenceName) {
@@ -134,39 +137,47 @@ public class JavaAnalyzerUtils {
 		if (sourceClass != null && sourceMethod != null) {
 
 			String referenceType = "Unkown";
-			SourceReferenceOrigin referenceOrigin = SourceReferenceOrigin.UNKOWN_ORIGIN;
-
-			// Check if reference is a class attribute
-			for (SourceAttribute attribute : sourceClass.getAttributes()) {
-				if (attribute.getName().equals(referenceName)) {
-					referenceOrigin = SourceReferenceOrigin.CLASS_ATTRIBUTE;
-					referenceType   = attribute.getType();
-					break;
-				}
-			}
-			
-			// Check if reference is a method parameter
-			if (referenceOrigin != SourceReferenceOrigin.UNKOWN_ORIGIN) {
-				
-				for (SourceParameter param : sourceMethod.getParameters()) {
-					if (param.getName().equals(referenceName)) {
-						referenceOrigin = SourceReferenceOrigin.METHOD_PARAMETER;
-						referenceType   = param.getType();
-						break;
-					}
-				}
-			}
+			SourceReferenceOrigin referenceOrigin = null;
 
 			// Check if reference is a local variable
-			if (referenceOrigin != SourceReferenceOrigin.UNKOWN_ORIGIN) {
-				
+			if (referenceOrigin == null) {
+
 				for (SourceVariable var : sourceMethod.getVariables()) {
 					if (var.getName().equals(referenceName)) {
 						referenceOrigin = SourceReferenceOrigin.LOCAL_VARIABLE;
-						referenceType   = var.getType();
+						referenceType = var.getType();
 						break;
 					}
 				}
+			}
+
+			// Check if reference is a method parameter
+			if (referenceOrigin == null) {
+
+				for (SourceParameter param : sourceMethod.getParameters()) {
+					if (param.getName().equals(referenceName)) {
+						referenceOrigin = SourceReferenceOrigin.METHOD_PARAMETER;
+						referenceType = param.getType();
+						break;
+					}
+				}
+			}
+
+			// Check if reference is a class attribute
+			if (referenceOrigin == null) {
+
+				for (SourceAttribute attribute : sourceClass.getAttributes()) {
+					if (attribute.getName().equals(referenceName)) {
+						referenceOrigin = SourceReferenceOrigin.CLASS_FIELD;
+						referenceType = attribute.getType();
+						break;
+					}
+				}
+			}
+
+			// If no origin found
+			if (referenceOrigin == null) {
+				referenceOrigin = SourceReferenceOrigin.UNKOWN_ORIGIN;
 			}
 
 			// Create the reference
@@ -180,6 +191,32 @@ public class JavaAnalyzerUtils {
 	}
 
 	/**
+	 * Create a reference from variable declaration passed in argument
+	 * 
+	 * @param sourceClass
+	 *        the class owning the reference
+	 * @param sourceMethod
+	 *        the method owning the reference
+	 * @param sourceVariable
+	 *        the source variable to use as based refernce
+	 * @return an instance of SourceReference or null
+	 */
+	public static SourceReference createSourceReference(SourceClass sourceClass, SourceMethod sourceMethod, SourceVariable sourceVariable) {
+
+		SourceReference sourceReference = null;
+
+		if (sourceClass != null && sourceMethod != null) {
+
+			sourceReference = new SourceReference();
+			sourceReference.setName(sourceVariable.getName());
+			sourceReference.setType(sourceVariable.getType());
+			sourceReference.setOrigin(SourceReferenceOrigin.DECLARATION);
+		}
+		
+		return sourceReference;
+	}
+		
+	/**
 	 * Create a variable reference list base on the declaration statement passed
 	 * passed in argument
 	 * 
@@ -191,9 +228,37 @@ public class JavaAnalyzerUtils {
 		List<SourceVariable> sourceVariables = new ArrayList<>();
 
 		// Retrieve variable type
-		String varType = JavaAnalyzerUtils.getSimpleName(declaration.getType().toString());
+		String varType = JavaAnalyzerUtils.getSimpleTypeName(declaration.getType().toString());
 
 		for (Object o : declaration.fragments()) {
+
+			VariableDeclarationFragment varName = (VariableDeclarationFragment) o;
+
+			SourceVariable sourceVariable = new SourceVariable();
+			sourceVariable.setName(varName.getName().getIdentifier());
+			sourceVariable.setType(varType);
+
+			sourceVariables.add(sourceVariable);
+		}
+
+		return sourceVariables;
+	}
+
+	/**
+	 * Create a variable reference list base on the declaration statement passed
+	 * passed in argument
+	 * 
+	 * @param expression
+	 * @return a list of SourceVariable
+	 */
+	public static List<SourceVariable> createSourceVariables(VariableDeclarationExpression expression) {
+
+		List<SourceVariable> sourceVariables = new ArrayList<>();
+
+		// Retrieve variable type
+		String varType = JavaAnalyzerUtils.getSimpleTypeName(expression.getType().toString());
+
+		for (Object o : expression.fragments()) {
 
 			VariableDeclarationFragment varName = (VariableDeclarationFragment) o;
 
@@ -214,56 +279,26 @@ public class JavaAnalyzerUtils {
 	 * @param declaration
 	 * @return a list of SourceVariable
 	 */
-	public static List<SourceVariable> createSourceVariables(VariableDeclarationExpression declaration) {
-
-		List<SourceVariable> sourceVariables = new ArrayList<>();
+	public static SourceVariable createSourceVariables(SingleVariableDeclaration declaration) {
 
 		// Retrieve variable type
-		String varType = JavaAnalyzerUtils.getSimpleName(declaration.getType().toString());
+		String varType = JavaAnalyzerUtils.getSimpleTypeName(declaration.getType().toString());
 
-		for (Object o : declaration.fragments()) {
+		SourceVariable sourceVariable = new SourceVariable();
+		sourceVariable.setName(declaration.getName().getIdentifier());
+		sourceVariable.setType(varType);
 
-			VariableDeclarationFragment varName = (VariableDeclarationFragment) o;
-
-			SourceVariable sourceVariable = new SourceVariable();
-			sourceVariable.setName(varName.getName().getIdentifier());
-			sourceVariable.setType(varType);
-
-			sourceVariables.add(sourceVariable);
-		}
-
-		return sourceVariables;
-	}
-
-	/**
-	 * Return the classname owning the node passed in argument.
-	 * 
-	 * @param node
-	 *            the node where are interested
-	 * @return the classname
-	 */
-	public static String getClassName(ASTNode node) {
-
-		String classname = "Anonymous";
-
-		// Retrieve class owning the node
-		TypeDeclaration typeDeclaration = JavaAnalyzerUtils.getTypeDeclaration(node);
-
-		if (typeDeclaration != null) {
-			classname = typeDeclaration.getName().getIdentifier();
-		}
-
-		return classname;
+		return sourceVariable;
 	}
 
 	/**
 	 * Return the method signature owning the node passed in argument.
 	 * 
 	 * @param node
-	 *            the node where are interested
+	 *        the node where are interested
 	 * @return the signature of the method owning the node or null
 	 */
-	public static String getMethodSignature(ASTNode node) {
+	private static String getMethodSignature(ASTNode node) {
 
 		String signature = "";
 
@@ -282,7 +317,7 @@ public class JavaAnalyzerUtils {
 
 				SingleVariableDeclaration param = (SingleVariableDeclaration) p;
 
-				String paramType = JavaAnalyzerUtils.getSimpleName(param.getType().toString());
+				String paramType = JavaAnalyzerUtils.getSimpleTypeName(param.getType().toString());
 				String paramName = param.getName().getIdentifier();
 
 				parameters += paramType + " " + paramName + ",";
@@ -304,29 +339,29 @@ public class JavaAnalyzerUtils {
 	 * Return the simple name of a type class without its package component
 	 * name.
 	 * 
-	 * @param fullTypename
+	 * @param typeName
 	 * @return the simple type name
 	 */
-	public static String getSimpleName(String fullTypename) {
+	private static String getSimpleTypeName(String typeName) {
 
-		if (fullTypename == null || fullTypename.trim().length() == 0)
+		if (typeName == null || typeName.trim().length() == 0)
 			return "void";
 
-		if (fullTypename.contains(".")) {
-			return fullTypename.substring(fullTypename.lastIndexOf(".") + 1);
+		if (typeName.contains(".")) {
+			return typeName.substring(typeName.lastIndexOf(".") + 1);
 		}
 
-		return fullTypename;
+		return typeName;
 	}
 
 	/**
 	 * Return the class owning the node passed in argument.
 	 * 
 	 * @param node
-	 *            the for which we are looking for class owner
+	 *        the for which we are looking for class owner
 	 * @return a type-declaration or null
 	 */
-	public static TypeDeclaration getTypeDeclaration(ASTNode node) {
+	private static TypeDeclaration getTypeDeclaration(ASTNode node) {
 
 		TypeDeclaration typeDeclaration = null;
 
@@ -351,10 +386,10 @@ public class JavaAnalyzerUtils {
 	 * Return the method owning the node passed in argument.
 	 * 
 	 * @param node
-	 *            the for which we are looking for method owner
+	 *        the for which we are looking for method owner
 	 * @return a method-declaration or null
 	 */
-	public static MethodDeclaration getMethodDeclaration(ASTNode node) {
+	private static MethodDeclaration getMethodDeclaration(ASTNode node) {
 
 		MethodDeclaration methodDeclaration = null;
 
@@ -374,4 +409,64 @@ public class JavaAnalyzerUtils {
 
 		return methodDeclaration;
 	}
+
+	/**
+	 * Retrieve the source-class owning a node.
+	 * 
+	 * @param node
+	 *        the node where are interested
+	 * @param parsedClasses
+	 *        source-class already parsed
+	 * @return the source-class or null
+	 */
+
+	public static SourceClass getSourceClass(ASTNode node, Map<String, SourceClass> parsedClasses) {
+
+		SourceClass sourceClass = null;
+
+		// Retrieve owning method
+		MethodDeclaration methodDeclaration = getMethodDeclaration(node);
+
+		// And retrieve class owning the method
+		TypeDeclaration typeDeclaration = getTypeDeclaration(methodDeclaration);
+
+		if (typeDeclaration != null) {
+			String classname = typeDeclaration.getName().getIdentifier();
+			sourceClass = parsedClasses.get(classname);
+		}
+
+		return sourceClass;
+	}
+
+	/**
+	 * Retrieve the source-method owning a node.
+	 * 
+	 * @param node
+	 *        the node where are interested
+	 * @param parsedClasses
+	 *        source-class already parsed
+	 * @return the source-class or null
+	 */
+
+	public static SourceMethod getSourceMethod(ASTNode node, Map<String, SourceClass> parsedClasses) {
+
+		SourceMethod sourceMethod = null;
+
+		// Retrieve source class owning the node
+		SourceClass sourceClass = getSourceClass(node, parsedClasses);
+
+		if (sourceClass != null) {
+
+			MethodDeclaration methodDeclaration = getMethodDeclaration(node);
+
+			// Retrieve the owning method
+			if (methodDeclaration != null) {
+				String methodSignature = getMethodSignature(methodDeclaration);
+				sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+			}
+		}
+
+		return sourceMethod;
+	}
+
 }

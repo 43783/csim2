@@ -199,13 +199,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Project> getProjects() {
 
-		String cacheKey = "getProjects";
+		List<Project> result = null;
+		
+		try {
+			
+			String cacheKey = "getProjects";
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, ProjectLogic.getProjects()));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, ProjectLogic.getProjects()));
+			}
+
+			result = (List<Project>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Project>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -216,13 +226,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Ontology> getOntologies() {
 
-		String cacheKey = "getOntologies";
+		List<Ontology> result = null;
+		
+		try {
+			
+			String cacheKey = "getOntologies";
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies()));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies()));
+			}
+
+			result = (List<Ontology>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Ontology>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -236,13 +256,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Ontology> getOntologies(Project project) {
 
-		String cacheKey = "getOntologies_" + project.getKeyId();
+		List<Ontology> result = null;
+		
+		try {
+			
+			String cacheKey = "getOntologies_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, OntologyLogic.getOntologies(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey,  OntologyLogic.getOntologies(project)));
+			}
+
+			result = (List<Ontology>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Ontology>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -253,13 +283,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Scenario> getScenarios() {
 
-		String cacheKey = "getScenarios";
+		List<Scenario> result = null;
+		
+		try {
+			
+			String cacheKey = "getScenarios";
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios()));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios()));
+			}
+
+			result = (List<Scenario>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Scenario>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -270,13 +310,23 @@ public class ApplicationLogic {
 	 */
 	public static List<IEngine> getEngines() {
 
-		String cacheKey = "getEngines";
+		List<IEngine> result = null;
+		
+		try {
+			
+			String cacheKey = "getEngines";
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, EngineLogic.getEngines()));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, EngineLogic.getEngines()));
+			}
+
+			result = (List<IEngine>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<IEngine>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -287,13 +337,23 @@ public class ApplicationLogic {
 	 */
 	public static synchronized List<IMethodConceptMatcher> getMatchers() {
 
-		String cacheKey = "getMatchers";
+		List<IMethodConceptMatcher> result = null;
+		
+		try {
+			
+			String cacheKey = "getMatchers";
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchers()));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, MatchingLogic.getMatchers()));
+			}
+
+			result = (List<IMethodConceptMatcher>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<IMethodConceptMatcher>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -307,13 +367,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Scenario> getScenarios(Project project) {
 
-		String cacheKey = "getScenarios_" + project.getKeyId();
+		List<Scenario> result = null;
+		
+		try {
+			
+			String cacheKey = "getScenarios_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, ScenarioLogic.getScenarios(project)));
+			}
+
+			result = (List<Scenario>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Scenario>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -327,13 +397,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Concept> getConcepts(Ontology ontology) {
 
-		String cacheKey = "getConceptsByOntology_" + ontology.getKeyId();
+		List<Concept> result = null;
+		
+		try {
+			
+			String cacheKey = "getConceptsByOntology_" + ontology.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(ontology)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(ontology)));
+			}
+
+			result = (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -347,13 +427,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Concept> getConcepts(Project project) {
 
-		String cacheKey = "getConceptsByProject_" + project.getKeyId();
+		List<Concept> result = null;
+		
+		try {
+			
+			String cacheKey = "getConceptsByProject_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(project)));
+			}
+
+			result = (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -368,13 +458,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, Concept> getConceptMap(Ontology ontology) {
 
-		String cacheKey = "getConceptMapByOntology_" + ontology.getKeyId();
+		Map<Integer, Concept> result = null;
+		
+		try {
+			
+			String cacheKey = "getConceptMapByOntology_" + ontology.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(ontology)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(ontology)));
+			}
+
+			result = (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -388,13 +488,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, Concept> getConceptMap(Project project) {
 
-		String cacheKey = "getConceptsMapByProject_" + project.getKeyId();
+		Map<Integer, Concept> result = null;
+		
+		try {
+			
+			String cacheKey = "getConceptsMapByProject_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(project)));
+			}
+
+			result = (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -407,13 +517,23 @@ public class ApplicationLogic {
 	 */
 	public static List<SourceClass> getSourceClasses(Project project) {
 
-		String cacheKey = "getSourceClasses_" + project.getKeyId();
+		List<SourceClass> result = null;
+		
+		try {
+			
+			String cacheKey = "getSourceClasses_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClasses(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClasses(project)));
+			}
+
+			result = (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -426,13 +546,23 @@ public class ApplicationLogic {
 	 */
 	public static List<SourceClass> getSourceClassMethodParam(Project project) {
 
-		String cacheKey = "getSourceClassMethodParam_" + project.getKeyId();
+		List<SourceClass> result = null;
+		
+		try {
+			
+			String cacheKey = "getSourceClassMethodParam_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMethodParam(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMethodParam(project)));
+			}
+
+			result = (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -446,13 +576,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, SourceClass> getSourceClassMap(Project project) {
 
-		String cacheKey = "getSourceClassMap_" + project.getKeyId();
+		Map<Integer, SourceClass> result = null;
+		
+		try {
+			
+			String cacheKey = "getSourceClassMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMap(project)));
+			}
+
+			result = (Map<Integer, SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -466,13 +606,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
-		String cacheKey = "getSourceMethodMap_" + project.getKeyId();
+		Map<Integer, SourceMethod> result = null;
+		
+		try {
+			
+			String cacheKey = "getSourceMethodMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodMap(project)));
+			}
+
+			result = (Map<Integer, SourceMethod>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, SourceMethod>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -488,13 +638,23 @@ public class ApplicationLogic {
 	 */
 	public static SourceMethod getSourceMethodBySignature(SourceClass sourceClass, String signature) {
 
-		String cacheKey = "getSourceMethodByClassAndSignature_" + sourceClass.getKeyId() + "_" + signature;
+		SourceMethod result = null;
+		
+		try {
+			
+			String cacheKey = "getSourceMethodByClassAndSignature_" + sourceClass.getKeyId() + "_" + signature;
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodBySignature(sourceClass, signature)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceMethodBySignature(sourceClass, signature)));
+			}
+
+			result = (SourceMethod) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (SourceMethod) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -527,13 +687,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, StemMethod> getStemMethodTreeMap(Project project) {
 
-		String cacheKey = "getStemMethodTreeMap_" + project.getKeyId();
+		Map<Integer, StemMethod> result = null;
+		
+		try {
+			
+			String cacheKey = "getStemMethodTreeMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodTreeMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodTreeMap(project)));
+			}
+
+			result = (Map<Integer, StemMethod>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, StemMethod>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -561,13 +731,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<String, List<StemMethod>> getStemMethodByTermMap(Project project) {
 
-		String cacheKey = "getStemMethodsByTermMap_" + project.getKeyId();
+		Map<String, List<StemMethod>> result = null;
+		
+		try {
+			
+			String cacheKey = "getStemMethodsByTermMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodByTermMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, StemLogic.getStemMethodByTermMap(project)));
+			}
+
+			result = (Map<String, List<StemMethod>>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<String, List<StemMethod>>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -585,13 +765,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, StemConcept> getStemConceptTreeMap(Project project) {
 
-		String cacheKey = "getStemConceptTree_" + project.getKeyId();
+		Map<Integer, StemConcept> result = null;
+		
+		try {
+			
+			String cacheKey = "getStemConceptTree_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptTreeMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptTreeMap(project)));
+			}
+
+			result = (Map<Integer, StemConcept>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, StemConcept>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -619,13 +809,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
 
-		String cacheKey = "getStemConceptsByTermMap_" + project.getKeyId();
+		Map<String, List<StemConcept>> result = null;
+		
+		try {
+			
+			String cacheKey = "getStemConceptsByTermMap_" + project.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptByTermMap(project)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, StemLogic.getStemConceptByTermMap(project)));
+			}
+
+			result = (Map<String, List<StemConcept>>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<String, List<StemConcept>>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -649,13 +849,23 @@ public class ApplicationLogic {
 	 */
 	public static List<Trace> getTraces(Scenario scenario) {
 
-		String cacheKey = "getTraces_" + scenario.getKeyId();
+		List<Trace> result = null;
+		
+		try {
+			
+			String cacheKey = "getTraces_" + scenario.getKeyId();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, TraceLogic.getTraces(scenario)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, TraceLogic.getTraces(scenario)));
+			}
+
+			result = (List<Trace>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (List<Trace>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -671,13 +881,23 @@ public class ApplicationLogic {
 	 */
 	public static TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
 
-		String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matcher.toString();
+		TimeSeries result = null;
+		
+		try {
+			
+			String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matcher.toString();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matcher)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matcher)));
+			}
+
+			result = (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -692,13 +912,23 @@ public class ApplicationLogic {
 	 */
 	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
 
-		String cacheKey = "getMethodConceptMap_" + project.getKeyId() + "_" + matcher.toString();
+		Map<Integer, List<MethodConceptMatch>> result = null;
+		
+		try {
+			
+			String cacheKey = "getMethodConceptMap_" + project.getKeyId() + "_" + matcher.toString();
 
-		if (APPCACHE.get(cacheKey) == null) {
-			APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matcher)));
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matcher)));
+			}
+
+			result = (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
 		}
-
-		return (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -856,13 +1086,13 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Save a single stem method.
+	 * Save a list of stem method.
 	 * 
 	 * @param stem
-	 *        the StemMethod to save
+	 *        the StemMethod list to save
 	 */
-	public static void saveStemMethod(StemMethod stem) {
-		StemLogic.saveStemMethod(stem);
+	public static void saveStemMethods(List<StemMethod> stems) {
+		StemLogic.saveStemMethods(stems);
 	}
 
 	/**

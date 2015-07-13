@@ -3,6 +3,15 @@ package ch.hesge.csim2.core.utils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class allows storing/retrieving, for each cell, a set of objects.
+ * The set can be retrieve by its coordinates (row, column).
+ * 
+ * @author Eric Harth
+ *
+ * @param <T>
+ *        the type of objects stored in cell
+ */
 @SuppressWarnings("unchecked")
 public class StemMatrix<T> {
 
@@ -12,25 +21,25 @@ public class StemMatrix<T> {
 	private Set<T>[][] entrySets;
 
 	/**
-	 * Construct a matrix with zero values.
+	 * Construct a matrix allowing storing objects of class T.
 	 * 
 	 * @param rows
 	 *        number of rows.
 	 * @param rows
 	 *        number of columns.
 	 */
-	public StemMatrix(Class<T> clazz, int rows, int cols) {
+	public StemMatrix(int rows, int cols) {
 
 		this.rows = rows;
 		this.cols = cols;
+
 		this.entrySets = new Set[rows][cols];
-		
+
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				entrySets[i][j] = new HashSet<T>();
 			}
 		}
-
 	}
 
 	/**
@@ -65,7 +74,7 @@ public class StemMatrix<T> {
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
 	public Set<T> get(int i, int j) {
-		return entrySets[i][j];
+		return new HashSet<T>(entrySets[i][j]);
 	}
 
 	/**

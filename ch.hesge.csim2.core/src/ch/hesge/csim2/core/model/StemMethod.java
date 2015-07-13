@@ -24,6 +24,7 @@ public class StemMethod {
 	private int methodId;
 	private String term;
 	private double weight;
+	private StemMethod parent;
 	private StemMethodType stemType;
 	private SourceReferenceOrigin refOrigin;
 	private List<StemMethod> parts;
@@ -49,6 +50,7 @@ public class StemMethod {
 	public StemMethod(Project project, StemMethod parent, SourceMethod sourceMethod, String term, StemMethodType stemType, SourceReferenceOrigin refOrigin) {
 
 		this.projectId = project.getKeyId();
+		this.parent = parent;
 		this.parentId = parent == null ? -1 : parent.getKeyId();
 		this.term = term;
 		this.stemType = stemType;
@@ -120,6 +122,10 @@ public class StemMethod {
 		this.methodId = methodId;
 	}
 
+	public StemMethod getParent() {
+		return parent;
+	}
+	
 	public List<StemMethod> getParts() {
 		return parts;
 	}

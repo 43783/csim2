@@ -5,11 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
-
 import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
@@ -19,6 +14,8 @@ import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.core.utils.SimpleMatrix;
+import ch.hesge.csim2.core.utils.SimpleVector;
 
 /**
  * This class implement all logical rules associated to timeseries.
@@ -92,10 +89,10 @@ class TimeSeriesLogic {
 		List<Trace> scenarioTraces = TraceDao.findByScenario(scenario);
 
 		// Create an empty matrix
-		RealMatrix traceMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), scenarioTraces.size());
+		SimpleMatrix traceMatrix  = new SimpleMatrix(traceConcepts.size(), scenarioTraces.size());
 
 		// Create a vector for global concept occurrences
-		RealVector occurrenceVector = new ArrayRealVector(traceConcepts.size());
+		SimpleVector occurrenceVector = new SimpleVector(traceConcepts.size());
 
 		for (int i = 0; i < scenarioTraces.size(); i++) {
 
@@ -115,7 +112,7 @@ class TimeSeriesLogic {
 
 					// Update associated column in matrix with weight associated to the concept
 					if (conceptIndex != -1) {
-						traceMatrix.setEntry(conceptIndex, i, match.getWeight());
+						traceMatrix.setValue(conceptIndex, i, match.getWeight());
 					}
 				}
 			}
@@ -193,8 +190,8 @@ class TimeSeriesLogic {
 	 */
 	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
 
-		RealMatrix reducedMatrix = null;
-		RealVector occurrenceVector = null;
+		SimpleMatrix reducedMatrix = null;
+		SimpleVector occurrenceVector = null;
 
 		// Retrieve segmented time series (for all available concepts in trace)
 		TimeSeries segmentedSeries = getSegmentedTimeSeries(timeSeries, segmentCount, threshold);
@@ -204,7 +201,7 @@ class TimeSeriesLogic {
 		// Retrieve the list of concepts found in segments, based on occurrences
 		for (int i = 0; i < segmentedSeries.getOccurrences().getDimension(); i++) {
 
-			if (segmentedSeries.getOccurrences().getEntry(i) > 0) {
+			if (segmentedSeries.getOccurrences().getValue(i) > 0) {
 
 				Concept elligibleConcept = segmentedSeries.getTraceConcepts().get(i);
 
@@ -219,16 +216,16 @@ class TimeSeriesLogic {
 		if (traceConcepts.size() > 0) {
 
 			// Create a reduced matrix with a subset of all concepts
-			reducedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
+			reducedMatrix = new SimpleMatrix(traceConcepts.size(), segmentCount);
 
 			// Create a vector for global concept occurrences
-			occurrenceVector = new ArrayRealVector(traceConcepts.size());
+			occurrenceVector = new SimpleVector(traceConcepts.size());
 
 			// Now convert each column vector into reduced vector
 			for (int i = 0; i < segmentCount; i++) {
 
-				RealVector originalVector = segmentedSeries.getTraceMatrix().getColumnVector(i);
-				RealVector reducedVector = new ArrayRealVector(traceConcepts.size());
+				SimpleVector originalVector = segmentedSeries.getTraceMatrix().getColumnVector(i);
+				SimpleVector reducedVector = new SimpleVector(traceConcepts.size());
 
 				// Keep all occurrences for specified concepts
 				for (int j = 0; j < traceConcepts.size(); j++) {
@@ -237,8 +234,8 @@ class TimeSeriesLogic {
 					int foundIndex = segmentedSeries.getTraceConcepts().indexOf(concept);
 
 					if (foundIndex != -1) {
-						double conceptCount = originalVector.getEntry(foundIndex);
-						reducedVector.setEntry(j, conceptCount);
+						double conceptCount = originalVector.getValue(foundIndex);
+						reducedVector.setValue(j, conceptCount);
 					}
 				}
 
@@ -314,35 +311,35 @@ class TimeSeriesLogic {
 		List<Concept> traceConcepts = timeSeries.getTraceConcepts();
 
 		// Create an empty segmented matrix
-		RealMatrix segmentedMatrix = MatrixUtils.createRealMatrix(traceConcepts.size(), segmentCount);
+		SimpleMatrix segmentedMatrix = new SimpleMatrix(traceConcepts.size(), segmentCount);
 
 		// Retrieve size of each segment (based on segment count)
 		int segmentSize = timeSeries.getTraceMatrix().getColumnDimension() / segmentCount;
 
 		// Create a vector for global concept occurrences
-		RealVector occurrenceVector = new ArrayRealVector(traceConcepts.size());
+		SimpleVector occurrenceVector = new SimpleVector(traceConcepts.size());
 
 		int traceNumber = 0;
 
 		// Compute each segment value
 		for (int segmentNumber = 0; segmentNumber < segmentCount; segmentNumber++) {
 
-			RealVector matrixVector = new ArrayRealVector(traceConcepts.size());
+			SimpleVector matrixVector = new SimpleVector(traceConcepts.size());
 
 			// Scan steps in segment
 			for (int i = traceNumber; i < traceNumber + segmentSize; i++) {
 
 				// Retrieve concept vector from original matrix
-				RealVector traceVector = timeSeries.getTraceMatrix().getColumnVector(i);
+				SimpleVector traceVector = timeSeries.getTraceMatrix().getColumnVector(i);
 
 				for (int j = 0; j < traceVector.getDimension(); j++) {
 
 					// Detect vector component based on threshold
-					if (traceVector.getEntry(j) >= threshold) {
-						traceVector.setEntry(j, 1d);
+					if (traceVector.getValue(j) >= threshold) {
+						traceVector.setValue(j, 1d);
 					}
 					else {
-						traceVector.setEntry(j, 0d);
+						traceVector.setValue(j, 0d);
 					}
 				}
 

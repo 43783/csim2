@@ -353,7 +353,7 @@ public class CppAnalyzerUtils {
 			// Check if reference is a class attribute
 			for (SourceAttribute attribute : sourceClass.getAttributes()) {
 				if (attribute.getName().equals(expressionName)) {
-					expressionOrigin = SourceReferenceOrigin.CLASS_ATTRIBUTE;
+					expressionOrigin = SourceReferenceOrigin.CLASS_FIELD;
 					expressionType   = attribute.getType();
 					break;
 				}

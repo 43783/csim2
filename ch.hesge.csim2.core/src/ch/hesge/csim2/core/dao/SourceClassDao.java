@@ -31,7 +31,7 @@ public class SourceClassDao {
 	// Private static SQL queries
 	private static String INSERT = "INSERT INTO source_classes SET project_id=?projectId, superclass_id=?superclassId, filename='?filename', name='?name', type='?type'";
 	private static String UPDATE = "UPDATE source_classes SET project_id=?projectId, superclass_id=?superclassId, filename='?filename', name='?name', type='?type' WHERE key_id=?keyId";
-	private static String DELETE = "DELETE FROM source_classes WHERE project_id=?projectId";
+	private static String DELETE = "DELETE FROM source_classes WHERE project_id = ?projectId";
 
 	private static String FIND_BY_PROJECT = "SELECT key_id, project_id, superclass_id, filename, name, type FROM source_classes WHERE project_id=?projectId ORDER BY name";
 	private static String FIND_CLASS_AND_METHOD_SIGNATURES = "SELECT c.name, m.signature FROM source_methods m INNER JOIN source_classes c ON m.class_id = c.key_id WHERE project_id=?projectId";

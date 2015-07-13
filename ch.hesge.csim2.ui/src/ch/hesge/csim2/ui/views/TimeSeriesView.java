@@ -16,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.math3.linear.RealVector;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -32,6 +31,7 @@ import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.TimeSeries;
+import ch.hesge.csim2.core.utils.SimpleVector;
 import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.dialogs.TimeSeriesDialog;
@@ -144,9 +144,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 				XYSeries series = new XYSeries(concept.getName());
 
 				// Populate series with trace matrix row
-				RealVector rowVector = filteredSeries.getTraceMatrix().getRowVector(i);
+				SimpleVector rowVector = filteredSeries.getTraceMatrix().getRowVector(i);
 				for (int j = 0; j < rowVector.getDimension(); j++) {
-					series.add(j + 1, rowVector.getEntry(j));
+					series.add(j + 1, rowVector.getValue(j));
 				}
 
 				dataSet.addSeries(series);

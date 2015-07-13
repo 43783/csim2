@@ -33,7 +33,7 @@ public class StemMethodDao {
 	// Private static SQL queries
 	private static String INSERT = "INSERT INTO stem_methods SET project_id=?projectId, parent_id=?parentId, method_id=?methodId, term='?term', stem_type=?stemType, ref_origin=?refOrigin";
 	private static String UPDATE = "UPDATE stem_methods SET project_id=?projectId, parent_id=?parentId, method_id=?methodId, term='?term', stem_type=?stemType, ref_origin=?refOrigin WHERE key_id=?keyId";
-	private static String DELETE = "DELETE FROM stem_methods WHERE method_id in (SELECT key_id FROM source_methods WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id=?projectId))";
+	private static String DELETE = "DELETE FROM stem_methods WHERE project_id=?projectId";
 
 	private static String FIND_BY_METHOD  = "SELECT key_id, project_id, parent_id, method_id, term, stem_type, ref_origin FROM stem_methods WHERE method_id=?methodId";
 	private static String FIND_BY_PROJECT = "SELECT key_id, project_id, parent_id, method_id, term, stem_type, ref_origin FROM stem_methods WHERE project_id=?projectId";

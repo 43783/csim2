@@ -7,8 +7,8 @@ package ch.hesge.csim2.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
+import ch.hesge.csim2.core.utils.SimpleMatrix;
+import ch.hesge.csim2.core.utils.SimpleVector;
 
 /**
  * Represents a scenario time series describing trace evolution from the concept
@@ -25,8 +25,8 @@ public class TimeSeries {
 	private Project project;
 	private Scenario scenario;
 	private List<Concept> concepts;
-	private RealVector occurrences;
-	private RealMatrix matrix;
+	private SimpleVector occurrences;
+	private SimpleMatrix matrix;
 
 	/**
 	 * Default constructor
@@ -59,19 +59,19 @@ public class TimeSeries {
 		this.concepts = concepts;
 	}
 
-	public RealMatrix getTraceMatrix() {
+	public SimpleMatrix getTraceMatrix() {
 		return matrix;
 	}
 
-	public void setTraceMatrix(RealMatrix matrix) {
+	public void setTraceMatrix(SimpleMatrix matrix) {
 		this.matrix = matrix;
 	}
 
-	public RealVector getOccurrences() {
+	public SimpleVector getOccurrences() {
 		return occurrences;
 	}
 
-	public void setOccurrences(RealVector occurrences) {
+	public void setOccurrences(SimpleVector occurrences) {
 		this.occurrences = occurrences;
 	}
 

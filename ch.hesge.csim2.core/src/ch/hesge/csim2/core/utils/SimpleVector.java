@@ -2,8 +2,11 @@ package ch.hesge.csim2.core.utils;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.linear.RealVector;
-
+/**
+ * This class represents a simple vector storing doubles.
+ * 
+ * @author Eric Harth
+ */
 public class SimpleVector {
 
 	// Private attribute

@@ -94,7 +94,7 @@ class StemLogic {
 			// Skip part name included in rejection list
 			for (String word : splitWords) {
 
-				if (word.length() > 1) {
+				if (word.length() > 0) {
 
 					// Add only words not in reject list and not already present
 					if (!stems.contains(word) && (rejectedList == null || !rejectedList.contains(word))) {
@@ -537,17 +537,34 @@ class StemLogic {
 	}
 
 	/**
-	 * Save a single stem method.
+	 * Save a list of stem method.
 	 * 
 	 * @param stem
-	 *        the StemMethod to save
+	 *        the StemMethod list to save
 	 */
-	public static void saveStemMethod(StemMethod stem) {
-		if (PersistanceUtils.isNewObject(stem)) {
-			StemMethodDao.add(stem);
+	public static void saveStemMethods(List<StemMethod> stems) {
+		
+		// SELECT * FROM stem_methods WHERE project_id = 6
+		
+		// First save stems (to create keyId)
+		for (StemMethod stem : stems) {
+			
+			// Update parent keyId, if not already done
+			if (stem.getParentId() == 0 && stem.getParent() != null) {
+				stem.setParentId(stem.getParent().getKeyId());
+			}
+			
+			if (PersistanceUtils.isNewObject(stem)) {
+				StemMethodDao.add(stem);
+			}
+			else {
+				StemMethodDao.update(stem);
+			}
 		}
-		else {
-			StemMethodDao.update(stem);
-		}
+
+//		// Then update stems (to refresh keyId)
+//		for (StemMethod stem : stems) {
+//			StemMethodDao.update(stem);
+//		}
 	}
 }
