@@ -86,7 +86,7 @@ class TimeSeriesLogic {
 		ObjectSorter.sortConcepts(traceConcepts);
 
 		// Retrieve all trace for specified scenario
-		List<Trace> scenarioTraces = TraceDao.findByScenario(scenario);
+		List<Trace> scenarioTraces = ApplicationLogic.getTraces(scenario);
 
 		// Create an empty matrix
 		SimpleMatrix traceMatrix  = new SimpleMatrix(traceConcepts.size(), scenarioTraces.size());

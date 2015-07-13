@@ -91,7 +91,7 @@ public class TraceTable extends JTable implements ActionListener {
 
 			@Override
 			public int getColumnCount() {
-				return 2;
+				return 3;
 			}
 
 			@Override
@@ -102,6 +102,8 @@ public class TraceTable extends JTable implements ActionListener {
 						return "Class";
 					case 1:
 						return "Method";
+					case 2:
+						return "Level";
 				}
 
 				return null;
@@ -129,6 +131,8 @@ public class TraceTable extends JTable implements ActionListener {
 						Trace trace = traces.get(row);
 						String identation = StringUtils.repeat("   ", (int) trace.getLevel());
 						return identation + traces.get(row).getSignature();
+					case 2:
+						return traces.get(row).getLevel();
 				}
 
 				return null;
