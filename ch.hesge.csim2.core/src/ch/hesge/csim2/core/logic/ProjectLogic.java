@@ -33,10 +33,28 @@ class ProjectLogic {
 	}
 
 	/**
+	 * Create a new project within the application.
+	 * 
+	 * @param name
+	 *        the name of the new project
+	 * 
+	 * @return and instance of project
+	 */
+	public static Project createProject(String name) {
+
+		Project project = new Project();
+		project.setName(name);
+
+		ProjectDao.add(project);
+
+		return project;
+	}
+
+	/**
 	 * Retrieve a project by its name.
 	 * 
 	 * @param name
-	 *            the name of the project
+	 *        the name of the project
 	 * @return Project or null
 	 */
 	public static Project getProject(String name) {
@@ -44,10 +62,11 @@ class ProjectLogic {
 	}
 
 	/**
-	 * Load a project with its direct dependencies only. That is scenarios, ontologies and sources.
+	 * Load a project with its direct dependencies only. That is scenarios,
+	 * ontologies and sources.
 	 * 
 	 * @param project
-	 *            the project to load.
+	 *        the project to load.
 	 * @return the initialized instance passed in argument
 	 */
 	public static void loadProject(Project project) {
@@ -65,30 +84,27 @@ class ProjectLogic {
 		project.getOntologies().clear();
 		project.getOntologies().addAll(ontologies);
 		Console.writeInfo(ProjectLogic.class, " ontologies: " + project.getOntologies().size());
-
-//		// Load sources
-//		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
-//		project.getSourceClasses().clear();
-//		project.getSourceClasses().addAll(sourceClasses);
-//		Console.writeInfo(ProjectLogic.class, " source-classes: " + project.getSourceClasses().size());
 	}
 
 	/**
 	 * Save a project with its direct dependencies (scenarios, ontologies
 	 * 
 	 * @param project
-	 *            the project to save.
+	 *        the project to save.
 	 */
 	public static void saveProject(Project project) {
 
 		Console.writeInfo(ProjectLogic.class, "saving application: " + project.getName());
 
+		// Save the project itself
+		ProjectDao.update(project);
+		
 		// Save scenarios
 		List<Scenario> scenarios = project.getScenarios();
 		for (Scenario scenario : scenarios) {
 			scenario.setProjectId(project.getKeyId());
 		}
-		
+
 		ApplicationLogic.saveScenarios(scenarios);
 		Console.writeInfo(ProjectLogic.class, " scenarios: " + scenarios.size());
 
@@ -97,7 +113,7 @@ class ProjectLogic {
 		for (Ontology ontology : ontologies) {
 			ontology.setProjectId(project.getKeyId());
 		}
-		
+
 		ApplicationLogic.saveOntologies(ontologies);
 		Console.writeInfo(ProjectLogic.class, " ontologies: " + ontologies.size());
 
@@ -106,8 +122,21 @@ class ProjectLogic {
 		for (SourceClass sourceClass : sourceClasses) {
 			sourceClass.setProjectId(project.getKeyId());
 		}
-		
+
 		ApplicationLogic.saveSourceClasses(project, sourceClasses);
 		Console.writeInfo(ProjectLogic.class, " source-classes: " + scenarios.size());
+	}
+	
+	/**
+	 * Delete a project and all its dependencies.
+	 * 
+	 * @param project
+	 *        the project to delete
+	 */
+	public static void deleteProject(Project project) {
+		SourceLogic.deleteSources(project);
+		OntologyLogic.deleteOntologies(project);
+		ScenarioLogic.deleteScenarios(project);
+		ProjectDao.delete(project);
 	}
 }

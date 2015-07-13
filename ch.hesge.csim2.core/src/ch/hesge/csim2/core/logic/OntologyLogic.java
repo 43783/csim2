@@ -308,6 +308,19 @@ class OntologyLogic {
 	}
 
 	/**
+	 * Delete all ontologies owned by a project.
+	 * 
+	 * @param project
+	 *        the project owning the ontologies
+	 */
+	public static void deleteOntologies(Project project) {
+		
+		for (Ontology ontology : project.getOntologies()) {
+			deleteConcepts(ontology);
+		}
+	}
+
+	/**
 	 * Save all ontologies without their concepts.
 	 * 
 	 * @param ontologies

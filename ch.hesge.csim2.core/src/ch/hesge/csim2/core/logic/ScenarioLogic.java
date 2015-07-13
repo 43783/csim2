@@ -42,15 +42,15 @@ class ScenarioLogic {
 	 * @return a list of scenario
 	 */
 	public static List<Scenario> getScenarios(Project project) {
-		
-		List<Scenario> scenarios = ScenarioDao.findByProject(project); 
-		
-		for(Scenario scenario : scenarios) {
+
+		List<Scenario> scenarios = ScenarioDao.findByProject(project);
+
+		for (Scenario scenario : scenarios) {
 			List<ScenarioStep> steps = ScenarioStepDao.findByScenario(scenario);
 			ObjectSorter.sortScenarioSteps(steps);
 			scenario.getSteps().addAll(steps);
 		}
-		
+
 		return scenarios;
 	}
 
@@ -93,6 +93,20 @@ class ScenarioLogic {
 			else {
 				ScenarioDao.update(scenario);
 			}
+		}
+	}
+
+	/**
+	 * Delete all scenario owned by a project.
+	 * 
+	 * @param project
+	 *        the project owning scenarios
+	 */
+	public static void deleteScenarios(Project project) {
+
+		for (Scenario scenario : project.getScenarios()) {
+			ScenarioStepDao.deleteByScenario(scenario);
+			ScenarioDao.delete(scenario);
 		}
 	}
 

@@ -27,6 +27,7 @@ public class ProjectTree extends JTree {
 
 	// Private attributes
 	private Project project;
+	private ProjectPopup  projectPopup;
 	private ScenarioPopup scenarioPopup;
 	private OntologyPopup ontologyPopup;
 	private AnalysisPopup analysisPopup;
@@ -40,6 +41,7 @@ public class ProjectTree extends JTree {
 		setEnabled(false);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
+		projectPopup  = new ProjectPopup();
 		scenarioPopup = new ScenarioPopup();
 		ontologyPopup = new OntologyPopup();
 		analysisPopup = new AnalysisPopup(this);
@@ -196,7 +198,11 @@ public class ProjectTree extends JTree {
 				// Handle single right-click (context popup)
 				if (SwingUtilities.isRightMouseButton(e)) {
 
-					if (userObject.toString().equals("Scenarios")) {
+					if (userObject.getClass().getSimpleName().equals("Project")) {
+						projectPopup.setProject(project);
+						projectPopup.show(e.getComponent(), e.getX(), e.getY());
+					}
+					else if (userObject.toString().equals("Scenarios")) {
 						scenarioPopup.clearMenuState();
 						scenarioPopup.setCreateMenuState(true);
 						scenarioPopup.show(e.getComponent(), e.getX(), e.getY());

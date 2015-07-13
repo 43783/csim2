@@ -192,6 +192,28 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Create a new project within the application.
+	 * 
+	 * @param name
+	 *        the name of the new project
+	 * 
+	 * @return and instance of project
+	 */
+	public static Project createProject(String name) {
+		return ProjectLogic.createProject(name);
+	}
+	
+	/**
+	 * Delete a project and all its dependencies.
+	 * 
+	 * @param project
+	 *        the project to delete
+	 */
+	public static void deleteProject(Project project) {
+		ProjectLogic.deleteProject(project);
+	}
+	
+	/**
 	 * Retrieve all available projects without their dependencies.
 	 * 
 	 * @return
