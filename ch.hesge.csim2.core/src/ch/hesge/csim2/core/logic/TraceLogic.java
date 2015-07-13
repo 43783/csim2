@@ -1,5 +1,6 @@
 package ch.hesge.csim2.core.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesge.csim2.core.dao.TraceDao;
@@ -24,7 +25,23 @@ class TraceLogic {
 	 *        the scenario
 	 */
 	public static List<Trace> getTraces(Scenario scenario) {
-		return TraceDao.findByScenario(scenario);
+		
+		List<Trace> traces = new ArrayList<>();
+		
+		long level = -1;
+		
+		for (Trace trace : TraceDao.findByScenario(scenario)) {
+			
+			// Compute trace level
+			level += trace.isEnteringTrace() ? 1 : -1;
+			
+			if (trace.isEnteringTrace()) {
+				trace.setLevel(level);
+				traces.add(trace);
+			}
+		}
+		
+		return traces;
 	}
 
 	/**

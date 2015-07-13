@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import ch.hesge.csim2.core.model.Trace;
+import ch.hesge.csim2.core.utils.StringUtils;
 
 @SuppressWarnings("serial")
 public class TraceTable extends JTable implements ActionListener {
@@ -90,7 +91,7 @@ public class TraceTable extends JTable implements ActionListener {
 
 			@Override
 			public int getColumnCount() {
-				return 3;
+				return 2;
 			}
 
 			@Override
@@ -101,8 +102,6 @@ public class TraceTable extends JTable implements ActionListener {
 						return "Class";
 					case 1:
 						return "Method";
-					case 2:
-						return "Type";
 				}
 
 				return null;
@@ -127,12 +126,9 @@ public class TraceTable extends JTable implements ActionListener {
 					case 0:
 						return traces.get(row).getStaticClass();
 					case 1:
-						return traces.get(row).getSignature();
-					case 2: {
-						if (traces.get(row).isEnteringTrace())
-							return "ENTER";
-						return "EXIT";
-					}
+						Trace trace = traces.get(row);
+						String identation = StringUtils.repeat("   ", (int) trace.getLevel());
+						return identation + traces.get(row).getSignature();
 				}
 
 				return null;
@@ -147,8 +143,8 @@ public class TraceTable extends JTable implements ActionListener {
 
 		// Adjust column size
 		TableColumnModel columnModel = getColumnModel();
-		columnModel.getColumn(0).setMaxWidth(100);
-		columnModel.getColumn(0).setMinWidth(100);
+		columnModel.getColumn(0).setMaxWidth(80);
+		columnModel.getColumn(0).setMinWidth(80);
 	}
 
 	/**

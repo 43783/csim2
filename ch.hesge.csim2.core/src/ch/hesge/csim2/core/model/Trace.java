@@ -17,6 +17,7 @@ public class Trace {
 	// Private attributes
 	private int		keyId;
 	private int		scenarioId;
+	private long    level;
 	private int 	classId;
 	private int		methodId;
 	private int		sequenceNumber;
@@ -52,6 +53,30 @@ public class Trace {
 
 	public void setScenarioId(int scenarioId) {
 		this.scenarioId = scenarioId;
+	}
+
+	public long getLevel() {
+		return level;
+	}
+
+	public void setLevel(long level) {
+		this.level = level;
+	}
+
+	public int getClassId() {
+		return classId;
+	}
+
+	public void setClassId(int classId) {
+		this.classId = classId;
+	}
+
+	public int getMethodId() {
+		return methodId;
+	}
+
+	public void setMethodId(int methodId) {
+		this.methodId = methodId;
 	}
 
 	public int getSequenceNumber() {
@@ -148,21 +173,5 @@ public class Trace {
 
 	public void setDuration(long duration) {
 		this.duration = duration;
-	}
-	
-	public int getClassId() {
-		return classId;
-	}
-
-	public void setClassId(int classId) {
-		this.classId = classId;
-	}
-
-	public int getMethodId() {
-		return methodId;
-	}
-
-	public void setMethodId(int methodId) {
-		this.methodId = methodId;
 	}
 }
