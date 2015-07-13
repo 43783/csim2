@@ -22,9 +22,13 @@ public class StemConcept {
 	private int projectId;
 	private int parentId;
 	private int conceptId;
+
 	private String term;
-	private StemConceptType stemType;
+	private Project project;
+	private Concept concept;
 	private StemConcept parent;
+	private StemConceptType stemType;
+
 	private List<StemConcept> parts;
 	private List<StemConcept> attributes;
 	private List<StemConcept> classes;
@@ -47,17 +51,13 @@ public class StemConcept {
 	 */
 	public StemConcept(Project project, StemConcept parent, Concept concept, String term, StemConceptType stemType) {
 
-		this.projectId = project.getKeyId();
-		this.parentId = parent == null ? -1 : parent.getKeyId();
+		this();
+
+		this.project = project;
+		this.parent = parent;
+		this.concept = concept;
 		this.term = term;
 		this.stemType = stemType;
-		this.conceptId = concept == null ? -1 : concept.getKeyId();
-
-		parts = new ArrayList<>();
-		attributes = new ArrayList<>();
-		classes = new ArrayList<>();
-		attributeIdentifiers = new ArrayList<>();
-		classIdentifiers = new ArrayList<>();
 	}
 
 	public int getKeyId() {
@@ -84,12 +84,44 @@ public class StemConcept {
 		this.parentId = parentId;
 	}
 
+	public int getConceptId() {
+		return conceptId;
+	}
+
+	public void setConceptId(int conceptId) {
+		this.conceptId = conceptId;
+	}
+
 	public String getTerm() {
 		return term;
 	}
 
 	public void setTerm(String term) {
 		this.term = term;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Concept getConcept() {
+		return concept;
+	}
+
+	public void setConcept(Concept concept) {
+		this.concept = concept;
+	}
+
+	public StemConcept getParent() {
+		return parent;
+	}
+
+	public void setParent(StemConcept parent) {
+		this.parent = parent;
 	}
 
 	public StemConceptType getStemType() {
@@ -100,39 +132,43 @@ public class StemConcept {
 		this.stemType = stemType;
 	}
 
-	public int getConceptId() {
-		return conceptId;
-	}
-
-	public void setConceptId(int conceptId) {
-		this.conceptId = conceptId;
-	}
-	
-	public StemConcept getParent() {
-		return parent;
-	}
-
-	public void setParent(StemConcept parent) {
-		this.parent = parent;
-	}
-
 	public List<StemConcept> getParts() {
 		return parts;
+	}
+
+	public void setParts(List<StemConcept> parts) {
+		this.parts = parts;
 	}
 
 	public List<StemConcept> getAttributes() {
 		return attributes;
 	}
 
+	public void setAttributes(List<StemConcept> attributes) {
+		this.attributes = attributes;
+	}
+
 	public List<StemConcept> getClasses() {
 		return classes;
+	}
+
+	public void setClasses(List<StemConcept> classes) {
+		this.classes = classes;
 	}
 
 	public List<StemConcept> getAttributeIdentifiers() {
 		return attributeIdentifiers;
 	}
 
+	public void setAttributeIdentifiers(List<StemConcept> attributeIdentifiers) {
+		this.attributeIdentifiers = attributeIdentifiers;
+	}
+
 	public List<StemConcept> getClassIdentifiers() {
 		return classIdentifiers;
+	}
+
+	public void setClassIdentifiers(List<StemConcept> classIdentifiers) {
+		this.classIdentifiers = classIdentifiers;
 	}
 }

@@ -528,9 +528,14 @@ class StemLogic {
 	 *        the StemConcept to save
 	 */
 	public static void saveStemConcepts(List<StemConcept> stems) {
-		
+
 		for (StemConcept stem : stems) {
 			
+			// Update dependent ids
+			stem.setProjectId(stem.getProject().getKeyId());
+			stem.setParentId(stem.getParent() == null ? -1 : stem.getParent().getKeyId());
+			stem.setConceptId(stem.getConcept().getKeyId());
+
 			if (PersistanceUtils.isNewObject(stem)) {
 				StemConceptDao.add(stem);
 			}
