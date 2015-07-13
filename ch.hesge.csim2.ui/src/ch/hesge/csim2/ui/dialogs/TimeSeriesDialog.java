@@ -45,7 +45,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private int segmentCount;
 	private int segmentSize;
 	private boolean isShowLegend;
-	private boolean isClearSelection;
 	private boolean isUpdatingView;
 
 	private JTextField thresholdField;
@@ -55,7 +54,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private JSlider segmentCountSlider;
 
 	private JButton btnReset;
-	private JButton btnSelection;
+	private JButton btnClearAll;
 	private JButton btnOK;
 	private JButton btnCancel;
 	private boolean dialogResult;
@@ -66,6 +65,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 	private JLabel traceSizeLabel;
 	private JPanel btnLeftPane;
 	private JPanel btnRightPane;
+	private JButton btnSelectAll;
 
 	/**
 	 * Create the dialog with owner.
@@ -74,7 +74,6 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		super(parent);
 		
 		isUpdatingView = false;
-		isClearSelection = false;
 		isShowLegend = false;
 		
 		this.segmentCount = TimeSeriesView.DEFAULT_SEGMENT_COUNT;
@@ -114,24 +113,29 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		btnRightPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 				
 		btnReset = new JButton("Reset");
-		btnLeftPane.add(btnReset);
-		btnReset.setPreferredSize(new Dimension(100, 25));
+		btnReset.setPreferredSize(new Dimension(80, 25));
 		btnReset.addActionListener(this);
+		btnLeftPane.add(btnReset);
 		
-		btnSelection = new JButton("Selection");
-		btnLeftPane.add(btnSelection);
-		btnSelection.setPreferredSize(new Dimension(100, 25));
-		btnSelection.addActionListener(this);
+		btnClearAll = new JButton("Clear All");
+		btnClearAll.setPreferredSize(new Dimension(80, 25));
+		btnClearAll.addActionListener(this);
+		btnLeftPane.add(btnClearAll);
+		
+		btnSelectAll = new JButton("SelectAll");
+		btnSelectAll.setPreferredSize(new Dimension(80, 25));
+		btnSelectAll.addActionListener(this);
+		btnLeftPane.add(btnSelectAll);
 		
 		btnOK = new JButton("OK");
-		btnRightPane.add(btnOK);
-		btnOK.setPreferredSize(new Dimension(100, 25));
+		btnOK.setPreferredSize(new Dimension(80, 25));
 		btnOK.addActionListener(this);
+		btnRightPane.add(btnOK);
 		
 		btnCancel = new JButton("Cancel");
-		btnRightPane.add(btnCancel);
 		btnCancel.setPreferredSize(new Dimension(80, 25));
 		btnCancel.addActionListener(this);
+		btnRightPane.add(btnCancel);
 		
 		mainPane.setLayout(null);
 
@@ -324,16 +328,12 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		else if (e.getSource() == showLegendCheckbox) {
 			isShowLegend = showLegendCheckbox.isSelected();
 		}
-		else if (e.getSource() == btnSelection) {
-			
-			if (isClearSelection) {
-				conceptTable.setSelectedConcepts(new ArrayList<>());
-			}
-			else {
-				conceptTable.setSelectedConcepts(timeSeries.getTraceConcepts());
-			}
-			
-			isClearSelection = !isClearSelection;
+		else if (e.getSource() == btnClearAll) {
+			conceptTable.setSelectedConcepts(new ArrayList<>());
+			conceptTable.repaint();
+		}
+		else if (e.getSource() == btnSelectAll) {
+			conceptTable.setSelectedConcepts(timeSeries.getTraceConcepts());
 			conceptTable.repaint();
 		}
 		else if (e.getSource() == btnReset) {
