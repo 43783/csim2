@@ -95,14 +95,18 @@ public class MatchingView extends JPanel {
 		matcherComboBox = new MatcherComboBox(ApplicationLogic.getMatchers());
 		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		paramsPanel.add(matcherComboBox);		
+		
 		loadBtn = new JButton("Load");
+		loadBtn.setPreferredSize(new Dimension(80, 25));
 		paramsPanel.add(loadBtn);
 		settingsPanel.add(paramsPanel, BorderLayout.CENTER);
 
 		// Create export panel
 		JPanel exportPanel = new JPanel();
 		((FlowLayout)exportPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
+		
 		exportBtn = new JButton("Export");
+		exportBtn.setPreferredSize(new Dimension(80, 25));
 		exportBtn.setEnabled(false);
 		exportPanel.add(exportBtn);
 		settingsPanel.add(exportPanel, BorderLayout.EAST);

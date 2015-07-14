@@ -1,5 +1,6 @@
 package ch.hesge.csim2.ui.views;
 
+import java.awt.Cursor;
 import java.util.List;
 import java.util.Map;
 
@@ -14,12 +15,14 @@ import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
+import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.ui.dialogs.AboutDialog;
-import ch.hesge.csim2.ui.dialogs.NewNameDialog;
-import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ProjectDialog;
+import ch.hesge.csim2.ui.dialogs.ParametersDialog;
+import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
+import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
 import ch.hesge.csim2.ui.dialogs.SettingsDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -87,7 +90,7 @@ public class ActionHandler {
 	 */
 	public void selectProject() {
 		
-		ProjectDialog dialog = new ProjectDialog(mainView);
+		SelectProjectDialog dialog = new SelectProjectDialog(mainView);
 		dialog.setVisible(true);
 		
 		if (dialog.getDialogResult()) {
@@ -110,7 +113,7 @@ public class ActionHandler {
 	public void createNewProject() {
 
 		// Display dialog
-		NewNameDialog dialog = new NewNameDialog(mainView);
+		ProjectDialog dialog = new ProjectDialog(mainView);
 		dialog.setTitle("New Project");
 		dialog.setVisible(true);
 
@@ -128,7 +131,7 @@ public class ActionHandler {
 	public void createNewScenario() {
 
 		// Display dialog
-		NewNameDialog dialog = new NewNameDialog(mainView);
+		ProjectDialog dialog = new ProjectDialog(mainView);
 		dialog.setTitle("New Scenario");
 		dialog.setVisible(true);
 
@@ -141,6 +144,77 @@ public class ActionHandler {
 	}
 
 	/**
+	 * Create a new scenario
+	 */
+	public void createScenarioStep(Scenario scenario) {
+
+		// Display dialog
+		ScenarioStepDialog dialog = new ScenarioStepDialog(mainView);
+		dialog.setTitle("New Step");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			ApplicationLogic.createScenarioStep(dialog.getNameField(), dialog.getDescriptionField(), scenario);
+		}
+	}
+
+	/**
+	 * Edit a scenario step
+	 */
+	public void editScenarioStep(ScenarioStep step) {
+
+		// Display dialog
+		ScenarioStepDialog dialog = new ScenarioStepDialog(mainView);
+		dialog.setTitle("Edit Step");
+		dialog.setNameField(step.getName());
+		dialog.setDescriptionField(step.getDescription());
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			step.setName(dialog.getNameField());
+			step.setDescription(dialog.getDescriptionField());
+			ApplicationLogic.saveScenario(step.getScenario());
+		}
+	}
+
+	/**
+	 * Save the scenario with its steps
+	 */
+	public void saveScenario(Scenario scenario) {
+
+		// Execution is completed
+		int dialogResult = showConfirmMessage("Confirmation", "Would you like to save scenario with its steps ?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+
+			try {
+				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				ApplicationLogic.saveScenario(scenario);
+			}
+			finally {
+				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+		}
+	}
+	
+	/**
+	 * Delete a scenario step
+	 */
+	public void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
+
+		// Execution is completed
+		int dialogResult = showConfirmMessage("Confirmation", "Would you like to save delete current step ?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			
+			scenario.getSteps().remove(step);
+			ApplicationLogic.saveScenario(scenario);
+		}
+	}
+	
+	/**
 	 * Rename the project passed in argument.
 	 * 
 	 * @param project
@@ -149,7 +223,7 @@ public class ActionHandler {
 	public void renameProject(Project project) {
 
 		// Display dialog
-		NewNameDialog dialog = new NewNameDialog(mainView);
+		ProjectDialog dialog = new ProjectDialog(mainView);
 		dialog.setTitle("Rename Project");
 		dialog.setNameField(project.getName());
 		dialog.setVisible(true);
@@ -170,7 +244,7 @@ public class ActionHandler {
 	public void renameScenario(Scenario scenario) {
 
 		// Display dialog
-		NewNameDialog dialog = new NewNameDialog(mainView);
+		ProjectDialog dialog = new ProjectDialog(mainView);
 		dialog.setTitle("Rename Scenario");
 		dialog.setNameField(scenario.getName());
 		dialog.setVisible(true);

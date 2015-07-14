@@ -87,54 +87,35 @@ class ScenarioLogic {
 	 * @return and instance of scenario
 	 */
 	public static Scenario createScenario(String name, Project project) {
+		
 		Scenario scenario = new Scenario();
+		
 		scenario.setName(name);
 		scenario.setProjectId(project.getKeyId());
 		ScenarioDao.add(scenario);
+		
 		return scenario;
 	}
 
 	/**
-	 * Save all scenarios without their steps.
+	 * Create a scenario step.
 	 * 
-	 * @param scenarios
-	 *        the scenario list to save
-	 */
-	public static void saveScenarios(List<Scenario> scenarios) {
-
-		for (Scenario scenario : scenarios) {
-
-			if (PersistanceUtils.isNewObject(scenario)) {
-				ScenarioDao.add(scenario);
-			}
-			else {
-				ScenarioDao.update(scenario);
-			}
-		}
-	}
-
-	/**
-	 * Delete all scenario owned by a project.
-	 * 
-	 * @param project
-	 *        the project owning scenarios
-	 */
-	public static void deleteScenarios(Project project) {
-
-		for (Scenario scenario : project.getScenarios()) {
-			deleteScenario(scenario);
-		}
-	}
-
-	/**
-	 * Delete a single scenario.
-	 * 
+	 * @param step
+	 *        the step to attach to
 	 * @param scenario
-	 *        the scenario to delete
+	 * @return the newly create step
 	 */
-	public static void deleteScenario(Scenario scenario) {
-		ScenarioStepDao.deleteByScenario(scenario);
-		ScenarioDao.delete(scenario);
+	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
+
+		ScenarioStep step = new ScenarioStep();
+
+		step.setName(name);
+		step.setDescription(description);
+		scenario.getSteps().add(step);
+
+		saveScenario(scenario);
+
+		return step;
 	}
 
 	/**
@@ -166,5 +147,42 @@ class ScenarioLogic {
 				ScenarioStepDao.update(step);
 			}
 		}
+	}
+
+	/**
+	 * Save all scenarios.
+	 * 
+	 * @param scenarios
+	 *        the scenario list to save
+	 */
+	public static void saveScenarios(List<Scenario> scenarios) {
+
+		for (Scenario scenario : scenarios) {
+			saveScenario(scenario);
+		}
+	}
+
+	/**
+	 * Delete all scenario owned by a project.
+	 * 
+	 * @param project
+	 *        the project owning scenarios
+	 */
+	public static void deleteScenarios(Project project) {
+
+		for (Scenario scenario : project.getScenarios()) {
+			deleteScenario(scenario);
+		}
+	}
+
+	/**
+	 * Delete a single scenario.
+	 * 
+	 * @param scenario
+	 *        the scenario to delete
+	 */
+	public static void deleteScenario(Scenario scenario) {
+		ScenarioStepDao.deleteByScenario(scenario);
+		ScenarioDao.delete(scenario);
 	}
 }

@@ -77,6 +77,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		animator = new OntologyAnimator(ontologyPanel, ontology);
 
 		btnDynamic = new JCheckBox("Dynamic");
+		btnDynamic.setPreferredSize(new Dimension(80, 25));
 		btnDynamic.addActionListener(this);
 		btnPanel.add(btnDynamic);
 

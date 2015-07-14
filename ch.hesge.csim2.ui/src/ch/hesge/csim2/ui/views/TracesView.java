@@ -102,6 +102,7 @@ public class TracesView extends JPanel {
 
 		// Create the load button
 		loadBtn = new JButton("Load");
+		loadBtn.setPreferredSize(new Dimension(80, 25));
 		paramsPanel.add(loadBtn);
 
 		// Create the method panel

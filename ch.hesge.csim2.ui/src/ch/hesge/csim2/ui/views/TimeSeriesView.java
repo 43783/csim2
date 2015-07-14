@@ -104,6 +104,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		
 		// Create the load button
 		loadBtn = new JButton("Load");
+		loadBtn.setPreferredSize(new Dimension(80, 25));
 		scenarioPanel.add(loadBtn);
 		paramsPanel.add(scenarioPanel, BorderLayout.CENTER);
 
@@ -111,7 +112,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		JPanel settingsPanel = new JPanel();
 		FlowLayout flowLayout2 = (FlowLayout) settingsPanel.getLayout();
 		flowLayout2.setAlignment(FlowLayout.RIGHT);
+
 		settingsBtn = new JButton("Settings");
+		settingsBtn.setPreferredSize(new Dimension(80, 25));
 		settingsBtn.setEnabled(false);
 		settingsBtn.addActionListener(this);
 		settingsPanel.add(settingsBtn);

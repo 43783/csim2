@@ -61,22 +61,6 @@ public class ApplicationLogic {
 	public static final String DATABASE_PASSWORD_PROPERTY = "database-password";
 
 	/**
-	 * Create an initialize a new application instance.
-	 * 
-	 * @return
-	 *         the new application instance
-	 */
-	public static Application createApplication() {
-
-		Application application = new Application();
-
-		initAppProperties(application);
-		initDbProperties(application);
-
-		return application;
-	}
-
-	/**
 	 * Shutdown an application.
 	 * 
 	 * @param application
@@ -1014,6 +998,22 @@ public class ApplicationLogic {
 	}
 	
 	/**
+	 * Create an initialize a new application instance.
+	 * 
+	 * @return
+	 *         the new application instance
+	 */
+	public static Application createApplication() {
+
+		Application application = new Application();
+
+		initAppProperties(application);
+		initDbProperties(application);
+
+		return application;
+	}
+
+	/**
 	 * Create a new scenario.
 	 * 
 	 * @param name
@@ -1024,6 +1024,18 @@ public class ApplicationLogic {
 	 */
 	public static Scenario createScenario(String name, Project project) {
 		return ScenarioLogic.createScenario(name, project);
+	}
+	
+	/**
+	 * Create a scenario step.
+	 * 
+	 * @param step
+	 *        the step to attach to
+	 * @param scenario
+	 * @return the newly create step
+	 */
+	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
+		return ScenarioLogic.createScenarioStep(name, description, scenario);
 	}
 	
 	/**

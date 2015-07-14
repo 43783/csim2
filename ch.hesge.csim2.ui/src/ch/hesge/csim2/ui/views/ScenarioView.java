@@ -1,13 +1,12 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -25,6 +24,9 @@ public class ScenarioView extends JPanel implements ActionListener {
 	private ActionHandler actionHandler;
 	private ScenarioTable scenarioTable;
 	private int currentStepIndex;
+	private JButton btnAdd;
+	private JButton btnDel;
+	private JButton btnSave;
 	private JButton btnStart;
 	private JButton btnStop;
 
@@ -32,7 +34,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 	 * Default constructor.
 	 */
 	public ScenarioView(Scenario scenario, ActionHandler actionHandler) {
-		this.scenario = scenario;		
+		this.scenario = scenario;
 		this.actionHandler = actionHandler;
 		initComponent();
 	}
@@ -44,124 +46,112 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		setLayout(new BorderLayout(0, 0));
 
-		scenarioTable = new ScenarioTable(scenario);
+		scenarioTable = new ScenarioTable(scenario, actionHandler);
 		scenarioTable.setFocusable(true);
 		scenarioTable.setEnabled(scenario.getSteps().size() > 0);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(scenarioTable);
 		add(scrollPane, BorderLayout.CENTER);
 
-		JPanel panel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		add(panel, BorderLayout.SOUTH);
+		JPanel btnPanel = new JPanel();
+		btnPanel.setLayout(new BorderLayout(0, 0));
+		add(btnPanel, BorderLayout.SOUTH);
+
+		JPanel rightPanel = new JPanel();
+		FlowLayout fl_rightPanel = (FlowLayout) rightPanel.getLayout();
+		fl_rightPanel.setAlignment(FlowLayout.RIGHT);
+		btnPanel.add(rightPanel, BorderLayout.EAST);
+
+		JPanel leftPanel = new JPanel();
+		FlowLayout fl_leftPanel = (FlowLayout) leftPanel.getLayout();
+		fl_leftPanel.setAlignment(FlowLayout.LEFT);
+		btnPanel.add(leftPanel, BorderLayout.WEST);
+
+		btnAdd = new JButton("Add");
+		btnAdd.setPreferredSize(new Dimension(80, 25));
+		btnAdd.addActionListener(this);
+		leftPanel.add(btnAdd);
+
+		btnDel = new JButton("Delete");
+		btnDel.setPreferredSize(new Dimension(80, 25));
+		btnDel.addActionListener(this);
+		leftPanel.add(btnDel);
+
+		btnSave = new JButton("Save");
+		btnSave.setPreferredSize(new Dimension(80, 25));
+		btnSave.addActionListener(this);
+		leftPanel.add(btnSave);
 
 		btnStart = new JButton("Start");
+		btnStart.setPreferredSize(new Dimension(80, 25));
 		btnStart.setEnabled(false);
 		btnStart.setEnabled(scenario != null && scenario.getSteps().size() > 0);
 		btnStart.addActionListener(this);
-		panel.add(btnStart);
+		rightPanel.add(btnStart);
 
 		btnStop = new JButton("Stop");
+		btnStop.setPreferredSize(new Dimension(80, 25));
 		btnStop.setEnabled(false);
 		btnStop.addActionListener(this);
-		panel.add(btnStop);
-		
+		rightPanel.add(btnStop);
+
 		currentStepIndex = 0;
 		selectScenarioStep(currentStepIndex);
-		
+
 		// Focus on scenario table
 		SwingUtils.invokeWhenVisible(this, new Runnable() {
 			@Override
 			public void run() {
 				scenarioTable.requestFocus();
 			}
-		});		
+		});
 	}
 
 	/**
-	 * Start executing current scenario.
-	 * 
-	 * @param stepIndex
-	 *        the index of the step to select
+	 * Select current step within table
 	 */
-	private void selectScenarioStep(int stepIndex) {
-		
-		if (stepIndex < scenario.getSteps().size()) {
-			scenarioTable.setRowSelectionInterval(stepIndex, stepIndex);
-			scenarioTable.scrollRectToVisible(scenarioTable.getCellRect(stepIndex, 0, true));
-			scenarioTable.invalidate();
+	private void selectScenarioStep(int newStepIndex) {
+
+		if (newStepIndex < scenario.getSteps().size()) {
+			scenarioTable.refresh();
+			scenarioTable.setRowSelectionInterval(newStepIndex, newStepIndex);
+			scenarioTable.scrollRectToVisible(scenarioTable.getCellRect(newStepIndex, 0, true));
+			currentStepIndex = newStepIndex;
 		}
 	}
-	
+
 	/**
 	 * Start executing current scenario
 	 */
 	public void startScenario() {
 
-		// Clear all scenario steps
-		ApplicationLogic.resetExecutionTimes(scenario);
-
-		// Update current step execution time
-		ScenarioStep currentStep = scenario.getSteps().get(currentStepIndex);
-		ApplicationLogic.initExecutionTime(currentStep);
-
-		// Select next scenario step
-		currentStepIndex++;
-		selectScenarioStep(currentStepIndex);
-		scenarioTable.setStopContextMenu();
-
 		btnStart.setText("Next");
-		btnStop.setText("Stop");
 		btnStop.setEnabled(true);
 
-		scenarioTable.repaint();
+		// Clear all scenario steps times
+		ApplicationLogic.resetExecutionTimes(scenario);
+
+		// Select first step
+		selectScenarioStep(0);
 	}
 
 	/**
 	 * Stop executing current scenario
 	 */
-	public void nextStep() {
+	private void nextScenarioStep() {
 
 		// Update current step execution time
 		ScenarioStep currentStep = scenario.getSteps().get(currentStepIndex);
 		ApplicationLogic.initExecutionTime(currentStep);
 
-		// Force current step to refresh
-		selectScenarioStep(currentStepIndex);
-
+		// Go to next step
 		currentStepIndex++;
 
 		if (currentStepIndex < scenario.getSteps().size()) {
 			selectScenarioStep(currentStepIndex);
 		}
 		else {
-
-			// Execution is completed
-			int dialogResult = actionHandler.showConfirmMessage("Confirmation", "Would you like to save execution times ?", JOptionPane.YES_NO_OPTION);
-
-			if (dialogResult == JOptionPane.YES_OPTION) {
-
-				try {
-					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-					ApplicationLogic.saveScenario(scenario);
-				}
-				finally {
-					setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-			else {
-				ApplicationLogic.resetExecutionTimes(scenario);
-			}
-
-			currentStepIndex = 0;
-			selectScenarioStep(currentStepIndex);
-
-			btnStart.setText("Start");
-			btnStop.setText("Stop");
-			btnStop.setEnabled(false);
-
-			scenarioTable.repaint();
+			stopScenario();
 		}
 	}
 
@@ -170,35 +160,41 @@ public class ScenarioView extends JPanel implements ActionListener {
 	 */
 	public void stopScenario() {
 
-		currentStepIndex = 0;
-		selectScenarioStep(currentStepIndex);
-		scenarioTable.setStartContextMenu();
-
 		btnStart.setText("Start");
-		btnStop.setText("Stop");
 		btnStop.setEnabled(false);
 
-		scenarioTable.repaint();
+		// Select first step
+		selectScenarioStep(0);
 	}
 
 	// Handle button event
 	public void actionPerformed(ActionEvent e) {
 
-		String actionSource = ((JButton) e.getSource()).getText();
+		if (e.getSource() == btnAdd) {
+			actionHandler.createScenarioStep(scenario);
+			scenarioTable.refresh();
+		}
+		else if (e.getSource() == btnDel) {
+			ScenarioStep step = scenarioTable.getSelectedStep();
+			actionHandler.deleteScenarioStep(scenario, step);
+			scenarioTable.refresh();
+		}
+		else if (e.getSource() == btnSave) {
+			actionHandler.saveScenario(scenario);
+		}
+		else if (e.getSource() == btnStart) {
 
-		switch (actionSource) {
-			case "Start": {
+			String btnText = ((JButton) e.getSource()).getText();
+
+			if (btnText.equals("Start")) {
 				startScenario();
-				break;
 			}
-			case "Stop": {
-				stopScenario();
-				break;
+			else if (btnText.equals("Next")) {
+				nextScenarioStep();
 			}
-			case "Next": {
-				nextStep();
-				break;
-			}
+		}
+		else if (e.getSource() == btnStop) {
+			stopScenario();
 		}
 	}
 }

@@ -18,20 +18,24 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
-public class NewNameDialog extends JDialog implements ActionListener {
+public class ScenarioStepDialog extends JDialog implements ActionListener {
 
 	// Private attributes
 	private JButton btnOK;
 	private JButton btnCancel;
 	private JTextField nameField;
 	private boolean dialogResult;
+	private JTextField descriptionField;
 
 	/**
 	 * Create the dialog with owner.
 	 */
-	public NewNameDialog(Window parent) {
+	public ScenarioStepDialog(Window parent) {
 		super(parent);
 		initComponents();
 	}
@@ -42,8 +46,8 @@ public class NewNameDialog extends JDialog implements ActionListener {
 	private void initComponents() {
 
 		// Dialog configuration
-		setTitle("New Name");
-		setBounds(0, 0, 279, 147);
+		setTitle("New Step");
+		setBounds(0, 0, 453, 186);
 		setLocationRelativeTo(getParent());
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -52,6 +56,7 @@ public class NewNameDialog extends JDialog implements ActionListener {
 		// Create layout structure
 		getContentPane().setLayout(new BorderLayout());
 		JPanel mainPane = new JPanel();
+		mainPane.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Fields", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();
@@ -59,15 +64,25 @@ public class NewNameDialog extends JDialog implements ActionListener {
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
 		mainPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("New name:");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(10, 25, 81, 25);
-		mainPane.add(lblNewLabel);
+		JLabel nameLabel = new JLabel("Step:");
+		nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		nameLabel.setBounds(10, 25, 81, 25);
+		mainPane.add(nameLabel);
 
 		nameField = new JTextField();
-		nameField.setBounds(101, 25, 141, 25);
+		nameField.setBounds(101, 25, 69, 25);
 		mainPane.add(nameField);
 		nameField.setColumns(10);
+		
+		JLabel descriptionLabel = new JLabel("Description:");
+		descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		descriptionLabel.setBounds(10, 61, 81, 25);
+		mainPane.add(descriptionLabel);
+		
+		descriptionField = new JTextField();
+		descriptionField.setColumns(10);
+		descriptionField.setBounds(101, 63, 323, 25);
+		mainPane.add(descriptionField);
 
 		// Initialize OK button
 		btnOK = new JButton("OK");
@@ -93,7 +108,7 @@ public class NewNameDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ENTER", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NewNameDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
+				ScenarioStepDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
 			}
 		});
 
@@ -101,7 +116,7 @@ public class NewNameDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ESCAPE", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NewNameDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
+				ScenarioStepDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
 			}
 		});
 	}
@@ -127,6 +142,15 @@ public class NewNameDialog extends JDialog implements ActionListener {
 	}
 
 	/**
+	 * Return the description field
+	 * @return
+	 *         the new description
+	 */
+	public String getDescriptionField() {
+		return descriptionField.getText();
+	}
+
+	/**
 	 * Sets the name field.
 	 * 
 	 * @param name
@@ -134,6 +158,16 @@ public class NewNameDialog extends JDialog implements ActionListener {
 	 */
 	public void setNameField(String name) {
 		nameField.setText(name);
+	}
+
+	/**
+	 * Sets the description field.
+	 * 
+	 * @param name
+	 *        the description value
+	 */
+	public void setDescriptionField(String description) {
+		descriptionField.setText(description);
 	}
 
 	/**

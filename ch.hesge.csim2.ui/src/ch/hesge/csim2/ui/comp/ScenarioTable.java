@@ -12,19 +12,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import ch.hesge.csim2.core.model.Scenario;
+import ch.hesge.csim2.core.model.ScenarioStep;
+import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.ui.views.ActionHandler;
 
 @SuppressWarnings("serial")
 public class ScenarioTable extends JTable {
 
 	// Private attributes
 	private Scenario scenario;
-	private ScenarioPopup contextMenu;
+	private ActionHandler actionHandler;
 
 	/**
 	 * Default constructor
 	 */
-	public ScenarioTable(Scenario scenario) {
+	public ScenarioTable(Scenario scenario, ActionHandler actionHandler) {
 		this.scenario = scenario;
+		this.actionHandler = actionHandler;
 		initComponent();
 	}
 
@@ -36,13 +40,6 @@ public class ScenarioTable extends JTable {
 		setRowSelectionAllowed(true);
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		// Create a context menu
-		/*
-		contextMenu = new ScenarioPopup();
-		contextMenu.clearMenuState();		
-		contextMenu.setStartMenuState(true);
-		*/
 		
 		initModel();
 		initRenderer();		
@@ -98,7 +95,7 @@ public class ScenarioTable extends JTable {
 						return scenario.getSteps().get(row).getDescription();
 					case 2: {
 						long executionTime = scenario.getSteps().get(row).getExecutionTime();
-						if (executionTime == -1)
+						if (executionTime < 1)
 							return "-";
 						return executionTime;
 					}
@@ -119,15 +116,15 @@ public class ScenarioTable extends JTable {
 
 			public void mousePressed(MouseEvent e) {
 
-				// Handle right-click
-				if (SwingUtilities.isRightMouseButton(e)) {
+				// Handle double-click
+				if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
 
 					// Select row under the mouse
 					int clickedRow = rowAtPoint(new Point((int)e.getX(), (int)e.getY()));
 					setRowSelectionInterval(clickedRow,  clickedRow);
 
-					// Show context menu
-					contextMenu.show(e.getComponent(), e.getX(), e.getY());
+					// Edit step
+					actionHandler.editScenarioStep(scenario.getSteps().get(clickedRow));
 					
 					e.consume();
 				}
@@ -157,20 +154,17 @@ public class ScenarioTable extends JTable {
 			super.changeSelection(row, col, isToggle, isExtend);
 		}
 	}
+	
+	public ScenarioStep getSelectedStep() {
+		int selectedRow = this.getSelectedRow();
+		return scenario.getSteps().get(selectedRow);
+	}
 
 	/**
-	 * Activate start option in context menu
+	 * Refresh table content (visually)
 	 */
-	public void setStartContextMenu() {
-		contextMenu.clearMenuState();		
-		contextMenu.setStartMenuState(true);
-	}
-	
-	/**
-	 * Activate stop option in context menu
-	 */
-	public void setStopContextMenu() {
-		contextMenu.clearMenuState();		
-		contextMenu.setStopMenuState(true);
+	public void refresh() {
+		ObjectSorter.sortScenarioSteps(scenario.getSteps());
+		((DefaultTableModel)getModel()).fireTableDataChanged();		
 	}
 }

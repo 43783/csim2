@@ -7,32 +7,34 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+import ch.hesge.csim2.core.logic.ApplicationLogic;
+import ch.hesge.csim2.core.model.Project;
+import ch.hesge.csim2.ui.comp.ProjectTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
-public class ProjectDialog extends JDialog implements ActionListener {
+public class SelectProjectDialog extends JDialog implements ActionListener {
 
 	// Private attributes
+	private Project project;
+	private ProjectTable projectTable;
 	private JButton btnOK;
 	private JButton btnCancel;
-	private JTextField nameField;
 	private boolean dialogResult;
 
 	/**
 	 * Create the dialog with owner.
 	 */
-	public ProjectDialog(Window parent) {
+	public SelectProjectDialog(Window parent) {
 		super(parent);
 		initComponents();
 	}
@@ -43,8 +45,8 @@ public class ProjectDialog extends JDialog implements ActionListener {
 	private void initComponents() {
 
 		// Dialog configuration
-		setTitle("New Name");
-		setBounds(0, 0, 279, 147);
+		setTitle("New Project");
+		setBounds(0, 0, 220, 245);
 		setLocationRelativeTo(getParent());
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -53,37 +55,41 @@ public class ProjectDialog extends JDialog implements ActionListener {
 		// Create layout structure
 		getContentPane().setLayout(new BorderLayout());
 		JPanel mainPane = new JPanel();
-		mainPane.setBorder(new TitledBorder(null, "Fields", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(mainPane, BorderLayout.CENTER);
+		mainPane.setLayout(new BorderLayout(0, 0));
 		JPanel btnPane = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
-		mainPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Name:");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(10, 25, 81, 25);
-		mainPane.add(lblNewLabel);
+		// Initialize project list
+		projectTable = new ProjectTable();
+		projectTable.addActionListener(this);
+		JScrollPane scrollbar = new JScrollPane();
+		scrollbar.setViewportView(projectTable);
+		mainPane.add(scrollbar, BorderLayout.CENTER);
 
-		nameField = new JTextField();
-		nameField.setBounds(101, 25, 141, 25);
-		mainPane.add(nameField);
-		nameField.setColumns(10);
-
-		// Initialize OK button
+		// Initialize ok button
 		btnOK = new JButton("OK");
-		btnOK.setPreferredSize(new Dimension(80, 25));
+		btnOK.setPreferredSize(new Dimension(100, 25));
 		btnOK.addActionListener(this);
 		btnPane.add(btnOK);
 
-		// Initialize Cancel button
+		// Initialize cancel button
 		btnCancel = new JButton("Cancel");
-		btnCancel.setPreferredSize(new Dimension(80, 25));
+		btnCancel.setPreferredSize(new Dimension(100, 25));
 		btnCancel.addActionListener(this);
 		btnPane.add(btnCancel);
 
 		initListeners();
+
+		// Initialize the view when visible
+		SwingUtils.invokeWhenVisible(this.getRootPane(), new Runnable() {
+			@Override
+			public void run() {
+				initView();
+			}
+		});
 	}
 
 	/**
@@ -91,21 +97,25 @@ public class ProjectDialog extends JDialog implements ActionListener {
 	 */
 	private void initListeners() {
 
-		// Replace default ENTER action
-		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ENTER", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ProjectDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
-			}
-		});
-
 		// Replace default ESCAPE action
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ESCAPE", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProjectDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
+				SelectProjectDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
 			}
 		});
+	}
+
+	/**
+	 * Initialize the view and its components.
+	 */
+	private void initView() {
+
+		// Retrieve project list
+		List<Project> projects = ApplicationLogic.getProjects();
+
+		// Initialize the project list
+		projectTable.setProjects(projects);
 	}
 
 	/**
@@ -120,30 +130,22 @@ public class ProjectDialog extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * Return the name field
+	 * Return the selected project
 	 * @return
-	 *         the new name
+	 *         the project
 	 */
-	public String getNameField() {
-		return nameField.getText();
+	public Project getProject() {
+		return project;
 	}
 
-	/**
-	 * Sets the name field.
-	 * 
-	 * @param name
-	 *        the name value
-	 */
-	public void setNameField(String name) {
-		nameField.setText(name);
-	}
-
+	
 	/**
 	 * Handle action generated by the view.
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == btnOK) {
+		if (e.getSource() == projectTable || e.getSource() == btnOK) {			
+			project = projectTable.getSelectedValue();
 			dialogResult = true;
 			this.setVisible(false);
 		}
