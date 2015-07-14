@@ -6,8 +6,12 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.InfixExpression;
+import org.eclipse.jdt.core.dom.InfixExpression.Operator;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -163,17 +167,65 @@ public class JavaInstrumenterUtils {
 
 		AST ast = compilationUnit.getAST();
 
+		boolean isStaticMethod = Modifier.isStatic(declaration.getModifiers()); 
+		
 		StringLiteral staticPackageNameLiteral = ast.newStringLiteral();
 		staticPackageNameLiteral.setLiteralValue(JavaInstrumenterUtils.getPackageName(compilationUnit));
 
-		StringLiteral staticClassNameLiteral = ast.newStringLiteral();
-		staticClassNameLiteral.setLiteralValue(JavaInstrumenterUtils.getClassName(declaration));
+		Expression staticClassNameExpression;
 
+		if (isStaticMethod) {			
+
+			StringLiteral classNameExpression = ast.newStringLiteral(); 
+			classNameExpression.setLiteralValue(JavaInstrumenterUtils.getClassName(declaration) + "#0");
+			staticClassNameExpression = classNameExpression;
+		}		
+		else {
+			
+			InfixExpression classNameExpression = ast.newInfixExpression();
+
+			StringLiteral classNameLiteral = ast.newStringLiteral();
+			classNameLiteral.setLiteralValue(JavaInstrumenterUtils.getClassName(declaration) + "#");
+
+			MethodInvocation thisHashCodeInvocation = ast.newMethodInvocation();
+			thisHashCodeInvocation.setExpression(ast.newThisExpression());
+			thisHashCodeInvocation.setName(ast.newSimpleName("hashCode"));
+			
+			classNameExpression.setLeftOperand(classNameLiteral);
+			classNameExpression.setOperator(Operator.PLUS);
+			classNameExpression.setRightOperand(thisHashCodeInvocation);
+
+			staticClassNameExpression = classNameExpression;
+		}
+		
 		StringLiteral dynamicPackageNameLiteral = ast.newStringLiteral();
 		dynamicPackageNameLiteral.setLiteralValue(JavaInstrumenterUtils.getPackageName(compilationUnit));
 
-		StringLiteral dynamicClassNameLiteral = ast.newStringLiteral();
-		dynamicClassNameLiteral.setLiteralValue(JavaInstrumenterUtils.getClassName(declaration));
+		Expression dynamicClassNameExpression;
+
+		if (isStaticMethod) {			
+
+			StringLiteral classNameExpression = ast.newStringLiteral(); 
+			classNameExpression.setLiteralValue(JavaInstrumenterUtils.getClassName(declaration) + "#0");
+			dynamicClassNameExpression = classNameExpression;
+		}		
+		else {
+			
+			InfixExpression classNameExpression = ast.newInfixExpression();
+
+			StringLiteral classNameLiteral = ast.newStringLiteral();
+			classNameLiteral.setLiteralValue(JavaInstrumenterUtils.getClassName(declaration) + "#");
+
+			MethodInvocation thisHashCodeInvocation = ast.newMethodInvocation();
+			thisHashCodeInvocation.setExpression(ast.newThisExpression());
+			thisHashCodeInvocation.setName(ast.newSimpleName("hashCode"));
+			
+			classNameExpression.setLeftOperand(classNameLiteral);
+			classNameExpression.setOperator(Operator.PLUS);
+			classNameExpression.setRightOperand(thisHashCodeInvocation);
+
+			dynamicClassNameExpression = classNameExpression;
+		}
 
 		StringLiteral methodNameLiteral = ast.newStringLiteral();
 		methodNameLiteral.setLiteralValue(JavaInstrumenterUtils.getMethodName(declaration));
@@ -183,15 +235,15 @@ public class JavaInstrumenterUtils {
 
 		StringLiteral returnTypeLiteral = ast.newStringLiteral();
 		returnTypeLiteral.setLiteralValue(JavaInstrumenterUtils.getReturnType(declaration));
-
+		
 		// Create method invocation with proper parameters
 		MethodInvocation methodInvocation = ast.newMethodInvocation();
 		methodInvocation.setExpression(ast.newName("ch.hesge.csim2.engine.TraceLogger"));
 		methodInvocation.setName(ast.newSimpleName(methodName));
 		methodInvocation.arguments().add(staticPackageNameLiteral);
-		methodInvocation.arguments().add(staticClassNameLiteral);
+		methodInvocation.arguments().add(staticClassNameExpression);
 		methodInvocation.arguments().add(dynamicPackageNameLiteral);
-		methodInvocation.arguments().add(dynamicClassNameLiteral);
+		methodInvocation.arguments().add(dynamicClassNameExpression);
 		methodInvocation.arguments().add(methodNameLiteral);
 		methodInvocation.arguments().add(parametersTypesLiteral);
 		methodInvocation.arguments().add(returnTypeLiteral);

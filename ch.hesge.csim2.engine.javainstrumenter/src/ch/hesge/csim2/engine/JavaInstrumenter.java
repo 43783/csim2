@@ -273,7 +273,7 @@ public class JavaInstrumenter implements IEngine {
 	 * @throws Exception
 	 */
 	private void doInstrumentFile(String filepath) throws Exception {
-
+		
 		final String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
 
 		// Retrieve source content

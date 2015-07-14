@@ -56,11 +56,34 @@ public class TraceLoaderUtils {
 			String strTimestamp = regexMatcher.group("timestamp");
 			long timestamp = Long.valueOf(strTimestamp);
 
+			String staticPackage = regexMatcher.group("statpack");
+			String staticClass = regexMatcher.group("statclass");
+			String staticInstance = "0";
+			String dynamicPackage = regexMatcher.group("dynapack");
+			String dynamicClass = regexMatcher.group("dynaclass");
+			String dynamicInstance = "0";
+
+			// Split class in classname and instance id, if available
+			if (staticClass.contains("#")) {
+				String[] parts = staticClass.split("#");
+				staticClass = parts[0];
+				staticInstance = parts[1];
+			}
+			
+			// Split class in classname and instance id, if available
+			if (dynamicClass.contains("#")) {
+				String[] parts = dynamicClass.split("#");
+				dynamicClass = parts[0];
+				dynamicInstance = parts[1];
+			}
+			
 			trace.setEnteringTrace(isEnteringTrace);
-			trace.setDynamicPackage(regexMatcher.group("dynapack"));
-			trace.setDynamicClass(regexMatcher.group("dynaclass"));
-			trace.setStaticPackage(regexMatcher.group("statpack"));
-			trace.setStaticClass(regexMatcher.group("statclass"));
+			trace.setStaticPackage(staticPackage);
+			trace.setStaticClass(staticClass);
+			trace.setStaticInstance(staticInstance);
+			trace.setDynamicPackage(dynamicPackage);
+			trace.setDynamicClass(dynamicClass);
+			trace.setDynamicInstance(dynamicInstance);
 			trace.setThreadId(threadId);
 			trace.setSignature(regexMatcher.group("signature"));
 			trace.setReturnType(regexMatcher.group("returntype"));

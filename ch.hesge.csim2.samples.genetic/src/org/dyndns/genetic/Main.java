@@ -9,7 +9,7 @@ public class Main {
 
 		// Set a candidate solution
 		//Skill.setSolution("1111000000000000000000000000001111100000000000000000000000001111");		
-		Skill.setSolution("110001100011");
+		Skill.setSolution("11110000001111100000001111");		
 
 		// Create an initial population
 		Population population = new Population(50, true);
