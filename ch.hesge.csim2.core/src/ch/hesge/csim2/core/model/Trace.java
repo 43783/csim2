@@ -23,8 +23,10 @@ public class Trace {
 	private int		sequenceNumber;
 	private String	dynamicPackage;
 	private String	dynamicClass;
+	private String	dynamicInstance;
 	private String	staticPackage;
 	private String	staticClass;
+	private String	staticInstance;
 	private long	threadId;
 	private String	signature;
 	private String	parameters;
@@ -103,6 +105,14 @@ public class Trace {
 		this.dynamicClass = dynamicClass;
 	}
 
+	public String getDynamicInstance() {
+		return dynamicInstance;
+	}
+
+	public void setDynamicInstance(String dynamicInstance) {
+		this.dynamicInstance = dynamicInstance;
+	}
+
 	public String getStaticPackage() {
 		return staticPackage;
 	}
@@ -117,6 +127,14 @@ public class Trace {
 
 	public void setStaticClass(String staticClass) {
 		this.staticClass = staticClass;
+	}
+
+	public String getStaticInstance() {
+		return staticInstance;
+	}
+
+	public void setStaticInstance(String staticInstance) {
+		this.staticInstance = staticInstance;
 	}
 
 	public long getThreadId() {
