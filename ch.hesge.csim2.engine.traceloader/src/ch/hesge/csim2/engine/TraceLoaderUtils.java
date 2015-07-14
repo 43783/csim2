@@ -56,34 +56,29 @@ public class TraceLoaderUtils {
 			String strTimestamp = regexMatcher.group("timestamp");
 			long timestamp = Long.valueOf(strTimestamp);
 
-			String staticPackage = regexMatcher.group("statpack");
-			String staticClass = regexMatcher.group("statclass");
-			String staticInstance = "0";
+			String instanceId     = "0";
+			String staticPackage  = regexMatcher.group("statpack");
+			String staticClass    = regexMatcher.group("statclass");
 			String dynamicPackage = regexMatcher.group("dynapack");
-			String dynamicClass = regexMatcher.group("dynaclass");
-			String dynamicInstance = "0";
+			String dynamicClass   = regexMatcher.group("dynaclass");
 
 			// Split class in classname and instance id, if available
 			if (staticClass.contains("#")) {
-				String[] parts = staticClass.split("#");
-				staticClass = parts[0];
-				staticInstance = parts[1];
+				instanceId  = staticClass.split("#")[1];
+				staticClass = staticClass.split("#")[0];
 			}
 			
 			// Split class in classname and instance id, if available
 			if (dynamicClass.contains("#")) {
-				String[] parts = dynamicClass.split("#");
-				dynamicClass = parts[0];
-				dynamicInstance = parts[1];
+				dynamicClass = dynamicClass.split("#")[0];
 			}
 			
 			trace.setEnteringTrace(isEnteringTrace);
 			trace.setStaticPackage(staticPackage);
 			trace.setStaticClass(staticClass);
-			trace.setStaticInstance(staticInstance);
+			trace.setInstanceId(instanceId);
 			trace.setDynamicPackage(dynamicPackage);
 			trace.setDynamicClass(dynamicClass);
-			trace.setDynamicInstance(dynamicInstance);
 			trace.setThreadId(threadId);
 			trace.setSignature(regexMatcher.group("signature"));
 			trace.setReturnType(regexMatcher.group("returntype"));

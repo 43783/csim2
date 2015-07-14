@@ -28,15 +28,15 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class TraceDao {
 
 	// Private static SQL queries
-	private static String INSERT = "INSERT INTO traces SET key_id=?keyId, scenario_id=?scenarioId, sequence_number=?sequenceNumber, is_entering=?isEntering, dynamic_package='?dynamicPackage', dynamic_class='?dynamicClass', dynamic_instance='?dynamicInstance', static_package='?staticPackage', static_class='?staticClass', static_instance='?staticInstance', thread_id=?threadId, signature='?signature', parameters='?parameters', return_type='?returnType', timestamp=?timestamp, duration=?duration";
-	private static String UPDATE = "UPDATE traces SET key_id=?keyId, scenario_id=?scenarioId, sequence_number=?sequenceNumber, is_entering=?isEntering, dynamic_package='?dynamicPackage', dynamic_class='?dynamicClass', dynamic_instance='?dynamicInstance', static_package='?staticPackage', static_class='?staticClass', static_instance='?staticInstance', thread_id=?threadId, signature='?signature', parameters='?parameters', return_type='?returnType', timestamp=?timestamp, duration=?duration WHERE key_id=?keyId";
+	private static String INSERT = "INSERT INTO traces SET key_id=?keyId, scenario_id=?scenarioId, sequence_number=?sequenceNumber, is_entering=?isEntering, dynamic_package='?dynamicPackage', dynamic_class='?dynamicClass', instance_id='?instanceId', static_package='?staticPackage', static_class='?staticClass', thread_id=?threadId, signature='?signature', parameters='?parameters', return_type='?returnType', timestamp=?timestamp, duration=?duration";
+	private static String UPDATE = "UPDATE traces SET key_id=?keyId, scenario_id=?scenarioId, sequence_number=?sequenceNumber, is_entering=?isEntering, dynamic_package='?dynamicPackage', dynamic_class='?dynamicClass', instance_id='?instanceId', static_package='?staticPackage', static_class='?staticClass', thread_id=?threadId, signature='?signature', parameters='?parameters', return_type='?returnType', timestamp=?timestamp, duration=?duration WHERE key_id=?keyId";
 	private static String DELETE = "DELETE FROM traces WHERE scenario_id=?scenarioId";
 
 	private static String FIND_MIN_SEQUENCE_NUMBER = "SELECT min(t.sequence_number) FROM traces t WHERE scenario_id = ?scenarioId";
 	private static String FIND_MAX_SEQUENCE_NUMBER = "SELECT max(t.sequence_number) FROM traces t WHERE scenario_id = ?scenarioId";
 
-	private static String FIND_BY_ID = "SELECT key_id, scenario_id, sequence_number, is_entering, dynamic_package, dynamic_class, dynamic_instance, static_package, static_class, static_instance, thread_id, signature, parameters, return_type, timestamp, duration FROM traces WHERE key_id=?keyId";
-	private static String FIND_BY_SCENARIO = "SELECT t.key_id, t.scenario_id, t.sequence_number, t.is_entering, t.dynamic_package, t.dynamic_class, t.dynamic_instance, t.static_package, t.static_class, t.static_instance, t.thread_id, t.signature, t.parameters, t.return_type, t.timestamp, t.duration, c.key_id as class_id, m.key_id as method_id FROM traces t INNER JOIN source_classes c ON t.static_class = c.name INNER JOIN source_methods m ON t.signature = m.signature WHERE scenario_id = ?scenarioId ORDER BY sequence_number";
+	private static String FIND_BY_ID = "SELECT key_id, scenario_id, instance_id, sequence_number, is_entering, dynamic_package, dynamic_class, static_package, static_class, thread_id, signature, parameters, return_type, timestamp, duration FROM traces WHERE key_id=?keyId";
+	private static String FIND_BY_SCENARIO = "SELECT t.key_id, t.scenario_id, t.instance_id, t.sequence_number, t.is_entering, t.dynamic_package, t.dynamic_class, t.static_package, t.static_class, t.thread_id, t.signature, t.parameters, t.return_type, t.timestamp, t.duration, c.key_id as class_id, m.key_id as method_id FROM traces t INNER JOIN source_classes c ON t.static_class = c.name INNER JOIN source_methods m ON t.signature = m.signature WHERE scenario_id = ?scenarioId ORDER BY sequence_number";
 	private static String FIND_DISTINCT_METHOD_IDS = "SELECT distinct(m.key_id) FROM traces t INNER JOIN source_classes c ON t.static_class = c.name INNER JOIN source_methods m ON t.signature = m.signature WHERE scenario_id = ?scenarioId";
 	private static String FIND_METHOD_BETWEEN_SEQUENCE_NUMBER = "SELECT distinct(m.key_id) FROM traces t INNER JOIN source_classes c ON t.static_class = c.name INNER JOIN source_methods m ON t.signature = m.signature WHERE scenario_id = ?scenarioId AND sequence_number between ?startSequence AND ?endSequence";
 
@@ -316,14 +316,13 @@ public class TraceDao {
 
 				map.put("keyId", trace.getKeyId());
 				map.put("scenarioId", trace.getScenarioId());
+				map.put("instanceId", trace.getInstanceId());
 				map.put("sequenceNumber", trace.getSequenceNumber());
 				map.put("isEntering", trace.isEnteringTrace());
 				map.put("dynamicPackage", trace.getDynamicPackage());
 				map.put("dynamicClass", trace.getDynamicClass());
-				map.put("dynamicInstance", trace.getDynamicInstance());
 				map.put("staticPackage", trace.getStaticPackage());
 				map.put("staticClass", trace.getStaticClass());
-				map.put("staticInstance", trace.getStaticInstance());
 				map.put("threadId", trace.getThreadId());
 				map.put("signature", trace.getSignature());
 				map.put("parameters", trace.getParameters());
@@ -355,14 +354,13 @@ public class TraceDao {
 
 				trace.setKeyId(row.getInteger("key_id"));
 				trace.setScenarioId(row.getInteger("scenario_id"));
+				trace.setInstanceId(row.getString("instance_id"));
 				trace.setSequenceNumber(row.getInteger("sequence_number"));
 				trace.setEnteringTrace(row.getBoolean("is_entering"));
 				trace.setDynamicPackage(row.getString("dynamic_package"));
 				trace.setDynamicClass(row.getString("dynamic_class"));
-				trace.setDynamicInstance(row.getString("dynamic_instance"));
 				trace.setStaticPackage(row.getString("static_package"));
 				trace.setStaticClass(row.getString("static_class"));
-				trace.setStaticInstance(row.getString("static_instance"));
 				trace.setThreadId(row.getLong("threadId"));
 				trace.setSignature(row.getString("signature"));
 				trace.setParameters(row.getString("parameters"));
@@ -371,9 +369,11 @@ public class TraceDao {
 				trace.setDuration(row.getInteger("duration"));
 
 				// By default, MySql JDBC driver doesn't support alias defined 
-				// in a standard query. So we used direct position in result to retrieve desired values:
-				//    class_id  = 15
-				//   method_id = 16
+				// in a standard query. 
+				//
+				// So we used direct position in result to retrieve desired values:
+				//    	class_id  = 15
+				//   	method_id = 16
 				//
 				// However, a MYSQL workaround exists, but is really nasty:
 				//
