@@ -77,13 +77,11 @@ class ProjectLogic {
 		List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
 		project.getScenarios().clear();
 		project.getScenarios().addAll(scenarios);
-		Console.writeInfo(ProjectLogic.class, " scenarios: " + project.getScenarios().size());
 
 		// Load ontologies
 		List<Ontology> ontologies = ApplicationLogic.getOntologies(project);
 		project.getOntologies().clear();
 		project.getOntologies().addAll(ontologies);
-		Console.writeInfo(ProjectLogic.class, " ontologies: " + project.getOntologies().size());
 	}
 
 	/**

@@ -975,6 +975,27 @@ public class ApplicationLogic {
 		StemLogic.deleteStemMethods(project);
 	}
 
+	
+	/**
+	 * Delete a scenario and all its dependencies.
+	 * 
+	 * @param project
+	 *        the scenario to delete
+	 */
+	public static void deleteScenario(Scenario scenario) {
+		ScenarioLogic.deleteScenario(scenario);
+	}
+	
+	/**
+	 * Delete a single scenario step.
+	 * 
+	 * @param step
+	 *        the scenario step to delete
+	 */
+	public static void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
+		ScenarioLogic.deleteScenarioStep(scenario, step);
+	}
+	
 	/**
 	 * Create a new project within the application.
 	 * 
@@ -1037,17 +1058,7 @@ public class ApplicationLogic {
 	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
 		return ScenarioLogic.createScenarioStep(name, description, scenario);
 	}
-	
-	/**
-	 * Delete a scenario and all its dependencies.
-	 * 
-	 * @param project
-	 *        the scenario to delete
-	 */
-	public static void deleteScenario(Scenario scenario) {
-		ScenarioLogic.deleteScenario(scenario);
-	}
-	
+
 	/**
 	 * Save project passed in argument.
 	 * 

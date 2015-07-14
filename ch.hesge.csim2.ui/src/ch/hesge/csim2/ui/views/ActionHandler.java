@@ -1,6 +1,5 @@
 package ch.hesge.csim2.ui.views;
 
-import java.awt.Cursor;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +18,10 @@ import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.ui.dialogs.AboutDialog;
-import ch.hesge.csim2.ui.dialogs.ProjectDialog;
 import ch.hesge.csim2.ui.dialogs.ParametersDialog;
-import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
+import ch.hesge.csim2.ui.dialogs.ProjectDialog;
 import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
+import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
 import ch.hesge.csim2.ui.dialogs.SettingsDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -46,6 +45,190 @@ public class ActionHandler {
 	public ActionHandler(Application application, MainView mainView) {
 		this.application = application;
 		this.mainView = mainView;
+	}
+
+	/**
+	 * Create a new project
+	 */
+	public void createNewProject() {
+
+		// Display dialog
+		ProjectDialog dialog = new ProjectDialog(mainView);
+		dialog.setTitle("New Project");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			Project project = ApplicationLogic.createProject(dialog.getNameField());
+			application.setProject(project);
+			reloadProject();
+		}
+	}
+
+	/**
+	 * Create a new scenario
+	 */
+	public void createNewScenario() {
+
+		// Display dialog
+		ProjectDialog dialog = new ProjectDialog(mainView);
+		dialog.setTitle("New Scenario");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			String scenarioName = dialog.getNameField();
+			ApplicationLogic.createScenario(scenarioName, application.getProject());
+			reloadProject();
+		}
+	}
+
+	/**
+	 * Create a new scenario
+	 */
+	public void createScenarioStep(Scenario scenario) {
+
+		// Display dialog
+		ScenarioStepDialog dialog = new ScenarioStepDialog(mainView);
+		dialog.setTitle("New Step");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			ApplicationLogic.createScenarioStep(dialog.getNameField(), dialog.getDescriptionField(), scenario);
+		}
+	}
+
+	/**
+	 * Delete the project passed in argument.
+	 * 
+	 * @param project
+	 *        the project to delete
+	 */
+	public void deleteProject(Project project) {
+
+		// Display confirmation dialog
+		int dialogResult = JOptionPane.showConfirmDialog(mainView, "Do you really want to delete the project '" + project.getName() + "' ?", "Warning", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			ApplicationLogic.deleteProject(project);
+			application.setProject(null);
+			reloadProject();
+		}
+	}
+
+	/**
+	 * Delete the scenario passed in argument.
+	 * 
+	 * @param scenario
+	 *        the scenario to delete
+	 */
+	public void deleteScenario(Scenario scenario) {
+
+		// Display confirmation dialog
+		int dialogResult = JOptionPane.showConfirmDialog(mainView, "Do you really want to delete the scenario '" + scenario.getName() + "' ?", "Warning", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			ApplicationLogic.deleteScenario(scenario);
+			reloadProject();
+		}
+	}
+	
+	/**
+	 * Delete a scenario step
+	 */
+	public void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
+
+		// Execution is completed
+		int dialogResult = showConfirmMessage("Confirmation", "Would you like to delete current step ?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			ApplicationLogic.deleteScenarioStep(scenario, step);
+		}
+	}
+	
+	/**
+	 * Save the scenario with its steps
+	 */
+	public void saveScenario(Scenario scenario) {
+
+		// Execution is completed
+		int dialogResult = showConfirmMessage("Confirmation", "Would you like to save scenario times ?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			ApplicationLogic.saveScenario(scenario);
+		}
+	}
+	
+	/**
+	 * Edit a scenario step
+	 */
+	public void editScenarioStep(ScenarioStep step) {
+
+		// Display dialog
+		ScenarioStepDialog dialog = new ScenarioStepDialog(mainView);
+		dialog.setTitle("Edit Step");
+		dialog.setNameField(step.getName());
+		dialog.setDescriptionField(step.getDescription());
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			step.setName(dialog.getNameField());
+			step.setDescription(dialog.getDescriptionField());
+			ApplicationLogic.saveScenario(step.getScenario());
+		}
+	}
+
+	/**
+	 * Rename the project passed in argument.
+	 * 
+	 * @param project
+	 *        the project to rename
+	 */
+	public void renameProject(Project project) {
+
+		// Display dialog
+		ProjectDialog dialog = new ProjectDialog(mainView);
+		dialog.setTitle("Rename Project");
+		dialog.setNameField(project.getName());
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			project.setName(dialog.getNameField());
+			ApplicationLogic.saveProject(project);
+		}
+	}
+
+	/**
+	 * Rename the project passed in argument.
+	 * 
+	 * @param project
+	 *        the project to rename
+	 */
+	public void renameScenario(Scenario scenario) {
+
+		// Display dialog
+		ProjectDialog dialog = new ProjectDialog(mainView);
+		dialog.setTitle("Rename Scenario");
+		dialog.setNameField(scenario.getName());
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			String scenarioName = dialog.getNameField(); 
+			scenario.setName(scenarioName);
+			ApplicationLogic.saveScenario(scenario);
+			reloadProject();
+		}
+	}
+
+	/**
+	 * Close all views on workspace.
+	 */
+	public void closeAllViews() {
+		mainView.resetWorkspace();
 	}
 
 	/**
@@ -108,198 +291,69 @@ public class ActionHandler {
 	}
 
 	/**
-	 * Create a new project
+	 * Start the engine passed in argument.
+	 * 
+	 * @param engine
 	 */
-	public void createNewProject() {
+	public void startEngine(IEngine engine) {
 
-		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
-		dialog.setTitle("New Project");
+		// First display parameter view
+		ParametersDialog dialog = new ParametersDialog(mainView);
+		dialog.setEngine(engine);
 		dialog.setVisible(true);
 
-		// Detect if use clicked OK
 		if (dialog.getDialogResult()) {
-			Project project = ApplicationLogic.createProject(dialog.getNameField());
-			application.setProject(project);
-			reloadProject();
+
+			// Prepare the engine context
+			Context context = new Context();
+			context.putAll(application.getProperties());
+			context.putAll(dialog.getParameters());
+			engine.setContext(context);
+
+			// Console cleaning
+			showConsole();
+
+			// // Start the engine
+			ApplicationLogic.startEngine(engine);
 		}
 	}
 
 	/**
-	 * Create a new scenario
+	 * Stop the engine passed in argument.
+	 * 
+	 * @param engine
 	 */
-	public void createNewScenario() {
-
-		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
-		dialog.setTitle("New Scenario");
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-			String scenarioName = dialog.getNameField();
-			ApplicationLogic.createScenario(scenarioName, application.getProject());
-			reloadProject();
-		}
-	}
-
-	/**
-	 * Create a new scenario
-	 */
-	public void createScenarioStep(Scenario scenario) {
-
-		// Display dialog
-		ScenarioStepDialog dialog = new ScenarioStepDialog(mainView);
-		dialog.setTitle("New Step");
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-			ApplicationLogic.createScenarioStep(dialog.getNameField(), dialog.getDescriptionField(), scenario);
-		}
-	}
-
-	/**
-	 * Edit a scenario step
-	 */
-	public void editScenarioStep(ScenarioStep step) {
-
-		// Display dialog
-		ScenarioStepDialog dialog = new ScenarioStepDialog(mainView);
-		dialog.setTitle("Edit Step");
-		dialog.setNameField(step.getName());
-		dialog.setDescriptionField(step.getDescription());
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-			step.setName(dialog.getNameField());
-			step.setDescription(dialog.getDescriptionField());
-			ApplicationLogic.saveScenario(step.getScenario());
-		}
-	}
-
-	/**
-	 * Save the scenario with its steps
-	 */
-	public void saveScenario(Scenario scenario) {
-
-		// Execution is completed
-		int dialogResult = showConfirmMessage("Confirmation", "Would you like to save scenario with its steps ?", JOptionPane.YES_NO_OPTION);
-
-		if (dialogResult == JOptionPane.YES_OPTION) {
-
-			try {
-				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				ApplicationLogic.saveScenario(scenario);
-			}
-			finally {
-				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-		}
+	public void stopEngine(IEngine engine) {
+		ApplicationLogic.stopEngine(engine);
 	}
 	
 	/**
-	 * Delete a scenario step
-	 */
-	public void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
-
-		// Execution is completed
-		int dialogResult = showConfirmMessage("Confirmation", "Would you like to save delete current step ?", JOptionPane.YES_NO_OPTION);
-
-		if (dialogResult == JOptionPane.YES_OPTION) {
-			
-			scenario.getSteps().remove(step);
-			ApplicationLogic.saveScenario(scenario);
-		}
-	}
-	
-	/**
-	 * Rename the project passed in argument.
-	 * 
-	 * @param project
-	 *        the project to rename
-	 */
-	public void renameProject(Project project) {
-
-		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
-		dialog.setTitle("Rename Project");
-		dialog.setNameField(project.getName());
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-			project.setName(dialog.getNameField());
-			ApplicationLogic.saveProject(project);
-		}
-	}
-
-	/**
-	 * Rename the project passed in argument.
-	 * 
-	 * @param project
-	 *        the project to rename
-	 */
-	public void renameScenario(Scenario scenario) {
-
-		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
-		dialog.setTitle("Rename Scenario");
-		dialog.setNameField(scenario.getName());
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-			String scenarioName = dialog.getNameField(); 
-			scenario.setName(scenarioName);
-			ApplicationLogic.saveScenario(scenario);
-			reloadProject();
-		}
-	}
-
-	/**
-	 * Delete the project passed in argument.
-	 * 
-	 * @param project
-	 *        the project to delete
-	 */
-	public void deleteProject(Project project) {
-
-		// Display confirmation dialog
-		int dialogResult = JOptionPane.showConfirmDialog(mainView, "Do you really want to delete the project '" + project.getName() + "' ?", "Warning", JOptionPane.YES_NO_OPTION);
-
-		if (dialogResult == JOptionPane.YES_OPTION) {
-			ApplicationLogic.deleteProject(project);
-			application.setProject(null);
-			reloadProject();
-		}
-	}
-
-	/**
-	 * Delete the scenario passed in argument.
+	 * Start executing a scenario
 	 * 
 	 * @param scenario
-	 *        the scenario to delete
 	 */
-	public void deleteScenario(Scenario scenario) {
+	public void startScenario(Scenario scenario) {
+		ScenarioView view = (ScenarioView) SwingUtilities.getAncestorOfClass(ScenarioView.class, mainView);
+		view.startScenario();
+	}
 
-		// Display confirmation dialog
-		int dialogResult = JOptionPane.showConfirmDialog(mainView, "Do you really want to delete the scenario '" + scenario.getName() + "' ?", "Warning", JOptionPane.YES_NO_OPTION);
-
-		if (dialogResult == JOptionPane.YES_OPTION) {
-			ApplicationLogic.deleteScenario(scenario);
-			reloadProject();
-		}
+	/**
+	 * Stop executing a scenario
+	 * 
+	 * @param scenario
+	 */
+	public void stopScenario(Scenario scenario) {
+		ScenarioView view = (ScenarioView) SwingUtilities.getAncestorOfClass(ScenarioView.class, mainView);
+		view.stopScenario();
 	}
 	
 	/**
-	 * Close all views on workspace.
+	 * Quit the application
 	 */
-	public void closeAllViews() {
-		mainView.resetWorkspace();
+	public void exitApplication() {
+		System.exit(0);
 	}
-
+	
 	/**
 	 * Show the about dialog
 	 */
@@ -317,15 +371,8 @@ public class ActionHandler {
 	/**
 	 * Show console logs visible.
 	 */
-	public void showLogConsole() {
-		//consoleDockable.toFront();
-	}
-
-	/**
-	 * Clear console logs content.
-	 */
-	public void clearLogConsole() {
-		//consoleView.clearLogConsole();;
+	public void showConsole() {
+		mainView.showConsole();
 	}
 
 	/**
@@ -461,69 +508,5 @@ public class ActionHandler {
 				mainView.showView("Timeseries", new TimeSeriesView(application.getProject(), scenarios));
 			}
 		});
-	}
-
-	/**
-	 * Start the engine passed in argument.
-	 * 
-	 * @param engine
-	 */
-	public void startEngine(IEngine engine) {
-
-		// First display parameter view
-		ParametersDialog dialog = new ParametersDialog(mainView);
-		dialog.setEngine(engine);
-		dialog.setVisible(true);
-
-		if (dialog.getDialogResult()) {
-
-			// Prepare the engine context
-			Context context = new Context();
-			context.putAll(application.getProperties());
-			context.putAll(dialog.getParameters());
-			engine.setContext(context);
-
-			// Console cleaning
-			showLogConsole();
-
-			// // Start the engine
-			ApplicationLogic.startEngine(engine);
-		}
-	}
-
-	/**
-	 * Stop the engine passed in argument.
-	 * 
-	 * @param engine
-	 */
-	public void stopEngine(IEngine engine) {
-		ApplicationLogic.stopEngine(engine);
-	}
-	
-	/**
-	 * Start executing a scenario
-	 * 
-	 * @param scenario
-	 */
-	public void startScenario(Scenario scenario) {
-		ScenarioView view = (ScenarioView) SwingUtilities.getAncestorOfClass(ScenarioView.class, mainView);
-		view.startScenario();
-	}
-
-	/**
-	 * Stop executing a scenario
-	 * 
-	 * @param scenario
-	 */
-	public void stopScenario(Scenario scenario) {
-		ScenarioView view = (ScenarioView) SwingUtilities.getAncestorOfClass(ScenarioView.class, mainView);
-		view.stopScenario();
-	}
-	
-	/**
-	 * Quit the application
-	 */
-	public void exitApplication() {
-		System.exit(0);
 	}
 }

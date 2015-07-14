@@ -73,7 +73,7 @@ class ScenarioLogic {
 	public static void resetExecutionTimes(Scenario scenario) {
 
 		for (ScenarioStep step : scenario.getSteps()) {
-			step.setExecutionTime(-1);
+			step.setExecutionTime(0);
 		}
 	}
 
@@ -184,5 +184,18 @@ class ScenarioLogic {
 	public static void deleteScenario(Scenario scenario) {
 		ScenarioStepDao.deleteByScenario(scenario);
 		ScenarioDao.delete(scenario);
+	}
+
+	/**
+	 * Delete a single scenario step.
+	 * 
+	 * @param step
+	 *        the scenario owning the step
+	 * @param step
+	 *        the scenario step to delete
+	 */
+	public static void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
+		scenario.getSteps().remove(step);
+		ScenarioStepDao.delete(step);
 	}
 }

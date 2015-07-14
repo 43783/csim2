@@ -31,6 +31,7 @@ public class ScenarioStepDao {
 	private static String INSERT = "INSERT INTO scenario_steps SET scenario_id=?scenarioId, execution_time=?executionTime, name='?name', description='?description'";
 	private static String UPDATE = "UPDATE scenario_steps SET scenario_id=?scenarioId, execution_time=?executionTime, name='?name', description='?description' WHERE key_id=?keyId";
 	private static String DELETE = "DELETE FROM scenario_steps WHERE key_id=?keyId";
+	private static String DELETE_BY_SCENARIO = "DELETE FROM scenario_steps WHERE scenario_id=?scenarioId";
 
 	private static String FIND_BY_NAME = "SELECT key_id, scenario_id, execution_time, name, description FROM scenario_steps WHERE scenario_id=?scenarioId AND name='?name'";
 	private static String FIND_BY_SCENARIO = "SELECT key_id, scenario_id, execution_time, name, description FROM scenario_steps WHERE scenario_id=?scenarioId ORDER BY scenario_id";
@@ -144,7 +145,7 @@ public class ScenarioStepDao {
 	}
 
 	/**
-	 * Remove an scenario step from the database.
+	 * Remove a scenario step from the database.
 	 * 
 	 * @param scenario
 	 *            the scenario owning all step to remove from database
@@ -156,7 +157,30 @@ public class ScenarioStepDao {
 		try {
 
 			// Build the query to execute
-			String queryString = QueryBuilder.create(ScenarioStepDao.DELETE, "keyId", scenario.getKeyId());
+			String queryString = QueryBuilder.create(ScenarioStepDao.DELETE_BY_SCENARIO, "scenarioId", scenario.getKeyId());
+
+			// Execute the query
+			QueryEngine.executeQuery(connection, queryString);
+		}
+		catch (SQLException e) {
+			Console.writeError(ScenarioStepDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+	}
+
+	/**
+	 * Delete a single scenario step.
+	 * 
+	 * @param step
+	 *        the step to delete
+	 */
+	public static void delete(ScenarioStep step) {
+
+		Connection connection = ConnectionUtils.createConnection();
+
+		try {
+
+			// Build the query to execute
+			String queryString = QueryBuilder.create(ScenarioStepDao.DELETE, "keyId", step.getKeyId());
 
 			// Execute the query
 			QueryEngine.executeQuery(connection, queryString);

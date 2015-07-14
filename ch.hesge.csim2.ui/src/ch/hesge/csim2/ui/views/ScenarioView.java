@@ -48,7 +48,6 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		scenarioTable = new ScenarioTable(scenario, actionHandler);
 		scenarioTable.setFocusable(true);
-		scenarioTable.setEnabled(scenario.getSteps().size() > 0);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(scenarioTable);
 		add(scrollPane, BorderLayout.CENTER);
@@ -77,15 +76,13 @@ public class ScenarioView extends JPanel implements ActionListener {
 		btnDel.addActionListener(this);
 		leftPanel.add(btnDel);
 
-		btnSave = new JButton("Save");
-		btnSave.setPreferredSize(new Dimension(80, 25));
+		btnSave = new JButton("Save Times");
+		btnSave.setPreferredSize(new Dimension(100, 25));
 		btnSave.addActionListener(this);
 		leftPanel.add(btnSave);
 
 		btnStart = new JButton("Start");
 		btnStart.setPreferredSize(new Dimension(80, 25));
-		btnStart.setEnabled(false);
-		btnStart.setEnabled(scenario != null && scenario.getSteps().size() > 0);
 		btnStart.addActionListener(this);
 		rightPanel.add(btnStart);
 

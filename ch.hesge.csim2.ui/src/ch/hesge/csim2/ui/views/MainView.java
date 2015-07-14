@@ -524,6 +524,13 @@ public class MainView extends JFrame implements ActionListener {
 	}
 	
 	/**
+	 * Make log console visible.
+	 */
+	public void showConsole() {
+		consoleWrapper.toFront();
+	}
+	
+	/**
 	 * Remove all dockables from workspace
 	 */
 	public void resetWorkspace() {
