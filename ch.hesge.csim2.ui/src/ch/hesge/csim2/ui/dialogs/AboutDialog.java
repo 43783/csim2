@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import ch.hesge.csim2.ui.utils.SwingUtils;
@@ -57,15 +56,13 @@ public class AboutDialog extends JDialog implements ActionListener {
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
 		mainPane.setLayout(null);
 
-		MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this);
-
 		// Initialize content pane
 		JLabel lblTitle = new JLabel("CSIM2 Environment");
 		lblTitle.setFont(new Font("Arial", Font.PLAIN, 28));
 		lblTitle.setBounds(46, 35, 270, 34);
 		mainPane.add(lblTitle);
 
-		JLabel lblVersion = new JLabel("Version: " + mainView.getApplication().getVersion());
+		JLabel lblVersion = new JLabel("Version: " + ((MainView)getOwner()).getApplication().getVersion());
 		lblVersion.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblVersion.setBounds(46, 70, 402, 34);
 		mainPane.add(lblVersion);

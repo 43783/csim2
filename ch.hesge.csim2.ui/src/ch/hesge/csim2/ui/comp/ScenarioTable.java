@@ -38,9 +38,11 @@ public class ScenarioTable extends JTable {
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		// Create a context menu
+		/*
 		contextMenu = new ScenarioPopup();
 		contextMenu.clearMenuState();		
 		contextMenu.setStartMenuState(true);
+		*/
 		
 		initModel();
 		initRenderer();		

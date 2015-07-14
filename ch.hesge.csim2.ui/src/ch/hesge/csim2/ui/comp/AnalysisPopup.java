@@ -5,16 +5,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
-import ch.hesge.csim2.ui.views.MainView;
+import ch.hesge.csim2.ui.views.ActionHandler;
 
 @SuppressWarnings("serial")
 public class AnalysisPopup extends JPopupMenu implements ActionListener {
 
 	// Private attribute
-	private ProjectTree owner;
-	
+	private ActionHandler actionHandler;
 	private JMenuItem mnuSourceStem;
 	private JMenuItem mnuConceptStem;
 	private JMenuItem mnuMatching;
@@ -24,10 +22,17 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public AnalysisPopup(ProjectTree owner) {
+	public AnalysisPopup(ActionHandler actionHandler) {
 
-		this.owner = owner;
-
+		this.actionHandler = actionHandler;
+		initComponent();
+	}
+	
+	/**
+	 * Initialize the component
+	 */
+	private void initComponent() {
+		
 		mnuSourceStem = new JMenuItem("Show stem sources");
 		mnuSourceStem.addActionListener(this);
 		add(mnuSourceStem);
@@ -47,62 +52,54 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 		mnuTimeSeries = new JMenuItem("Show timeseries");
 		mnuTimeSeries.addActionListener(this);
 		add(mnuTimeSeries);
-		
 	}
-
+	
 	/**
-	 * Enable menus for source methods
+	 * Clear menu state
 	 */
-	public void enableSourceStemMenu() {
-		mnuSourceStem.setEnabled(true);
+	public void clearMenuState() {	
+		
+		mnuSourceStem.setEnabled(false);
 		mnuConceptStem.setEnabled(false);
 		mnuMatching.setEnabled(false);
 		mnuTrace.setEnabled(false);
 		mnuTimeSeries.setEnabled(false);
+	}
+	
+
+	/**
+	 * Enable menus for source methods
+	 */
+	public void setSourceStemMenuState(boolean state) {
+		mnuSourceStem.setEnabled(state);
 	}
 
 	/**
 	 * Enable menus for step concepts
 	 */
-	public void enableConceptStemMenu() {
-		mnuSourceStem.setEnabled(false);
-		mnuConceptStem.setEnabled(true);
-		mnuMatching.setEnabled(false);
-		mnuTrace.setEnabled(false);
-		mnuTimeSeries.setEnabled(false);
+	public void setConceptStemMenuState(boolean state) {
+		mnuConceptStem.setEnabled(state);
 	}
 
 	/**
 	 * Enable menus for matching view
 	 */
-	public void enableMatchingMenu() {
-		mnuSourceStem.setEnabled(false);
-		mnuConceptStem.setEnabled(false);
-		mnuMatching.setEnabled(true);
-		mnuTrace.setEnabled(false);
-		mnuTimeSeries.setEnabled(false);
+	public void setMatchingMenuState(boolean state) {
+		mnuMatching.setEnabled(state);
 	}
 	
 	/**
 	 * Enable menus for trace analysis
 	 */
-	public void enableTraceMenu() {
-		mnuSourceStem.setEnabled(false);
-		mnuConceptStem.setEnabled(false);
-		mnuMatching.setEnabled(false);
-		mnuTrace.setEnabled(true);
-		mnuTimeSeries.setEnabled(false);
+	public void setTraceMenuState(boolean state) {
+		mnuTrace.setEnabled(state);
 	}
 
 	/**
 	 * Enable menus for chart analysis
 	 */
-	public void enableTimeSeriesMenu() {
-		mnuSourceStem.setEnabled(false);
-		mnuConceptStem.setEnabled(false);
-		mnuMatching.setEnabled(false);
-		mnuTrace.setEnabled(false);
-		mnuTimeSeries.setEnabled(true);
+	public void setTimeSeriesMenuState(boolean state) {
+		mnuTimeSeries.setEnabled(state);
 	}
 
 	/**
@@ -110,22 +107,20 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, owner);
-		
 		if (e.getSource() == mnuSourceStem) {
-			mainView.showSourceStems();
+			actionHandler.showSourceStems();
 		}
 		else if (e.getSource() == mnuConceptStem) {
-			mainView.showConceptStems();
+			actionHandler.showConceptStems();
 		}
 		else if (e.getSource() == mnuSourceStem) {
-			mainView.showSourceStems();
+			actionHandler.showSourceStems();
 		}
 		else if (e.getSource() == mnuTrace) {
-			mainView.showTraceView();
+			actionHandler.showTraceView();
 		}
 		else if (e.getSource() == mnuTimeSeries) {
-			mainView.showTimeSeriesView();
+			actionHandler.showTimeSeriesView();
 		}
 	}
 }

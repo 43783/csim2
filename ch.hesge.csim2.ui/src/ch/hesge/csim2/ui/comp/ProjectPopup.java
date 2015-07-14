@@ -5,23 +5,26 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
 import ch.hesge.csim2.core.model.Project;
-import ch.hesge.csim2.ui.views.MainView;
+import ch.hesge.csim2.ui.views.ActionHandler;
 
 @SuppressWarnings("serial")
 public class ProjectPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private Project project;
+	private ActionHandler actionHandler;
 	private JMenuItem mnuRename;
 	private JMenuItem mnuDelete;
+	private JMenuItem mnuClose;
 
 	/**
 	 * Default constructor
 	 */
-	public ProjectPopup() {
+	public ProjectPopup(ActionHandler actionHandler) {
+		
+		this.actionHandler = actionHandler;
 		initComponent();
 	}
 
@@ -30,13 +33,17 @@ public class ProjectPopup extends JPopupMenu implements ActionListener {
 	 */
 	private void initComponent() {
 
-		mnuRename = new JMenuItem("Rename the project");
+		mnuRename = new JMenuItem("Rename Project");
 		mnuRename.addActionListener(this);
 		add(mnuRename);
 
-		mnuDelete = new JMenuItem("Delete the project");
+		mnuDelete = new JMenuItem("Delete");
 		mnuDelete.addActionListener(this);
 		add(mnuDelete);
+
+		mnuClose = new JMenuItem("Close");
+		mnuClose.addActionListener(this);
+		add(mnuClose);
 	}
 
 	/**
@@ -63,13 +70,14 @@ public class ProjectPopup extends JPopupMenu implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this.getInvoker());
-
 		if (e.getSource() == mnuRename) {
-			mainView.renameProject(project);
+			actionHandler.renameProject(project);
 		}
 		else if (e.getSource() == mnuDelete) {
-			mainView.deleteProject(project);
+			actionHandler.deleteProject(project);
+		}
+		else if (e.getSource() == mnuClose) {
+			actionHandler.closeProject();
 		}
 	}
 

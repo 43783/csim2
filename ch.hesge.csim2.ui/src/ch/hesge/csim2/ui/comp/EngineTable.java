@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import ch.hesge.csim2.core.model.IEngine;
+import ch.hesge.csim2.ui.views.ActionHandler;
 
 @SuppressWarnings("serial")
 public class EngineTable extends JTable {
@@ -34,8 +35,11 @@ public class EngineTable extends JTable {
 	/**
 	 * Default constructor
 	 */
-	public EngineTable(List<IEngine> engines) {
+	public EngineTable(List<IEngine> engines, ActionHandler actionHandler) {
+
 		this.engines = engines;
+		this.contextMenu = new EnginePopup(actionHandler);
+
 		initComponent();
 	}
 
@@ -47,9 +51,6 @@ public class EngineTable extends JTable {
 		setRowSelectionAllowed(true);
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		// Create a context menu
-		contextMenu = new EnginePopup(this);
 
 		initModel();
 		initListeners();

@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import ch.hesge.csim2.core.model.IEngine;
@@ -17,12 +16,15 @@ import ch.hesge.csim2.ui.comp.EngineTable;
 public class EngineView extends JPanel implements ActionListener {
 
 	// Private attributes
+	private ActionHandler actionHandler;
 	private EngineTable engineTable;
 
 	/**
 	 * Default constructor.
 	 */
-	public EngineView() {
+	public EngineView(ActionHandler actionHandler) {
+		
+		this.actionHandler = actionHandler;
 		initComponent();
 	}
 
@@ -46,8 +48,7 @@ public class EngineView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == engineTable) {
-			MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this);
-			mainView.startEngine(engineTable.getSelectedValue());
+			actionHandler.startEngine(engineTable.getSelectedValue());
 		}
 	}
 	

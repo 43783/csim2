@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -22,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
@@ -30,32 +30,20 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CGrid;
+import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.CWorkingArea;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
-import bibliothek.gui.dock.common.event.CDockableStateListener;
-import bibliothek.gui.dock.common.intern.CDockable;
-import bibliothek.gui.dock.common.mode.ExtendedMode;
+import bibliothek.gui.dock.common.event.CVetoClosingEvent;
+import bibliothek.gui.dock.common.event.CVetoClosingListener;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
-import ch.hesge.csim2.core.model.Concept;
-import ch.hesge.csim2.core.model.Context;
 import ch.hesge.csim2.core.model.IEngine;
-import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
-import ch.hesge.csim2.core.model.Scenario;
-import ch.hesge.csim2.core.model.SourceClass;
-import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.ui.dialogs.AboutDialog;
-import ch.hesge.csim2.ui.dialogs.NewProjectDialog;
-import ch.hesge.csim2.ui.dialogs.ParametersDialog;
-import ch.hesge.csim2.ui.dialogs.ProjectDialog;
-import ch.hesge.csim2.ui.dialogs.SettingsDialog;
+import ch.hesge.csim2.ui.comp.ProjectTree;
 import ch.hesge.csim2.ui.utils.SwingAppender;
-import ch.hesge.csim2.ui.utils.SwingUtils;
 
 /**
  * Main application frame
@@ -68,31 +56,33 @@ public class MainView extends JFrame implements ActionListener {
 
 	// Private attributes
 	private Application application;
-	private Project project;
+	private ActionHandler actionHandler;
 
 	private JMenuItem mnuNew;
 	private JMenuItem mnuOpen;
 	private JMenuItem mnuClose;
-	private JMenuItem mnuSave;
 	private JMenuItem mnuExit;
 	private JCheckBoxMenuItem mnuProject;
-	private JCheckBoxMenuItem mnuEngines;
+	private JCheckBoxMenuItem mnuEngine;
 	private JCheckBoxMenuItem mnuConsole;
 	private JMenuItem mnuCloseAll;
 	private JMenuItem mnuSettings;
 	private JMenuItem mnuAbout;
 
-	private ProjectView projectView;
-	private ConsoleView consoleView;
-	private EngineView engineView;
+	private CControl dockingControl;
+	private CWorkingArea workspace;
+	private Map<String, JComponent> views;
+	private Map<String, DefaultMultipleCDockable> dockables;
 
 	private Dimension defaultSize = new Dimension(1024, 768);
 
-	private CControl dockingControl;
-	private CWorkingArea workspace;
-	private DefaultSingleCDockable projectDockable;
-	private DefaultSingleCDockable consoleDockable;
-	private DefaultSingleCDockable engineDockable;
+	private ProjectView projectView;
+	private ConsoleView consoleView;
+	private EngineView  engineView;
+	
+	private DefaultSingleCDockable projectWrapper;
+	private DefaultSingleCDockable consoleWrapper;
+	private DefaultSingleCDockable engineWrapper;
 
 	/**
 	 * Default constructor
@@ -111,12 +101,17 @@ public class MainView extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		// Create the unique application instance
-		application = ApplicationLogic.createApplication();
-
 		// Initialize docking area
 		dockingControl = new CControl(this);
 		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
+
+		// Create view/dockable maps
+		views = new ConcurrentHashMap<>();
+		dockables = new ConcurrentHashMap<>();
+
+		// Create the object responsible to handle all UI actions
+		application = ApplicationLogic.createApplication();
+		actionHandler = new ActionHandler(application, this);
 
 		// Init main layout
 		initLAF();
@@ -126,7 +121,8 @@ public class MainView extends JFrame implements ActionListener {
 		initListeners();
 
 		// Reset current project
-		setProject(null);
+		application.setProject(null);
+		actionHandler.reloadProject();
 	}
 
 	/**
@@ -159,80 +155,86 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	private void initLayout() {
 
-		CGrid dockGrid = new CGrid(dockingControl);
-
-		// Create project view
-		projectView = new ProjectView();
-		projectDockable = new DefaultSingleCDockable("project");
-		projectDockable.setTitleText("Project");
-		projectDockable.setMinimizable(false);
-		projectDockable.setMaximizable(false);
-		projectDockable.setExternalizable(false);
-		projectDockable.setCloseable(true);
-		projectDockable.add(projectView);
-		projectDockable.addCDockableStateListener(new CDockableStateListener() {
-			@Override
-			public void visibilityChanged(CDockable dockable) {
-				mnuProject.setSelected(dockable.isVisible());
-			}
-
-			@Override
-			public void extendedModeChanged(CDockable dockable, ExtendedMode mode) {
-				// Do nothing
-			}
-		});
-		dockGrid.add(0, 0, 40, 100, projectDockable);
-
-		// Create console view
-		consoleView = new ConsoleView();
-		consoleDockable = new DefaultSingleCDockable("console");
-		consoleDockable.setTitleText("Console");
-		consoleDockable.setMinimizable(false);
-		consoleDockable.setMaximizable(true);
-		consoleDockable.setExternalizable(false);
-		consoleDockable.setCloseable(true);
-		consoleDockable.add(consoleView);
-		consoleDockable.addCDockableStateListener(new CDockableStateListener() {
-			@Override
-			public void visibilityChanged(CDockable dockable) {
-				mnuConsole.setSelected(dockable.isVisible());
-			}
-
-			@Override
-			public void extendedModeChanged(CDockable dockable, ExtendedMode mode) {
-				// Do nothing
-			}
-		});
-		dockGrid.add(40, 60, 100, 40, consoleDockable);
-
-		// Create engines view
-		engineView = new EngineView();
-		engineDockable = new DefaultSingleCDockable("engines");
-		engineDockable.setTitleText("Engines");
-		engineDockable.setMinimizable(false);
-		engineDockable.setMaximizable(true);
-		engineDockable.setExternalizable(false);
-		engineDockable.setCloseable(true);
-		engineDockable.add(engineView);
-		engineDockable.addCDockableStateListener(new CDockableStateListener() {
-			@Override
-			public void visibilityChanged(CDockable dockable) {
-				mnuConsole.setSelected(dockable.isVisible());
-			}
-
-			@Override
-			public void extendedModeChanged(CDockable dockable, ExtendedMode mode) {
-				// Do nothing
-			}
-		});
-		dockGrid.add(40, 60, 100, 40, engineDockable);
-
 		// Create the workspace area
 		workspace = dockingControl.createWorkingArea("workspace");
-		dockGrid.add(40, 0, 100, 60, workspace);
+		workspace.setLocation(CLocation.base().normal());
+		dockingControl.addDockable(workspace);
+		workspace.setVisible(true);
 
-		// Deploy dockings on dock control
-		dockingControl.getContentArea().deploy(dockGrid);
+		// Create console view (on south)
+		consoleView = new ConsoleView();
+		consoleWrapper = new DefaultSingleCDockable("console");
+		consoleWrapper.setTitleText("Console");
+		consoleWrapper.setMinimizable(false);
+		consoleWrapper.setMaximizable(true);
+		consoleWrapper.setExternalizable(false);
+		consoleWrapper.setCloseable(true);
+		consoleWrapper.setLocation(CLocation.base().normalSouth(0.3));
+		consoleWrapper.add(consoleView);
+		
+		consoleWrapper.addVetoClosingListener(new CVetoClosingListener() {
+			@Override
+			public void closed(CVetoClosingEvent event) {
+				mnuConsole.setSelected(false);
+			}
+			@Override
+			public void closing(CVetoClosingEvent event) {
+				// Never vetoing
+			}
+		});
+
+		dockingControl.addDockable(consoleWrapper);
+		consoleWrapper.setVisible(true);
+
+		// Create engines view (on south)
+		engineView = new EngineView(actionHandler);
+		engineWrapper = new DefaultSingleCDockable("engines");
+		engineWrapper.setTitleText("Engines");
+		engineWrapper.setMinimizable(false);
+		engineWrapper.setMaximizable(true);
+		engineWrapper.setExternalizable(false);
+		engineWrapper.setCloseable(true);
+		engineWrapper.setLocation(CLocation.base().normalSouth(0.3));
+		engineWrapper.add(engineView);
+		
+		engineWrapper.addVetoClosingListener(new CVetoClosingListener() {
+			@Override
+			public void closed(CVetoClosingEvent event) {
+				mnuEngine.setSelected(false);
+			}
+			@Override
+			public void closing(CVetoClosingEvent event) {
+				// Never vetoing
+			}
+		});
+
+		dockingControl.addDockable(engineWrapper);
+		engineWrapper.setVisible(true);
+		
+		// Create project view (on west)
+		projectView = new ProjectView(this);
+		projectWrapper = new DefaultSingleCDockable("project");
+		projectWrapper.setTitleText("Project");
+		projectWrapper.setMinimizable(false);
+		projectWrapper.setMaximizable(false);
+		projectWrapper.setExternalizable(false);
+		projectWrapper.setCloseable(true);
+		projectWrapper.setLocation(CLocation.base().normalWest(0.3));
+		projectWrapper.add(projectView);
+		
+		projectWrapper.addVetoClosingListener(new CVetoClosingListener() {
+			@Override
+			public void closed(CVetoClosingEvent event) {
+				mnuProject.setSelected(false);
+			}
+			@Override
+			public void closing(CVetoClosingEvent event) {
+				// Never vetoing
+			}
+		});
+
+		dockingControl.addDockable(projectWrapper);
+		projectWrapper.setVisible(true);
 	}
 
 	/**
@@ -266,13 +268,6 @@ public class MainView extends JFrame implements ActionListener {
 		mnuClose.addActionListener(this);
 		mnuFiles.add(mnuClose);
 
-		mnuSave = new JMenuItem("Save Project");
-		mnuSave.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/save.png")));
-		mnuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-		mnuSave.setEnabled(false);
-		mnuSave.addActionListener(this);
-		mnuFiles.add(mnuSave);
-
 		mnuFiles.add(new JSeparator());
 
 		mnuExit = new JMenuItem("Exit");
@@ -289,11 +284,11 @@ public class MainView extends JFrame implements ActionListener {
 		mnuProject.addActionListener(this);
 		mnuViews.add(mnuProject);
 
-		mnuEngines = new JCheckBoxMenuItem("Engines");
-		mnuEngines.setEnabled(true);
-		mnuEngines.setSelected(true);
-		mnuEngines.addActionListener(this);
-		mnuViews.add(mnuEngines);
+		mnuEngine = new JCheckBoxMenuItem("Engines");
+		mnuEngine.setEnabled(true);
+		mnuEngine.setSelected(true);
+		mnuEngine.addActionListener(this);
+		mnuViews.add(mnuEngine);
 
 		mnuConsole = new JCheckBoxMenuItem("Console");
 		mnuConsole.setEnabled(true);
@@ -396,6 +391,89 @@ public class MainView extends JFrame implements ActionListener {
 	}
 
 	/**
+	 * Handle action generated by menu.
+	 */
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == mnuAbout) {
+			actionHandler.showAbout();
+		}
+		else if (e.getSource() == mnuNew) {
+			actionHandler.createNewProject();
+		}
+		else if (e.getSource() == mnuOpen) {
+			actionHandler.selectProject();
+		}
+		else if (e.getSource() == mnuClose) {
+			actionHandler.closeProject();
+		}
+		else if (e.getSource() == mnuCloseAll) {
+			actionHandler.closeAllViews();
+		}
+		else if (e.getSource() == mnuSettings) {
+			actionHandler.showSettings();
+		}
+		else if (e.getSource() == mnuExit) {
+			actionHandler.exitApplication();
+		}
+		else if (e.getSource() == mnuProject) {
+			projectWrapper.setVisible(mnuProject.isSelected());
+		}
+		else if (e.getSource() == mnuConsole) {
+			consoleWrapper.setVisible(mnuConsole.isSelected());
+		}
+		else if (e.getSource() == mnuEngine) {
+			engineWrapper.setVisible(mnuEngine.isSelected());
+		}
+	}
+
+	/**
+	 * Return the application object.
+	 * 
+	 * @return and instance of ApplicationHandler
+	 */
+	public Application getApplication() {
+		return application;
+	}
+
+	/**
+	 * Return the object responsible to handle all user action.
+	 * 
+	 * @return and instance of ActionHandler
+	 */
+	public ActionHandler getActionHandler() {
+		return actionHandler;
+	}
+
+	/**
+	 * Return the tree displaying project structure.
+	 * 
+	 * @return and instance of ProjectTree
+	 */
+	public ProjectTree getProjectTree() {
+		return projectView.getProjectTree();
+	}
+	
+	/**
+	 * Return the object responsible to handle all user action.
+	 * 
+	 * @return and instance of ActionHandler
+	 */
+	public void setProjectDisplayName(Project project) {
+
+		if (project == null) {
+			setTitle("Csim2 Environment");
+			mnuClose.setEnabled(false);
+			mnuCloseAll.setEnabled(false);
+		}
+		else {
+			setTitle("Csim2 Environment - " + project.getName());
+			mnuClose.setEnabled(true);
+			mnuCloseAll.setEnabled(true);
+		}
+	}
+	
+	/**
 	 * Show the view passed in argument within the workspace area.
 	 * 
 	 * @param title
@@ -403,339 +481,56 @@ public class MainView extends JFrame implements ActionListener {
 	 * @param view
 	 *        the view itself
 	 */
-	private void showView(String title, JComponent view) {
-
-		DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null);
-
-		dockable.setTitleText(title);
-		dockable.setMinimizable(false);
-		dockable.setMaximizable(true);
-		dockable.setExternalizable(false);
-		dockable.setCloseable(true);
-		dockable.setRemoveOnClose(true);
-		dockable.add(view);
-
-		workspace.show(dockable);
-		dockable.toFront();
-	}
-
-	/**
-	 * Return the application model.
-	 * 
-	 * @return the instance of the model
-	 */
-	public Application getApplication() {
-		return application;
-	}
-
-	/**
-	 * Change current project
-	 * 
-	 * @param project
-	 */
-	public void setProject(Project project) {
-
-		if (project == null) {
-
-			setTitle("Csim2 Environment");
-
-			mnuClose.setEnabled(false);
-			mnuCloseAll.setEnabled(false);
-			mnuSave.setEnabled(false);
-
-			// Clear application data
-			this.project = null;
-			ApplicationLogic.clearCache();
-			workspace.getStation().removeAllDockables();
-			application.setProject(null);
-			projectView.getProjectTree().setProject(null);
+	public void showView(String title, JComponent view) {
+		
+		// If view already exists, just display it
+		if (views.containsKey(title)) {
+			dockables.get(title).toFront();
 		}
 		else {
-			setTitle("Csim2 Environment - " + project.getName());
+			
+			// Otherwise, create a new one
+			DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null);
 
-			mnuClose.setEnabled(true);
-			mnuCloseAll.setEnabled(true);
-			mnuSave.setEnabled(true);
-
-			// Clear application data
-			this.project = project;
-			ApplicationLogic.clearCache();
-			workspace.getStation().removeAllDockables();
-
-			SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
+			dockable.setTitleText(title);
+			dockable.setMinimizable(false);
+			dockable.setMaximizable(true);
+			dockable.setExternalizable(false);
+			dockable.setCloseable(true);
+			dockable.setRemoveOnClose(true);
+			
+			dockable.addVetoClosingListener(new CVetoClosingListener() {
 				@Override
-				public void run() {
-
-					// Start loading project
-					ApplicationLogic.loadProject(project);
-					application.setProject(project);
-					projectView.getProjectTree().setProject(project);
+				public void closed(CVetoClosingEvent event) {
+					views.remove(title, view);
+					dockables.remove(title, dockable);
+				}
+				@Override
+				public void closing(CVetoClosingEvent event) {
+					// Never vetoing
 				}
 			});
+			
+			dockable.add(view);
+			
+			// Keep track off new view
+			views.put(title, view);
+			dockables.put(title, dockable);
+
+			// Display the view
+			workspace.show(dockable);
+			dockable.toFront();
 		}
 	}
-
+	
 	/**
-	 * Create a new project
+	 * Remove all dockables from workspace
 	 */
-	public void createNewProject() {
-
-		// Display dialog
-		NewProjectDialog dialog = new NewProjectDialog(this);
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-
-			Project newProject = ApplicationLogic.createProject(dialog.getProjectName());
-			setProject(newProject);
+	public void resetWorkspace() {
+		
+		for (DefaultMultipleCDockable dockable : dockables.values()) {
+			dockingControl.removeDockable(dockable);
 		}
 	}
-
-	/**
-	 * Rename the project passed in argument.
-	 * 
-	 * @param project
-	 *        the project to rename
-	 */
-	public void renameProject(Project project) {
-
-		// Display dialog
-		NewProjectDialog dialog = new NewProjectDialog(this);
-		dialog.setTitle("Rename Project");
-		dialog.setProjectName(project.getName());
-		dialog.setVisible(true);
-
-		// Detect if use clicked OK
-		if (dialog.getDialogResult()) {
-			project.setName(dialog.getProjectName());
-			ApplicationLogic.saveProject(project);
-		}
-	}
-
-	/**
-	 * Delete the project passed in argument.
-	 * 
-	 * @param project
-	 *        the project to delete
-	 */
-	public void deleteProject(Project project) {
-
-		// Display confirmation dialog
-		int dialogResult = JOptionPane.showConfirmDialog(this, "Do you really want to delete project '" + project.getName() + "' ?", "Warning", JOptionPane.YES_NO_OPTION);
-
-		if (dialogResult == JOptionPane.YES_OPTION) {
-			ApplicationLogic.deleteProject(project);
-			setProject(null);
-		}
-	}
-
-	/**
-	 * Show console logs visible.
-	 */
-	public void showLogConsole() {
-		consoleDockable.toFront();
-	}
-
-	/**
-	 * Clear console logs content.
-	 */
-	public void clearLogConsole() {
-		consoleView.clearLogConsole();;
-	}
-
-	/**
-	 * Handle action generated by menu.
-	 */
-	public void actionPerformed(ActionEvent e) {
-
-		if (e.getSource() == mnuAbout) {
-			new AboutDialog(this).setVisible(true);
-		}
-		else if (e.getSource() == mnuNew) {
-			createNewProject();
-		}
-		else if (e.getSource() == mnuOpen) {
-			new ProjectDialog(this).setVisible(true);
-		}
-		else if (e.getSource() == mnuClose) {
-			setProject(null);
-		}
-		else if (e.getSource() == mnuProject) {
-			projectDockable.setVisible(mnuProject.isSelected());
-		}
-		else if (e.getSource() == mnuEngines) {
-			engineDockable.setVisible(mnuEngines.isSelected());
-		}
-		else if (e.getSource() == mnuConsole) {
-			consoleDockable.setVisible(mnuConsole.isSelected());
-		}
-		else if (e.getSource() == mnuCloseAll) {
-			workspace.getStation().removeAllDockables();
-		}
-		else if (e.getSource() == mnuSettings) {
-			new SettingsDialog(this).setVisible(true);
-		}
-		else if (e.getSource() == mnuExit) {
-			System.exit(0);
-		}
-	}
-
-	/**
-	 * Show the scenario view
-	 * 
-	 * @param scenario
-	 */
-	public void showScenario(Scenario scenario) {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-				showView(scenario.getName(), new ScenarioView(scenario));
-			}
-		});
-	}
-
-	/**
-	 * Show the ontology view
-	 * 
-	 * @param ontology
-	 */
-	public void showOntology(Ontology ontology) {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-				showView(ontology.getName(), new OntologyView(ontology));
-			}
-		});
-	}
-
-	/**
-	 * Show the stem source view
-	 */
-	public void showSourceStems() {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-
-				// Retrieve required data from cache
-				List<SourceClass> classes = ApplicationLogic.getSourceClasses(project);
-
-				// Create the view
-				showView("Sources", new StemSourcesView(project, classes));
-			}
-		});
-	}
-
-	/**
-	 * Show the stem concepts view
-	 */
-	public void showConceptStems() {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-
-				// Retrieve required data from cache
-				List<Concept> concepts = ApplicationLogic.getConcepts(project);
-				Map<Integer, StemConcept> stemTree = ApplicationLogic.getStemConceptTreeMap(project);
-
-				// Create the view
-				showView("Concepts", new StemConceptsView(concepts, stemTree));
-			}
-		});
-	}
-
-	/**
-	 * Show the matching view
-	 */
-	public void showMatching() {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-
-				// Retrieve required data from cache
-				List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
-
-				// Create the view
-				showView("Matching", new MatchingView(project, scenarios));
-			}
-		});
-	}
-
-	/**
-	 * Show the trace graph view
-	 */
-	public void showTraceView() {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-
-				// Retrieve required data from cache
-				List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
-
-				// Create the view
-				showView("Traces", new TracesView(project, scenarios));
-			}
-		});
-	}
-
-	/**
-	 * Show the time series view
-	 */
-	public void showTimeSeriesView() {
-
-		SwingUtils.invokeLongOperation(this.getRootPane(), new Runnable() {
-			@Override
-			public void run() {
-
-				// Retrieve required data from cache
-				List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
-
-				// Create the view
-				showView("Timeseries", new TimeSeriesView(project, scenarios));
-			}
-		});
-	}
-
-	/**
-	 * Start the engine passed in argument.
-	 * 
-	 * @param engine
-	 */
-	public void startEngine(IEngine engine) {
-
-		// First display parameter view
-		ParametersDialog dialog = new ParametersDialog(this);
-		dialog.setEngine(engine);
-		dialog.setVisible(true);
-
-		if (dialog.getDialogResult()) {
-
-			// Prepare the engine context
-			Context context = new Context();
-			context.putAll(application.getProperties());
-			context.putAll(dialog.getParameters());
-			engine.setContext(context);
-
-			// Console cleaning
-			showLogConsole();
-
-			// // Start the engine
-			ApplicationLogic.startEngine(engine);
-		}
-	}
-
-	/**
-	 * Stop the engine passed in argument.
-	 * 
-	 * @param engine
-	 */
-	public void stopEngine(IEngine engine) {
-		ApplicationLogic.stopEngine(engine);
-	}
+	
 }

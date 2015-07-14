@@ -78,6 +78,23 @@ class ScenarioLogic {
 	}
 
 	/**
+	 * Create a new scenario.
+	 * 
+	 * @param name
+	 *        the scenario name
+	 * @param project
+	 *        the owning project
+	 * @return and instance of scenario
+	 */
+	public static Scenario createScenario(String name, Project project) {
+		Scenario scenario = new Scenario();
+		scenario.setName(name);
+		scenario.setProjectId(project.getKeyId());
+		ScenarioDao.add(scenario);
+		return scenario;
+	}
+
+	/**
 	 * Save all scenarios without their steps.
 	 * 
 	 * @param scenarios
@@ -105,9 +122,19 @@ class ScenarioLogic {
 	public static void deleteScenarios(Project project) {
 
 		for (Scenario scenario : project.getScenarios()) {
-			ScenarioStepDao.deleteByScenario(scenario);
-			ScenarioDao.delete(scenario);
+			deleteScenario(scenario);
 		}
+	}
+
+	/**
+	 * Delete a single scenario.
+	 * 
+	 * @param scenario
+	 *        the scenario to delete
+	 */
+	public static void deleteScenario(Scenario scenario) {
+		ScenarioStepDao.deleteByScenario(scenario);
+		ScenarioDao.delete(scenario);
 	}
 
 	/**

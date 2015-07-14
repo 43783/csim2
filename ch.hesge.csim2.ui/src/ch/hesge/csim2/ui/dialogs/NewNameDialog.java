@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class NewProjectDialog extends JDialog implements ActionListener {
+public class NewNameDialog extends JDialog implements ActionListener {
 
 	// Private attributes
 	private JButton btnOK;
@@ -31,7 +31,7 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog with owner.
 	 */
-	public NewProjectDialog(Window parent) {
+	public NewNameDialog(Window parent) {
 		super(parent);
 		initComponents();
 	}
@@ -42,7 +42,7 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 	private void initComponents() {
 
 		// Dialog configuration
-		setTitle("New Project");
+		setTitle("New Name");
 		setBounds(0, 0, 279, 147);
 		setLocationRelativeTo(getParent());
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -59,7 +59,7 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
 		mainPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Project name:");
+		JLabel lblNewLabel = new JLabel("New name:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(10, 25, 81, 25);
 		mainPane.add(lblNewLabel);
@@ -78,7 +78,7 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 		// Initialize Cancel button
 		btnCancel = new JButton("Cancel");
 		btnCancel.setPreferredSize(new Dimension(80, 25));
-		btnOK.addActionListener(this);
+		btnCancel.addActionListener(this);
 		btnPane.add(btnCancel);
 
 		initListeners();
@@ -93,7 +93,7 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ENTER", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NewProjectDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
+				NewNameDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
 			}
 		});
 
@@ -101,7 +101,7 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ESCAPE", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NewProjectDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
+				NewNameDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
 			}
 		});
 	}
@@ -118,21 +118,21 @@ public class NewProjectDialog extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * Return the project name
+	 * Return the name field
 	 * @return
-	 *         name of the project
+	 *         the new name
 	 */
-	public String getProjectName() {
+	public String getNameField() {
 		return nameField.getText();
 	}
 
 	/**
-	 * Sets the project name.
+	 * Sets the name field.
 	 * 
-	 * @param project
-	 *        the project name
+	 * @param name
+	 *        the name value
 	 */
-	public void setProjectName(String name) {
+	public void setNameField(String name) {
 		nameField.setText(name);
 	}
 

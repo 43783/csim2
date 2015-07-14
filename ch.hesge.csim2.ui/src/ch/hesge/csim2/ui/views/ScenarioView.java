@@ -22,6 +22,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 	// Private attributes
 	private Scenario scenario;
+	private ActionHandler actionHandler;
 	private ScenarioTable scenarioTable;
 	private int currentStepIndex;
 	private JButton btnStart;
@@ -30,8 +31,9 @@ public class ScenarioView extends JPanel implements ActionListener {
 	/**
 	 * Default constructor.
 	 */
-	public ScenarioView(Scenario scenario) {
+	public ScenarioView(Scenario scenario, ActionHandler actionHandler) {
 		this.scenario = scenario;		
+		this.actionHandler = actionHandler;
 		initComponent();
 	}
 
@@ -136,7 +138,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 		else {
 
 			// Execution is completed
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to save execution times ?", "Action", JOptionPane.YES_NO_OPTION);
+			int dialogResult = actionHandler.showConfirmMessage("Confirmation", "Would you like to save execution times ?", JOptionPane.YES_NO_OPTION);
 
 			if (dialogResult == JOptionPane.YES_OPTION) {
 

@@ -20,6 +20,7 @@ import javax.swing.tree.TreeSelectionModel;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
+import ch.hesge.csim2.ui.views.ActionHandler;
 import ch.hesge.csim2.ui.views.MainView;
 
 @SuppressWarnings("serial")
@@ -27,6 +28,7 @@ public class ProjectTree extends JTree {
 
 	// Private attributes
 	private Project project;
+	private ActionHandler actionHandler;
 	private ProjectPopup  projectPopup;
 	private ScenarioPopup scenarioPopup;
 	private OntologyPopup ontologyPopup;
@@ -35,16 +37,17 @@ public class ProjectTree extends JTree {
 	/**
 	 * Default constructor
 	 */
-	public ProjectTree() {
+	public ProjectTree(ActionHandler actionHandler) {
 
 		setModel(null);
 		setEnabled(false);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-		projectPopup  = new ProjectPopup();
-		scenarioPopup = new ScenarioPopup();
-		ontologyPopup = new OntologyPopup();
-		analysisPopup = new AnalysisPopup(this);
+		this.actionHandler = actionHandler;
+		this.projectPopup  = new ProjectPopup(actionHandler);
+		this.scenarioPopup = new ScenarioPopup(actionHandler);
+		this.ontologyPopup = new OntologyPopup(actionHandler);
+		this.analysisPopup = new AnalysisPopup(actionHandler);
 	}
 
 	/**
@@ -198,7 +201,7 @@ public class ProjectTree extends JTree {
 				// Handle single right-click (context popup)
 				if (SwingUtilities.isRightMouseButton(e)) {
 
-					if (userObject.getClass().getSimpleName().equals("Project")) {
+					if (userObject instanceof Project) {
 						projectPopup.setProject(project);
 						projectPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
@@ -207,45 +210,54 @@ public class ProjectTree extends JTree {
 						scenarioPopup.setCreateMenuState(true);
 						scenarioPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
-					else if (userObject instanceof Scenario) {
-						scenarioPopup.clearMenuState();
-						scenarioPopup.setCreateMenuState(true);
-						scenarioPopup.setOpenMenuState(true);
-						scenarioPopup.setDeleteMenuState(true);
-						scenarioPopup.show(e.getComponent(), e.getX(), e.getY());
-						scenarioPopup.setScenario((Scenario) userObject);
-					}
-					if (userObject.toString().equals("Ontologies")) {
+					else if (userObject.toString().equals("Ontologies")) {
 						ontologyPopup.clearMenuState();
 						ontologyPopup.setCreateMenuState(true);
 						ontologyPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
+					else if (userObject.toString().equals("Analysis")) {
+						analysisPopup.clearMenuState();
+						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
+					}
+					else if (userObject instanceof Scenario) {
+						scenarioPopup.clearMenuState();
+						scenarioPopup.setRenameMenuState(true);
+						scenarioPopup.setDeleteMenuState(true);
+						scenarioPopup.setOpenMenuState(true);
+						scenarioPopup.show(e.getComponent(), e.getX(), e.getY());
+						scenarioPopup.setScenario((Scenario) userObject);
+					}
 					else if (userObject instanceof Ontology) {
 						ontologyPopup.clearMenuState();
-						ontologyPopup.setCreateMenuState(true);
+						ontologyPopup.setRenameMenuState(true);
 						ontologyPopup.setOpenMenuState(true);
 						ontologyPopup.setDeleteMenuState(true);
 						ontologyPopup.show(e.getComponent(), e.getX(), e.getY());
 						ontologyPopup.setOntology((Ontology) userObject);
 					}
 					else if (userObject.toString().equals("Sources")) {
-						analysisPopup.enableSourceStemMenu();
+						analysisPopup.clearMenuState();
+						analysisPopup.setSourceStemMenuState(true);
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
 					else if (userObject.toString().equals("Concepts")) {
-						analysisPopup.enableConceptStemMenu();
+						analysisPopup.clearMenuState();
+						analysisPopup.setConceptStemMenuState(true);
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
 					else if (userObject.toString().equals("Matching")) {
-						analysisPopup.enableMatchingMenu();
+						analysisPopup.clearMenuState();
+						analysisPopup.setMatchingMenuState(true);
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
 					else if (userObject.toString().equals("Traces")) {
-						analysisPopup.enableTraceMenu();
+						analysisPopup.clearMenuState();
+						analysisPopup.setTraceMenuState(true);
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
 					else if (userObject.toString().equals("TimeSeries")) {
-						analysisPopup.enableTimeSeriesMenu();
+						analysisPopup.clearMenuState();
+						analysisPopup.setTimeSeriesMenuState(true);
 						analysisPopup.show(e.getComponent(), e.getX(), e.getY());
 					}
 				}
@@ -253,28 +265,26 @@ public class ProjectTree extends JTree {
 				// Handle double-click on elements
 				else if (e.getClickCount() == 2) {
 
-					MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, ProjectTree.this);
-
 					if (userObject instanceof Scenario) {
-						mainView.showScenario((Scenario) userObject);
+						actionHandler.showScenario((Scenario) userObject);
 					}
 					else if (userObject instanceof Ontology) {
-						mainView.showOntology((Ontology) userObject);
+						actionHandler.showOntology((Ontology) userObject);
 					}
 					else if (userObject.toString().equals("Sources")) {
-						mainView.showSourceStems();
+						actionHandler.showSourceStems();
 					}
 					else if (userObject.toString().equals("Concepts")) {
-						mainView.showConceptStems();
+						actionHandler.showConceptStems();
 					}
 					else if (userObject.toString().equals("Matching")) {
-						mainView.showMatching();
+						actionHandler.showMatching();
 					}
 					else if (userObject.toString().equals("Traces")) {
-						mainView.showTraceView();
+						actionHandler.showTraceView();
 					}
 					else if (userObject.toString().equals("TimeSeries")) {
-						mainView.showTimeSeriesView();
+						actionHandler.showTimeSeriesView();
 					}
 				}
 			}

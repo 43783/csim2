@@ -71,7 +71,7 @@ class ProjectLogic {
 	 */
 	public static void loadProject(Project project) {
 
-		Console.writeInfo(ProjectLogic.class, "loading application: " + project.getName());
+		Console.writeInfo(ProjectLogic.class, "loading project: " + project.getName());
 
 		// Load scenarios
 		List<Scenario> scenarios = ApplicationLogic.getScenarios(project);

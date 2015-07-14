@@ -3,27 +3,28 @@ package ch.hesge.csim2.ui.comp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.IEngine;
-import ch.hesge.csim2.ui.views.MainView;
+import ch.hesge.csim2.ui.views.ActionHandler;
 
 @SuppressWarnings("serial")
 public class EnginePopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private IEngine engine;
+	private ActionHandler actionHandler;
 	private JMenuItem mnuStart;
 	private JMenuItem mnuStop;
 
 	/**
 	 * Default constructor
 	 */
-	public EnginePopup(JComponent owner) {
+	public EnginePopup(ActionHandler actionHandler) {
+
+		this.actionHandler = actionHandler;
 		initComponent();
 	}
 
@@ -82,13 +83,11 @@ public class EnginePopup extends JPopupMenu implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this.getInvoker());
-
 		if (e.getSource() == mnuStart) {
-			mainView.startEngine(engine);
+			actionHandler.startEngine(engine);
 		}
 		else if (e.getSource() == mnuStop) {
-			mainView.stopEngine(engine);
+			actionHandler.stopEngine(engine);
 		}
 	}
 }

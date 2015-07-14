@@ -16,13 +16,12 @@ public class ProjectView extends JPanel {
 	/**
 	 * Default constructor
 	 */
-	public ProjectView() {
-
+	public ProjectView(MainView mainView) {
+		
 		setLayout(new BorderLayout(0, 0));
-
+		
 		JScrollPane scrollPane = new JScrollPane();
-
-		projectTree = new ProjectTree();
+		projectTree = new ProjectTree(mainView.getActionHandler());
 		scrollPane.setViewportView(projectTree);
 
 		add(scrollPane);
