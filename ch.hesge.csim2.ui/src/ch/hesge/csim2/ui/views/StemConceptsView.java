@@ -68,20 +68,15 @@ public class StemConceptsView extends JPanel {
 		splitPanel1.setRightComponent(scrollPane2);
 		
 		initListeners();
-
-		// Focus on class tree
-		SwingUtils.invokeWhenVisible(this, new Runnable() {
-			@Override
-			public void run() {
-				conceptTree.requestFocus();
-			}
-		});
 	}
 
 	/**
 	 * Initialize component inner listeners
 	 */
 	private void initListeners() {
+
+		// Set focus when visible
+		SwingUtils.setFocusWhenVisible(conceptTree);
 
 		// Add tree listener
 		conceptTree.addTreeSelectionListener(new TreeSelectionListener() {

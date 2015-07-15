@@ -87,6 +87,12 @@ public class SelectProjectDialog extends JDialog implements ActionListener {
 		btnPane.add(btnCancel);
 
 		initListeners();
+	}
+
+	/**
+	 * Initialize component listeners
+	 */
+	private void initListeners() {
 
 		// Initialize the view when visible
 		SwingUtils.invokeWhenVisible(this.getRootPane(), new Runnable() {
@@ -95,12 +101,6 @@ public class SelectProjectDialog extends JDialog implements ActionListener {
 				initView();
 			}
 		});
-	}
-
-	/**
-	 * Initialize component listeners
-	 */
-	private void initListeners() {
 
 		// Replace default ESCAPE action
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ESCAPE", new AbstractAction() {

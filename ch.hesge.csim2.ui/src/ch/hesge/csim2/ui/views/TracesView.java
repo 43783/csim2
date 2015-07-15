@@ -141,6 +141,9 @@ public class TracesView extends JPanel {
 	 */
 	private void initListeners() {
 
+		// Set focus when visible
+		SwingUtils.setFocusWhenVisible(scenarioComboBox);
+
 		// Add listener to load button
 		loadBtn.addActionListener(new ActionListener() {
 			@Override

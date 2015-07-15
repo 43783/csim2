@@ -188,6 +188,9 @@ public class MatchingView extends JPanel {
 	 */
 	private void initListeners() {
 
+		// Set focus when visible
+		SwingUtils.setFocusWhenVisible(matcherComboBox);
+
 		// Add listener to load button
 		loadBtn.addActionListener(new ActionListener() {
 			@Override

@@ -672,6 +672,14 @@ public class ApplicationManager {
 					applicationLogic.loadProject(project);
 					application.setProject(project);
 					mainView.getProjectTree().setProject(project);
+					
+					// Set focus on projectTree
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							mainView.getProjectTree().requestFocus();
+						}
+					});
 				}
 			});
 		}

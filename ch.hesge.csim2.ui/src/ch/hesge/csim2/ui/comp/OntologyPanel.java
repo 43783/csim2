@@ -34,6 +34,7 @@ import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.ui.utils.Line;
 import ch.hesge.csim2.ui.utils.PaintUtils;
+import ch.hesge.csim2.ui.utils.SwingUtils;
 import ch.hesge.csim2.ui.views.OntologyView;
 
 @SuppressWarnings("serial")
@@ -54,7 +55,6 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 	private double scaleFactor;
 	private double minScaleFactor;
-	private boolean isScaleFactorInitialized;
 	private JScrollPane scrollPanel;
 	private Point mousePosition;
 	private ConceptPopup contextMenu;
@@ -86,10 +86,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		this.scrollPanel    = scrollPanel;
 		this.scaleFactor    = 1d;
 		this.minScaleFactor = 0d;
-		this.isScaleFactorInitialized = false;
 
 		initComponent();
-		initListeners();
 	}
 
 	/**
@@ -107,6 +105,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		editorField = new JTextField();
 		editorField.setVisible(false);
 		add(editorField);
+		
+		initListeners();
 	}
 
 	/**
@@ -114,14 +114,20 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	private void initListeners() {
 
+		// Set focus when visible
+		SwingUtils.setFocusWhenVisible(this);
+		
 		// Listen to panel resize
-		 addComponentListener(new ComponentListener() {
+		scrollPanel.addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
 			}
 			@Override
 			public void componentResized(ComponentEvent e) {
-				onComponentResized(e);
+				computeMinScaleFactor();
+				scaleFactor = Math.max(minScaleFactor,  scaleFactor);
+				scrollPanel.revalidate();
+				repaint();
 			}
 			@Override
 			public void componentMoved(ComponentEvent e) {
@@ -130,6 +136,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 			public void componentHidden(ComponentEvent e) {
 			}
 		});
+		 
 		// Listen to mouse click
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -182,39 +189,6 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		});
 	}
 
-	/**
-	 * Handle panel resizing
-	 */
-	public void onComponentResized(ComponentEvent e) {
-
-		// Get visible drawing area
-		Rectangle drawRect = getVisibleRect();
-		
-		// Get ontology area to display
-		Rectangle ontoRect = getOntologyBounds();
-
-		// Adjust minimal factor to respect to display full ontology
-		double horizontalFactor = 1d * drawRect.width / ontoRect.width;
-		double verticalFactor   = 1d * drawRect.height / ontoRect.height;
-		minScaleFactor = Math.min(horizontalFactor, verticalFactor);
-
-		// Set current scale factor, if not already initialized
-		if (!isScaleFactorInitialized) {
-			isScaleFactorInitialized = true;
-			scaleFactor = minScaleFactor;
-		}
-		
-		// Make sure scale factor is greater than what is allowed
-		//scaleFactor = Math.max(scaleFactor, minScaleFactor);
-
-		System.out.println("drawArea: " + drawRect);
-		System.out.println("ontoRect: " + ontoRect);
-		System.out.println("horizontalFactor: " + horizontalFactor);
-		System.out.println("verticalFactor:   " + verticalFactor);
-		System.out.println("minScaleFactor:   " + minScaleFactor);
-		System.out.println("scaleFactor:      " + scaleFactor);
-    }
-	
 	/**
 	 * Handle mouse button clicked.
 	 * 
@@ -433,6 +407,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 			if (e.getKeyCode() == KeyEvent.VK_0 || e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
 				scaleFactor = minScaleFactor;
+				scrollPanel.revalidate();
 				repaint();
 			}
 		}
@@ -518,6 +493,25 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	}
 
 	/**
+	 * Handle panel resizing
+	 */
+	public void computeMinScaleFactor() {
+
+		// Get visible drawing area
+		Rectangle drawRect = getVisibleRect();
+		
+		// Get ontology area to display
+		Rectangle ontoRect = getOntologyBounds();
+
+		// Check horizontal/vertical factor
+		double horizontalFactor = 1d * drawRect.width / ontoRect.width;
+		double verticalFactor   = 1d * drawRect.height / ontoRect.height;
+		
+		// Calculate minimal factor to display full ontology
+		minScaleFactor = Math.min(horizontalFactor, verticalFactor);
+    }
+	
+	/**
 	 * Retrieve the current selected concept.
 	 * 
 	 * @return
@@ -587,11 +581,13 @@ public class OntologyPanel extends JPanel implements ActionListener {
 			}
 		}
 		
+		/*
 		g.setColor(Color.RED);
 		Rectangle rect = getVisibleRect();
 		rect.width -= 2;
 		rect.height -= 2;
-		g.drawRect(rect.x, rect.y, rect.width, rect.height);		
+		g.drawRect(rect.x, rect.y, rect.width, rect.height);
+		*/		
 	}
 
 	/**

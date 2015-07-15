@@ -14,6 +14,7 @@ import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.ui.comp.ScenarioTable;
 import ch.hesge.csim2.ui.model.ApplicationManager;
+import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class ScenarioView extends JPanel implements ActionListener {
@@ -93,6 +94,9 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		currentStepIndex = 0;
 		selectScenarioStep(currentStepIndex);
+		
+		// Set focus when visible
+		SwingUtils.setFocusWhenVisible(scenarioTable);
 	}
 
 	/**

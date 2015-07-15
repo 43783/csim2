@@ -247,8 +247,6 @@ public class OntologyView extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		ontologyPanel.requestFocus();
-
 		if (e.getSource() == btnSave) {
 			appManager.saveOntology(ontology);
 		}
@@ -264,5 +262,7 @@ public class OntologyView extends JPanel implements ActionListener {
 				animator.stop();
 			}
 		}
+		
+		ontologyPanel.requestFocus();
 	}
 }

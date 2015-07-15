@@ -204,6 +204,9 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	 */
 	private void initListeners() {
 
+		// Set focus when visible
+		SwingUtils.setFocusWhenVisible(scenarioComboBox);
+
 		// Add listener to load button
 		loadBtn.addActionListener(new ActionListener() {
 			@Override

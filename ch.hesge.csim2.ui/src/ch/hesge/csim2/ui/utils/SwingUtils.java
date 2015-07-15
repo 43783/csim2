@@ -81,6 +81,28 @@ public class SwingUtils {
 	}
 
 	/**
+	 * Set focus on a component when visible.
+	 * 
+	 * @param component
+	 *        the component to put focus on
+	 */
+	public static void setFocusWhenVisible(JComponent component) {
+
+		invokeWhenVisible(component, new Runnable() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						component.requestFocus();
+					}
+				});
+			}
+		});
+	}
+
+	
+	/**
 	 * Execute a long operation with waiting cursor.
 	 * 
 	 * @param component
