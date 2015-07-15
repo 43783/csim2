@@ -42,7 +42,6 @@ import ch.hesge.csim2.ui.utils.FileTableCellEditor;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 import com.alee.utils.swing.WebDefaultCellEditor;
-import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class ParametersDialog extends JDialog implements ActionListener {
