@@ -11,19 +11,20 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.ui.comp.SourceTree;
 import ch.hesge.csim2.ui.comp.StemMethodTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class StemSourcesView extends JPanel {
 
 	// Private attributes
+	private ApplicationManager appManager;
 	private SourceTree sourceTree;
 	private StemMethodTable stemTable;
 	
@@ -34,8 +35,9 @@ public class StemSourcesView extends JPanel {
 	 */
 	public StemSourcesView(Project project, List<SourceClass> sourceClasses) {
 
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		this.sourceClasses = sourceClasses;
-		this.stemTree = ApplicationLogic.getStemMethodTreeMap(project);
+		this.stemTree = appManager.getStemMethodTreeMap(project);
 		
 		initComponent();
 	}
@@ -61,7 +63,7 @@ public class StemSourcesView extends JPanel {
 		splitPanel1.setLeftComponent(scrollPane1);
 
 		// Initialize stem table
-		stemTable = new StemMethodTable();
+		stemTable = new StemMethodTable(appManager);
 		stemTable.setFocusable(true);
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(stemTable);

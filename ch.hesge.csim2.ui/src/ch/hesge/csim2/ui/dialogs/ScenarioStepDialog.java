@@ -56,7 +56,7 @@ public class ScenarioStepDialog extends JDialog implements ActionListener {
 		// Create layout structure
 		getContentPane().setLayout(new BorderLayout());
 		JPanel mainPane = new JPanel();
-		mainPane.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Fields", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		mainPane.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), " ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();
@@ -66,22 +66,22 @@ public class ScenarioStepDialog extends JDialog implements ActionListener {
 
 		JLabel nameLabel = new JLabel("Step:");
 		nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		nameLabel.setBounds(10, 25, 81, 25);
+		nameLabel.setBounds(10, 33, 81, 25);
 		mainPane.add(nameLabel);
 
 		nameField = new JTextField();
-		nameField.setBounds(101, 25, 69, 25);
+		nameField.setBounds(101, 33, 69, 25);
 		mainPane.add(nameField);
 		nameField.setColumns(10);
 		
 		JLabel descriptionLabel = new JLabel("Description:");
 		descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		descriptionLabel.setBounds(10, 61, 81, 25);
+		descriptionLabel.setBounds(10, 69, 81, 25);
 		mainPane.add(descriptionLabel);
 		
 		descriptionField = new JTextField();
 		descriptionField.setColumns(10);
-		descriptionField.setBounds(101, 63, 323, 25);
+		descriptionField.setBounds(101, 71, 323, 25);
 		mainPane.add(descriptionField);
 
 		// Initialize OK button

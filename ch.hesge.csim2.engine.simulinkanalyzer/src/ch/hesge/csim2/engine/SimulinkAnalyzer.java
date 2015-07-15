@@ -42,6 +42,7 @@ public class SimulinkAnalyzer implements IEngine {
 
 	// Private attributes
 	private Context context;
+	private ApplicationLogic appLogic;
 
 	private Project project;
 	private Path sourceFolder;
@@ -53,6 +54,7 @@ public class SimulinkAnalyzer implements IEngine {
 	 * Default constructor.
 	 */
 	public SimulinkAnalyzer() {
+		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		visitedFiles = new HashMap<>();
 		parsedClasses = new ArrayList<>();
 	}
@@ -213,10 +215,10 @@ public class SimulinkAnalyzer implements IEngine {
 			Console.writeInfo(this, "saving " + parsedClasses.size() + " classes found...");
 
 			// Updating project
-			ApplicationLogic.deleteSources(project);
+			appLogic.deleteSources(project);
 			project.getSourceClasses().clear();
 			project.getSourceClasses().addAll(parsedClasses);
-			ApplicationLogic.saveSourceClasses(project, project.getSourceClasses());
+			appLogic.saveSourceClasses(project, project.getSourceClasses());
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));

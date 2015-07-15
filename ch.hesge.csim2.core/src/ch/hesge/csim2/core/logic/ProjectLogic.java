@@ -74,12 +74,12 @@ class ProjectLogic {
 		Console.writeInfo(ProjectLogic.class, "loading project: " + project.getName());
 
 		// Load scenarios
-		List<Scenario> scenarios = ApplicationLogic.getScenarios(project);
+		List<Scenario> scenarios = ApplicationLogic.UNIQUE_INSTANCE.getScenarios(project);
 		project.getScenarios().clear();
 		project.getScenarios().addAll(scenarios);
 
 		// Load ontologies
-		List<Ontology> ontologies = ApplicationLogic.getOntologies(project);
+		List<Ontology> ontologies = ApplicationLogic.UNIQUE_INSTANCE.getOntologies(project);
 		project.getOntologies().clear();
 		project.getOntologies().addAll(ontologies);
 	}
@@ -103,7 +103,7 @@ class ProjectLogic {
 			scenario.setProjectId(project.getKeyId());
 		}
 
-		ApplicationLogic.saveScenarios(scenarios);
+		ApplicationLogic.UNIQUE_INSTANCE.saveScenarios(scenarios);
 		Console.writeInfo(ProjectLogic.class, " scenarios: " + scenarios.size());
 
 		// Save ontologies
@@ -112,7 +112,7 @@ class ProjectLogic {
 			ontology.setProjectId(project.getKeyId());
 		}
 
-		ApplicationLogic.saveOntologies(ontologies);
+		ApplicationLogic.UNIQUE_INSTANCE.saveOntologies(ontologies);
 		Console.writeInfo(ProjectLogic.class, " ontologies: " + ontologies.size());
 
 		// Save sources
@@ -121,7 +121,7 @@ class ProjectLogic {
 			sourceClass.setProjectId(project.getKeyId());
 		}
 
-		ApplicationLogic.saveSourceClasses(project, sourceClasses);
+		ApplicationLogic.UNIQUE_INSTANCE.saveSourceClasses(project, sourceClasses);
 		Console.writeInfo(ProjectLogic.class, " source-classes: " + scenarios.size());
 	}
 	

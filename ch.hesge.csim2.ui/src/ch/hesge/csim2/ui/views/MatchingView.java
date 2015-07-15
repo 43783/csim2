@@ -21,7 +21,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
@@ -35,6 +34,7 @@ import ch.hesge.csim2.ui.comp.MatchingTable;
 import ch.hesge.csim2.ui.comp.SourceMethodTable;
 import ch.hesge.csim2.ui.comp.StemConceptTable;
 import ch.hesge.csim2.ui.comp.StemMethodTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -43,6 +43,7 @@ public class MatchingView extends JPanel {
 	// Private attribute	
 	private String rootSourceFolder;
 	private Project project;
+	private ApplicationManager appManager;
 	private List<SourceMethod> sourceMethods;
 	private Map<Integer, StemConcept> stemConceptMap;
 	private Map<Integer, StemMethod> stemMethodMap;
@@ -67,11 +68,12 @@ public class MatchingView extends JPanel {
 	public MatchingView(Project project, List<Scenario> scenarios) {
 
 		this.project = project;
-		this.sourceMethods = new ArrayList<>(ApplicationLogic.getSourceMethodMap(project).values());
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
+		this.sourceMethods = new ArrayList<>(appManager.getSourceMethodMap(project).values());
 		ObjectSorter.sortSourceMethods(sourceMethods);
 		
-		stemConceptMap = ApplicationLogic.getStemConceptTreeMap(project);
-		stemMethodMap = ApplicationLogic.getStemMethodTreeMap(project);
+		stemConceptMap = appManager.getStemConceptTreeMap(project);
+		stemMethodMap = appManager.getStemMethodTreeMap(project);
 		
 		initComponent();
 	}
@@ -92,7 +94,7 @@ public class MatchingView extends JPanel {
 		JPanel paramsPanel = new JPanel();
 		((FlowLayout)paramsPanel.getLayout()).setAlignment(FlowLayout.LEFT);
 		paramsPanel.add(new JLabel("Matching algorithm:"));
-		matcherComboBox = new MatcherComboBox(ApplicationLogic.getMatchers());
+		matcherComboBox = new MatcherComboBox(appManager.getMatchers());
 		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		paramsPanel.add(matcherComboBox);		
 		
@@ -163,13 +165,13 @@ public class MatchingView extends JPanel {
 		conceptPanel.add(scrollPane2, BorderLayout.CENTER);
 		
 		// Create stem-concept table
-		stemConceptTable = new StemConceptTable();
+		stemConceptTable = new StemConceptTable(appManager);
 		JScrollPane scrollPane3 = new JScrollPane();
 		scrollPane3.setViewportView(stemConceptTable);
 		stemConceptPanel.add(scrollPane3, BorderLayout.CENTER);
 
 		// Create stem-concept table
-		stemMethodTable = new StemMethodTable();
+		stemMethodTable = new StemMethodTable(appManager);
 		JScrollPane scrollPane4 = new JScrollPane();
 		scrollPane4.setViewportView(stemMethodTable);
 		stemMethodPanel.add(scrollPane4, BorderLayout.CENTER);
@@ -201,7 +203,7 @@ public class MatchingView extends JPanel {
 						public void run() {
 
 							// Retrieve method-concept matchings
-							matchMap = ApplicationLogic.getMethodMatchingMap(project,  matcher);
+							matchMap = appManager.getMethodMatchingMap(project,  matcher);
 
 							// Initialize method table
 							methodTable.setSourceMethods(sourceMethods);
@@ -218,14 +220,7 @@ public class MatchingView extends JPanel {
 		exportBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {	
-				
-				String filename = SwingUtils.selectSaveFile(MatchingView.this, null);
-				
-				if (filename != null) {
-					
-					// Export matchings
-					ApplicationLogic.exportMatchings(matchMap, filename);
-				}
+				appManager.exportMatchings(MatchingView.this, matchMap);
 			}
 		});
 
@@ -265,7 +260,7 @@ public class MatchingView extends JPanel {
 				// Retrieve the matching list
 				if (match != null) {
 					
-					Set<String> termsIntersection = ApplicationLogic.getTermsIntersection(match.getStemConcepts(), match.getStemMethods());
+					Set<String> termsIntersection = appManager.getTermsIntersection(match.getStemConcepts(), match.getStemMethods());
 										
 					StemConcept rootStemConcept = stemConceptMap.get(match.getConcept().getKeyId());
 					stemConceptTable.setTermsIntersection(termsIntersection);

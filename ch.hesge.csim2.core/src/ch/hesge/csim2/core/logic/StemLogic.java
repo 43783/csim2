@@ -275,13 +275,13 @@ class StemLogic {
 
 		Map<String, List<StemConcept>> stemMap = new HashMap<>();
 
-		Map<Integer, StemConcept> stemTreeMap = ApplicationLogic.getStemConceptTreeMap(project);
+		Map<Integer, StemConcept> stemTreeMap = ApplicationLogic.UNIQUE_INSTANCE.getStemConceptTreeMap(project);
 
 		// Populate map
 		for (StemConcept rootStem : stemTreeMap.values()) {
 
 			// Get all stem in hierarchy
-			List<StemConcept> stems = ApplicationLogic.inflateStemConcepts(rootStem);
+			List<StemConcept> stems = ApplicationLogic.UNIQUE_INSTANCE.inflateStemConcepts(rootStem);
 
 			for (StemConcept stem : stems) {
 
@@ -451,13 +451,13 @@ class StemLogic {
 
 		Map<String, List<StemMethod>> stemMap = new HashMap<>();
 
-		Map<Integer, StemMethod> stemTreeMap = ApplicationLogic.getStemMethodTreeMap(project);
+		Map<Integer, StemMethod> stemTreeMap = ApplicationLogic.UNIQUE_INSTANCE.getStemMethodTreeMap(project);
 
 		// Populate map
 		for (StemMethod rootStem : stemTreeMap.values()) {
 
 			// Get all stem is hierarchy
-			List<StemMethod> stems = ApplicationLogic.inflateStemMethods(rootStem);
+			List<StemMethod> stems = ApplicationLogic.UNIQUE_INSTANCE.inflateStemMethods(rootStem);
 
 			for (StemMethod stem : stems) {
 

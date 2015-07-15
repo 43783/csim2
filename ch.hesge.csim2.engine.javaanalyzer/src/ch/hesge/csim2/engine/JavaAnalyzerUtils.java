@@ -462,7 +462,7 @@ public class JavaAnalyzerUtils {
 			// Retrieve the owning method
 			if (methodDeclaration != null) {
 				String methodSignature = getMethodSignature(methodDeclaration);
-				sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+				sourceMethod = ApplicationLogic.UNIQUE_INSTANCE.getSourceMethodBySignature(sourceClass, methodSignature);
 			}
 		}
 

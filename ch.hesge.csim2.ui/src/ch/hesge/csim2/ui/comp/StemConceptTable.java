@@ -12,22 +12,24 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class StemConceptTable extends JTable {
 
 	// Private attributes
+	private ApplicationManager appManager;
 	private Set<String> termsIntersection;
 	private List<StemConcept> stemConcepts;
 
 	/**
 	 * Default constructor
 	 */
-	public StemConceptTable() {
+	public StemConceptTable(ApplicationManager appManager) {
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -197,7 +199,7 @@ public class StemConceptTable extends JTable {
 	public void setStemTree(StemConcept stemTree) {
 
 		if (stemTree != null) {
-			stemConcepts = ApplicationLogic.inflateStemConcepts(stemTree);
+			stemConcepts = appManager.inflateStemConcepts(stemTree);
 			ObjectSorter.sortStemConcepts(stemConcepts);
 		}
 		else {

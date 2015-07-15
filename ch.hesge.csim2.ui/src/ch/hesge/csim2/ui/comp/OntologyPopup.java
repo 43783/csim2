@@ -8,14 +8,14 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import ch.hesge.csim2.core.model.Ontology;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class OntologyPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private Ontology ontology;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private JMenuItem mnuNew;
 	private JMenuItem mnuRename;
 	private JMenuItem mnuOpen;
@@ -24,9 +24,9 @@ public class OntologyPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public OntologyPopup(ActionHandler actionHandler) {
+	public OntologyPopup(ApplicationManager appManager) {
 		
-		this.actionHandler = actionHandler;
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -114,16 +114,16 @@ public class OntologyPopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuNew) {
-			actionHandler.createNewOntology();
+			appManager.createNewOntology();
 		}
 		else if (e.getSource() == mnuRename) {
-			actionHandler.renameOntology(ontology);
+			appManager.renameOntology(ontology);
 		}
 		else if (e.getSource() == mnuDelete) {
-			actionHandler.deleteOntology(ontology);
+			appManager.deleteOntology(ontology);
 		}
 		else if (e.getSource() == mnuOpen) {
-			actionHandler.showOntology(ontology);
+			appManager.showOntology(ontology);
 		}
 	}
 

@@ -59,7 +59,7 @@ class TimeSeriesLogic {
 	public static TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
 
 		Map<Integer, Concept> conceptsInTrace = new HashMap<>();
-		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.getMethodMatchingMap(project, matcher);
+		Map<Integer, List<MethodConceptMatch>> matchMap = ApplicationLogic.UNIQUE_INSTANCE.getMethodMatchingMap(project, matcher);
 
 		// First retrieve unique methods found in trace
 		List<Integer> uniqueIds = TraceDao.findDistinctMethodIds(scenario);
@@ -86,7 +86,7 @@ class TimeSeriesLogic {
 		ObjectSorter.sortConcepts(traceConcepts);
 
 		// Retrieve all trace for specified scenario
-		List<Trace> scenarioTraces = ApplicationLogic.getTraces(scenario);
+		List<Trace> scenarioTraces = ApplicationLogic.UNIQUE_INSTANCE.getTraces(scenario);
 
 		// Create an empty matrix
 		SimpleMatrix traceMatrix  = new SimpleMatrix(traceConcepts.size(), scenarioTraces.size());

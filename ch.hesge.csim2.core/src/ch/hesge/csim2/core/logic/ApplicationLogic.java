@@ -1,6 +1,5 @@
 package ch.hesge.csim2.core.logic;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -12,8 +11,6 @@ import java.util.Set;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import net.sf.ehcache.config.Configuration;
-import net.sf.ehcache.config.ConfigurationFactory;
 import ch.hesge.csim2.core.dao.SettingsDao;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
@@ -49,16 +46,51 @@ import ch.hesge.csim2.core.utils.StringUtils;
 @SuppressWarnings("unchecked")
 public class ApplicationLogic {
 
-	// Private static attributes
-	//private static Cache APPCACHE = CacheManager.getInstance().getCache("csim2");
-	private static Cache APPCACHE;
+	// Unique instance
+	public static final ApplicationLogic UNIQUE_INSTANCE = new ApplicationLogic();
+	
+	// Private attributes
+	private Cache APPCACHE;
+	
+	// Internal constants
+	private static final String LOG4J_CONFIG_PATH   = "conf/log4j2.xml";
+	private static final String EHCACHE_CONFIG_PATH = "conf/ehcache.xml";
+	
+	private static final String USER_NAME_PROPERTY        = "user-name";
+	private static final String USER_FOLDER_PROPERTY      = "user-folder";
+	private static final String APPLICATION_BASE_PROPERTY = "application-folder";
 
-	public static final String USER_NAME_PROPERTY = "user-name";
-	public static final String USER_FOLDER_PROPERTY = "user-folder";
-	public static final String APPLICATION_BASE_PROPERTY = "application-folder";
-	public static final String DATABASE_CONNECTION_PROPERTY = "database-connection";
-	public static final String DATABASE_USER_PROPERTY = "database-user";
-	public static final String DATABASE_PASSWORD_PROPERTY = "database-password";
+	private static final String DATABASE_CONNECTION_PROPERTY = "database-connection";
+	private static final String DATABASE_USER_PROPERTY       = "database-user";
+	private static final String DATABASE_PASSWORD_PROPERTY   = "database-password";
+
+	/**
+	 * Private constructor
+	 */
+	private ApplicationLogic() {
+		
+		// Configuration log4j
+		System.setProperty("log4j.configurationFile", LOG4J_CONFIG_PATH);
+
+		// Configure cache management
+		APPCACHE = CacheManager.create(EHCACHE_CONFIG_PATH).getCache("csim2");
+	}
+	
+	/**
+	 * Create an initialize a new application instance.
+	 * 
+	 * @return
+	 *         the new application instance
+	 */
+	public Application createApplication() {
+
+		Application application = new Application();
+
+		initAppProperties(application);
+		initDbProperties(application);
+
+		return application;
+	}
 
 	/**
 	 * Shutdown an application.
@@ -66,8 +98,9 @@ public class ApplicationLogic {
 	 * @param application
 	 *        the new application instance
 	 */
-	public static void shutdownApplication(Application application) {
+	public void shutdownApplication(Application application) {
 		CacheManager.getInstance().shutdown();
+		System.exit(0);
 	}
 
 	/**
@@ -76,17 +109,17 @@ public class ApplicationLogic {
 	 * @return
 	 *         a string containing the version
 	 */
-	public static String getVersion() {
-		return ApplicationVersion.VERSION;
+	public String getVersion() {
+		return Application.VERSION;
 	}
 
 	/**
 	 * Clear all data in cache.
 	 */
-	public static void clearCache() {
+	public void clearCache() {
 		APPCACHE.removeAll();
 	}
-
+	
 	/**
 	 * Load all local settings:
 	 * 
@@ -100,13 +133,15 @@ public class ApplicationLogic {
 	 * @param properties
 	 *        the application properties
 	 */
-	private static void initAppProperties(Application application) {
+	private void initAppProperties(Application application) {
 
 		Properties properties = application.getProperties();
 
+		/*
 		// Configuration log4j configuration
 		String log4jConfigPath = "conf/log4j2.xml";
 		System.setProperty("log4j.configurationFile", log4jConfigPath);
+		*/		
 
 		Console.writeDebug(ApplicationLogic.class, "initializing application properties.");
 
@@ -138,6 +173,7 @@ public class ApplicationLogic {
 			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + e.toString());
 		}
 
+		/*
 		// Retrieve ehcache configuration
 		String ehConfigPath = "conf/ehcache.conf";
 		Configuration config = ConfigurationFactory.parseConfiguration(new File("conf/ehcache.xml"));
@@ -145,6 +181,7 @@ public class ApplicationLogic {
 		APPCACHE = cacheManager.getCache("csim2");
 
 		Console.writeDebug(ApplicationLogic.class, "loading ehcache configuration from " + ehConfigPath + ".");
+		*/
 	}
 
 	/**
@@ -154,7 +191,7 @@ public class ApplicationLogic {
 	 * @param properties
 	 *        the application properties
 	 */
-	private static void initDbProperties(Application application) {
+	private void initDbProperties(Application application) {
 
 		Properties properties = application.getProperties();
 
@@ -181,7 +218,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of project
 	 */
-	public static List<Project> getProjects() {
+	public List<Project> getProjects() {
 
 		List<Project> result = null;
 		
@@ -208,7 +245,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of ontology
 	 */
-	public static List<Ontology> getOntologies() {
+	public List<Ontology> getOntologies() {
 
 		List<Ontology> result = null;
 		
@@ -238,7 +275,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of ontology
 	 */
-	public static List<Ontology> getOntologies(Project project) {
+	public List<Ontology> getOntologies(Project project) {
 
 		List<Ontology> result = null;
 		
@@ -265,7 +302,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of scenario
 	 */
-	public static List<Scenario> getScenarios() {
+	public List<Scenario> getScenarios() {
 
 		List<Scenario> result = null;
 		
@@ -292,7 +329,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of IEngine
 	 */
-	public static List<IEngine> getEngines() {
+	public List<IEngine> getEngines() {
 
 		List<IEngine> result = null;
 		
@@ -319,7 +356,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of IMethodConceptMatcher
 	 */
-	public static synchronized List<IMethodConceptMatcher> getMatchers() {
+	public synchronized List<IMethodConceptMatcher> getMatchers() {
 
 		List<IMethodConceptMatcher> result = null;
 		
@@ -349,7 +386,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of scenario
 	 */
-	public static List<Scenario> getScenarios(Project project) {
+	public List<Scenario> getScenarios(Project project) {
 
 		List<Scenario> result = null;
 		
@@ -379,7 +416,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         the list of concept
 	 */
-	public static List<Concept> getConcepts(Ontology ontology) {
+	public List<Concept> getConcepts(Ontology ontology) {
 
 		List<Concept> result = null;
 		
@@ -409,7 +446,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         the list of concept
 	 */
-	public static List<Concept> getConcepts(Project project) {
+	public List<Concept> getConcepts(Project project) {
 
 		List<Concept> result = null;
 		
@@ -440,7 +477,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a map of concept
 	 */
-	public static Map<Integer, Concept> getConceptMap(Ontology ontology) {
+	public Map<Integer, Concept> getConceptMap(Ontology ontology) {
 
 		Map<Integer, Concept> result = null;
 		
@@ -470,7 +507,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a map of concept
 	 */
-	public static Map<Integer, Concept> getConceptMap(Project project) {
+	public Map<Integer, Concept> getConceptMap(Project project) {
 
 		Map<Integer, Concept> result = null;
 		
@@ -499,7 +536,7 @@ public class ApplicationLogic {
 	 * 
 	 * @return a list of SourceClass
 	 */
-	public static List<SourceClass> getSourceClasses(Project project) {
+	public List<SourceClass> getSourceClasses(Project project) {
 
 		List<SourceClass> result = null;
 		
@@ -528,7 +565,7 @@ public class ApplicationLogic {
 	 * 
 	 * @return a list of SourceClass
 	 */
-	public static List<SourceClass> getSourceClassMethodParam(Project project) {
+	public List<SourceClass> getSourceClassMethodParam(Project project) {
 
 		List<SourceClass> result = null;
 		
@@ -558,7 +595,7 @@ public class ApplicationLogic {
 	 * 
 	 * @return a map of (classId, SourceClass)
 	 */
-	public static Map<Integer, SourceClass> getSourceClassMap(Project project) {
+	public Map<Integer, SourceClass> getSourceClassMap(Project project) {
 
 		Map<Integer, SourceClass> result = null;
 		
@@ -588,7 +625,7 @@ public class ApplicationLogic {
 	 * 
 	 * @return a map of (methodId, SourceMethod)
 	 */
-	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
+	public Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
 		Map<Integer, SourceMethod> result = null;
 		
@@ -620,7 +657,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a SourceMethod or null
 	 */
-	public static SourceMethod getSourceMethodBySignature(SourceClass sourceClass, String signature) {
+	public SourceMethod getSourceMethodBySignature(SourceClass sourceClass, String signature) {
 
 		SourceMethod result = null;
 		
@@ -652,7 +689,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a list of stems associated to the list of names
 	 */
-	public static List<String> getStems(String name, List<String> rejectedList) {
+	public List<String> getStems(String name, List<String> rejectedList) {
 		return StemLogic.getStems(name, rejectedList);
 	}
 	
@@ -669,7 +706,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         the map of (methodId, StemConcept)
 	 */
-	public static Map<Integer, StemMethod> getStemMethodTreeMap(Project project) {
+	public Map<Integer, StemMethod> getStemMethodTreeMap(Project project) {
 
 		Map<Integer, StemMethod> result = null;
 		
@@ -699,7 +736,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a flat list of stem methods
 	 */
-	public static List<StemMethod> inflateStemMethods(StemMethod rootStem) {
+	public List<StemMethod> inflateStemMethods(StemMethod rootStem) {
 		return StemLogic.inflateStemMethods(rootStem);
 	}
 
@@ -713,7 +750,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a map of stems
 	 */
-	public static Map<String, List<StemMethod>> getStemMethodByTermMap(Project project) {
+	public Map<String, List<StemMethod>> getStemMethodByTermMap(Project project) {
 
 		Map<String, List<StemMethod>> result = null;
 		
@@ -747,7 +784,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         the map of (conceptId, StemConcept)
 	 */
-	public static Map<Integer, StemConcept> getStemConceptTreeMap(Project project) {
+	public Map<Integer, StemConcept> getStemConceptTreeMap(Project project) {
 
 		Map<Integer, StemConcept> result = null;
 		
@@ -777,7 +814,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a flat list of stem concepts
 	 */
-	public static List<StemConcept> inflateStemConcepts(StemConcept rootStem) {
+	public List<StemConcept> inflateStemConcepts(StemConcept rootStem) {
 		return StemLogic.inflateStemConcepts(rootStem);
 	}
 
@@ -791,7 +828,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a map of stems
 	 */
-	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
+	public Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
 
 		Map<String, List<StemConcept>> result = null;
 		
@@ -821,7 +858,7 @@ public class ApplicationLogic {
 	 *        the stem methods
 	 * @return a set of string (each item are stem term)
 	 */
-	public static Set<String> getTermsIntersection(List<StemConcept> stemConcepts, List<StemMethod> stemMethods) {
+	public Set<String> getTermsIntersection(List<StemConcept> stemConcepts, List<StemMethod> stemMethods) {
 		return StemLogic.getTermIntersection(stemConcepts, stemMethods);
 	}
 	
@@ -831,7 +868,7 @@ public class ApplicationLogic {
 	 * @param scenario
 	 *        the scenario
 	 */
-	public static List<Trace> getTraces(Scenario scenario) {
+	public List<Trace> getTraces(Scenario scenario) {
 
 		List<Trace> result = null;
 		
@@ -863,7 +900,7 @@ public class ApplicationLogic {
 	 *        the matching map used to associate concepts to method
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public static TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
+	public TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
 
 		TimeSeries result = null;
 		
@@ -894,7 +931,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
+	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
 
 		Map<Integer, List<MethodConceptMatch>> result = null;
 		
@@ -930,7 +967,7 @@ public class ApplicationLogic {
 	 *         a new time series instance with segmented trace with only history
 	 *         of concepts passed in argument
 	 */
-	public static TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
+	public TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
 		return TimeSeriesLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, concepts);
 	}
 
@@ -942,7 +979,7 @@ public class ApplicationLogic {
 	 * 
 	 * @return and instance of project
 	 */
-	public static Project createProject(String name) {
+	public Project createProject(String name) {
 		return ProjectLogic.createProject(name);
 	}
 	
@@ -955,7 +992,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         a new concept
 	 */
-	public static Concept createConcept(Ontology ontology) {
+	public Concept createConcept(Ontology ontology) {
 		return OntologyLogic.createConcept(ontology);
 	}
 
@@ -972,26 +1009,10 @@ public class ApplicationLogic {
 	 * @return
 	 *         the new link created
 	 */
-	public static ConceptLink createConceptLink(Ontology ontology, Concept source, Concept target) {
+	public ConceptLink createConceptLink(Ontology ontology, Concept source, Concept target) {
 		return OntologyLogic.createConceptLink(ontology, source, target);
 	}
 	
-	/**
-	 * Create an initialize a new application instance.
-	 * 
-	 * @return
-	 *         the new application instance
-	 */
-	public static Application createApplication() {
-
-		Application application = new Application();
-
-		initAppProperties(application);
-		initDbProperties(application);
-
-		return application;
-	}
-
 	/**
 	 * Create a new scenario.
 	 * 
@@ -1001,7 +1022,7 @@ public class ApplicationLogic {
 	 *        the owning project
 	 * @return and instance of scenario
 	 */
-	public static Scenario createScenario(String name, Project project) {
+	public Scenario createScenario(String name, Project project) {
 		return ScenarioLogic.createScenario(name, project);
 	}
 	
@@ -1013,7 +1034,7 @@ public class ApplicationLogic {
 	 * @param scenario
 	 * @return the newly create step
 	 */
-	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
+	public ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
 		return ScenarioLogic.createScenarioStep(name, description, scenario);
 	}
 
@@ -1026,7 +1047,7 @@ public class ApplicationLogic {
 	 *        the owning project
 	 * @return and instance of ontology
 	 */
-	public static Ontology createOntology(String name, Project project) {
+	public Ontology createOntology(String name, Project project) {
 		return OntologyLogic.createOntology(name, project);
 	}
 	
@@ -1036,7 +1057,7 @@ public class ApplicationLogic {
 	 * @param scenario
 	 *        the scenario
 	 */
-	public static void deleteTraces(Scenario scenario) {
+	public void deleteTraces(Scenario scenario) {
 		TraceLogic.deleteTraces(scenario);
 	}
 
@@ -1047,7 +1068,7 @@ public class ApplicationLogic {
 	 * @param project
 	 *        the project to clean sources
 	 */
-	public static void deleteSources(Project project) {
+	public void deleteSources(Project project) {
 		SourceLogic.deleteSources(project);
 	}
 
@@ -1057,7 +1078,7 @@ public class ApplicationLogic {
 	 * @param ontology
 	 *        the ontology owning stems to delete
 	 */
-	public static void deleteStemConcepts(Ontology ontology) {
+	public void deleteStemConcepts(Ontology ontology) {
 		StemLogic.deleteStemConcepts(ontology);
 	}
 
@@ -1067,7 +1088,7 @@ public class ApplicationLogic {
 	 * @param project
 	 *        the project owning stems to delete
 	 */
-	public static void deleteStemMethods(Project project) {
+	public void deleteStemMethods(Project project) {
 		StemLogic.deleteStemMethods(project);
 	}
 
@@ -1078,7 +1099,7 @@ public class ApplicationLogic {
 	 * @param project
 	 *        the scenario to delete
 	 */
-	public static void deleteScenario(Scenario scenario) {
+	public void deleteScenario(Scenario scenario) {
 		ScenarioLogic.deleteScenario(scenario);
 	}
 	
@@ -1088,7 +1109,7 @@ public class ApplicationLogic {
 	 * @param step
 	 *        the scenario step to delete
 	 */
-	public static void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
+	public void deleteScenarioStep(Scenario scenario, ScenarioStep step) {
 		ScenarioLogic.deleteScenarioStep(scenario, step);
 	}
 	
@@ -1098,7 +1119,7 @@ public class ApplicationLogic {
 	 * @param ontology
 	 *        the ontology to delete
 	 */
-	public static void deleteOntology(Ontology ontology) {
+	public void deleteOntology(Ontology ontology) {
 		OntologyLogic.deleteOntology(ontology);
 	}
 	
@@ -1108,7 +1129,7 @@ public class ApplicationLogic {
 	 * @param project
 	 *        the project to delete
 	 */
-	public static void deleteProject(Project project) {
+	public void deleteProject(Project project) {
 		ProjectLogic.deleteProject(project);
 	}
 	
@@ -1118,7 +1139,7 @@ public class ApplicationLogic {
 	 * @param project
 	 *        the project to save
 	 */
-	public static void saveProject(Project project) {
+	public void saveProject(Project project) {
 		ProjectLogic.saveProject(project);
 	}
 
@@ -1128,7 +1149,7 @@ public class ApplicationLogic {
 	 * @param scenario
 	 *        the concerned scenario
 	 */
-	public static void saveScenario(Scenario scenario) {
+	public void saveScenario(Scenario scenario) {
 		ScenarioLogic.saveScenario(scenario);
 	}
 
@@ -1138,7 +1159,7 @@ public class ApplicationLogic {
 	 * @param scenarios
 	 *        the concerned scenarios
 	 */
-	public static void saveScenarios(List<Scenario> scenarios) {
+	public void saveScenarios(List<Scenario> scenarios) {
 		ScenarioLogic.saveScenarios(scenarios);
 	}
 
@@ -1150,7 +1171,7 @@ public class ApplicationLogic {
 	 * @param sourceClasses
 	 *        the list of SourceClass to save
 	 */
-	public static void saveSourceClasses(Project project, List<SourceClass> sourceClasses) {
+	public void saveSourceClasses(Project project, List<SourceClass> sourceClasses) {
 		SourceLogic.saveSources(project, sourceClasses);
 	}
 
@@ -1160,7 +1181,7 @@ public class ApplicationLogic {
 	 * @param ontology
 	 *        the ontology to save
 	 */
-	public static void saveOntology(Ontology ontology) {
+	public void saveOntology(Ontology ontology) {
 		OntologyLogic.saveOntology(ontology);
 	}
 
@@ -1170,7 +1191,7 @@ public class ApplicationLogic {
 	 * @param ontologies
 	 *        the ontology list to save
 	 */
-	public static void saveOntologies(List<Ontology> ontologies) {
+	public void saveOntologies(List<Ontology> ontologies) {
 		OntologyLogic.saveOntologies(ontologies);
 	}
 
@@ -1180,7 +1201,7 @@ public class ApplicationLogic {
 	 * @param trace
 	 *        the trace to save
 	 */
-	public static void saveTrace(Trace trace) {
+	public void saveTrace(Trace trace) {
 		TraceLogic.saveTrace(trace);
 	}
 
@@ -1190,7 +1211,7 @@ public class ApplicationLogic {
 	 * @param stem
 	 *        the StemConcept to save
 	 */
-	public static void saveStemConcepts(List<StemConcept> stems) {
+	public void saveStemConcepts(List<StemConcept> stems) {
 		StemLogic.saveStemConcepts(stems);
 	}
 
@@ -1200,7 +1221,7 @@ public class ApplicationLogic {
 	 * @param stem
 	 *        the StemMethod list to save
 	 */
-	public static void saveStemMethods(List<StemMethod> stems) {
+	public void saveStemMethods(List<StemMethod> stems) {
 		StemLogic.saveStemMethods(stems);
 	}
 
@@ -1210,7 +1231,7 @@ public class ApplicationLogic {
 	 * @param engine
 	 *        the engine to start
 	 */
-	public static void startEngine(IEngine engine) {
+	public void startEngine(IEngine engine) {
 		EngineLogic.startEngine(engine);
 	}
 
@@ -1221,7 +1242,7 @@ public class ApplicationLogic {
 	 * @param engine
 	 *        the engine to stop
 	 */
-	public static void stopEngine(IEngine engine) {
+	public void stopEngine(IEngine engine) {
 		EngineLogic.stopEngine(engine);
 	}
 
@@ -1235,7 +1256,7 @@ public class ApplicationLogic {
 	 * @return
 	 *         the initialized instance passed in argument
 	 */
-	public static void loadProject(Project project) {
+	public void loadProject(Project project) {
 		ProjectLogic.loadProject(project);
 	}
 
@@ -1247,7 +1268,7 @@ public class ApplicationLogic {
 	 * @param filename
 	 *        the csv filename target
 	 */
-	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+	public void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
 		MatchingLogic.saveMatchings(matchMap, filename);
 	}
 	
@@ -1257,7 +1278,7 @@ public class ApplicationLogic {
 	 * @param engine
 	 * @return true, if the engine is current running, false otherwise.
 	 */
-	public static boolean isEngineRunning(IEngine engine) {
+	public boolean isEngineRunning(IEngine engine) {
 		return EngineLogic.isEngineRunning(engine);
 	}
 
@@ -1267,7 +1288,7 @@ public class ApplicationLogic {
 	 * @param scenario
 	 *        the concerned scenario
 	 */
-	public static void initExecutionTime(ScenarioStep scenarioStep) {
+	public void initExecutionTime(ScenarioStep scenarioStep) {
 		ScenarioLogic.initExecutionTime(scenarioStep);
 	}
 
@@ -1277,7 +1298,7 @@ public class ApplicationLogic {
 	 * @param scenario
 	 *        the concerned scenario
 	 */
-	public static void resetExecutionTimes(Scenario scenario) {
+	public void resetExecutionTimes(Scenario scenario) {
 		ScenarioLogic.resetExecutionTimes(scenario);
 	}
 
@@ -1289,7 +1310,7 @@ public class ApplicationLogic {
 	 * @param concept
 	 *        the concept to remove
 	 */
-	public static void removeConcept(Ontology ontology, Concept concept) {
+	public void removeConcept(Ontology ontology, Concept concept) {
 		OntologyLogic.removeConcept(ontology, concept);
 	}
 
@@ -1303,7 +1324,7 @@ public class ApplicationLogic {
 	 * @param link
 	 *        the link to remove from ontology
 	 */
-	public static void removeConceptLink(Ontology ontology, Concept concept, ConceptLink link) {
+	public void removeConceptLink(Ontology ontology, Concept concept, ConceptLink link) {
 		OntologyLogic.removeConceptLink(ontology, concept, link);
 	}	
 }

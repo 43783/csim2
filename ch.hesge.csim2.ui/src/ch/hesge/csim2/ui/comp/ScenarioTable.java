@@ -14,21 +14,21 @@ import javax.swing.table.TableColumnModel;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class ScenarioTable extends JTable {
 
 	// Private attributes
 	private Scenario scenario;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 
 	/**
 	 * Default constructor
 	 */
-	public ScenarioTable(Scenario scenario, ActionHandler actionHandler) {
+	public ScenarioTable(Scenario scenario, ApplicationManager appManager) {
 		this.scenario = scenario;
-		this.actionHandler = actionHandler;
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -124,7 +124,7 @@ public class ScenarioTable extends JTable {
 					setRowSelectionInterval(clickedRow,  clickedRow);
 
 					// Edit step
-					actionHandler.editScenarioStep(scenario.getSteps().get(clickedRow));
+					appManager.editScenarioStep(scenario.getSteps().get(clickedRow));
 					
 					e.consume();
 				}

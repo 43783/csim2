@@ -8,14 +8,14 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import ch.hesge.csim2.core.model.Project;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class ProjectPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private Project project;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private JMenuItem mnuRename;
 	private JMenuItem mnuDelete;
 	private JMenuItem mnuClose;
@@ -23,9 +23,9 @@ public class ProjectPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public ProjectPopup(ActionHandler actionHandler) {
+	public ProjectPopup(ApplicationManager appManager) {
 		
-		this.actionHandler = actionHandler;
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -74,13 +74,13 @@ public class ProjectPopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuRename) {
-			actionHandler.renameProject(project);
+			appManager.renameProject(project);
 		}
 		else if (e.getSource() == mnuDelete) {
-			actionHandler.deleteProject(project);
+			appManager.deleteProject(project);
 		}
 		else if (e.getSource() == mnuClose) {
-			actionHandler.closeProject();
+			appManager.closeProject();
 		}
 	}
 

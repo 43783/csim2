@@ -2,8 +2,6 @@ package ch.hesge.csim2.core.model;
 
 import java.util.Properties;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
-
 /**
  * Representing application state and all related properties.
  * 
@@ -18,6 +16,8 @@ public class Application {
 	private Project project;
 	private Properties properties;
 
+	public static String VERSION = "1.3.20.20150713";
+	
 	/**
 	 * Default constructor
 	 */
@@ -42,7 +42,7 @@ public class Application {
 	 * @return a string containing the version
 	 */
 	public String getVersion() {
-		return ApplicationLogic.getVersion();
+		return VERSION;
 	}
 
 	/**

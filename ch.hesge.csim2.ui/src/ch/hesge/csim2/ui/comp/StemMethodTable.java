@@ -12,22 +12,24 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class StemMethodTable extends JTable {
 
 	// Private attributes
+	private ApplicationManager appManager;
 	private Set<String> termsIntersection;
 	private List<StemMethod> stemMethods;
 
 	/**
 	 * Default constructor
 	 */
-	public StemMethodTable() {
+	public StemMethodTable(ApplicationManager appManager) {
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -37,7 +39,7 @@ public class StemMethodTable extends JTable {
 	public StemMethodTable(StemMethod stemTree) {
 
 		if (stemTree != null) {
-			this.stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+			this.stemMethods = appManager.inflateStemMethods(stemTree);
 		}
 		else {
 			this.stemMethods = null;
@@ -212,7 +214,7 @@ public class StemMethodTable extends JTable {
 	public void setStemTree(StemMethod stemTree) {
 
 		if (stemTree != null) {
-			stemMethods = ApplicationLogic.inflateStemMethods(stemTree);
+			stemMethods = appManager.inflateStemMethods(stemTree);
 			ObjectSorter.sortStemMethods(stemMethods);
 		}
 		else {

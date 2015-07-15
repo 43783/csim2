@@ -68,7 +68,7 @@ class OntologyLogic {
 	 */
 	public static List<Concept> getConcepts(Project project) {
 
-		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(project);
+		Map<Integer, Concept> conceptMap = ApplicationLogic.UNIQUE_INSTANCE.getConceptMap(project);
 
 		// Convert the map into a list
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
@@ -90,7 +90,7 @@ class OntologyLogic {
 	 */
 	public static List<Concept> getConcepts(Ontology ontology) {
 
-		Map<Integer, Concept> conceptMap = ApplicationLogic.getConceptMap(ontology);
+		Map<Integer, Concept> conceptMap = ApplicationLogic.UNIQUE_INSTANCE.getConceptMap(ontology);
 
 		// Convert the map into a list
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());

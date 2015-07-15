@@ -20,7 +20,7 @@ import javax.swing.tree.TreeSelectionModel;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.views.MainView;
 
 @SuppressWarnings("serial")
@@ -28,7 +28,7 @@ public class ProjectTree extends JTree {
 
 	// Private attributes
 	private Project project;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private ProjectPopup  projectPopup;
 	private ScenarioPopup scenarioPopup;
 	private OntologyPopup ontologyPopup;
@@ -37,17 +37,17 @@ public class ProjectTree extends JTree {
 	/**
 	 * Default constructor
 	 */
-	public ProjectTree(ActionHandler actionHandler) {
+	public ProjectTree(ApplicationManager appManager) {
 
 		setModel(null);
 		setEnabled(false);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-		this.actionHandler = actionHandler;
-		this.projectPopup  = new ProjectPopup(actionHandler);
-		this.scenarioPopup = new ScenarioPopup(actionHandler);
-		this.ontologyPopup = new OntologyPopup(actionHandler);
-		this.analysisPopup = new AnalysisPopup(actionHandler);
+		this.appManager = appManager;
+		this.projectPopup  = new ProjectPopup(appManager);
+		this.scenarioPopup = new ScenarioPopup(appManager);
+		this.ontologyPopup = new OntologyPopup(appManager);
+		this.analysisPopup = new AnalysisPopup(appManager);
 	}
 
 	/**
@@ -266,25 +266,25 @@ public class ProjectTree extends JTree {
 				else if (e.getClickCount() == 2) {
 
 					if (userObject instanceof Scenario) {
-						actionHandler.showScenario((Scenario) userObject);
+						appManager.showScenario((Scenario) userObject);
 					}
 					else if (userObject instanceof Ontology) {
-						actionHandler.showOntology((Ontology) userObject);
+						appManager.showOntology((Ontology) userObject);
 					}
 					else if (userObject.toString().equals("Sources")) {
-						actionHandler.showSourceStems();
+						appManager.showSourceStems();
 					}
 					else if (userObject.toString().equals("Concepts")) {
-						actionHandler.showConceptStems();
+						appManager.showConceptStems();
 					}
 					else if (userObject.toString().equals("Matching")) {
-						actionHandler.showMatching();
+						appManager.showMatching();
 					}
 					else if (userObject.toString().equals("Traces")) {
-						actionHandler.showTraceView();
+						appManager.showTraceView();
 					}
 					else if (userObject.toString().equals("TimeSeries")) {
-						actionHandler.showTimeSeriesView();
+						appManager.showTimeSeriesView();
 					}
 				}
 			}

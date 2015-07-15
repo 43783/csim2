@@ -33,10 +33,14 @@ import ch.hesge.csim2.core.utils.StemMatrix;
  */
 public class WeightedTfidfMatcher implements IMethodConceptMatcher {
 
+	// Private attributes
+	private ApplicationLogic appLogic;
+
 	/**
 	 * Default constructor
 	 */
 	public WeightedTfidfMatcher() {
+		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
 	}
 
 	/**
@@ -79,12 +83,12 @@ public class WeightedTfidfMatcher implements IMethodConceptMatcher {
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
 		// Retrieve concept and method map
-		Map<Integer, Concept> conceptMap     = ApplicationLogic.getConceptMap(project);
-		Map<Integer, SourceMethod> methodMap = ApplicationLogic.getSourceMethodMap(project);
+		Map<Integer, Concept> conceptMap     = appLogic.getConceptMap(project);
+		Map<Integer, SourceMethod> methodMap = appLogic.getSourceMethodMap(project);
 
 		// Retrieve stem map
-		Map<String, List<StemConcept>> stemConceptsMap = ApplicationLogic.getStemConceptByTermMap(project);
-		Map<String, List<StemMethod>> stemMethodsMap   = ApplicationLogic.getStemMethodByTermMap(project);
+		Map<String, List<StemConcept>> stemConceptsMap = appLogic.getStemConceptByTermMap(project);
+		Map<String, List<StemMethod>> stemMethodsMap   = appLogic.getStemMethodByTermMap(project);
 
 		// Get linear concepts method and terms (used in matrix cols/rows)
 		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());

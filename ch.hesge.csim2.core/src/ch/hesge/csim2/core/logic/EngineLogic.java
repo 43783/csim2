@@ -65,7 +65,7 @@ class EngineLogic {
 
 		IEngine engine = null;
 
-		for (IEngine e : ApplicationLogic.getEngines()) {
+		for (IEngine e : ApplicationLogic.UNIQUE_INSTANCE.getEngines()) {
 			if (e.getName().equalsIgnoreCase(name)) {
 				engine = e;
 				break;

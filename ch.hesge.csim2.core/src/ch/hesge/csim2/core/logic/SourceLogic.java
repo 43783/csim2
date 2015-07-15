@@ -86,7 +86,7 @@ class SourceLogic {
 	 */
 	public static List<SourceClass> getSourceClassMethodParam(Project project) {
 		
-		List<SourceClass> sourceClasses = ApplicationLogic.getSourceClasses(project);
+		List<SourceClass> sourceClasses = ApplicationLogic.UNIQUE_INSTANCE.getSourceClasses(project);
 		
 		for (SourceClass sourceClass : sourceClasses) {
 			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
@@ -120,7 +120,7 @@ class SourceLogic {
 		Map<Integer, SourceClass> classMap = new HashMap<>();
 
 		// Populate the map
-		for (SourceClass sourceClass : ApplicationLogic.getSourceClasses(project)) {
+		for (SourceClass sourceClass : ApplicationLogic.UNIQUE_INSTANCE.getSourceClasses(project)) {
 			classMap.put(sourceClass.getKeyId(), sourceClass);
 		}
 

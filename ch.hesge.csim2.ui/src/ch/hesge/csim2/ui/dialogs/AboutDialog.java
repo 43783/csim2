@@ -16,8 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
-import ch.hesge.csim2.ui.views.MainView;
 
 @SuppressWarnings("serial")
 public class AboutDialog extends JDialog implements ActionListener {
@@ -62,7 +62,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 		lblTitle.setBounds(46, 35, 270, 34);
 		mainPane.add(lblTitle);
 
-		JLabel lblVersion = new JLabel("Version: " + ((MainView)getOwner()).getApplication().getVersion());
+		JLabel lblVersion = new JLabel("Version: " + ApplicationManager.UNIQUE_INSTANCE.getApplication().getVersion());
 		lblVersion.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblVersion.setBounds(46, 70, 402, 34);
 		mainPane.add(lblVersion);

@@ -29,6 +29,7 @@ import ch.hesge.csim2.core.model.StemMethod;
 public class JaccardMatcher implements IMethodConceptMatcher {
 
 	// Private attributes
+	private ApplicationLogic appLogic;
 	private Map<Integer, Concept> conceptMap;
 	private Map<Integer, SourceMethod> methodMap;
 	private Map<Integer, StemConcept> stemConceptTreeMap;
@@ -41,6 +42,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 	 * Default constructor
 	 */
 	public JaccardMatcher() {
+		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		matchingMethodStems = new ArrayList<>();
 		matchingConceptStems = new ArrayList<>();
 	}
@@ -60,7 +62,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.1";
+		return "1.0.3";
 	}
 
 	/**
@@ -85,10 +87,10 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
 		// Load concept, method and stem data
-		conceptMap = ApplicationLogic.getConceptMap(project);
-		methodMap = ApplicationLogic.getSourceMethodMap(project);
-		stemConceptTreeMap = ApplicationLogic.getStemConceptTreeMap(project);
-		stemMethodTreeMap = ApplicationLogic.getStemMethodTreeMap(project);
+		conceptMap         = appLogic.getConceptMap(project);
+		methodMap          = appLogic.getSourceMethodMap(project);
+		stemConceptTreeMap = appLogic.getStemConceptTreeMap(project);
+		stemMethodTreeMap  = appLogic.getStemMethodTreeMap(project);
 
 		double maxWeight = 0d;
 
@@ -155,10 +157,10 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		double similarity = 0d;
 
 		StemMethod methodRootStem = stemMethodTreeMap.get(method.getKeyId());
-		List<StemMethod> methodStems = ApplicationLogic.inflateStemMethods(methodRootStem);
+		List<StemMethod> methodStems = appLogic.inflateStemMethods(methodRootStem);
 
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
-		List<StemConcept> conceptStems = ApplicationLogic.inflateStemConcepts(conceptRootStem);
+		List<StemConcept> conceptStems = appLogic.inflateStemConcepts(conceptRootStem);
 
 		// Build a map of all concept term
 		Map<String, List<StemConcept>> conceptTermMap = new HashMap<>();

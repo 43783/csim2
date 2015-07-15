@@ -17,7 +17,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
@@ -28,6 +27,7 @@ import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.MatchingTable;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.comp.TraceTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -36,6 +36,7 @@ public class TracesView extends JPanel {
 	// Private attribute	
 	private String rootSourceFolder;
 	private Project project;
+	private ApplicationManager appManager;
 	private List<Scenario> scenarios;
 	private List<Trace> traces;
 	private Map<Integer, List<MethodConceptMatch>> matchMap;
@@ -59,7 +60,8 @@ public class TracesView extends JPanel {
 
 		this.project   = project;
 		this.scenarios = scenarios;
-		this.methodMap = ApplicationLogic.getSourceMethodMap(project);
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
+		this.methodMap = appManager.getSourceMethodMap(project);
 
 		initComponent();
 	}
@@ -95,7 +97,7 @@ public class TracesView extends JPanel {
 		// Create the matcher selection panel
 		JLabel matchingLabel = new JLabel("Matching:");
 		paramsPanel.add(matchingLabel);		
-		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
+		List<IMethodConceptMatcher> matchers = appManager.getMatchers();
 		matcherComboBox = new MatcherComboBox(matchers);
 		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		paramsPanel.add(matcherComboBox);
@@ -155,7 +157,7 @@ public class TracesView extends JPanel {
 							matchMap = matcher.getMethodMatchingMap(project);
 							
 							// Retrieve required trace list for current scenario
-							traces = ApplicationLogic.getTraces(scenario);
+							traces = appManager.getTraces(scenario);
 
 							// Initialize trace table
 							traceTable.setTraces(traces);

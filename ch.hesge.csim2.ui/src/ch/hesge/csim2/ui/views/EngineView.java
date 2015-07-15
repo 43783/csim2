@@ -10,20 +10,20 @@ import javax.swing.border.LineBorder;
 
 import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.ui.comp.EngineTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class EngineView extends JPanel {
 
 	// Private attributes
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private EngineTable engineTable;
 
 	/**
 	 * Default constructor.
 	 */
-	public EngineView(ActionHandler actionHandler) {
-		
-		this.actionHandler = actionHandler;
+	public EngineView() {
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		initComponent();
 	}
 
@@ -35,7 +35,7 @@ public class EngineView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
 		
-		engineTable = new EngineTable(actionHandler);		
+		engineTable = new EngineTable(appManager);		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(engineTable);
 		add(scrollPane, BorderLayout.CENTER);		

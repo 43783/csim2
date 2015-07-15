@@ -30,7 +30,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
@@ -38,6 +37,7 @@ import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.ui.comp.OntologyComboBox;
 import ch.hesge.csim2.ui.comp.ProjectComboBox;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.FileTableCellEditor;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -51,6 +51,7 @@ public class ParametersDialog extends JDialog implements ActionListener {
 	private JButton btnCancel;
 	private boolean dialogResult;
 
+	private ApplicationManager appManager;
 	private IEngine engine;
 	private List<Project> projects;
 	private List<Ontology> ontologies;
@@ -73,6 +74,7 @@ public class ParametersDialog extends JDialog implements ActionListener {
 	 */
 	public ParametersDialog(Window parent) {
 		super(parent);
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		initComponents();
 	}
 
@@ -123,9 +125,9 @@ public class ParametersDialog extends JDialog implements ActionListener {
 		btnPane.add(btnCancel);
 
 		// Load combo contents
-		projects = ApplicationLogic.getProjects();
-		ontologies = ApplicationLogic.getOntologies();
-		scenarios = ApplicationLogic.getScenarios();
+		projects   = appManager.getProjects();
+		ontologies = appManager.getOntologies();
+		scenarios  = appManager.getScenarios();
 
 		initModel();
 		initEditors();

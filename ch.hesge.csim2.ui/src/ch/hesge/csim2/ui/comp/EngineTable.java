@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import ch.hesge.csim2.core.model.IEngine;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class EngineTable extends JTable {
@@ -25,9 +25,9 @@ public class EngineTable extends JTable {
 	/**
 	 * Default constructor
 	 */
-	public EngineTable(ActionHandler actionHandler) {
+	public EngineTable(ApplicationManager appManager) {
 
-		contextMenu = new EnginePopup(actionHandler);
+		contextMenu = new EnginePopup(appManager);
 		initComponent();
 	}
 

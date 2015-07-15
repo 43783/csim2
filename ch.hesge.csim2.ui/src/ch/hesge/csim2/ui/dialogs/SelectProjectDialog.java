@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.ui.comp.ProjectTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -26,6 +26,7 @@ public class SelectProjectDialog extends JDialog implements ActionListener {
 
 	// Private attributes
 	private Project project;
+	private ApplicationManager appManager;
 	private ProjectTable projectTable;
 	private JButton btnOK;
 	private JButton btnCancel;
@@ -36,6 +37,7 @@ public class SelectProjectDialog extends JDialog implements ActionListener {
 	 */
 	public SelectProjectDialog(Window parent) {
 		super(parent);
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		initComponents();
 	}
 
@@ -112,7 +114,7 @@ public class SelectProjectDialog extends JDialog implements ActionListener {
 	private void initView() {
 
 		// Retrieve project list
-		List<Project> projects = ApplicationLogic.getProjects();
+		List<Project> projects = appManager.getProjects();
 
 		// Initialize the project list
 		projectTable.setProjects(projects);

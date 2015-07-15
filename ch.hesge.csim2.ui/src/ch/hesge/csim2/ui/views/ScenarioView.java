@@ -9,21 +9,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.AncestorEvent;
 
-import com.alee.utils.swing.AncestorAdapter;
-
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.ui.comp.ScenarioTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class ScenarioView extends JPanel implements ActionListener {
 
 	// Private attributes
 	private Scenario scenario;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private ScenarioTable scenarioTable;
 	private int currentStepIndex;
 	private JButton btnAdd;
@@ -35,9 +32,9 @@ public class ScenarioView extends JPanel implements ActionListener {
 	/**
 	 * Default constructor.
 	 */
-	public ScenarioView(Scenario scenario, ActionHandler actionHandler) {
+	public ScenarioView(Scenario scenario) {
 		this.scenario = scenario;
-		this.actionHandler = actionHandler;
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		initComponent();
 	}
 
@@ -48,7 +45,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		setLayout(new BorderLayout(0, 0));
 
-		scenarioTable = new ScenarioTable(scenario, actionHandler);
+		scenarioTable = new ScenarioTable(scenario, appManager);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(scenarioTable);
 		add(scrollPane, BorderLayout.CENTER);
@@ -119,7 +116,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 		btnStop.setEnabled(true);
 
 		// Clear all scenario steps times
-		ApplicationLogic.resetExecutionTimes(scenario);
+		appManager.resetExecutionTimes(scenario);
 
 		// Select first step
 		selectScenarioStep(0);
@@ -132,7 +129,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		// Update current step execution time
 		ScenarioStep currentStep = scenario.getSteps().get(currentStepIndex);
-		ApplicationLogic.initExecutionTime(currentStep);
+		appManager.initExecutionTime(currentStep);
 
 		// Go to next step
 		currentStepIndex++;
@@ -161,16 +158,16 @@ public class ScenarioView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btnAdd) {
-			actionHandler.createScenarioStep(scenario);
+			appManager.createScenarioStep(scenario);
 			scenarioTable.refresh();
 		}
 		else if (e.getSource() == btnDel) {
 			ScenarioStep step = scenarioTable.getSelectedStep();
-			actionHandler.deleteScenarioStep(scenario, step);
+			appManager.deleteScenarioStep(scenario, step);
 			scenarioTable.refresh();
 		}
 		else if (e.getSource() == btnSave) {
-			actionHandler.saveScenario(scenario);
+			appManager.saveScenario(scenario);
 		}
 		else if (e.getSource() == btnStart) {
 

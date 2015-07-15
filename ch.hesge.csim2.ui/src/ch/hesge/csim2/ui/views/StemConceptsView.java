@@ -15,12 +15,14 @@ import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.ui.comp.ConceptTree;
 import ch.hesge.csim2.ui.comp.StemConceptTable;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class StemConceptsView extends JPanel {
 
 	// Private attribute
+	private ApplicationManager appManager;
 	private ConceptTree conceptTree;
 	private StemConceptTable stemTable;
 
@@ -31,6 +33,7 @@ public class StemConceptsView extends JPanel {
 	 * Default constructor.
 	 */
 	public StemConceptsView(List<Concept> concepts, Map<Integer, StemConcept> stemTree) {
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		this.concepts = concepts;
 		this.stemTree = stemTree;
 		initComponent();
@@ -57,7 +60,7 @@ public class StemConceptsView extends JPanel {
 		splitPanel1.setLeftComponent(scrollPane1);
 
 		// Initialize stem table
-		stemTable = new StemConceptTable();
+		stemTable = new StemConceptTable(appManager);
 		stemTable.setFocusable(true);
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(stemTable);

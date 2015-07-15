@@ -45,8 +45,10 @@ public class OntologyLoader implements IEngine {
 
 	// Private attributes
 	private Context context;
+	private ApplicationLogic appLogic;
 	private Path ontologyFile;
 	private Ontology ontology;
+	
 	private Map<String, Concept> conceptMap;
 	private Map<String, ConceptLink> conceptLinksMap;
 	private boolean isActionOntology;
@@ -56,6 +58,7 @@ public class OntologyLoader implements IEngine {
 	 * Default constructor.
 	 */
 	public OntologyLoader() {
+		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		conceptMap = new HashMap<>();
 		conceptLinksMap = new HashMap<>();
 	}
@@ -77,7 +80,7 @@ public class OntologyLoader implements IEngine {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.2";
+		return "1.0.3";
 	}
 
 	/**
@@ -225,7 +228,7 @@ public class OntologyLoader implements IEngine {
 
 			// Save the ontology and its new concepts
 			Console.writeInfo(this, "saving ontology in database...");
-			ApplicationLogic.saveOntology(ontology);
+			appLogic.saveOntology(ontology);
 			
 			Console.writeInfo(this, "done.");
 		}

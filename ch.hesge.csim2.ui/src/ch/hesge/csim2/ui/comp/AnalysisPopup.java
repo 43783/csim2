@@ -6,13 +6,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class AnalysisPopup extends JPopupMenu implements ActionListener {
 
 	// Private attribute
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private JMenuItem mnuSourceStem;
 	private JMenuItem mnuConceptStem;
 	private JMenuItem mnuMatching;
@@ -22,9 +22,9 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public AnalysisPopup(ActionHandler actionHandler) {
+	public AnalysisPopup(ApplicationManager appManager) {
 
-		this.actionHandler = actionHandler;
+		this.appManager = appManager;
 		initComponent();
 	}
 	
@@ -108,19 +108,19 @@ public class AnalysisPopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuSourceStem) {
-			actionHandler.showSourceStems();
+			appManager.showSourceStems();
 		}
 		else if (e.getSource() == mnuConceptStem) {
-			actionHandler.showConceptStems();
+			appManager.showConceptStems();
 		}
 		else if (e.getSource() == mnuSourceStem) {
-			actionHandler.showSourceStems();
+			appManager.showSourceStems();
 		}
 		else if (e.getSource() == mnuTrace) {
-			actionHandler.showTraceView();
+			appManager.showTraceView();
 		}
 		else if (e.getSource() == mnuTimeSeries) {
-			actionHandler.showTimeSeriesView();
+			appManager.showTimeSeriesView();
 		}
 	}
 }

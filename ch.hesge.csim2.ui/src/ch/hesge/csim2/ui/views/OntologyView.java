@@ -1,7 +1,6 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -18,13 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.AncestorEvent;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.ui.comp.OntologyAnimator;
 import ch.hesge.csim2.ui.comp.OntologyPanel;
 import ch.hesge.csim2.ui.dialogs.ConceptPropertiesDialog;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.PaintUtils;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -35,6 +34,7 @@ public class OntologyView extends JPanel implements ActionListener {
 
 	// Private attributes
 	private Ontology ontology;
+	private ApplicationManager appManager;
 	private OntologyPanel ontologyPanel;
 	private OntologyAnimator animator;
 	private JCheckBox btnDynamic;
@@ -47,9 +47,10 @@ public class OntologyView extends JPanel implements ActionListener {
 	public OntologyView(Ontology ontology) {
 
 		this.ontology = ontology;
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 
 		// Load ontology concepts
-		List<Concept> concepts = ApplicationLogic.getConcepts(ontology);
+		List<Concept> concepts = appManager.getConcepts(ontology);
 		ontology.getConcepts().clear();
 		ontology.getConcepts().addAll(concepts);
 
@@ -137,7 +138,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		g.setFont(scaledFont);
 
 		// Create a new concept
-		Concept concept = ApplicationLogic.createConcept(ontology);
+		Concept concept = appManager.createConcept(ontology);
 
 		// Calculate new concept bounds
 		Rectangle viewBounds = PaintUtils.getCenteredText(g, concept.getBounds(), concept.getName());
@@ -164,7 +165,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		Concept concept = ontologyPanel.getSelectedConcept();
 
 		if (concept != null) {
-			ApplicationLogic.removeConcept(ontology, concept);
+			appManager.removeConcept(ontology, concept);
 			ontologyPanel.clearSelection();
 		}
 	}
@@ -175,7 +176,7 @@ public class OntologyView extends JPanel implements ActionListener {
 	 */
 	private void createLink() {		
 		ConceptLink tmp = ontologyPanel.getSelectedLink();
-		ConceptLink link = ApplicationLogic.createConceptLink(ontology, tmp.getSourceConcept(), tmp.getTargetConcept());
+		ConceptLink link = appManager.createConceptLink(ontology, tmp.getSourceConcept(), tmp.getTargetConcept());
 		ontologyPanel.selectLink(link);
 		ontologyPanel.selectConcept(null);
 	}
@@ -188,7 +189,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		ConceptLink link = ontologyPanel.getSelectedLink();
 
 		if (link != null) {
-			ApplicationLogic.removeConceptLink(ontology, link.getSourceConcept(), link);
+			appManager.removeConceptLink(ontology, link.getSourceConcept(), link);
 			ontologyPanel.clearSelection();	
 		}
 	}
@@ -241,14 +242,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		ontologyPanel.requestFocus();
 
 		if (e.getSource() == btnSave) {
-
-			try {
-				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				ApplicationLogic.saveOntology(ontology);
-			}
-			finally {
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
+			appManager.saveOntology(ontology);
 		}
 		else if (e.getSource() == btnShake) {
 			shakeConcepts();

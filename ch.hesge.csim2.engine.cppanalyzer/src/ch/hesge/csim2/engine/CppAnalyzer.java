@@ -66,6 +66,7 @@ public class CppAnalyzer implements IEngine {
 
 	// Private attributes
 	private Context context;
+	private ApplicationLogic appLogic;
 
 	private Project project;
 	private Path sourceFolder;
@@ -81,6 +82,7 @@ public class CppAnalyzer implements IEngine {
 	 * Default constructor
 	 */
 	public CppAnalyzer() {
+		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		visitedFiles = new HashMap<>();
 		parsedClasses = new HashMap<>();
 	}
@@ -102,7 +104,7 @@ public class CppAnalyzer implements IEngine {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.20";
+		return "1.0.21";
 	}
 
 	/**
@@ -260,10 +262,10 @@ public class CppAnalyzer implements IEngine {
 			Console.writeInfo(this, "saving " + parsedClasses.size() + " classes found...");
 
 			// Updating project
-			ApplicationLogic.deleteSources(project);
+			appLogic.deleteSources(project);
 			project.getSourceClasses().clear();
 			project.getSourceClasses().addAll(parsedClasses.values());
-			ApplicationLogic.saveSourceClasses(project, project.getSourceClasses());
+			appLogic.saveSourceClasses(project, project.getSourceClasses());
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));
@@ -512,7 +514,7 @@ public class CppAnalyzer implements IEngine {
 
 				// Retrieve the owning method
 				String methodSignature = CppAnalyzerUtils.getMethodSignature(functionDefinition);
-				SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+				SourceMethod sourceMethod = appLogic.getSourceMethodBySignature(sourceClass, methodSignature);
 
 				// Check if the owning method is already parsed
 				if (sourceMethod != null) {
@@ -563,7 +565,7 @@ public class CppAnalyzer implements IEngine {
 
 					// Retrieve the owning method
 					String methodSignature = CppAnalyzerUtils.getMethodSignature(functionDefinition);
-					SourceMethod sourceMethod = ApplicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+					SourceMethod sourceMethod = appLogic.getSourceMethodBySignature(sourceClass, methodSignature);
 
 					// Check if the owning method is already parsed
 					if (sourceMethod != null) {

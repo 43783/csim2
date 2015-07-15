@@ -21,7 +21,7 @@ public class ProjectView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		projectTree = new ProjectTree(mainView.getActionHandler());
+		projectTree = new ProjectTree(mainView.getApplicationManager());
 		scrollPane.setViewportView(projectTree);
 
 		add(scrollPane);

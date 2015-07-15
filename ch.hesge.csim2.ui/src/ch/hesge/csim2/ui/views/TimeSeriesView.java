@@ -25,7 +25,6 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.Project;
@@ -35,6 +34,7 @@ import ch.hesge.csim2.core.utils.SimpleVector;
 import ch.hesge.csim2.ui.comp.MatcherComboBox;
 import ch.hesge.csim2.ui.comp.ScenarioComboBox;
 import ch.hesge.csim2.ui.dialogs.TimeSeriesDialog;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -42,6 +42,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 	// Private attribute
 	private Project project;
+	private ApplicationManager appManager;
 	private List<Scenario> scenarios;
 	private List<Concept> selectedConcepts;
 	private TimeSeries timeSeries;
@@ -63,6 +64,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	 */
 	public TimeSeriesView(Project project, List<Scenario> scenarios) {
 
+		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		this.segmentCount = DEFAULT_SEGMENT_COUNT;
 		this.threshold = DEFAULT_THRESHOLD;
 		this.project = project;
@@ -97,7 +99,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		// Create the matcher selection panel
 		JLabel matchingLabel = new JLabel("Matching:");
 		scenarioPanel.add(matchingLabel);		
-		List<IMethodConceptMatcher> matchers = ApplicationLogic.getMatchers();
+		List<IMethodConceptMatcher> matchers = appManager.getMatchers();
 		matcherComboBox = new MatcherComboBox(matchers);
 		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		scenarioPanel.add(matcherComboBox);
@@ -221,14 +223,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						public void run() {
 
 							// Retrieve timeseries associated to current scenario
-							timeSeries = ApplicationLogic.getTimeSeries(project, scenario, matcher);
+							timeSeries = appManager.getTimeSeries(project, scenario, matcher);
 
 							// Reset current settings
 							segmentCount = DEFAULT_SEGMENT_COUNT;
 							threshold = DEFAULT_THRESHOLD;
 
 							// Extract segmented information
-							filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
+							filteredSeries = appManager.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
 
 							// Update view attributes
 							selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
@@ -280,7 +282,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 					public void run() {
 
 						// Retrieve filtered timeseries 
-						filteredSeries = ApplicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, selectedConcepts);
+						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, segmentCount, threshold, selectedConcepts);
 
 						// Update view attributes
 						selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());

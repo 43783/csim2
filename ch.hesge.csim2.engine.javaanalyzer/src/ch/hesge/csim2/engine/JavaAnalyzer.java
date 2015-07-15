@@ -85,6 +85,7 @@ public class JavaAnalyzer implements IEngine {
 
 	// Private attributes
 	private Context context;
+	private ApplicationLogic appLogic;
 
 	private Project project;
 	private Path sourceFolder;
@@ -96,6 +97,7 @@ public class JavaAnalyzer implements IEngine {
 	 * Default constructor.
 	 */
 	public JavaAnalyzer() {
+		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		visitedFiles  = new HashMap<>();
 		parsedClasses = new HashMap<>();
 	}
@@ -117,7 +119,7 @@ public class JavaAnalyzer implements IEngine {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.3";
+		return "1.0.4";
 	}
 
 	/**
@@ -256,10 +258,10 @@ public class JavaAnalyzer implements IEngine {
 			Console.writeInfo(this, "saving " + parsedClasses.size() + " classes found...");
 
 			// Updating project
-			ApplicationLogic.deleteSources(project);
+			appLogic.deleteSources(project);
 			project.getSourceClasses().clear();
 			project.getSourceClasses().addAll(parsedClasses.values());
-			ApplicationLogic.saveSourceClasses(project, project.getSourceClasses());
+			appLogic.saveSourceClasses(project, project.getSourceClasses());
 		}
 		catch (IOException e) {
 			Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));

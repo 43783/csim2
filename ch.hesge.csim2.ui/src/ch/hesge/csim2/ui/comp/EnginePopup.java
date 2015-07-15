@@ -6,25 +6,24 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.IEngine;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class EnginePopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private IEngine engine;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private JMenuItem mnuStart;
 	private JMenuItem mnuStop;
 
 	/**
 	 * Default constructor
 	 */
-	public EnginePopup(ActionHandler actionHandler) {
+	public EnginePopup(ApplicationManager appManager) {
 
-		this.actionHandler = actionHandler;
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -63,7 +62,7 @@ public class EnginePopup extends JPopupMenu implements ActionListener {
 		
 		if (engine != null) {
 			
-			if (ApplicationLogic.isEngineRunning(engine)) {
+			if (appManager.isEngineRunning(engine)) {
 				mnuStart.setEnabled(false);
 				mnuStop.setEnabled(true);
 			}
@@ -84,10 +83,10 @@ public class EnginePopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuStart) {
-			actionHandler.startEngine(engine);
+			appManager.startEngine(engine);
 		}
 		else if (e.getSource() == mnuStop) {
-			actionHandler.stopEngine(engine);
+			appManager.stopEngine(engine);
 		}
 	}
 }

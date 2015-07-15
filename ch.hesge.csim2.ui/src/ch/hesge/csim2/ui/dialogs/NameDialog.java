@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class NameDialog extends JDialog implements ActionListener {
@@ -53,7 +55,7 @@ public class NameDialog extends JDialog implements ActionListener {
 		// Create layout structure
 		getContentPane().setLayout(new BorderLayout());
 		JPanel mainPane = new JPanel();
-		mainPane.setBorder(new TitledBorder(null, "Fields", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		mainPane.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), " ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();
@@ -63,11 +65,11 @@ public class NameDialog extends JDialog implements ActionListener {
 
 		JLabel lblNewLabel = new JLabel("Name:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(10, 25, 81, 25);
+		lblNewLabel.setBounds(10, 31, 81, 25);
 		mainPane.add(lblNewLabel);
 
 		nameField = new JTextField();
-		nameField.setBounds(101, 25, 141, 25);
+		nameField.setBounds(101, 31, 141, 25);
 		mainPane.add(nameField);
 		nameField.setColumns(10);
 

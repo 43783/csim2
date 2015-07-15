@@ -36,13 +36,12 @@ import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import bibliothek.gui.dock.common.event.CVetoClosingEvent;
 import bibliothek.gui.dock.common.event.CVetoClosingListener;
-import ch.hesge.csim2.core.logic.ApplicationLogic;
-import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.ui.comp.ProjectTree;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingAppender;
 
 /**
@@ -55,8 +54,7 @@ import ch.hesge.csim2.ui.utils.SwingAppender;
 public class MainView extends JFrame implements ActionListener {
 
 	// Private attributes
-	private Application application;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 
 	private JMenuItem mnuNew;
 	private JMenuItem mnuOpen;
@@ -66,7 +64,6 @@ public class MainView extends JFrame implements ActionListener {
 	private JCheckBoxMenuItem mnuEngine;
 	private JCheckBoxMenuItem mnuConsole;
 	private JMenuItem mnuCloseAll;
-	private JMenuItem mnuSettings;
 	private JMenuItem mnuAbout;
 
 	private CControl dockingControl;
@@ -109,9 +106,9 @@ public class MainView extends JFrame implements ActionListener {
 		views = new ConcurrentHashMap<>();
 		dockables = new ConcurrentHashMap<>();
 
-		// Create the object responsible to handle all UI actions
-		application = ApplicationLogic.createApplication();
-		actionHandler = new ActionHandler(application, this);
+		// Initialize the application manager
+		appManager = ApplicationManager.UNIQUE_INSTANCE;
+		appManager.setMainView(this);
 
 		// Init main layout
 		initLAF();
@@ -121,8 +118,8 @@ public class MainView extends JFrame implements ActionListener {
 		initListeners();
 
 		// Reset current project
-		application.setProject(null);
-		actionHandler.reloadProject();
+		appManager.getApplication().setProject(null);
+		appManager.reloadProject();
 	}
 
 	/**
@@ -131,7 +128,7 @@ public class MainView extends JFrame implements ActionListener {
 	private void initLAF() {
 
 		// Load LAF specified in config file (csim2.conf)
-		String defaultLAF = (String) application.getProperties().getProperty("look-and-feel");
+		String defaultLAF = (String) appManager.getApplication().getProperties().getProperty("look-and-feel");
 		if (defaultLAF != null) {
 			try {
 				UIManager.setLookAndFeel(defaultLAF);
@@ -187,7 +184,7 @@ public class MainView extends JFrame implements ActionListener {
 		consoleWrapper.setVisible(true);
 
 		// Create engines view (on south)
-		engineView = new EngineView(actionHandler);
+		engineView = new EngineView();
 		engineWrapper = new DefaultSingleCDockable("engines");
 		engineWrapper.setTitleText("Engines");
 		engineWrapper.setMinimizable(false);
@@ -304,15 +301,6 @@ public class MainView extends JFrame implements ActionListener {
 		mnuCloseAll.addActionListener(this);
 		mnuViews.add(mnuCloseAll);
 
-		JMenu mnuTools = new JMenu("Tools");
-		menuBar.add(mnuTools);
-
-		mnuSettings = new JMenuItem("Settings");
-		mnuSettings.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/settings.png")));
-		mnuSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_MASK));
-		mnuSettings.addActionListener(this);
-		mnuTools.add(mnuSettings);
-
 		JMenu mnuHelp = new JMenu("Help");
 		menuBar.add(mnuHelp);
 
@@ -352,7 +340,7 @@ public class MainView extends JFrame implements ActionListener {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				ApplicationLogic.shutdownApplication(application);
+				appManager.exitApplication();
 			}
 		});
 	}
@@ -363,7 +351,7 @@ public class MainView extends JFrame implements ActionListener {
 	private void initView() {
 
 		// Retrieve windows size from csim2.conf file
-		String windowSize = (String) application.getProperties().getProperty("window-size");
+		String windowSize = (String) appManager.getApplication().getProperties().getProperty("window-size");
 		if (windowSize != null) {
 			String[] widthHeight = windowSize.split("x");
 			defaultSize.width = Integer.parseInt(widthHeight[0].trim());
@@ -383,10 +371,10 @@ public class MainView extends JFrame implements ActionListener {
 
 		// Redirect log appender to textarea
 		SwingAppender.setTextArea(consoleView.getLogArea());
-		Console.writeInfo(this, "Csim2 v" + application.getVersion() + " initialized.");
+		Console.writeInfo(this, "Csim2 v" + appManager.getApplication().getVersion() + " initialized.");
 
 		// Populate engine table
-		List<IEngine> engineList = ApplicationLogic.getEngines();
+		List<IEngine> engineList = appManager.getEngines();
 		engineView.setEngines(engineList);
 	}
 
@@ -396,25 +384,22 @@ public class MainView extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuAbout) {
-			actionHandler.showAbout();
+			appManager.showAbout();
 		}
 		else if (e.getSource() == mnuNew) {
-			actionHandler.createNewProject();
+			appManager.createNewProject();
 		}
 		else if (e.getSource() == mnuOpen) {
-			actionHandler.selectProject();
+			appManager.selectProject();
 		}
 		else if (e.getSource() == mnuClose) {
-			actionHandler.closeProject();
+			appManager.closeProject();
 		}
 		else if (e.getSource() == mnuCloseAll) {
-			actionHandler.closeAllViews();
-		}
-		else if (e.getSource() == mnuSettings) {
-			actionHandler.showSettings();
+			appManager.closeAllViews();
 		}
 		else if (e.getSource() == mnuExit) {
-			actionHandler.exitApplication();
+			appManager.exitApplication();
 		}
 		else if (e.getSource() == mnuProject) {
 			projectWrapper.setVisible(mnuProject.isSelected());
@@ -428,21 +413,12 @@ public class MainView extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Return the application object.
-	 * 
-	 * @return and instance of ApplicationHandler
-	 */
-	public Application getApplication() {
-		return application;
-	}
-
-	/**
 	 * Return the object responsible to handle all user action.
 	 * 
-	 * @return and instance of ActionHandler
+	 * @return and instance of ApplicationManager
 	 */
-	public ActionHandler getActionHandler() {
-		return actionHandler;
+	public ApplicationManager getApplicationManager() {
+		return appManager;
 	}
 
 	/**
@@ -455,9 +431,7 @@ public class MainView extends JFrame implements ActionListener {
 	}
 	
 	/**
-	 * Return the object responsible to handle all user action.
-	 * 
-	 * @return and instance of ActionHandler
+	 * Define the window title
 	 */
 	public void setProjectDisplayName(Project project) {
 

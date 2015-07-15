@@ -8,14 +8,14 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import ch.hesge.csim2.core.model.Scenario;
-import ch.hesge.csim2.ui.views.ActionHandler;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 
 @SuppressWarnings("serial")
 public class ScenarioPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private Scenario scenario;
-	private ActionHandler actionHandler;
+	private ApplicationManager appManager;
 	private JMenuItem mnuNew;
 	private JMenuItem mnuRename;
 	private JMenuItem mnuDelete;
@@ -24,9 +24,9 @@ public class ScenarioPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public ScenarioPopup(ActionHandler actionHandler) {
+	public ScenarioPopup(ApplicationManager appManager) {
 		
-		this.actionHandler = actionHandler;
+		this.appManager = appManager;
 		initComponent();
 	}
 
@@ -118,16 +118,16 @@ public class ScenarioPopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuNew) {
-			actionHandler.createNewScenario();
+			appManager.createNewScenario();
 		}
 		else if (e.getSource() == mnuRename) {
-			actionHandler.renameScenario(scenario);
+			appManager.renameScenario(scenario);
 		}
 		else if (e.getSource() == mnuDelete) {
-			actionHandler.deleteScenario(scenario);
+			appManager.deleteScenario(scenario);
 		}
 		else if (e.getSource() == mnuOpen) {
-			actionHandler.showScenario(scenario);
+			appManager.showScenario(scenario);
 		}
 	}
 }
