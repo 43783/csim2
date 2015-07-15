@@ -11,6 +11,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -52,6 +54,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 	private double scaleFactor;
 	private double minScaleFactor;
+	private boolean isScaleFactorInitialized;
 	private JScrollPane scrollPanel;
 	private Point mousePosition;
 	private ConceptPopup contextMenu;
@@ -78,10 +81,12 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	public OntologyPanel(Ontology ontology, OntologyView view, JScrollPane scrollPanel) {
 
-		this.minScaleFactor = -1d;
-		this.ontology = ontology;
-		this.view = view;
-		this.scrollPanel = scrollPanel;
+		this.ontology       = ontology;
+		this.view           = view;
+		this.scrollPanel    = scrollPanel;
+		this.scaleFactor    = 1d;
+		this.minScaleFactor = 0d;
+		this.isScaleFactorInitialized = false;
 
 		initComponent();
 		initListeners();
@@ -98,33 +103,10 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		// Create a context menu
 		contextMenu = new ConceptPopup(view);
 
-		// Create the editor field (for concept/link)
+		// Create the concept/link name editor
 		editorField = new JTextField();
 		editorField.setVisible(false);
 		add(editorField);
-	}
-
-	/**
-	 * Initialize scale factor to display to whole ontology
-	 */
-	private void initScaleFactor() {
-
-		if (minScaleFactor == -1) {
-
-			scaleFactor = 1d;
-			Rectangle drawArea = getDrawBounds();
-			Rectangle ontologyArea = getOntologyBounds();
-
-			// Adjust scale factor to display fiééy the ontology bounds		
-			if (ontologyArea.width > ontologyArea.height) {
-				minScaleFactor = 1d * drawArea.width / ontologyArea.width;
-			}
-			else {
-				minScaleFactor = 1d * drawArea.height / ontologyArea.height;
-			}
-
-			scaleFactor = minScaleFactor;
-		}
 	}
 
 	/**
@@ -132,6 +114,22 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	private void initListeners() {
 
+		// Listen to panel resize
+		 addComponentListener(new ComponentListener() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+			@Override
+			public void componentResized(ComponentEvent e) {
+				onComponentResized(e);
+			}
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
 		// Listen to mouse click
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -184,6 +182,39 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		});
 	}
 
+	/**
+	 * Handle panel resizing
+	 */
+	public void onComponentResized(ComponentEvent e) {
+
+		// Get visible drawing area
+		Rectangle drawRect = getVisibleRect();
+		
+		// Get ontology area to display
+		Rectangle ontoRect = getOntologyBounds();
+
+		// Adjust minimal factor to respect to display full ontology
+		double horizontalFactor = 1d * drawRect.width / ontoRect.width;
+		double verticalFactor   = 1d * drawRect.height / ontoRect.height;
+		minScaleFactor = Math.min(horizontalFactor, verticalFactor);
+
+		// Set current scale factor, if not already initialized
+		if (!isScaleFactorInitialized) {
+			isScaleFactorInitialized = true;
+			scaleFactor = minScaleFactor;
+		}
+		
+		// Make sure scale factor is greater than what is allowed
+		//scaleFactor = Math.max(scaleFactor, minScaleFactor);
+
+		System.out.println("drawArea: " + drawRect);
+		System.out.println("ontoRect: " + ontoRect);
+		System.out.println("horizontalFactor: " + horizontalFactor);
+		System.out.println("verticalFactor:   " + verticalFactor);
+		System.out.println("minScaleFactor:   " + minScaleFactor);
+		System.out.println("scaleFactor:      " + scaleFactor);
+    }
+	
 	/**
 	 * Handle mouse button clicked.
 	 * 
@@ -457,22 +488,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Return the surface area bounds (without the border)
-	 * 
-	 * @return a Rectangle
-	 */
-	private Rectangle getDrawBounds() {
-
-		int x = getInsets().left;
-		int y = getInsets().top;
-		int width = getSize().width - getInsets().left - getInsets().right - 1;
-		int height = getSize().height - getInsets().top - getInsets().bottom - 1;
-
-		return new Rectangle(x, y, width, height);
-	}
-
-	/**
-	 * Return the surface taken by all ontology concepts.
+	 * Return the surface taken by all ontology concepts (in view area).
 	 * 
 	 * @return a Rectangle
 	 */
@@ -480,25 +496,15 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 		Rectangle bounds = new Rectangle();
 
-		if (ontology != null) {
-
-			// Recalculate ontology panel size
-			for (Concept concept : ontology.getConcepts()) {
-
-				// Convert bounds into view coordinates
-				Rectangle conceptBounds = PaintUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
-
-				// Include concept bounds into current global rectangle
-				bounds = bounds.union(conceptBounds);
-			}
-
-			// Create view size
-			bounds.x -= BORDER_SIZE;
-			bounds.y -= BORDER_SIZE;
-			bounds.width += BORDER_SIZE * 2;
-			bounds.height += BORDER_SIZE * 2;
+		// Scan all concepts and compute the whole ontology area 
+		for (Concept concept : ontology.getConcepts()) {
+			Rectangle rect = PaintUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
+			bounds = bounds.union(rect);
 		}
 
+		bounds.width  += BORDER_SIZE * scaleFactor;
+		bounds.height += BORDER_SIZE * scaleFactor;
+		
 		return bounds;
 	}
 
@@ -507,8 +513,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		Rectangle ontologyArea = getOntologyBounds();
-		return new Dimension(getInsets().left + ontologyArea.width + getInsets().right, getInsets().top + ontologyArea.height + getInsets().bottom);
+		Rectangle ontoArea = getOntologyBounds();
+		return new Dimension(ontoArea.width, ontoArea.height);
 	}
 
 	/**
@@ -539,7 +545,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	public double getScaledFactor() {
 		return this.scaleFactor;
-	}
+	}	
 
 	/**
 	 * Repaint the ontology and all its concepts
@@ -547,8 +553,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	protected void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
-		initScaleFactor();
-
+		
 		// Graphics initialization
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -581,6 +586,12 @@ public class OntologyPanel extends JPanel implements ActionListener {
 				paintSelectedLink(g);
 			}
 		}
+		
+		g.setColor(Color.RED);
+		Rectangle rect = getVisibleRect();
+		rect.width -= 2;
+		rect.height -= 2;
+		g.drawRect(rect.x, rect.y, rect.width, rect.height);		
 	}
 
 	/**
