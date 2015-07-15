@@ -2,8 +2,6 @@ package ch.hesge.csim2.ui.comp;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -23,23 +21,13 @@ public class EngineTable extends JTable {
 	// Private attributes
 	private List<IEngine> engines;
 	private EnginePopup contextMenu;
-	private ActionListener actionListener;
 
 	/**
 	 * Default constructor
 	 */
-	public EngineTable() {
-		initComponent();
-	}
+	public EngineTable(ActionHandler actionHandler) {
 
-	/**
-	 * Default constructor
-	 */
-	public EngineTable(List<IEngine> engines, ActionHandler actionHandler) {
-
-		this.engines = engines;
-		this.contextMenu = new EnginePopup(actionHandler);
-
+		contextMenu = new EnginePopup(actionHandler);
 		initComponent();
 	}
 
@@ -78,11 +66,6 @@ public class EngineTable extends JTable {
 					contextMenu.setEngine(engine);
 					contextMenu.show(e.getComponent(), e.getX(), e.getY());
 					e.consume();
-				}
-
-				// Handle double-click
-				else if (e.getClickCount() == 2 && actionListener != null && getSelectedValue() != null) {
-					actionListener.actionPerformed(new ActionEvent(EngineTable.this, ActionEvent.ACTION_PERFORMED, null));
 				}
 			}
 		});
@@ -179,14 +162,5 @@ public class EngineTable extends JTable {
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Register an action listener to the project list
-	 * 
-	 * @param actionListener
-	 */
-	public void addActionListener(ActionListener actionListener) {
-		this.actionListener = actionListener;
 	}
 }
