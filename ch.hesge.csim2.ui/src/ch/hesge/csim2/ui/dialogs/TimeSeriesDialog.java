@@ -34,6 +34,7 @@ import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.ui.comp.ConceptTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 import ch.hesge.csim2.ui.views.TimeSeriesView;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeListener {
@@ -98,6 +99,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 
 		// Create layout structure
 		JPanel mainPane = new JPanel();
+		mainPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
@@ -186,6 +188,7 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		conceptPanel.setBounds(10, 160, 450, 304);
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 		conceptTable = new ConceptTable();
+		conceptTable.setFillsViewportHeight(true);
 		JScrollPane scrollbar = new JScrollPane();
 		scrollbar.setViewportView(conceptTable);
 		conceptPanel.add(scrollbar, BorderLayout.CENTER);

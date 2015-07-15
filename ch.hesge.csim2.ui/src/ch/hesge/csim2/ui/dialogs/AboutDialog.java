@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import ch.hesge.csim2.ui.model.ApplicationManager;
@@ -40,7 +41,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 
 		// Dialog configuration
 		setTitle("About");
-		setBounds(0, 0, 476, 246);
+		setBounds(0, 0, 470, 320);
 		setLocationRelativeTo(getParent());
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -48,35 +49,39 @@ public class AboutDialog extends JDialog implements ActionListener {
 
 		// Create layout structure
 		getContentPane().setLayout(new BorderLayout());
-		JPanel mainPane = new JPanel();
-		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
-		mainPane.setLayout(null);
-
-		// Initialize content pane
-		JLabel lblTitle = new JLabel("CSIM2 Environment");
-		lblTitle.setFont(new Font("Arial", Font.PLAIN, 28));
-		lblTitle.setBounds(46, 35, 270, 34);
-		mainPane.add(lblTitle);
-
-		JLabel lblVersion = new JLabel("Version: " + ApplicationManager.UNIQUE_INSTANCE.getApplication().getVersion());
-		lblVersion.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblVersion.setBounds(46, 70, 402, 34);
-		mainPane.add(lblVersion);
-
-		JLabel lblCopyright = new JLabel("Copyright \u00A9 HEG Geneva, Switzerland,  2011-2015");
-		lblCopyright.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblCopyright.setBounds(46, 120, 402, 34);
-		mainPane.add(lblCopyright);
 
 		// Initialize button pane
 		btnOK = new JButton("OK");
 		btnOK.setPreferredSize(new Dimension(100, 25));
 		btnOK.addActionListener(this);
 		btnPane.add(btnOK);
+		
+		JPanel textPanel = new JPanel();
+		getContentPane().add(textPanel, BorderLayout.CENTER);
+		textPanel.setLayout(null);
+		
+		JLabel titleLabel = new JLabel("CSIM2 Environment");
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+		titleLabel.setBounds(10, 46, 450, 47);
+		textPanel.add(titleLabel);
+		
+		JLabel versionLabel = new JLabel("Version: " + ApplicationManager.UNIQUE_INSTANCE.getApplication().getVersion());
+		versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		versionLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		versionLabel.setBounds(10, 104, 450, 81);
+		textPanel.add(versionLabel);
+		
+		JLabel copyrightLabel = new JLabel("Copyright \u00A9 HEG Geneva, Switzerland,  2011-2015");
+		copyrightLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		copyrightLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		copyrightLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+		copyrightLabel.setBounds(10, 225, 450, 17);
+		textPanel.add(copyrightLabel);
 		
 		initListeners();
 	}

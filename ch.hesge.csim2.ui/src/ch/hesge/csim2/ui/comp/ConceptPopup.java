@@ -7,10 +7,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
+import ch.hesge.csim2.ui.views.OntologyView;
+
 @SuppressWarnings("serial")
 public class ConceptPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
+	private OntologyView view;
 	private JMenuItem mnuNewConcept;
 	private JMenuItem mnuDeleteConcept;
 	private JMenuItem mnuNewLink;
@@ -21,7 +24,8 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 	/**
 	 * Default constructor
 	 */
-	public ConceptPopup() {
+	public ConceptPopup(OntologyView view) {
+		this.view = view;
 		initComponent();
 	}
 
@@ -118,19 +122,19 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 		if (actionListener != null) {
 
 			if (e.getSource() == mnuNewConcept) {
-				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "NEW_CONCEPT"));
+				view.createConcept();
 			}
 			else if (e.getSource() == mnuDeleteConcept) {
-				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "DELETE_CONCEPT"));
+				view.deleteConcept();
 			}
 			else if (e.getSource() == mnuNewLink) {
-				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "NEW_LINK_START"));
+				view.startLink();
 			}
 			else if (e.getSource() == mnuDeleteLink) {
-				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "DELETE_LINK"));
+				view.deleteLink();
 			}
 			else if (e.getSource() == mnuProperties) {
-				actionListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "CONCEPT_PROPERTIES"));
+				view.showProperties();
 			}
 		}
 	}

@@ -65,7 +65,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPanel = new JScrollPane();
-		ontologyPanel = new OntologyPanel(ontology, scrollPanel);
+		ontologyPanel = new OntologyPanel(ontology, this, scrollPanel);
 		ontologyPanel.addActionListener(this);
 		scrollPanel.setViewportView(ontologyPanel);
 		add(scrollPanel, BorderLayout.CENTER);
@@ -128,7 +128,7 @@ public class OntologyView extends JPanel implements ActionListener {
 	 * Create a new concept
 	 * and insert it to the ontology.
 	 */
-	private void createConcept() {
+	public void createConcept() {
 
 		Graphics g = getGraphics();
 		double scaleFactor = ontologyPanel.getScaledFactor();
@@ -160,7 +160,7 @@ public class OntologyView extends JPanel implements ActionListener {
 	/**
 	 * Delete the current selected concept (if any)
 	 */
-	private void deleteConcept() {
+	public void deleteConcept() {
 
 		Concept concept = ontologyPanel.getSelectedConcept();
 
@@ -171,39 +171,47 @@ public class OntologyView extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Create a new link
-	 * and insert it to the ontology.
+	 * Start a new link from current concept
 	 */
-	private void createLink() {		
+	public void startLink() {
+
+		Concept concept = ontologyPanel.getSelectedConcept();
+		
+		if (concept != null) {
+			ontologyPanel.startEditMode();
+		}
+
+		/*
 		ConceptLink tmp = ontologyPanel.getSelectedLink();
 		ConceptLink link = appManager.createConceptLink(ontology, tmp.getSourceConcept(), tmp.getTargetConcept());
 		ontologyPanel.selectLink(link);
 		ontologyPanel.selectConcept(null);
+		*/
 	}
+	
+	/**
+	 * Display a dialog with concept properties
+	 */
+	public void showProperties() {
+		
+		Concept concept = ontologyPanel.getSelectedConcept();
+
+		if (concept != null) {
+			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
+			new ConceptPropertiesDialog(mainView, concept).setVisible(true);
+		}
+	}	
 
 	/**
 	 * Delete the current selected link (if any)
 	 */
-	private void deleteLink() {
+	public void deleteLink() {
 
 		ConceptLink link = ontologyPanel.getSelectedLink();
 
 		if (link != null) {
 			appManager.removeConceptLink(ontology, link.getSourceConcept(), link);
 			ontologyPanel.clearSelection();	
-		}
-	}
-
-	/**
-	 * Display a dialog with concept properties
-	 */
-	private void showConceptDialog() {
-
-		Concept concept = ontologyPanel.getSelectedConcept();
-
-		if (concept != null) {
-			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
-			new ConceptPropertiesDialog(mainView, concept).setVisible(true);
 		}
 	}
 
@@ -254,28 +262,6 @@ public class OntologyView extends JPanel implements ActionListener {
 			}
 			else {
 				animator.stop();
-			}
-		}
-		else {
-
-			// Handle context menu selection
-			if (e.getActionCommand().equals("NEW_CONCEPT")) {
-				createConcept();
-			}
-			else if (e.getActionCommand().equals("DELETE_CONCEPT")) {
-				deleteConcept();
-			}
-			else if (e.getActionCommand().equals("NEW_LINK_START")) {
-				ontologyPanel.startLinkMode();
-			}
-			else if (e.getActionCommand().equals("NEW_LINK_END")) {
-				createLink();
-			}
-			else if (e.getActionCommand().equals("DELETE_LINK")) {
-				deleteLink();
-			}
-			else if (e.getActionCommand().equals("CONCEPT_PROPERTIES")) {
-				showConceptDialog();
 			}
 		}
 	}

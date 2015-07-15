@@ -36,6 +36,7 @@ public class EngineView extends JPanel {
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
 		
 		engineTable = new EngineTable(appManager);		
+		engineTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(engineTable);
 		add(scrollPane, BorderLayout.CENTER);		

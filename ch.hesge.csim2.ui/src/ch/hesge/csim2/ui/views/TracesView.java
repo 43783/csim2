@@ -121,12 +121,14 @@ public class TracesView extends JPanel {
 
 		// Create trace table
 		traceTable = new TraceTable();
+		traceTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setViewportView(traceTable);
 		methodPanel.add(scrollPane1, BorderLayout.CENTER);
 
 		// Create match table
 		matchTable = new MatchingTable();
+		matchTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(matchTable);
 		conceptPanel.add(scrollPane2, BorderLayout.CENTER);

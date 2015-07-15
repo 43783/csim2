@@ -20,6 +20,7 @@ import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.ui.comp.ProjectTable;
 import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingUtils;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class SelectProjectDialog extends JDialog implements ActionListener {
@@ -66,6 +67,8 @@ public class SelectProjectDialog extends JDialog implements ActionListener {
 
 		// Initialize project list
 		projectTable = new ProjectTable();
+		projectTable.setFillsViewportHeight(true);
+		projectTable.setBackground(Color.WHITE);
 		projectTable.addActionListener(this);
 		JScrollPane scrollbar = new JScrollPane();
 		scrollbar.setViewportView(projectTable);

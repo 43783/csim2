@@ -46,6 +46,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		scenarioTable = new ScenarioTable(scenario, appManager);
+		scenarioTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(scenarioTable);
 		add(scrollPane, BorderLayout.CENTER);

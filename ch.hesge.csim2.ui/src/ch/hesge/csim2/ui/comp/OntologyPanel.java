@@ -32,12 +32,14 @@ import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.ui.utils.Line;
 import ch.hesge.csim2.ui.utils.PaintUtils;
+import ch.hesge.csim2.ui.views.OntologyView;
 
 @SuppressWarnings("serial")
 public class OntologyPanel extends JPanel implements ActionListener {
 
 	// Private attributes
 	private Ontology ontology;
+	private OntologyView view;
 	private Concept selectedConcept;
 	private ConceptLink selectedLink;
 
@@ -56,26 +58,29 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private JTextField editorField;
 	private ActionListener actionListener;
 
-	// Internal constants
-	private static int FONT_SIZE = 10;
-	private static int BORDER_SIZE = 20;
-	private static int SELECTION_HANDLE_SIZE = 4;
-	private static double ZOOM_FACTOR_INCREMENT = 0.05;
-	private static Color CONCEPT_TEXT = Color.BLACK;
-	private static Color CONCEPT_COLOR = Color.GRAY;
-	private static Color CONCEPT_BACKGROUND = new Color(251, 247, 180);
-	private static Color LINK_TEXT = Color.BLACK;
-	private static Color LINK_COLOR = Color.GRAY;
-	private static Color SELECTION_BACKGROUND = Color.WHITE;
-	private static Color SELECTION_COLOR = Color.BLACK;
+	// Private internal constants
+	private static final int FONT_SIZE = 10;
+	private static final int BORDER_SIZE = 20;
+	private static final int SELECTION_HANDLE_SIZE = 4;
+	
+	private static final double ZOOM_FACTOR_INCREMENT = 0.05;
+	
+	private static final Color CONCEPT_TEXT = Color.BLACK;
+	private static final Color CONCEPT_COLOR = Color.GRAY;
+	private static final Color CONCEPT_BACKGROUND = new Color(251, 247, 180);
+	private static final Color LINK_TEXT = Color.BLACK;
+	private static final Color LINK_COLOR = Color.GRAY;
+	private static final Color SELECTION_BACKGROUND = Color.WHITE;
+	private static final Color SELECTION_COLOR = Color.BLACK;
 
 	/**
 	 * Default constructor
 	 */
-	public OntologyPanel(Ontology ontology, JScrollPane scrollPanel) {
+	public OntologyPanel(Ontology ontology, OntologyView view, JScrollPane scrollPanel) {
 
 		this.minScaleFactor = -1d;
 		this.ontology = ontology;
+		this.view = view;
 		this.scrollPanel = scrollPanel;
 
 		initComponent();
@@ -91,8 +96,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		setBackground(Color.WHITE);
 
 		// Create a context menu
-		contextMenu = new ConceptPopup();
-		contextMenu.addActionListener(this);
+		contextMenu = new ConceptPopup(view);
 
 		// Create the editor field (for concept/link)
 		editorField = new JTextField();

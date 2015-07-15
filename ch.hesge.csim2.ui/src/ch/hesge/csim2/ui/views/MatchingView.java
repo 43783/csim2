@@ -154,24 +154,28 @@ public class MatchingView extends JPanel {
 
 		// Create method table
 		methodTable = new SourceMethodTable();
+		methodTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setViewportView(methodTable);
 		methodPanel.add(scrollPane1, BorderLayout.CENTER);
 
 		// Create match table
 		matchTable = new MatchingTable();
+		matchTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(matchTable);
 		conceptPanel.add(scrollPane2, BorderLayout.CENTER);
 		
 		// Create stem-concept table
 		stemConceptTable = new StemConceptTable(appManager);
+		stemConceptTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane3 = new JScrollPane();
 		scrollPane3.setViewportView(stemConceptTable);
 		stemConceptPanel.add(scrollPane3, BorderLayout.CENTER);
 
 		// Create stem-concept table
 		stemMethodTable = new StemMethodTable(appManager);
+		stemMethodTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane4 = new JScrollPane();
 		scrollPane4.setViewportView(stemMethodTable);
 		stemMethodPanel.add(scrollPane4, BorderLayout.CENTER);

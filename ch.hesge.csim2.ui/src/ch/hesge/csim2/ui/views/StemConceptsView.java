@@ -61,6 +61,7 @@ public class StemConceptsView extends JPanel {
 
 		// Initialize stem table
 		stemTable = new StemConceptTable(appManager);
+		stemTable.setFillsViewportHeight(true);
 		stemTable.setFocusable(true);
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(stemTable);

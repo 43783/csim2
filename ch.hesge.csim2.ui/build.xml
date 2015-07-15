@@ -34,7 +34,7 @@
     <target name="create-script">
 		<echo file="${dist.dir}/csim2.cmd" append="false">
 		@echo off
-		start javaw -splash:conf/spashscreen.png -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup %1 %2
+		start javaw -splash:conf/splash.png -classpath bin/*;lib/* ch.hesge.csim2.ui.AppStartup
 		</echo>    	
     </target>
 

@@ -30,5 +30,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.wtfidfmatcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.sourcematcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.jaccardmatcher"/>
+	<classpathentry kind="lib" path="lib/JTattoo-1.6.11.jar"/>
+	<classpathentry kind="lib" path="lib/jgoodies-looks-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/jgoodies-common-1.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

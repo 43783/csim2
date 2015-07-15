@@ -11,16 +11,14 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.border.EtchedBorder;
 
 import ch.hesge.csim2.ui.utils.SwingUtils;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class NameDialog extends JDialog implements ActionListener {
@@ -55,7 +53,7 @@ public class NameDialog extends JDialog implements ActionListener {
 		// Create layout structure
 		getContentPane().setLayout(new BorderLayout());
 		JPanel mainPane = new JPanel();
-		mainPane.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), " ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		mainPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(mainPane, BorderLayout.CENTER);
 		JPanel btnPane = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) btnPane.getLayout();

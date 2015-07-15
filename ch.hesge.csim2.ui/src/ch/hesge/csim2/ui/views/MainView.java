@@ -97,19 +97,17 @@ public class MainView extends JFrame implements ActionListener {
 		setTitle("Csim2 Environment");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-
-		// Initialize docking area
+		
+		// Initialize docking system
+		views = new ConcurrentHashMap<>();
+		dockables = new ConcurrentHashMap<>();
 		dockingControl = new CControl(this);
 		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
 
-		// Create view/dockable maps
-		views = new ConcurrentHashMap<>();
-		dockables = new ConcurrentHashMap<>();
-
-		// Initialize the application manager
+		// Create application manager
 		appManager = ApplicationManager.UNIQUE_INSTANCE;
 		appManager.setMainView(this);
-
+		
 		// Init main layout
 		initLAF();
 		initMenu();
@@ -117,11 +115,13 @@ public class MainView extends JFrame implements ActionListener {
 		initLayout();
 		initListeners();
 
+		/*
 		// Reset current project
 		appManager.getApplication().setProject(null);
 		appManager.reloadProject();
+		*/
 	}
-
+	
 	/**
 	 * Initialize look and feel.
 	 */
@@ -349,7 +349,7 @@ public class MainView extends JFrame implements ActionListener {
 	 * Initialize the view and its data.
 	 */
 	private void initView() {
-
+        
 		// Retrieve windows size from csim2.conf file
 		String windowSize = (String) appManager.getApplication().getProperties().getProperty("window-size");
 		if (windowSize != null) {

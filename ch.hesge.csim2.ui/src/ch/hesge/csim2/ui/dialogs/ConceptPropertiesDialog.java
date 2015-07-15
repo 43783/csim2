@@ -22,6 +22,7 @@ import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.ui.comp.ConceptAttributesTable;
 import ch.hesge.csim2.ui.comp.ConceptClassesTable;
 import ch.hesge.csim2.ui.utils.SwingUtils;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class ConceptPropertiesDialog extends JDialog implements ActionListener {
@@ -56,6 +57,7 @@ public class ConceptPropertiesDialog extends JDialog implements ActionListener {
 		
 		// Initialize main panel
 		JPanel mainPanel = new JPanel();
+		mainPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
 		mainPanel.setLayout(new BorderLayout(0, 0));
@@ -96,12 +98,14 @@ public class ConceptPropertiesDialog extends JDialog implements ActionListener {
 
 		// Initialize attribute table
 		attributesTable = new ConceptAttributesTable(concept.getAttributes());
+		attributesTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setViewportView(attributesTable);
 		attributesPanel.add(scrollPane1, BorderLayout.CENTER);
 		
 		// Initialize classes table
 		classesTable = new ConceptClassesTable(concept.getClasses());
+		classesTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(classesTable);
 		classesPanel.add(scrollPane2, BorderLayout.CENTER);
