@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
-public class ProjectDialog extends JDialog implements ActionListener {
+public class NameDialog extends JDialog implements ActionListener {
 
 	// Private attributes
 	private JButton btnOK;
@@ -32,7 +32,7 @@ public class ProjectDialog extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog with owner.
 	 */
-	public ProjectDialog(Window parent) {
+	public NameDialog(Window parent) {
 		super(parent);
 		initComponents();
 	}
@@ -95,7 +95,7 @@ public class ProjectDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ENTER", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProjectDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
+				NameDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
 			}
 		});
 
@@ -103,7 +103,7 @@ public class ProjectDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ESCAPE", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProjectDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
+				NameDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
 			}
 		});
 	}

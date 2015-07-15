@@ -19,7 +19,7 @@ import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.ui.dialogs.AboutDialog;
 import ch.hesge.csim2.ui.dialogs.ParametersDialog;
-import ch.hesge.csim2.ui.dialogs.ProjectDialog;
+import ch.hesge.csim2.ui.dialogs.NameDialog;
 import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
 import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
 import ch.hesge.csim2.ui.dialogs.SettingsDialog;
@@ -53,7 +53,7 @@ public class ActionHandler {
 	public void createNewProject() {
 
 		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
+		NameDialog dialog = new NameDialog(mainView);
 		dialog.setTitle("New Project");
 		dialog.setVisible(true);
 
@@ -71,7 +71,7 @@ public class ActionHandler {
 	public void createNewScenario() {
 
 		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
+		NameDialog dialog = new NameDialog(mainView);
 		dialog.setTitle("New Scenario");
 		dialog.setVisible(true);
 
@@ -99,6 +99,24 @@ public class ActionHandler {
 		}
 	}
 
+	/**
+	 * Create a new ontology
+	 */
+	public void createNewOntology() {
+
+		// Display dialog
+		NameDialog dialog = new NameDialog(mainView);
+		dialog.setTitle("New Ontology");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			String ontologyName = dialog.getNameField();
+			ApplicationLogic.createOntology(ontologyName, application.getProject());
+			reloadProject();
+		}
+	}
+	
 	/**
 	 * Delete the project passed in argument.
 	 * 
@@ -148,6 +166,23 @@ public class ActionHandler {
 	}
 	
 	/**
+	 * Delete the ontology passed in argument.
+	 * 
+	 * @param ontology
+	 *        the ontology to delete
+	 */
+	public void deleteOntology(Ontology ontology) {
+
+		// Display confirmation dialog
+		int dialogResult = JOptionPane.showConfirmDialog(mainView, "Do you really want to delete the ontology '" + ontology.getName() + "' ?", "Warning", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			ApplicationLogic.deleteOntology(ontology);
+			reloadProject();
+		}
+	}
+	
+	/**
 	 * Save the scenario with its steps
 	 */
 	public void saveScenario(Scenario scenario) {
@@ -189,7 +224,7 @@ public class ActionHandler {
 	public void renameProject(Project project) {
 
 		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
+		NameDialog dialog = new NameDialog(mainView);
 		dialog.setTitle("Rename Project");
 		dialog.setNameField(project.getName());
 		dialog.setVisible(true);
@@ -210,7 +245,7 @@ public class ActionHandler {
 	public void renameScenario(Scenario scenario) {
 
 		// Display dialog
-		ProjectDialog dialog = new ProjectDialog(mainView);
+		NameDialog dialog = new NameDialog(mainView);
 		dialog.setTitle("Rename Scenario");
 		dialog.setNameField(scenario.getName());
 		dialog.setVisible(true);
@@ -220,6 +255,29 @@ public class ActionHandler {
 			String scenarioName = dialog.getNameField(); 
 			scenario.setName(scenarioName);
 			ApplicationLogic.saveScenario(scenario);
+			reloadProject();
+		}
+	}
+
+	/**
+	 * Rename the ontology passed in argument.
+	 * 
+	 * @param ontology
+	 *        the ontology to rename
+	 */
+	public void renameOntology(Ontology ontology) {
+
+		// Display dialog
+		NameDialog dialog = new NameDialog(mainView);
+		dialog.setTitle("Rename Ontology");
+		dialog.setNameField(ontology.getName());
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			String ontologyName = dialog.getNameField(); 
+			ontology.setName(ontologyName);
+			ApplicationLogic.saveOntology(ontology);
 			reloadProject();
 		}
 	}

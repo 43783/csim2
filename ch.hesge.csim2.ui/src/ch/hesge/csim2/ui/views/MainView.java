@@ -169,7 +169,7 @@ public class MainView extends JFrame implements ActionListener {
 		consoleWrapper.setMaximizable(true);
 		consoleWrapper.setExternalizable(false);
 		consoleWrapper.setCloseable(true);
-		consoleWrapper.setLocation(CLocation.base().normalSouth(0.3));
+		consoleWrapper.setLocation(CLocation.base().normalSouth(0.4));
 		consoleWrapper.add(consoleView);
 		
 		consoleWrapper.addVetoClosingListener(new CVetoClosingListener() {
@@ -194,7 +194,7 @@ public class MainView extends JFrame implements ActionListener {
 		engineWrapper.setMaximizable(true);
 		engineWrapper.setExternalizable(false);
 		engineWrapper.setCloseable(true);
-		engineWrapper.setLocation(CLocation.base().normalSouth(0.3));
+		engineWrapper.setLocation(CLocation.base().normalSouth(0.4));
 		engineWrapper.add(engineView);
 		
 		engineWrapper.addVetoClosingListener(new CVetoClosingListener() {

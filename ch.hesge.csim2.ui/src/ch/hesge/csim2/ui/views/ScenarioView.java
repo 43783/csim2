@@ -9,12 +9,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.AncestorEvent;
+
+import com.alee.utils.swing.AncestorAdapter;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.ui.comp.ScenarioTable;
-import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class ScenarioView extends JPanel implements ActionListener {
@@ -47,7 +49,6 @@ public class ScenarioView extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		scenarioTable = new ScenarioTable(scenario, actionHandler);
-		scenarioTable.setFocusable(true);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(scenarioTable);
 		add(scrollPane, BorderLayout.CENTER);
@@ -94,14 +95,6 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		currentStepIndex = 0;
 		selectScenarioStep(currentStepIndex);
-
-		// Focus on scenario table
-		SwingUtils.invokeWhenVisible(this, new Runnable() {
-			@Override
-			public void run() {
-				scenarioTable.requestFocus();
-			}
-		});
 	}
 
 	/**

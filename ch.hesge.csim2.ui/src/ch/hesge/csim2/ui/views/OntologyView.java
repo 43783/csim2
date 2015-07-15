@@ -69,27 +69,36 @@ public class OntologyView extends JPanel implements ActionListener {
 		scrollPanel.setViewportView(ontologyPanel);
 		add(scrollPanel, BorderLayout.CENTER);
 
+		animator = new OntologyAnimator(ontologyPanel, ontology);
+		
 		JPanel btnPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) btnPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
+		btnPanel.setLayout(new BorderLayout(0, 0));
 		add(btnPanel, BorderLayout.SOUTH);
 
-		animator = new OntologyAnimator(ontologyPanel, ontology);
+		JPanel rightPanel = new JPanel();
+		FlowLayout fl_rightPanel = (FlowLayout) rightPanel.getLayout();
+		fl_rightPanel.setAlignment(FlowLayout.RIGHT);
+		btnPanel.add(rightPanel, BorderLayout.EAST);
 
-		btnDynamic = new JCheckBox("Dynamic");
-		btnDynamic.setPreferredSize(new Dimension(80, 25));
-		btnDynamic.addActionListener(this);
-		btnPanel.add(btnDynamic);
-
-		btnShake = new JButton("Shake");
-		btnShake.setPreferredSize(new Dimension(80, 25));
-		btnShake.addActionListener(this);
-		btnPanel.add(btnShake);
+		JPanel leftPanel = new JPanel();
+		FlowLayout fl_leftPanel = (FlowLayout) leftPanel.getLayout();
+		fl_leftPanel.setAlignment(FlowLayout.LEFT);
+		btnPanel.add(leftPanel, BorderLayout.WEST);
 
 		btnSave = new JButton("Save");
 		btnSave.setPreferredSize(new Dimension(80, 25));
 		btnSave.addActionListener(this);
-		btnPanel.add(btnSave);
+		leftPanel.add(btnSave);
+
+		btnDynamic = new JCheckBox("Dynamic");
+		btnDynamic.setPreferredSize(new Dimension(80, 25));
+		btnDynamic.addActionListener(this);
+		rightPanel.add(btnDynamic);
+
+		btnShake = new JButton("Shake");
+		btnShake.setPreferredSize(new Dimension(80, 25));
+		btnShake.addActionListener(this);
+		rightPanel.add(btnShake);
 
 		initListeners();
 	}

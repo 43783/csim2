@@ -935,6 +935,102 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Create a new project within the application.
+	 * 
+	 * @param name
+	 *        the name of the new project
+	 * 
+	 * @return and instance of project
+	 */
+	public static Project createProject(String name) {
+		return ProjectLogic.createProject(name);
+	}
+	
+	/**
+	 * Create a new concept and attach it to the ontology.
+	 * 
+	 * @param ontology
+	 *        the future owner
+	 * 
+	 * @return
+	 *         a new concept
+	 */
+	public static Concept createConcept(Ontology ontology) {
+		return OntologyLogic.createConcept(ontology);
+	}
+
+	/**
+	 * Create a new concept link and update the ontology.
+	 * 
+	 * @param ontology
+	 *        the ontology to update
+	 * @param source
+	 *        the source concept
+	 * @param target
+	 *        the target concept
+	 * 
+	 * @return
+	 *         the new link created
+	 */
+	public static ConceptLink createConceptLink(Ontology ontology, Concept source, Concept target) {
+		return OntologyLogic.createConceptLink(ontology, source, target);
+	}
+	
+	/**
+	 * Create an initialize a new application instance.
+	 * 
+	 * @return
+	 *         the new application instance
+	 */
+	public static Application createApplication() {
+
+		Application application = new Application();
+
+		initAppProperties(application);
+		initDbProperties(application);
+
+		return application;
+	}
+
+	/**
+	 * Create a new scenario.
+	 * 
+	 * @param name
+	 *        the scenario name
+	 * @param project
+	 *        the owning project
+	 * @return and instance of scenario
+	 */
+	public static Scenario createScenario(String name, Project project) {
+		return ScenarioLogic.createScenario(name, project);
+	}
+	
+	/**
+	 * Create a scenario step.
+	 * 
+	 * @param step
+	 *        the step to attach to
+	 * @param scenario
+	 * @return the newly create step
+	 */
+	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
+		return ScenarioLogic.createScenarioStep(name, description, scenario);
+	}
+
+	/**
+	 * Create a new ontology.
+	 * 
+	 * @param name
+	 *        the ontology name
+	 * @param project
+	 *        the owning project
+	 * @return and instance of ontology
+	 */
+	public static Ontology createOntology(String name, Project project) {
+		return OntologyLogic.createOntology(name, project);
+	}
+	
+	/**
 	 * Delete all traces owned by a scenario.
 	 * 
 	 * @param scenario
@@ -997,15 +1093,13 @@ public class ApplicationLogic {
 	}
 	
 	/**
-	 * Create a new project within the application.
+	 * Delete an ontology and all its dependencies.
 	 * 
-	 * @param name
-	 *        the name of the new project
-	 * 
-	 * @return and instance of project
+	 * @param ontology
+	 *        the ontology to delete
 	 */
-	public static Project createProject(String name) {
-		return ProjectLogic.createProject(name);
+	public static void deleteOntology(Ontology ontology) {
+		OntologyLogic.deleteOntology(ontology);
 	}
 	
 	/**
@@ -1018,47 +1112,6 @@ public class ApplicationLogic {
 		ProjectLogic.deleteProject(project);
 	}
 	
-	/**
-	 * Create an initialize a new application instance.
-	 * 
-	 * @return
-	 *         the new application instance
-	 */
-	public static Application createApplication() {
-
-		Application application = new Application();
-
-		initAppProperties(application);
-		initDbProperties(application);
-
-		return application;
-	}
-
-	/**
-	 * Create a new scenario.
-	 * 
-	 * @param name
-	 *        the scenario name
-	 * @param project
-	 *        the owning project
-	 * @return and instance of scenario
-	 */
-	public static Scenario createScenario(String name, Project project) {
-		return ScenarioLogic.createScenario(name, project);
-	}
-	
-	/**
-	 * Create a scenario step.
-	 * 
-	 * @param step
-	 *        the step to attach to
-	 * @param scenario
-	 * @return the newly create step
-	 */
-	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
-		return ScenarioLogic.createScenarioStep(name, description, scenario);
-	}
-
 	/**
 	 * Save project passed in argument.
 	 * 
@@ -1132,18 +1185,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Export all matchings passed in argument in a CSV file.
-	 * 
-	 * @param matchings
-	 *        the MethodConceptMatch to save
-	 * @param filename
-	 *        the csv filename target
-	 */
-	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
-		MatchingLogic.saveMatchings(matchMap, filename);
-	}
-	
-	/**
 	 * Save a list of stem concept.
 	 * 
 	 * @param stem
@@ -1199,6 +1240,18 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Export all matchings passed in argument in a CSV file.
+	 * 
+	 * @param matchings
+	 *        the MethodConceptMatch to save
+	 * @param filename
+	 *        the csv filename target
+	 */
+	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+		MatchingLogic.saveMatchings(matchMap, filename);
+	}
+	
+	/**
 	 * Return the engine running state.
 	 * 
 	 * @param engine
@@ -1226,36 +1279,6 @@ public class ApplicationLogic {
 	 */
 	public static void resetExecutionTimes(Scenario scenario) {
 		ScenarioLogic.resetExecutionTimes(scenario);
-	}
-
-	/**
-	 * Create a new concept and attach it to the ontology.
-	 * 
-	 * @param ontology
-	 *        the future owner
-	 * 
-	 * @return
-	 *         a new concept
-	 */
-	public static Concept createConcept(Ontology ontology) {
-		return OntologyLogic.createConcept(ontology);
-	}
-
-	/**
-	 * Create a new concept link and update the ontology.
-	 * 
-	 * @param ontology
-	 *        the ontology to update
-	 * @param source
-	 *        the source concept
-	 * @param target
-	 *        the target concept
-	 * 
-	 * @return
-	 *         the new link created
-	 */
-	public static ConceptLink createConceptLink(Ontology ontology, Concept source, Concept target) {
-		return OntologyLogic.createConceptLink(ontology, source, target);
 	}
 
 	/**

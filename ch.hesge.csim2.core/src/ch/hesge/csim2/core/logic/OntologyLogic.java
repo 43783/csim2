@@ -206,6 +206,26 @@ class OntologyLogic {
 	}
 
 	/**
+	 * Create a new ontology.
+	 * 
+	 * @param name
+	 *        the ontology name
+	 * @param project
+	 *        the owning project
+	 * @return and instance of ontology
+	 */
+	public static Ontology createOntology(String name, Project project) {
+		
+		Ontology ontology = new Ontology();
+		
+		ontology.setName(name);
+		ontology.setProjectId(project.getKeyId());
+		OntologyDao.add(ontology);
+		
+		return ontology;
+	}
+
+	/**
 	 * Create a new concept and attach it to the ontology.
 	 * 
 	 * @param ontology
@@ -308,6 +328,17 @@ class OntologyLogic {
 	}
 
 	/**
+	 * Delete a single ontology and its dependencies
+	 * 
+	 * @param ontology
+	 *        the ontology to delete
+	 */
+	public static void deleteOntology(Ontology ontology) {
+		deleteConcepts(ontology);
+		OntologyDao.delete(ontology);
+	}
+
+	/**
 	 * Delete all ontologies owned by a project.
 	 * 
 	 * @param project
@@ -316,7 +347,7 @@ class OntologyLogic {
 	public static void deleteOntologies(Project project) {
 		
 		for (Ontology ontology : project.getOntologies()) {
-			deleteConcepts(ontology);
+			deleteOntology(ontology);
 		}
 	}
 

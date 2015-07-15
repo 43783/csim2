@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.ui.views.ActionHandler;
@@ -40,6 +41,8 @@ public class ProjectPopup extends JPopupMenu implements ActionListener {
 		mnuDelete = new JMenuItem("Delete");
 		mnuDelete.addActionListener(this);
 		add(mnuDelete);
+
+		add(new JSeparator());
 
 		mnuClose = new JMenuItem("Close");
 		mnuClose.addActionListener(this);

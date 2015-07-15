@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
 import ch.hesge.csim2.core.model.IEngine;
@@ -34,8 +35,10 @@ public class EngineView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
 		
-		engineTable = new EngineTable(actionHandler);
-		add(engineTable, BorderLayout.CENTER);		
+		engineTable = new EngineTable(actionHandler);		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(engineTable);
+		add(scrollPane, BorderLayout.CENTER);		
 	}
 
 	/**

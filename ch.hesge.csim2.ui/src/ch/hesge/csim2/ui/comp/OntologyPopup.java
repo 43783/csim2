@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
@@ -115,16 +114,16 @@ public class OntologyPopup extends JPopupMenu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == mnuNew) {
-			actionHandler.showMessage("Warning", "This feature is not yet implemented !", JOptionPane.WARNING_MESSAGE);
+			actionHandler.createNewOntology();
 		}
 		else if (e.getSource() == mnuRename) {
-			actionHandler.showMessage("Warning", "This feature is not yet implemented !", JOptionPane.WARNING_MESSAGE);
+			actionHandler.renameOntology(ontology);
+		}
+		else if (e.getSource() == mnuDelete) {
+			actionHandler.deleteOntology(ontology);
 		}
 		else if (e.getSource() == mnuOpen) {
 			actionHandler.showOntology(ontology);
-		}
-		else if (e.getSource() == mnuDelete) {
-			actionHandler.showMessage("Warning", "This feature is not yet implemented !", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
