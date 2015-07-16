@@ -155,6 +155,11 @@ public class ScenarioTable extends JTable {
 		}
 	}
 	
+	/**
+	 * Return the current selected step.
+	 * 
+	 * @return a ScenarioStep
+	 */
 	public ScenarioStep getSelectedStep() {
 		int selectedRow = this.getSelectedRow();
 		return scenario.getSteps().get(selectedRow);

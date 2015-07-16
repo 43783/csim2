@@ -1,5 +1,6 @@
 package ch.hesge.csim2.ui.comp;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,6 +8,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
+import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.ui.views.OntologyView;
 
 @SuppressWarnings("serial")
@@ -14,12 +17,14 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 
 	// Private attributes
 	private OntologyView view;
+	private Concept concept;
+	private ConceptLink link;
+	private Point popupLocation;
 	private JMenuItem mnuNewConcept;
 	private JMenuItem mnuDeleteConcept;
 	private JMenuItem mnuNewLink;
 	private JMenuItem mnuDeleteLink;
 	private JMenuItem mnuProperties;
-	private ActionListener actionListener;
 
 	/**
 	 * Default constructor
@@ -60,58 +65,71 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 	}
 
 	/**
-	 * Add an action listener to handle menu selection.
+	 * Return the concept this popup is attached, or null.
 	 * 
-	 * @param actionListener
+	 * @return a concept or null
 	 */
-	public void addActionListener(ActionListener actionListener) {
-		this.actionListener = actionListener;
+	public Concept getConcept() {
+		return concept;
 	}
 
 	/**
-	 * Enable create concept menu and disable all others
+	 * Set the concept this popup is attached to.
+	 * 
+	 * @param concept
 	 */
-	public void clearMenuState() {
-		mnuNewConcept.setEnabled(false);
+	public void setConcept(Concept concept) {
+
+		this.concept = concept;
+
+		mnuNewConcept.setEnabled(true);
+		mnuDeleteConcept.setEnabled(concept != null);
+		mnuNewLink.setEnabled(concept != null);
+		mnuDeleteLink.setEnabled(false);
+		mnuProperties.setEnabled(concept != null);
+	}
+
+	/**
+	 * Return the link this popup is attached, or null.
+	 * 
+	 * @return a link or null
+	 */
+	public ConceptLink getLink() {
+		return link;
+	}
+
+	/**
+	 * Set the link this popup is attached to.
+	 * 
+	 * @param link
+	 */
+	public void setLink(ConceptLink link) {
+
+		this.link = link;
+
+		mnuNewConcept.setEnabled(true);
 		mnuDeleteConcept.setEnabled(false);
 		mnuNewLink.setEnabled(false);
-		mnuDeleteLink.setEnabled(false);
+		mnuDeleteLink.setEnabled(link != null);
 		mnuProperties.setEnabled(false);
 	}
 
 	/**
-	 * Enable/disable create concept menu
+	 * Return the popup upper-left corner location.
+	 * 
+	 * @return a point
 	 */
-	public void setCreateConceptMenuState(boolean state) {
-		mnuNewConcept.setEnabled(state);
+	public Point getPopupLocation() {
+		return popupLocation;
 	}
 
 	/**
-	 * Enable/disable delete concept menu
+	 * Sets the popup upper-left corner location.
+	 * 
+	 * @param popupLocation
 	 */
-	public void setDeleteConceptMenuState(boolean state) {
-		mnuDeleteConcept.setEnabled(state);
-	}
-
-	/**
-	 * Enable/disable create link menu
-	 */
-	public void setCreateLinkMenuState(boolean state) {
-		mnuNewLink.setEnabled(state);
-	}
-
-	/**
-	 * Enable/disable create link menu
-	 */
-	public void setDeleteLinkMenuState(boolean state) {
-		mnuDeleteLink.setEnabled(state);
-	}
-
-	/**
-	 * Enable/disable properties menu and disable all others
-	 */
-	public void setPropertiesMenuState(boolean state) {
-		mnuProperties.setEnabled(state);
+	public void setPopupLocation(Point popupLocation) {
+		this.popupLocation = popupLocation;
 	}
 
 	/**
@@ -119,23 +137,20 @@ public class ConceptPopup extends JPopupMenu implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		if (actionListener != null) {
-
-			if (e.getSource() == mnuNewConcept) {
-				view.createConcept();
-			}
-			else if (e.getSource() == mnuDeleteConcept) {
-				view.deleteConcept();
-			}
-			else if (e.getSource() == mnuNewLink) {
-				view.startLink();
-			}
-			else if (e.getSource() == mnuDeleteLink) {
-				view.deleteLink();
-			}
-			else if (e.getSource() == mnuProperties) {
-				view.showProperties();
-			}
+		if (e.getSource() == mnuNewConcept) {
+			view.createConcept(popupLocation);
+		}
+		else if (e.getSource() == mnuDeleteConcept) {
+			view.deleteConcept(concept);
+		}
+		else if (e.getSource() == mnuNewLink) {
+			view.startLinkFrom(concept);
+		}
+		else if (e.getSource() == mnuDeleteLink) {
+			view.deleteLink(link);
+		}
+		else if (e.getSource() == mnuProperties) {
+			view.showProperties(concept);
 		}
 	}
 }

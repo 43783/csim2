@@ -2,15 +2,12 @@ package ch.hesge.csim2.ui.comp;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
@@ -28,17 +25,19 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.AncestorEvent;
 
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.ui.utils.Line;
 import ch.hesge.csim2.ui.utils.PaintUtils;
-import ch.hesge.csim2.ui.utils.SwingUtils;
 import ch.hesge.csim2.ui.views.OntologyView;
 
+import com.alee.utils.swing.AncestorAdapter;
+
 @SuppressWarnings("serial")
-public class OntologyPanel extends JPanel implements ActionListener {
+public class OntologyPanel extends JPanel {
 
 	// Private attributes
 	private Ontology ontology;
@@ -50,7 +49,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private Concept linkTarget;
 
 	private boolean isEditing;
-	private boolean isBuildingLink;
+	private boolean isMovingLink;
 	private boolean isMovingConcept;
 
 	private double scaleFactor;
@@ -59,7 +58,6 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private Point mousePosition;
 	private ConceptPopup contextMenu;
 	private JTextField editorField;
-	private ActionListener actionListener;
 
 	// Private internal constants
 	private static final int FONT_SIZE = 10;
@@ -114,29 +112,20 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	private void initListeners() {
 
-		// Set focus when visible
-		SwingUtils.setFocusWhenVisible(this);
-		
-		// Listen to panel resize
-		scrollPanel.addComponentListener(new ComponentListener() {
+		// Listen to panel displayed
+		addAncestorListener(new AncestorAdapter() {
 			@Override
-			public void componentShown(ComponentEvent e) {
-			}
-			@Override
-			public void componentResized(ComponentEvent e) {
-				computeMinScaleFactor();
-				scaleFactor = Math.max(minScaleFactor,  scaleFactor);
-				scrollPanel.revalidate();
-				repaint();
-			}
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
-			@Override
-			public void componentHidden(ComponentEvent e) {
+			public void ancestorAdded(AncestorEvent event) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						computePreferredSize();
+						OntologyPanel.this.requestFocus();
+					}
+				});
 			}
 		});
-		 
+
 		// Listen to mouse click
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -174,6 +163,23 @@ public class OntologyPanel extends JPanel implements ActionListener {
 			}
 		});
 
+		// Listen to scrollbar resized
+		scrollPanel.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				computeMinScaleFactor();
+			}
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+		 
 		// Listen to editor field keys (ENTER + ESCAPE)
 		editorField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -200,7 +206,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		mousePosition = getMousePosition();
 
 		// Retrieve mouse position in ontology coordinates
-		Point selectedPoint = PaintUtils.convertToOriginalCoordinates(mousePosition, scaleFactor);
+		Point selectedPoint = PaintUtils.toOriginalCoordinates(mousePosition, scaleFactor);
 
 		// Detect if user has clicked on a concept
 		selectedConcept = PaintUtils.hitConcept(ontology.getConcepts(), selectedPoint);
@@ -210,23 +216,20 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 		// Detect if we are edit mode
 		if (isEditing) {
-			isEditing = false;
-			hideNameEditor();
+			stopConceptEdition();
+			stopLinkEdition();
 		}
 		
 		// Detect if a building link
-		else if (isBuildingLink) {
+		else if (isMovingLink) {
 
 			// A link is fully established
 			if (linkSource != null && linkTarget != null) {
-				selectedLink = new ConceptLink();
-				selectedLink.setSourceConcept(linkSource);
-				selectedLink.setTargetConcept(linkTarget);
-				actionPerformed(new ActionEvent(e.getSource(), e.getID(), "NEW_LINK_END"));
+				view.createLink(linkSource, linkTarget);
 			}
 			
 			// Reset link building
-			isBuildingLink = false;
+			isMovingLink = false;
 			linkSource = null;
 			linkTarget = null;
 		}
@@ -237,7 +240,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 			// Single click
 			if (e.getClickCount() == 1) {
 
-				isEditing = false;
+				stopConceptEdition();
+				stopLinkEdition();
 
 				if (selectedConcept != null) {
 					isMovingConcept = true;
@@ -252,29 +256,32 @@ public class OntologyPanel extends JPanel implements ActionListener {
 			// Double click
 			else if (e.getClickCount() == 2) {
 
-				isEditing = true;
-
 				if (selectedConcept != null) {
-					showConceptNameEditor();
+					startConceptEdition(selectedConcept);
 				}
 				else if (selectedLink != null) {
-					showLinkNameEditor();
+					startLinkEdition(selectedLink);
 				}
 			}
 		}
 
 		// Detect if user made a right click
 		else if (SwingUtilities.isRightMouseButton(e)) {
-
+			
 			// Init context menu
-			contextMenu.clearMenuState();
-			contextMenu.setCreateConceptMenuState(selectedConcept == null);
-			contextMenu.setDeleteConceptMenuState(selectedConcept != null);
-			contextMenu.setCreateLinkMenuState(selectedConcept != null);
-			contextMenu.setDeleteLinkMenuState(selectedLink != null);
-			contextMenu.setPropertiesMenuState(selectedConcept != null);
+			if (selectedConcept != null) {
+				contextMenu.setConcept(selectedConcept);
+			}
+			else if (selectedLink != null) {
+				contextMenu.setLink(selectedLink);
+			}
+			else {
+				contextMenu.setConcept(null);
+				contextMenu.setLink(null);
+			}
 
 			// Show the menu
+			contextMenu.setPopupLocation(e.getPoint());
 			contextMenu.show(e.getComponent(), e.getX(), e.getY());
 		}
 
@@ -290,7 +297,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 		// Stop dragging concept or link
 		isMovingConcept = false;
-		isBuildingLink = false;
+		isMovingLink = false;
 
 		repaint();
 	}
@@ -306,8 +313,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		if (isMovingConcept) {
 
 			// Retrieve mouse position in ontology coordinates
-			Point currentPoint = PaintUtils.convertToOriginalCoordinates(e.getPoint(), scaleFactor);
-			Point previousPoint = PaintUtils.convertToOriginalCoordinates(mousePosition, scaleFactor);
+			Point currentPoint = PaintUtils.toOriginalCoordinates(e.getPoint(), scaleFactor);
+			Point previousPoint = PaintUtils.toOriginalCoordinates(mousePosition, scaleFactor);
 
 			// Adjust concept position within ontology
 			selectedConcept.getBounds().translate(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
@@ -327,12 +334,12 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	private void onMouseMoved(MouseEvent e) {
 
-		if (isBuildingLink) {
+		if (isMovingLink) {
 
 			linkTarget = null;
 
 			// Retrieve mouse position in ontology coordinates
-			Point currentPoint = PaintUtils.convertToOriginalCoordinates(e.getPoint(), scaleFactor);
+			Point currentPoint = PaintUtils.toOriginalCoordinates(e.getPoint(), scaleFactor);
 
 			// Retrieve concept under mouse point
 			Concept hitConcept = PaintUtils.hitConcept(ontology.getConcepts(), currentPoint);
@@ -377,22 +384,24 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 */
 	private void onMouseWheelMoved(MouseWheelEvent e) {
 
+		// Ctrl + wheel => resize ontology
 		if (e.isControlDown()) {
 			scaleFactor = Math.max(minScaleFactor, scaleFactor - ZOOM_FACTOR_INCREMENT * e.getWheelRotation());
-			repaint();
+			computePreferredSize();
 		}
-		if (scrollPanel != null) {
 
-			if (e.isShiftDown()) {
-				JScrollBar scrollBar = scrollPanel.getHorizontalScrollBar();
-				scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement() * e.getWheelRotation());
-				scrollPanel.revalidate();
-			}
-			else {
-				JScrollBar scrollBar = scrollPanel.getVerticalScrollBar();
-				scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement() * e.getWheelRotation());
-				scrollPanel.revalidate();
-			}
+		// Schift + wheel => horizontal scroll
+		if (e.isShiftDown()) {
+			JScrollBar scrollBar = scrollPanel.getHorizontalScrollBar();
+			scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement() * e.getWheelRotation());
+			scrollPanel.revalidate();
+		}
+
+		// Wheel => vertical scroll
+		else {
+			JScrollBar scrollBar = scrollPanel.getVerticalScrollBar();
+			scrollBar.setValue(scrollBar.getValue() + scrollBar.getUnitIncrement() * e.getWheelRotation());
+			scrollPanel.revalidate();
 		}
 	}
 
@@ -405,19 +414,21 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 		if (e.isControlDown()) {
 
+			// Ctrl+0 => resize optimally
 			if (e.getKeyCode() == KeyEvent.VK_0 || e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
 				scaleFactor = minScaleFactor;
-				scrollPanel.revalidate();
-				repaint();
+				computePreferredSize();
 			}
 		}
+		
+		// Del key => delete selection
 		else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 
 			if (selectedConcept != null) {
-				actionPerformed(new ActionEvent(this, -1, "DELETE_CONCEPT"));
+				view.deleteConcept(selectedConcept);
 			}
 			else if (selectedLink != null) {
-				actionPerformed(new ActionEvent(this, -1, "DELETE_LINK"));
+				view.deleteLink(selectedLink);
 			}
 		}
 	}
@@ -433,20 +444,21 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 			if (selectedConcept != null) {
 				setConceptName(selectedConcept, editorField.getText());
+				stopConceptEdition();
 			}
 			else if (selectedLink != null) {
 				setLinkName(selectedLink, editorField.getText());
+				stopLinkEdition();
 			}
 
-			isEditing = false;
-			hideNameEditor();
 			requestFocus();
 			repaint();
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			
-			isEditing = false;
-			hideNameEditor();
+			stopConceptEdition();
+			setLinkName(selectedLink, editorField.getText());
+
 			requestFocus();
 			repaint();
 		}
@@ -458,57 +470,67 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	 * @param e
 	 */
 	private void onFocusLost(FocusEvent e) {
-		isEditing = false;
-		hideNameEditor();
+		stopConceptEdition();
+		stopLinkEdition();
 	}
 
 	/**
-	 * Return the surface taken by all ontology concepts (in view area).
-	 * 
-	 * @return a Rectangle
+	 * Recompute current ontology size
 	 */
-	private Rectangle getOntologyBounds() {
+	public void computePreferredSize() {
 
-		Rectangle bounds = new Rectangle();
-
-		// Scan all concepts and compute the whole ontology area 
-		for (Concept concept : ontology.getConcepts()) {
-			Rectangle rect = PaintUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
-			bounds = bounds.union(rect);
-		}
-
-		bounds.width  += BORDER_SIZE * scaleFactor;
-		bounds.height += BORDER_SIZE * scaleFactor;
+		Rectangle ontoRect = new Rectangle();
 		
-		return bounds;
-	}
+		// Recompute size with new scaleFactor
+		for (Concept concept : ontology.getConcepts()) {
+			Rectangle rect = PaintUtils.toViewCoordinates(concept.getBounds(), scaleFactor);
+			ontoRect = ontoRect.union(rect);
+		}
+		ontoRect.width  += BORDER_SIZE;
+		ontoRect.height += BORDER_SIZE;
+		
+		setPreferredSize(ontoRect.getSize());
+		
+		scrollPanel.getHorizontalScrollBar().setUnitIncrement(ontoRect.width / 20);
+		scrollPanel.getVerticalScrollBar().setUnitIncrement(ontoRect.height  / 20);
 
-	/**
-	 * Return the panel preferred size.
-	 */
-	@Override
-	public Dimension getPreferredSize() {
-		Rectangle ontoArea = getOntologyBounds();
-		return new Dimension(ontoArea.width, ontoArea.height);
+		scrollPanel.revalidate();
+		repaint();
 	}
-
+	
 	/**
-	 * Handle panel resizing
+	 * Recompute minimum scaling factor to respect
 	 */
 	public void computeMinScaleFactor() {
 
-		// Get visible drawing area
+		// Get the visible drawing area
 		Rectangle drawRect = getVisibleRect();
-		
-		// Get ontology area to display
-		Rectangle ontoRect = getOntologyBounds();
 
+		// Calculate ontology bounds (normalized with scaleFactor to 1)
+		Rectangle ontoRect = new Rectangle();
+		for (Concept concept : ontology.getConcepts()) {
+			Rectangle rect = PaintUtils.toViewCoordinates(concept.getBounds(), 1d);
+			ontoRect = ontoRect.union(rect);
+		}
+		ontoRect.width  += BORDER_SIZE;
+		ontoRect.height += BORDER_SIZE;
+		
+		// Don't go in to small ontology area, in case their is only one concept
+		ontoRect.width  = Math.max(600, ontoRect.width);
+		ontoRect.height = Math.max(480, ontoRect.height);
+		
 		// Check horizontal/vertical factor
-		double horizontalFactor = 1d * drawRect.width / ontoRect.width;
+		double horizontalFactor = 1d * drawRect.width  / ontoRect.width;
 		double verticalFactor   = 1d * drawRect.height / ontoRect.height;
 		
 		// Calculate minimal factor to display full ontology
 		minScaleFactor = Math.min(horizontalFactor, verticalFactor);
+		
+		// Check if current scaleFactor is too small
+		if (scaleFactor < minScaleFactor) {
+			scaleFactor = minScaleFactor;
+			computePreferredSize();
+		}
     }
 	
 	/**
@@ -571,7 +593,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 			}
 
 			// Draw dragging link
-			if (isBuildingLink) {
+			if (isMovingLink) {
 				paintBuildingLink(g);
 			}
 
@@ -580,14 +602,24 @@ public class OntologyPanel extends JPanel implements ActionListener {
 				paintSelectedLink(g);
 			}
 		}
-		
+
 		/*
+		// Draw bounds around ontology area
 		g.setColor(Color.RED);
-		Rectangle rect = getVisibleRect();
-		rect.width -= 2;
-		rect.height -= 2;
-		g.drawRect(rect.x, rect.y, rect.width, rect.height);
-		*/		
+		Rectangle a = new Rectangle(getPreferredSize());
+		a.width  -= 1;
+		a.height -= 1;
+		g.drawRect(a.x, a.y, a.width, a.height);
+		*/
+
+		/*
+		// Draw bounds around visible area
+		g.setColor(Color.RED);
+		Rectangle b = getVisibleRect();
+		b.width  -= 1;
+		b.height -= 1;
+		g.drawRect(b.x, b.y, b.width, b.height);
+		*/
 	}
 
 	/**
@@ -597,10 +629,10 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private void paintConcept(Graphics g, Concept concept) {
 
 		// Retrieve concept bounds in view coordinates
-		Rectangle bounds = PaintUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
+		Rectangle bounds = PaintUtils.toViewCoordinates(concept.getBounds(), scaleFactor);
 
 		// Retrieve centered text bounds
-		Rectangle textBounds = PaintUtils.getCenteredText(g, bounds, concept.getName());
+		Rectangle textBounds = PaintUtils.getCenteredBounds(g, bounds, concept.getName());
 
 		// Draw concept background
 		g.setColor(CONCEPT_BACKGROUND);
@@ -657,8 +689,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private void paintLink(Graphics g, ConceptLink link) {
 
 		// Retrieve source/target bounds in view coordinates
-		Rectangle sourceBounds = PaintUtils.convertToViewCoordinates(link.getSourceConcept().getBounds(), scaleFactor);
-		Rectangle targetBounds = PaintUtils.convertToViewCoordinates(link.getTargetConcept().getBounds(), scaleFactor);
+		Rectangle sourceBounds = PaintUtils.toViewCoordinates(link.getSourceConcept().getBounds(), scaleFactor);
+		Rectangle targetBounds = PaintUtils.toViewCoordinates(link.getTargetConcept().getBounds(), scaleFactor);
 
 		// Retrieve line between source/target concepts
 		Line linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
@@ -678,7 +710,7 @@ public class OntologyPanel extends JPanel implements ActionListener {
 
 				// Retrieve link text bounds
 				Rectangle linkBounds = new Rectangle(linkLine.x1, linkLine.y1, linkLine.width, linkLine.height);
-				Rectangle textBounds = PaintUtils.getCenteredText(g, linkBounds, link.getQualifier());
+				Rectangle textBounds = PaintUtils.getCenteredBounds(g, linkBounds, link.getQualifier());
 
 				// Draw link name
 				g.setColor(LINK_TEXT);
@@ -693,8 +725,8 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private void paintSelectedLink(Graphics g) {
 
 		// Retrieve source/target bounds in view coordinates
-		Rectangle sourceBounds = PaintUtils.convertToViewCoordinates(selectedLink.getSourceConcept().getBounds(), scaleFactor);
-		Rectangle targetBounds = PaintUtils.convertToViewCoordinates(selectedLink.getTargetConcept().getBounds(), scaleFactor);
+		Rectangle sourceBounds = PaintUtils.toViewCoordinates(selectedLink.getSourceConcept().getBounds(), scaleFactor);
+		Rectangle targetBounds = PaintUtils.toViewCoordinates(selectedLink.getTargetConcept().getBounds(), scaleFactor);
 
 		// Retrieve line between source/target concepts
 		Line linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
@@ -728,15 +760,15 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	private void paintBuildingLink(Graphics g) {
 
 		// Retrieve source/target bounds in view coordinates
-		Rectangle sourceBounds = PaintUtils.convertToViewCoordinates(linkSource.getBounds(), scaleFactor);
-		Rectangle targetBounds = new Rectangle(getMousePosition().x - 1, getMousePosition().y - 1, 2, 2);
+		Rectangle sourceBounds = PaintUtils.toViewCoordinates(linkSource.getBounds(), scaleFactor);
+		Rectangle targetBounds = new Rectangle(mousePosition.x - 1, mousePosition.y - 1, 2, 2);
 
 		// Retrieve line between source concepts and mouse position
 		Line linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
 
 		// Recalculate line to target, if target available
 		if (linkTarget != null) {
-			targetBounds = PaintUtils.convertToViewCoordinates(linkTarget.getBounds(), scaleFactor);
+			targetBounds = PaintUtils.toViewCoordinates(linkTarget.getBounds(), scaleFactor);
 			linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
 		}
 
@@ -762,80 +794,6 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Show editing field
-	 */
-	private void showConceptNameEditor() {
-
-		Graphics g = getGraphics();
-
-		// Sets font size
-		Font scaledFont = getFont().deriveFont((float) Math.round(FONT_SIZE * scaleFactor));
-		g.setFont(scaledFont);
-
-		// Retrieve current concept bounds in view coordinates
-		Rectangle editorBounds = PaintUtils.convertToViewCoordinates(selectedConcept.getBounds(), scaleFactor);
-
-		// Update text field
-		editorField.setFont(g.getFont());
-		editorField.setBounds(editorBounds);
-		editorField.setText(selectedConcept.getName());
-
-		// Make field visible
-		editorField.setVisible(true);
-		editorField.selectAll();
-		editorField.requestFocus();
-	}
-
-	/**
-	 * Show editing field
-	 */
-	private void showLinkNameEditor() {
-
-		Graphics g = getGraphics();
-
-		// Sets font size
-		Font scaledFont = getFont().deriveFont((float) Math.round(FONT_SIZE * scaleFactor));
-		g.setFont(scaledFont);
-
-		// Retrieve source/target bounds in view coordinates
-		Rectangle sourceBounds = PaintUtils.convertToViewCoordinates(selectedLink.getSourceConcept().getBounds(), scaleFactor);
-		Rectangle targetBounds = PaintUtils.convertToViewCoordinates(selectedLink.getTargetConcept().getBounds(), scaleFactor);
-
-		// Retrieve line between source/target concepts
-		Line linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
-
-		if (linkLine != null) {
-
-			// Retrieve link text size
-			String linkText = selectedLink.getQualifier() == null ? "XXXXX" : selectedLink.getQualifier();
-
-			// Calculate text bounds
-			Rectangle linkBounds = new Rectangle(linkLine.x1, linkLine.y1, linkLine.width, linkLine.height);
-			Rectangle editorBounds = PaintUtils.getCenteredText(g, linkBounds, linkText);
-			editorBounds.grow(g.getFont().getSize() / 2, g.getFont().getSize());
-
-			// Update field text
-			editorField.setFont(g.getFont());
-			editorField.setBounds(editorBounds);
-			editorField.setText(selectedLink.getQualifier());
-
-			// Make field visible
-			editorField.setVisible(true);
-			editorField.selectAll();
-			editorField.requestFocus();
-		}
-	}
-
-	/**
-	 * Hide concept/link editor
-	 */
-	private void hideNameEditor() {
-		isEditing = false;
-		editorField.setVisible(false);
-		requestFocus();
-	}
-
-	/**
 	 * Set the name of a specific concept.
 	 * 
 	 * @param concept
@@ -856,16 +814,16 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		}
 
 		// Retrieve concepts bounds in view coordinates
-		Rectangle bounds = PaintUtils.convertToViewCoordinates(selectedConcept.getBounds(), scaleFactor);
+		Rectangle bounds = PaintUtils.toViewCoordinates(selectedConcept.getBounds(), scaleFactor);
 
 		// Calculate new concept bounds
-		Rectangle viewBounds = PaintUtils.getCenteredText(g, new Rectangle(bounds), conceptName);
+		Rectangle viewBounds = PaintUtils.getCenteredBounds(g, new Rectangle(bounds), conceptName);
 		viewBounds.grow(g.getFont().getSize(), g.getFont().getSize());
 		viewBounds.x = bounds.x;
 		viewBounds.y = bounds.y;
 
 		// Convert bounds into ontology coordinates
-		bounds = PaintUtils.convertToOriginalCoordinates(viewBounds, scaleFactor);
+		bounds = PaintUtils.toOriginalCoordinates(viewBounds, scaleFactor);
 
 		// Update concept size and name
 		concept.setBounds(bounds);
@@ -914,31 +872,105 @@ public class OntologyPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Put view in edit mode.
-	 * That is displaying an name editor for current concept/link.
+	 * Start editing a concept name.
 	 */
-	public void startEditMode() {
+	public void startConceptEdition(Concept concept) {
+		
+		isEditing = true;
+		selectedConcept = concept;
+		
+		Graphics g = getGraphics();
 
-		if (selectedLink != null) {
-			isEditing = true;
-			showLinkNameEditor();
-		}
-		else if (selectedConcept != null) {
-			isEditing = true;
-			showConceptNameEditor();
+		// Sets font size
+		Font scaledFont = getFont().deriveFont((float) Math.round(FONT_SIZE * scaleFactor));
+		g.setFont(scaledFont);
+
+		// Retrieve current concept bounds in view coordinates
+		Rectangle editorBounds = PaintUtils.toViewCoordinates(selectedConcept.getBounds(), scaleFactor);
+
+		// Update text field
+		editorField.setFont(g.getFont());
+		editorField.setBounds(editorBounds);
+		editorField.setText(selectedConcept.getName());
+
+		// Make field visible
+		editorField.setVisible(true);
+		editorField.selectAll();
+		editorField.requestFocus();
+	}
+	
+	/**
+	 * Stop editing a concept name.
+	 */
+	public void stopConceptEdition() {
+		isEditing = false;
+		editorField.setVisible(false);
+		requestFocus();
+	}
+	
+	/**
+	 * Start editing a link name.
+	 */
+	public void startLinkEdition(ConceptLink link) {
+		
+		isEditing = true;
+		selectedLink = link;
+
+		Graphics g = getGraphics();
+
+		// Sets font size
+		Font scaledFont = getFont().deriveFont((float) Math.round(FONT_SIZE * scaleFactor));
+		g.setFont(scaledFont);
+
+		// Retrieve source/target bounds in view coordinates
+		Rectangle sourceBounds = PaintUtils.toViewCoordinates(selectedLink.getSourceConcept().getBounds(), scaleFactor);
+		Rectangle targetBounds = PaintUtils.toViewCoordinates(selectedLink.getTargetConcept().getBounds(), scaleFactor);
+
+		// Retrieve line between source/target concepts
+		Line linkLine = PaintUtils.getLine(sourceBounds, targetBounds);
+
+		if (linkLine != null) {
+
+			// Retrieve link text size
+			String linkText = selectedLink.getQualifier() == null ? "XXXXX" : selectedLink.getQualifier();
+
+			// Calculate text bounds
+			Rectangle linkBounds = new Rectangle(linkLine.x1, linkLine.y1, linkLine.width, linkLine.height);
+			Rectangle editorBounds = PaintUtils.getCenteredBounds(g, linkBounds, linkText);
+			editorBounds.grow(g.getFont().getSize() / 2, g.getFont().getSize());
+
+			// Update field text
+			editorField.setFont(g.getFont());
+			editorField.setBounds(editorBounds);
+			editorField.setText(selectedLink.getQualifier());
+
+			// Make field visible
+			editorField.setVisible(true);
+			editorField.selectAll();
+			editorField.requestFocus();
 		}
 	}
 
 	/**
+	 * Stop editing a link name.
+	 */
+	public void stopLinkEdition() {
+		isEditing = false;
+		editorField.setVisible(false);
+		requestFocus();
+	}
+	
+	/**
 	 * Put view in link mode.
 	 * That is build interactively a link.
 	 */
-	public void startLinkMode() {
+	public void startLinkFrom(Concept sourceConcept) {
 
-		linkSource = selectedConcept;
+		selectedConcept = sourceConcept;
+		linkSource = sourceConcept;
 		linkTarget = null;
-
-		isBuildingLink = true;
+		isMovingLink = true;
+		
 		repaint();
 	}
 
@@ -950,28 +982,11 @@ public class OntologyPanel extends JPanel implements ActionListener {
 		selectedConcept = null;
 		selectedLink = null;
 		isMovingConcept = false;
-		isBuildingLink = false;
-		isEditing = false;
+		isMovingLink = false;
 
-		hideNameEditor();
+		stopConceptEdition();
+		stopLinkEdition();
+		
 		repaint();
 	}
-
-	/**
-	 * Add an action listener to handle context menu selection.
-	 * 
-	 * @param listener
-	 */
-	public void addActionListener(ActionListener listener) {
-		this.actionListener = listener;
-	}
-	
-	/**
-	 * Handle action generated by menu.
-	 */
-	public void actionPerformed(ActionEvent e) {
-		if (actionListener != null) {
-			actionListener.actionPerformed(e);
-		}
-	}	
 }

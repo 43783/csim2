@@ -8,6 +8,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import ch.hesge.csim2.core.model.ConceptClass;
+import ch.hesge.csim2.core.utils.ObjectSorter;
 
 @SuppressWarnings("serial")
 public class ConceptClassesTable extends JTable {
@@ -28,7 +29,6 @@ public class ConceptClassesTable extends JTable {
 	 */
 	private void initComponent() {
 
-		setEnabled(true);
 		setRowSelectionAllowed(true);
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,5 +88,33 @@ public class ConceptClassesTable extends JTable {
 				return null;
 			}
 		});
+	}
+
+	/**
+	 * Selecting a row already selected is forbidden.
+	 */
+	@Override
+	public void changeSelection(int row, int col, boolean isToggle, boolean isExtend) {
+		if (!isRowSelected(row)) {
+			super.changeSelection(row, col, isToggle, isExtend);
+		}
+	}
+	
+	/**
+	 * Return the current concept class.
+	 * 
+	 * @return a ConceptClass
+	 */
+	public ConceptClass getSelectedClass() {
+		int selectedRow = this.getSelectedRow();
+		return selectedRow == -1 ? null : conceptClasses.get(selectedRow);
+	}
+
+	/**
+	 * Visually refresh table content
+	 */
+	public void refresh() {
+		ObjectSorter.sortConceptClasses(conceptClasses);
+		((DefaultTableModel)getModel()).fireTableDataChanged();		
 	}
 }

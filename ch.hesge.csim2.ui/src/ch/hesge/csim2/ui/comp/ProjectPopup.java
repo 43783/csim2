@@ -34,7 +34,7 @@ public class ProjectPopup extends JPopupMenu implements ActionListener {
 	 */
 	private void initComponent() {
 
-		mnuRename = new JMenuItem("Rename Project");
+		mnuRename = new JMenuItem("Rename project");
 		mnuRename.addActionListener(this);
 		add(mnuRename);
 

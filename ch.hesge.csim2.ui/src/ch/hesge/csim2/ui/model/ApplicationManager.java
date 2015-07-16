@@ -12,6 +12,8 @@ import javax.swing.SwingUtilities;
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Application;
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.ConceptAttribute;
+import ch.hesge.csim2.core.model.ConceptClass;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Context;
 import ch.hesge.csim2.core.model.IEngine;
@@ -29,6 +31,7 @@ import ch.hesge.csim2.core.model.TimeSeries;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.ui.dialogs.AboutDialog;
 import ch.hesge.csim2.ui.dialogs.NameDialog;
+import ch.hesge.csim2.ui.dialogs.NameIdentifierDialog;
 import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
 import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
@@ -431,10 +434,94 @@ public class ApplicationManager {
 	}
 
 	/**
+	 * Clone the concept passed in argument into a distinct instance (same
+	 * keyId).
+	 * 
+	 * @param concept
+	 *        the concept to clone
+	 * @return a new concept instance
+	 */
+	public Concept cloneConcept(Concept concept) {
+		return applicationLogic.cloneConcept(concept);
+	}
+	
+	/**
+	 * Copy concept properties to an other one, without modifying target instance identity.
+	 * 
+	 * @param source
+	 *        the concept with properties to copy
+	 * @param target
+	 *        the concept to clear with source properties
+	 */
+	public void copyConceptProperties(Concept source, Concept target) {
+		applicationLogic.copyConceptProperties(source, target);
+	}
+	
+	/**
 	 * Create a new concept link and update the ontology.
 	 */
 	public ConceptLink createConceptLink(Ontology ontology, Concept source, Concept target) {
 		return applicationLogic.createConceptLink(ontology, source, target);
+	}
+
+	/**
+	 * Create a concept attribute
+	 */
+	public void createConceptAttribute(Concept concept) {
+		
+		// Display dialog
+		NameIdentifierDialog dialog = new NameIdentifierDialog(mainView);
+		dialog.setTitle("New Attribute");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			
+			String attributeName = dialog.getNameField();
+			String attributeIdentifier = dialog.getIdentifierField();
+			
+			ConceptAttribute attribute = new ConceptAttribute();
+			attribute.setName(attributeName);
+			attribute.setIdentifier(attributeIdentifier);
+			concept.getAttributes().add(attribute);
+		}
+	}	
+	
+	/**
+	 * Delete a concept attribute
+	 */
+	public void deleteConceptAttribute(Concept concept, ConceptAttribute attribute) {
+		concept.getAttributes().remove(attribute);
+	}
+	
+	/**
+	 * Create a concept class 
+	 */
+	public void createConceptClass(Concept concept) {
+		
+		// Display dialog
+		NameIdentifierDialog dialog = new NameIdentifierDialog(mainView);
+		dialog.setTitle("New Class");
+		dialog.setVisible(true);
+
+		// Detect if use clicked OK
+		if (dialog.getDialogResult()) {
+			
+			String attributeName = dialog.getNameField();
+			String attributeIdentifier = dialog.getIdentifierField();
+			
+			ConceptClass attributeClass = new ConceptClass();
+			attributeClass.setName(attributeName);
+			attributeClass.setIdentifier(attributeIdentifier);
+			concept.getClasses().add(attributeClass);
+		}
+	}	
+	
+	/**
+	 * Delete a concept class
+	 */
+	public void deleteConceptClass(Concept concept, ConceptClass clazz) {
+		concept.getClasses().remove(clazz);
 	}
 
 	/**
@@ -525,7 +612,14 @@ public class ApplicationManager {
 		int dialogResult = showConfirmMessage("Confirmation", "Would you like to save scenario times ?", JOptionPane.YES_NO_OPTION);
 
 		if (dialogResult == JOptionPane.YES_OPTION) {
-			applicationLogic.saveScenario(scenario);
+			
+			try {
+				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				applicationLogic.saveScenario(scenario);
+			}
+			finally {
+				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
 		}
 	}
 
@@ -653,7 +747,7 @@ public class ApplicationManager {
 		mainView.setProjectDisplayName(project);
 
 		// Clear project content
-		mainView.getProjectTree().setProject(null);
+		mainView.setActiveProject(null);
 		mainView.resetWorkspace();
 		applicationLogic.clearCache();
 
@@ -671,15 +765,7 @@ public class ApplicationManager {
 					// Start loading project
 					applicationLogic.loadProject(project);
 					application.setProject(project);
-					mainView.getProjectTree().setProject(project);
-					
-					// Set focus on projectTree
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							mainView.getProjectTree().requestFocus();
-						}
-					});
+					mainView.setActiveProject(project);
 				}
 			});
 		}

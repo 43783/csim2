@@ -253,9 +253,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 		if (e.getSource() == settingsBtn) {
 
-			MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this);
-
 			// Display dialog
+			MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this);
 			TimeSeriesDialog dialog = new TimeSeriesDialog(mainView);
 
 			dialog.setTimeSeries(timeSeries);

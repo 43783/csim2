@@ -51,6 +51,4 @@ public class EngineView extends JPanel {
 	public void setEngines(List<IEngine> engines) {		
 		engineTable.setEngines(engines);
 	}
-	
-	
 }

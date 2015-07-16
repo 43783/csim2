@@ -34,26 +34,10 @@ public class StemMethodTable extends JTable {
 	}
 
 	/**
-	 * Default constructor
-	 */
-	public StemMethodTable(StemMethod stemTree) {
-
-		if (stemTree != null) {
-			this.stemMethods = appManager.inflateStemMethods(stemTree);
-		}
-		else {
-			this.stemMethods = null;
-		}
-
-		initComponent();
-	}
-
-	/**
 	 * Initialize the component
 	 */
 	private void initComponent() {
 
-		setEnabled(true);
 		setRowSelectionAllowed(true);
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

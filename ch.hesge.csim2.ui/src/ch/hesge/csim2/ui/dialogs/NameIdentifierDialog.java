@@ -21,18 +21,19 @@ import javax.swing.border.EtchedBorder;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
-public class NameDialog extends JDialog implements ActionListener {
+public class NameIdentifierDialog extends JDialog implements ActionListener {
 
 	// Private attributes
 	private JButton btnOK;
 	private JButton btnCancel;
-	private JTextField nameField;
 	private boolean dialogResult;
+	private JTextField nameField;
+	private JTextField identifierField;
 
 	/**
 	 * Create the dialog with owner.
 	 */
-	public NameDialog(Window parent) {
+	public NameIdentifierDialog(Window parent) {
 		super(parent);
 		initComponents();
 	}
@@ -43,8 +44,8 @@ public class NameDialog extends JDialog implements ActionListener {
 	private void initComponents() {
 
 		// Dialog configuration
-		setTitle("Name Editor");
-		setBounds(0, 0, 279, 147);
+		setTitle("NameIdentifier Editor");
+		setBounds(0, 0, 336, 190);
 		setLocationRelativeTo(getParent());
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -61,15 +62,25 @@ public class NameDialog extends JDialog implements ActionListener {
 		getContentPane().add(btnPane, BorderLayout.SOUTH);
 		mainPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Name:");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(10, 31, 81, 25);
-		mainPane.add(lblNewLabel);
+		JLabel nameLabel = new JLabel("Name:");
+		nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		nameLabel.setBounds(10, 31, 81, 25);
+		mainPane.add(nameLabel);
 
 		nameField = new JTextField();
-		nameField.setBounds(101, 31, 141, 25);
+		nameField.setBounds(101, 31, 200, 25);
 		mainPane.add(nameField);
 		nameField.setColumns(10);
+		
+		JLabel identifierLabel = new JLabel("Identifier:");
+		identifierLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		identifierLabel.setBounds(10, 67, 81, 25);
+		mainPane.add(identifierLabel);
+		
+		identifierField = new JTextField();
+		identifierField.setColumns(10);
+		identifierField.setBounds(101, 67, 200, 25);
+		mainPane.add(identifierField);
 
 		// Initialize OK button
 		btnOK = new JButton("OK");
@@ -95,7 +106,7 @@ public class NameDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ENTER", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NameDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
+				NameIdentifierDialog.this.actionPerformed(new ActionEvent(btnOK, e.getID(), null));
 			}
 		});
 
@@ -103,7 +114,7 @@ public class NameDialog extends JDialog implements ActionListener {
 		SwingUtils.setInputKeyAction(this.getRootPane(), KeyEvent.VK_ESCAPE, "ESCAPE", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NameDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
+				NameIdentifierDialog.this.actionPerformed(new ActionEvent(btnCancel, e.getID(), null));
 			}
 		});
 	}
@@ -136,6 +147,25 @@ public class NameDialog extends JDialog implements ActionListener {
 	 */
 	public void setNameField(String name) {
 		nameField.setText(name);
+	}
+
+	/**
+	 * Return the identifier field
+	 * @return
+	 *         the identifier
+	 */
+	public String getIdentifierField() {
+		return identifierField.getText();
+	}
+
+	/**
+	 * Sets the identifier field.
+	 * 
+	 * @param identifier
+	 *        the identifier value
+	 */
+	public void setIdentifierField(String name) {
+		identifierField.setText(name);
 	}
 
 	/**

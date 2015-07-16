@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -40,7 +41,6 @@ import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.ui.comp.ProjectTree;
 import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.SwingAppender;
 
@@ -114,12 +114,6 @@ public class MainView extends JFrame implements ActionListener {
 		initStatusbar();
 		initLayout();
 		initListeners();
-
-		/*
-		// Reset current project
-		appManager.getApplication().setProject(null);
-		appManager.reloadProject();
-		*/
 	}
 	
 	/**
@@ -232,6 +226,8 @@ public class MainView extends JFrame implements ActionListener {
 
 		dockingControl.addDockable(projectWrapper);
 		projectWrapper.setVisible(true);
+
+		engineWrapper.toFront();
 	}
 
 	/**
@@ -422,12 +418,22 @@ public class MainView extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Return the tree displaying project structure.
+	 * Set current active project.
 	 * 
-	 * @return and instance of ProjectTree
+	 * @param project
 	 */
-	public ProjectTree getProjectTree() {
-		return projectView.getProjectTree();
+	public void setActiveProject(Project project) {
+		
+		projectView.getProjectTree().setProject(project);
+		projectWrapper.toFront();
+		
+		// Set focus on projectTree
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				projectView.getProjectTree().requestFocus();
+			}
+		});
 	}
 	
 	/**

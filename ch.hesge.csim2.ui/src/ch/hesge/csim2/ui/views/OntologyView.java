@@ -3,8 +3,7 @@ package ch.hesge.csim2.ui.views;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 
 import ch.hesge.csim2.core.model.Concept;
@@ -25,7 +25,6 @@ import ch.hesge.csim2.ui.comp.OntologyPanel;
 import ch.hesge.csim2.ui.dialogs.ConceptPropertiesDialog;
 import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.PaintUtils;
-import ch.hesge.csim2.ui.utils.SwingUtils;
 
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -66,7 +65,6 @@ public class OntologyView extends JPanel implements ActionListener {
 
 		JScrollPane scrollPanel = new JScrollPane();
 		ontologyPanel = new OntologyPanel(ontology, this, scrollPanel);
-		ontologyPanel.addActionListener(this);
 		scrollPanel.setViewportView(ontologyPanel);
 		add(scrollPanel, BorderLayout.CENTER);
 
@@ -125,95 +123,77 @@ public class OntologyView extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Create a new concept
-	 * and insert it to the ontology.
+	 * Create a new concept and insert it to the ontology.
 	 */
-	public void createConcept() {
-
-		Graphics g = getGraphics();
-		double scaleFactor = ontologyPanel.getScaledFactor();
-
-		// Sets font size
-		Font scaledFont = getFont().deriveFont((float) Math.round(10 * scaleFactor));
-		g.setFont(scaledFont);
+	public void createConcept(Point location) {
 
 		// Create a new concept
 		Concept concept = appManager.createConcept(ontology);
 
-		// Calculate new concept bounds
-		Rectangle viewBounds = PaintUtils.getCenteredText(g, concept.getBounds(), concept.getName());
-		viewBounds.grow(g.getFont().getSize(), g.getFont().getSize());
-		viewBounds.x = ontologyPanel.getMousePosition().x;
-		viewBounds.y = ontologyPanel.getMousePosition().y;
-
-		// Convert bounds into ontology coordinates
-		Rectangle ontoBounds = PaintUtils.convertToOriginalCoordinates(viewBounds, scaleFactor);
-
-		// Update concept bounds
-		concept.setBounds(ontoBounds);
-
+		double scaleFactor = ontologyPanel.getScaledFactor();
+		Point ontoPoint = PaintUtils.toOriginalCoordinates(location, scaleFactor);
+		concept.getBounds().x = ontoPoint.x;
+		concept.getBounds().y = ontoPoint.y;
+				
 		// Put concept in edit mode
-		ontologyPanel.selectConcept(concept);
-		ontologyPanel.startEditMode();
+		ontologyPanel.startConceptEdition(concept);
 	}
 
 	/**
-	 * Delete the current selected concept (if any)
+	 * Start a new link from concept passed in argument
 	 */
-	public void deleteConcept() {
-
-		Concept concept = ontologyPanel.getSelectedConcept();
-
-		if (concept != null) {
-			appManager.removeConcept(ontology, concept);
-			ontologyPanel.clearSelection();
-		}
-	}
-
-	/**
-	 * Start a new link from current concept
-	 */
-	public void startLink() {
-
-		Concept concept = ontologyPanel.getSelectedConcept();
-		
-		if (concept != null) {
-			ontologyPanel.startEditMode();
-		}
-
-		/*
-		ConceptLink tmp = ontologyPanel.getSelectedLink();
-		ConceptLink link = appManager.createConceptLink(ontology, tmp.getSourceConcept(), tmp.getTargetConcept());
-		ontologyPanel.selectLink(link);
-		ontologyPanel.selectConcept(null);
-		*/
+	public void startLinkFrom(Concept concept) {
+		ontologyPanel.startLinkFrom(concept);		
 	}
 	
 	/**
-	 * Display a dialog with concept properties
+	 * Create a link between two concept.
 	 */
-	public void showProperties() {
+	public void createLink(Concept sourceConcept, Concept targetConcept) {
 		
-		Concept concept = ontologyPanel.getSelectedConcept();
-
-		if (concept != null) {
-			MainView mainView = SwingUtils.getFirstParent(this, MainView.class);
-			new ConceptPropertiesDialog(mainView, concept).setVisible(true);
-		}
-	}	
+		ConceptLink link = appManager.createConceptLink(ontology, sourceConcept, targetConcept);
+		ontologyPanel.selectConcept(null);
+		ontologyPanel.selectLink(link);
+	}
+	
+	/**
+	 * Delete the concept passed in argument
+	 */
+	public void deleteConcept(Concept concept) {
+		
+		appManager.removeConcept(ontology, concept);
+		ontologyPanel.clearSelection();
+	}
 
 	/**
-	 * Delete the current selected link (if any)
+	 * Delete the link passed in argument
 	 */
-	public void deleteLink() {
-
-		ConceptLink link = ontologyPanel.getSelectedLink();
-
-		if (link != null) {
-			appManager.removeConceptLink(ontology, link.getSourceConcept(), link);
-			ontologyPanel.clearSelection();	
-		}
+	public void deleteLink(ConceptLink link) {
+		
+		appManager.removeConceptLink(ontology, link.getSourceConcept(), link);
+		ontologyPanel.clearSelection();	
 	}
+
+	/**
+	 * Display a dialog with concept properties
+	 */
+	public void showProperties(Concept concept) {
+		
+		// Display dialog
+		MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this);
+		ConceptPropertiesDialog dialog = new ConceptPropertiesDialog(mainView, concept);
+		
+		dialog.setVisible(true);
+
+		// Save modifications
+		if (dialog.getDialogResult()) {
+
+			// Copy modified properties to current concept
+			Concept source = dialog.getModifiedConcept();
+			appManager.copyConceptProperties(source,  concept);
+			ontologyPanel.selectConcept(concept);
+		}		
+	}	
 
 	/**
 	 * Move randomly all concepts
@@ -227,7 +207,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		for (Concept concept : concepts) {
 
 			// Retrieve adjusted concept coordinates
-			Rectangle conceptBounds = PaintUtils.convertToViewCoordinates(concept.getBounds(), scaleFactor);
+			Rectangle conceptBounds = PaintUtils.toViewCoordinates(concept.getBounds(), scaleFactor);
 
 			// Recompute random position
 			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();

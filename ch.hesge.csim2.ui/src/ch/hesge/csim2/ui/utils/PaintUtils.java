@@ -36,7 +36,7 @@ public class PaintUtils {
 	 * @return
 	 *         the rectangle area the text take on screen
 	 */
-	public static Rectangle getCenteredText(Graphics g, Rectangle rect, String text) {
+	public static Rectangle getCenteredBounds(Graphics g, Rectangle rect, String text) {
 
 		// Retrieve text metrics
 		FontMetrics fm = g.getFontMetrics(g.getFont());
@@ -760,7 +760,7 @@ public class PaintUtils {
 	 * @return
 	 *         the rectangle in view coordinates
 	 */
-	public static Rectangle convertToViewCoordinates(Rectangle rect, double scaleFactor) {
+	public static Rectangle toViewCoordinates(Rectangle rect, double scaleFactor) {
 
 		int x = (int) (rect.x * scaleFactor);
 		int y = (int) (rect.y * scaleFactor);
@@ -780,7 +780,7 @@ public class PaintUtils {
 	 * @return
 	 *         the rectangle original coordinates
 	 */
-	public static Rectangle convertToOriginalCoordinates(Rectangle rect, double scaleFactor) {
+	public static Rectangle toOriginalCoordinates(Rectangle rect, double scaleFactor) {
 
 		int x = (int) (rect.x / scaleFactor);
 		int y = (int) (rect.y / scaleFactor);
@@ -800,7 +800,7 @@ public class PaintUtils {
 	 * @return
 	 *         the point in original coordinates
 	 */
-	public static Point convertToOriginalCoordinates(Point point, double scaleFactor) {
+	public static Point toOriginalCoordinates(Point point, double scaleFactor) {
 
 		// Retrieve coordinates for current scale
 		int x = (int) (point.x / scaleFactor);

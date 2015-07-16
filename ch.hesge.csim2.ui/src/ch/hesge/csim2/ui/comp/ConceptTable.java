@@ -34,8 +34,8 @@ public class ConceptTable extends JTable {
 	private void initComponent() {
 
 		setRowSelectionAllowed(true);
-		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setGridColor(Color.LIGHT_GRAY);
+		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setTableHeader(null);
 
 		initModel();

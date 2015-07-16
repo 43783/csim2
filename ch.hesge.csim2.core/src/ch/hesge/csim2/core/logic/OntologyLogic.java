@@ -238,11 +238,72 @@ class OntologyLogic {
 
 		Concept concept = new Concept();
 
-		concept.setBounds(new Rectangle(0, 0, 1, 1));
 		concept.setName("Concept");
+		concept.setBounds(new Rectangle(0, 0, 64, 32));
 		ontology.getConcepts().add(concept);
 
 		return concept;
+	}
+	
+	/**
+	 * Clone the concept passed in argument into a distinct instance (same
+	 * keyId).
+	 * 
+	 * @param concept
+	 *        the concept to clone
+	 * @return a new concept instance
+	 */
+	public static Concept cloneConcept(Concept concept) {
+		
+		Concept c = new Concept();
+		
+		c.setKeyId(concept.getKeyId());
+		c.setOntology(concept.getOntology());
+		c.setSuperConcept(concept.getSuperConcept());
+		c.setName(concept.getName());
+		c.setBounds(concept.getBounds());
+		c.setOntologyId(concept.getOntologyId());
+		c.setSuperConceptId(concept.getSuperConceptId());
+		c.setAction(concept.isAction());
+		c.getAttributes().addAll(concept.getAttributes());
+		c.getClasses().addAll(concept.getClasses());
+		c.getLinks().addAll(concept.getLinks());
+		c.getOntoTerms().addAll(concept.getOntoTerms());
+		c.getSubConcepts().addAll(concept.getSubConcepts());
+
+		return c;
+	}
+
+	/**
+	 * Copy concept properties to an other one, without modifying target instance identity.
+	 * 
+	 * @param source
+	 *        the concept with properties to copy
+	 * @param target
+	 *        the concept to clear with source properties
+	 */
+	public static void copyConceptProperties(Concept source, Concept target) {
+		
+		target.setKeyId(source.getKeyId());
+		target.setOntology(source.getOntology());
+		target.setSuperConcept(source.getSuperConcept());
+		target.setName(source.getName());
+		target.setBounds(source.getBounds());
+		target.setOntologyId(source.getOntologyId());
+		target.setSuperConceptId(source.getSuperConceptId());
+		target.setAction(source.isAction());
+		
+		target.getAttributes().clear();
+		target.getClasses().clear();
+		target.getLinks().clear();
+		target.getOntoTerms().clear();
+		target.getSubConcepts().clear();
+
+		target.getAttributes().addAll(source.getAttributes());
+		target.getClasses().addAll(source.getClasses());
+		target.getLinks().addAll(source.getLinks());
+		target.getOntoTerms().addAll(source.getOntoTerms());
+		target.getSubConcepts().addAll(source.getSubConcepts());
 	}
 
 	/**
@@ -317,7 +378,7 @@ class OntologyLogic {
 	 * @param ontology
 	 *        the ontology
 	 */
-	public static void deleteConcepts(Ontology ontology) {
+	private static void deleteDependencies(Ontology ontology) {
 
 		for (Concept concept : ConceptDao.findByOntology(ontology)) {
 			ConceptLinkDao.deleteByConcept(concept);
@@ -334,7 +395,7 @@ class OntologyLogic {
 	 *        the ontology to delete
 	 */
 	public static void deleteOntology(Ontology ontology) {
-		deleteConcepts(ontology);
+		deleteDependencies(ontology);
 		OntologyDao.delete(ontology);
 	}
 
@@ -377,7 +438,7 @@ class OntologyLogic {
 	 *        the ontology to save
 	 */
 	public static void saveOntology(Ontology ontology) {
-
+		
 		// Save the ontology
 		if (PersistanceUtils.isNewObject(ontology)) {
 			OntologyDao.add(ontology);
@@ -386,18 +447,16 @@ class OntologyLogic {
 			OntologyDao.update(ontology);
 		}
 
+		// Delete current dependencies
+		deleteDependencies(ontology);
+
 		// Now, save all concepts and their attributes
 		for (Concept concept : ontology.getConcepts()) {
 
 			concept.setOntologyId(ontology.getKeyId());
 
 			// Save the concept
-			if (PersistanceUtils.isNewObject(concept)) {
-				ConceptDao.add(concept);
-			}
-			else {
-				ConceptDao.update(concept);
-			}
+			ConceptDao.add(concept);
 
 			// Save its attributes
 			for (ConceptAttribute conceptAttribute : concept.getAttributes()) {

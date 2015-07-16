@@ -35,7 +35,7 @@ public class OntologyPopup extends JPopupMenu implements ActionListener {
 	 */
 	private void initComponent() {
 		
-		mnuNew = new JMenuItem("New Ontology");
+		mnuNew = new JMenuItem("New ontology");
 		mnuNew.addActionListener(this);
 		add(mnuNew);
 

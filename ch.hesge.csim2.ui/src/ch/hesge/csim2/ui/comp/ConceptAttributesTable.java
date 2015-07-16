@@ -1,5 +1,6 @@
 package ch.hesge.csim2.ui.comp;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -7,6 +8,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import ch.hesge.csim2.core.model.ConceptAttribute;
+import ch.hesge.csim2.core.utils.ObjectSorter;
 
 @SuppressWarnings("serial")
 public class ConceptAttributesTable extends JTable {
@@ -27,8 +29,8 @@ public class ConceptAttributesTable extends JTable {
 	 */
 	private void initComponent() {
 
-		setEnabled(true);
 		setRowSelectionAllowed(true);
+		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		initModel();
@@ -86,5 +88,33 @@ public class ConceptAttributesTable extends JTable {
 				return null;
 			}
 		});
+	}
+
+	/**
+	 * Selecting a row already selected is forbidden.
+	 */
+	@Override
+	public void changeSelection(int row, int col, boolean isToggle, boolean isExtend) {
+		if (!isRowSelected(row)) {
+			super.changeSelection(row, col, isToggle, isExtend);
+		}
+	}
+	
+	/**
+	 * Return the current attribute.
+	 * 
+	 * @return a ConceptAttribute
+	 */
+	public ConceptAttribute getSelectedAttribute() {
+		int selectedRow = this.getSelectedRow();
+		return selectedRow == -1 ? null : conceptAttributes.get(selectedRow);
+	}
+	
+	/**
+	 * Visually refresh table content
+	 */
+	public void refresh() {
+		ObjectSorter.sortConceptAttributes(conceptAttributes);
+		((DefaultTableModel)getModel()).fireTableDataChanged();		
 	}
 }

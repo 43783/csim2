@@ -997,6 +997,30 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Clone the concept passed in argument into a distinct instance (same
+	 * keyId).
+	 * 
+	 * @param concept
+	 *        the concept to clone
+	 * @return a new concept instance
+	 */
+	public Concept cloneConcept(Concept concept) {
+		return OntologyLogic.cloneConcept(concept);
+	}
+	
+	/**
+	 * Copy concept properties to an other one, without modifying target instance identity.
+	 * 
+	 * @param source
+	 *        the concept with properties to copy
+	 * @param target
+	 *        the concept to clear with source properties
+	 */
+	public void copyConceptProperties(Concept source, Concept target) {
+		OntologyLogic.copyConceptProperties(source, target);
+	}
+	
+	/**	
 	 * Create a new concept link and update the ontology.
 	 * 
 	 * @param ontology

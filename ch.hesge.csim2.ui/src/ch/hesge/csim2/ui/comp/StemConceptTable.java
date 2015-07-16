@@ -38,7 +38,6 @@ public class StemConceptTable extends JTable {
 	 */
 	private void initComponent() {
 
-		setEnabled(true);
 		setRowSelectionAllowed(true);
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

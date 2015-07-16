@@ -35,7 +35,7 @@ public class ScenarioPopup extends JPopupMenu implements ActionListener {
 	 */
 	private void initComponent() {
 
-		mnuNew = new JMenuItem("New Scenario");
+		mnuNew = new JMenuItem("New scenario");
 		mnuNew.addActionListener(this);
 		add(mnuNew);
 
