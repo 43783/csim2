@@ -21,7 +21,6 @@ import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.ui.model.ApplicationManager;
-import ch.hesge.csim2.ui.utils.SwingUtils;
 import ch.hesge.csim2.ui.views.MainView;
 
 @SuppressWarnings("serial")
