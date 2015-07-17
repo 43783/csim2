@@ -23,18 +23,21 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 public class StemSourcesView extends JPanel {
 
 	// Private attributes
+	private List<SourceClass> sourceClasses;
+	private Map<Integer, StemMethod> stemTree;
+
 	private SourceTree sourceTree;
 	private StemMethodTable stemTable;
 	
-	private List<SourceClass> sourceClasses;
-	private Map<Integer, StemMethod> stemTree;
 	/**
 	 * Default constructor.
 	 */
-	public StemSourcesView(Project project, List<SourceClass> sourceClasses) {
+	public StemSourcesView(Project project) {
 
-		this.sourceClasses = sourceClasses;
-		this.stemTree = ApplicationManager.UNIQUE_INSTANCE.getStemMethodTreeMap(project);
+		ApplicationManager appManager = ApplicationManager.UNIQUE_INSTANCE;
+
+		this.sourceClasses = appManager.getSourceClasses(project);
+		this.stemTree = appManager.getStemMethodTreeMap(project);
 		
 		initComponent();
 	}

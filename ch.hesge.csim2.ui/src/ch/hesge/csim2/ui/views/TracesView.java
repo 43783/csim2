@@ -57,12 +57,12 @@ public class TracesView extends JPanel implements ActionListener {
 	/**
 	 * Default constructor.
 	 */
-	public TracesView(Project project, List<Scenario> scenarios, Map<Integer, SourceMethod> methodMap) {
+	public TracesView(Project project) {
 
 		this.project    = project;
-		this.scenarios  = scenarios;
-		this.methodMap  = methodMap;
 		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
+		this.scenarios  = appManager.getScenarios(project);
+		this.methodMap  = appManager.getSourceMethodMap(project);
 
 		initComponent();
 	}
@@ -159,9 +159,13 @@ public class TracesView extends JPanel implements ActionListener {
 				// Retrieve selected trace
 				Trace trace = traceTable.getSelectedObject();
 
+				System.out.println("selected trace: " + trace);
+				
 				// Retrieve the matching list
 				if (trace != null) {
+					System.out.println("selected methodId: " + trace.getMethodId());
 					List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
+					System.out.println("selected matching: " + matchings);
 					matchTable.setMatchings(matchings);
 				}
 				else {
@@ -227,6 +231,6 @@ public class TracesView extends JPanel implements ActionListener {
 			}
 		}
 		
-		loadBtn.requestFocus();		
+		traceTable.requestFocus();
 	}
 }

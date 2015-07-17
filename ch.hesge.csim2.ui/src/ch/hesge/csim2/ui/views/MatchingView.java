@@ -24,7 +24,6 @@ import javax.swing.event.ListSelectionEvent;
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
 import ch.hesge.csim2.core.model.Project;
-import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
@@ -66,10 +65,11 @@ public class MatchingView extends JPanel implements ActionListener {
 	/**
 	 * Default constructor.
 	 */
-	public MatchingView(Project project, List<Scenario> scenarios) {
+	public MatchingView(Project project) {
 
 		this.project = project;
 		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
+		
 		this.sourceMethods = new ArrayList<>(appManager.getSourceMethodMap(project).values());
 		ObjectSorter.sortSourceMethods(sourceMethods);
 

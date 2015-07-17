@@ -1,6 +1,5 @@
 package ch.hesge.csim2.ui.model;
 
-import java.awt.Cursor;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -137,12 +136,7 @@ public class ApplicationManager {
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Retrieve required data from cache
-				List<SourceClass> classes = applicationLogic.getSourceClasses(application.getProject());
-
-				// Create the view
-				mainView.showView("Sources", new StemSourcesView(application.getProject(), classes));
+				mainView.showView("Sources", new StemSourcesView(application.getProject()));
 			}
 		});
 	}
@@ -155,13 +149,7 @@ public class ApplicationManager {
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Retrieve required data from cache
-				List<Concept> concepts = applicationLogic.getConcepts(application.getProject());
-				Map<Integer, StemConcept> stemTree = applicationLogic.getStemConceptTreeMap(application.getProject());
-
-				// Create the view
-				mainView.showView("Concepts", new StemConceptsView(concepts, stemTree));
+				mainView.showView("Concepts", new StemConceptsView(application.getProject()));
 			}
 		});
 	}
@@ -174,12 +162,7 @@ public class ApplicationManager {
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Retrieve required data from cache
-				List<Scenario> scenarios = applicationLogic.getScenarios(application.getProject());
-
-				// Create the view
-				mainView.showView("Matching", new MatchingView(application.getProject(), scenarios));
+				mainView.showView("Matching", new MatchingView(application.getProject()));
 			}
 		});
 	}
@@ -192,13 +175,7 @@ public class ApplicationManager {
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Retrieve required data from cache
-				List<Scenario> scenarios = applicationLogic.getScenarios(application.getProject());
-				Map<Integer, SourceMethod> methodMap = applicationLogic.getSourceMethodMap(application.getProject());
-
-				// Create the view
-				mainView.showView("Traces", new TracesView(application.getProject(), scenarios, methodMap));
+				mainView.showView("Traces", new TracesView(application.getProject()));
 			}
 		});
 	}
@@ -211,12 +188,7 @@ public class ApplicationManager {
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-
-				// Retrieve required data from cache
-				List<Scenario> scenarios = applicationLogic.getScenarios(application.getProject());
-
-				// Create the view
-				mainView.showView("Timeseries", new TimeSeriesView(application.getProject(), scenarios));
+				mainView.showView("Timeseries", new TimeSeriesView(application.getProject()));
 			}
 		});
 	}
@@ -293,6 +265,13 @@ public class ApplicationManager {
 	}
 
 	/**
+	 * Return a list of scenario owned by a project.
+	 */
+	public List<Scenario> getScenarios(Project project) {
+		return applicationLogic.getScenarios(project);
+	}
+	
+	/**
 	 * Return a list of all engines registered within the application.
 	 */
 	public List<IEngine> getEngines() {
@@ -313,6 +292,20 @@ public class ApplicationManager {
 		return applicationLogic.getTraces(scenario);
 	}
 
+	/**
+	 * Retrieve all concepts owned by an project and its ontologies.
+	 */
+	public List<Concept> getConcepts(Project project) {
+		return applicationLogic.getConcepts(project);
+	}
+	
+	/**
+	 * Retrieve all source classes owned by a project.
+	 */
+	public List<SourceClass> getSourceClasses(Project project) {
+		return applicationLogic.getSourceClasses(project);
+	}
+	
 	/**
 	 * Retrieve all source methods owned by a project as a map of (methodId,
 	 * SourceMethod).
@@ -635,13 +628,12 @@ public class ApplicationManager {
 
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			
-			try {
-				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				applicationLogic.saveScenario(scenario);
-			}
-			finally {
-				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
+			SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
+				@Override
+				public void run() {
+					applicationLogic.saveScenario(scenario);
+				}
+			});
 		}
 	}
 
@@ -653,13 +645,12 @@ public class ApplicationManager {
 	 */
 	public void saveOntology(Ontology ontology) {
 
-		try {
-			mainView.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			applicationLogic.saveOntology(ontology);
-		}
-		finally {
-			mainView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
+		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
+			@Override
+			public void run() {
+				applicationLogic.saveOntology(ontology);
+			}
+		});
 	}
 
 	/**

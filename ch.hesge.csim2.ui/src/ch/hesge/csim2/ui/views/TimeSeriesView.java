@@ -63,13 +63,13 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	/**
 	 * Default constructor.
 	 */
-	public TimeSeriesView(Project project, List<Scenario> scenarios) {
+	public TimeSeriesView(Project project) {
 
+		this.project = project;
 		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
+		this.scenarios = appManager.getScenarios(project);
 		this.segmentCount = DEFAULT_SEGMENT_COUNT;
 		this.threshold = DEFAULT_THRESHOLD;
-		this.project = project;
-		this.scenarios = scenarios;
 		this.showLegend = false;
 		
 		initComponent();

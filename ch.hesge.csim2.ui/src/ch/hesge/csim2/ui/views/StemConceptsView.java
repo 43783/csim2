@@ -10,7 +10,9 @@ import javax.swing.JSplitPane;
 import javax.swing.event.TreeSelectionEvent;
 
 import ch.hesge.csim2.core.model.Concept;
+import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.StemConcept;
+import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.table.StemConceptTable;
 import ch.hesge.csim2.ui.tree.ConceptTree;
 import ch.hesge.csim2.ui.utils.SimpleAction;
@@ -20,18 +22,22 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 public class StemConceptsView extends JPanel {
 
 	// Private attribute
-	private ConceptTree conceptTree;
-	private StemConceptTable stemTable;
-
 	private List<Concept> concepts;
 	private Map<Integer, StemConcept> stemTree;
+
+	private ConceptTree conceptTree;
+	private StemConceptTable stemTable;
 
 	/**
 	 * Default constructor.
 	 */
-	public StemConceptsView(List<Concept> concepts, Map<Integer, StemConcept> stemTree) {
-		this.concepts = concepts;
-		this.stemTree = stemTree;
+	public StemConceptsView(Project project) {
+
+		// Retrieve required data from cache
+		ApplicationManager appManager = ApplicationManager.UNIQUE_INSTANCE;
+		this.concepts = appManager.getConcepts(project);
+		this.stemTree = appManager.getStemConceptTreeMap(project);
+
 		initComponent();
 	}
 
