@@ -29,7 +29,7 @@ import ch.hesge.csim2.core.model.StemMethod;
 public class JaccardMatcher implements IMethodConceptMatcher {
 
 	// Private attributes
-	private ApplicationLogic appLogic;
+	private ApplicationLogic applicationLogic;
 	private Map<Integer, Concept> conceptMap;
 	private Map<Integer, SourceMethod> methodMap;
 	private Map<Integer, StemConcept> stemConceptTreeMap;
@@ -42,7 +42,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 	 * Default constructor
 	 */
 	public JaccardMatcher() {
-		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		matchingMethodStems = new ArrayList<>();
 		matchingConceptStems = new ArrayList<>();
 	}
@@ -87,10 +87,10 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
 		// Load concept, method and stem data
-		conceptMap         = appLogic.getConceptMap(project);
-		methodMap          = appLogic.getSourceMethodMap(project);
-		stemConceptTreeMap = appLogic.getStemConceptTreeMap(project);
-		stemMethodTreeMap  = appLogic.getStemMethodTreeMap(project);
+		conceptMap         = applicationLogic.getConceptMap(project);
+		methodMap          = applicationLogic.getSourceMethodMap(project);
+		stemConceptTreeMap = applicationLogic.getStemConceptTreeMap(project);
+		stemMethodTreeMap  = applicationLogic.getStemMethodTreeMap(project);
 
 		double maxWeight = 0d;
 
@@ -157,10 +157,10 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		double similarity = 0d;
 
 		StemMethod methodRootStem = stemMethodTreeMap.get(method.getKeyId());
-		List<StemMethod> methodStems = appLogic.inflateStemMethods(methodRootStem);
+		List<StemMethod> methodStems = applicationLogic.inflateStemMethods(methodRootStem);
 
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
-		List<StemConcept> conceptStems = appLogic.inflateStemConcepts(conceptRootStem);
+		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
 
 		// Build a map of all concept term
 		Map<String, List<StemConcept>> conceptTermMap = new HashMap<>();

@@ -371,16 +371,24 @@ public class TraceDao {
 				// By default, MySql JDBC driver doesn't support alias defined 
 				// in a standard query. 
 				//
-				// So we used direct position in result to retrieve desired values:
-				//    	class_id  = 15
-				//   	method_id = 16
+				// But in our query, resulting from a join, we should retrieve these columns (last two):
+				//		c.key_id as class_id,
+				//		m.key_id as method_id
 				//
-				// However, a MYSQL workaround exists, but is really nasty:
+				// As class_id and method_id are not visible through MySql JDBC,  we used direct 
+				// position in result set to retrieve the desired values:
+				//    	class_id  = 16
+				//   	method_id = 17
+				//
+				// As soon as the query is modified in the future, we should adapt these indexes.
+				//
+				// Workaround: a MYSQL solution exists, but is really nasty:
 				//
 				//   jdbc-url-connection = jdbc:mysql://server:port/database?useOldAliasMetadataBehavior=true
+				//
 				
-				trace.setClassId((Integer)row.getFieldValue(15));
-				trace.setMethodId((Integer)row.getFieldValue(16));
+				trace.setClassId((Integer)row.getFieldValue(16));
+				trace.setMethodId((Integer)row.getFieldValue(17));
 
 				return trace;
 			}

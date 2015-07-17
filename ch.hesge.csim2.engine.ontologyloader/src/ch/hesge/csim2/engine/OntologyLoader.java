@@ -45,7 +45,7 @@ public class OntologyLoader implements IEngine {
 
 	// Private attributes
 	private Context context;
-	private ApplicationLogic appLogic;
+	private ApplicationLogic applicationLogic;
 	private Path ontologyFile;
 	private Ontology ontology;
 	
@@ -58,7 +58,7 @@ public class OntologyLoader implements IEngine {
 	 * Default constructor.
 	 */
 	public OntologyLoader() {
-		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		conceptMap = new HashMap<>();
 		conceptLinksMap = new HashMap<>();
 	}
@@ -228,7 +228,7 @@ public class OntologyLoader implements IEngine {
 
 			// Save the ontology and its new concepts
 			Console.writeInfo(this, "saving ontology in database...");
-			appLogic.saveOntology(ontology);
+			applicationLogic.saveOntology(ontology);
 			
 			Console.writeInfo(this, "done.");
 		}

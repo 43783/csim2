@@ -1097,27 +1097,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Delete all stem concepts associated to an ontology
-	 * 
-	 * @param ontology
-	 *        the ontology owning stems to delete
-	 */
-	public void deleteStemConcepts(Ontology ontology) {
-		StemLogic.deleteStemConcepts(ontology);
-	}
-
-	/**
-	 * Delete all stems methods associated to a project.
-	 * 
-	 * @param project
-	 *        the project owning stems to delete
-	 */
-	public void deleteStemMethods(Project project) {
-		StemLogic.deleteStemMethods(project);
-	}
-
-	
-	/**
 	 * Delete a scenario and all its dependencies.
 	 * 
 	 * @param project
@@ -1232,21 +1211,25 @@ public class ApplicationLogic {
 	/**
 	 * Save a list of stem concept.
 	 * 
-	 * @param stem
-	 *        the StemConcept to save
+	 * @param ontology
+	 *        the ontology owning the stems to save
+	 * @param stems
+	 *        a list of StemConcept to save
 	 */
-	public void saveStemConcepts(List<StemConcept> stems) {
-		StemLogic.saveStemConcepts(stems);
+	public void saveStemConcepts(Ontology ontology, List<StemConcept> stems) {
+		StemLogic.saveStemConcepts(ontology, stems);
 	}
 
 	/**
 	 * Save a list of stem method.
 	 * 
+	 * @param project
+	 *        the project owning stems to save
 	 * @param stem
 	 *        the StemMethod list to save
 	 */
-	public void saveStemMethods(List<StemMethod> stems) {
-		StemLogic.saveStemMethods(stems);
+	public void saveStemMethods(Project project, List<StemMethod> stems) {
+		StemLogic.saveStemMethods(project, stems);
 	}
 
 	/**

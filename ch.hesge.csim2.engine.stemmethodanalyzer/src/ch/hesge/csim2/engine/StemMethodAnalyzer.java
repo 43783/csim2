@@ -40,7 +40,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 	// Private attributes
 	private Context context;
-	private ApplicationLogic appLogic;
+	private ApplicationLogic applicationLogic;
 
 	private Project project;
 	private List<String> rejectedMethodList;
@@ -50,7 +50,7 @@ public class StemMethodAnalyzer implements IEngine {
 	 * Default constructor.
 	 */
 	public StemMethodAnalyzer() {
-		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 	}
 
 	/**
@@ -194,12 +194,9 @@ public class StemMethodAnalyzer implements IEngine {
 
 			List<StemMethod> stems = new ArrayList<>();
 
-			Console.writeInfo(this, "cleaning previous stem methods...");
-			appLogic.deleteStemMethods(project);
-
 			// Load all project classes
 			Console.writeInfo(this, "loading code sources information...");
-			List<SourceClass> sourceClasses = appLogic.getSourceClassMethodParam(project);
+			List<SourceClass> sourceClasses = applicationLogic.getSourceClassMethodParam(project);
 
 			Console.writeInfo(this, "scanning source classes...");
 
@@ -243,7 +240,8 @@ public class StemMethodAnalyzer implements IEngine {
 				}
 			}
 
-			appLogic.saveStemMethods(stems);
+			// Save stems found
+			applicationLogic.saveStemMethods(project, stems);
 			Console.writeInfo(this, stems.size() + " stems found");
 		}
 		catch (Exception e) {
@@ -273,7 +271,7 @@ public class StemMethodAnalyzer implements IEngine {
 
 		// Retrieve stems for the method name
 		String methodName = sourceMethod.getName();
-		List<String> stems = appLogic.getStems(methodName, rejectedMethodList);
+		List<String> stems = applicationLogic.getStems(methodName, rejectedMethodList);
 
 		if (stems.size() > 0) {
 
@@ -308,7 +306,7 @@ public class StemMethodAnalyzer implements IEngine {
 		
 		// Retrieve stems for parameter name
 		String parameterName = sourceParameter.getName();
-		List<String> stems = appLogic.getStems(parameterName, null);
+		List<String> stems = applicationLogic.getStems(parameterName, null);
 
 		if (stems.size() > 0) {
 
@@ -327,7 +325,7 @@ public class StemMethodAnalyzer implements IEngine {
 			
 			// Retrieve stems for parameter type
 			String parameterType = sourceParameter.getType();
-			stems = appLogic.getStems(parameterType, rejectedTypeList);
+			stems = applicationLogic.getStems(parameterType, rejectedTypeList);
 			
 			if (stems.size() > 0) {
 
@@ -355,7 +353,7 @@ public class StemMethodAnalyzer implements IEngine {
 		
 		// Retrieve stems for reference name
 		String referenceName = sourceReference.getName();
-		List<String> stems = appLogic.getStems(referenceName, null);
+		List<String> stems = applicationLogic.getStems(referenceName, null);
 
 		if (stems.size() > 0) {
 
@@ -374,7 +372,7 @@ public class StemMethodAnalyzer implements IEngine {
 			
 			// Retrieve stems for reference type
 			String referenceType = sourceReference.getType();
-			stems = appLogic.getStems(referenceType, rejectedTypeList);
+			stems = applicationLogic.getStems(referenceType, rejectedTypeList);
 			
 			if (stems.size() > 0) {
 

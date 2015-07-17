@@ -35,7 +35,7 @@ public class TraceLoader implements IEngine {
 
 	// Private attributes
 	private Context context;
-	private ApplicationLogic appLogic;
+	private ApplicationLogic applicationLogic;
 
 	private Path traceFile;
 	private Scenario scenario;
@@ -46,7 +46,7 @@ public class TraceLoader implements IEngine {
 	 * Default constructor
 	 */
 	public TraceLoader() {
-		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		threadTraces = new Hashtable<>();
 	}
 
@@ -169,7 +169,7 @@ public class TraceLoader implements IEngine {
 		try {
 
 			threadTraces.clear();
-			appLogic.deleteTraces(scenario);
+			applicationLogic.deleteTraces(scenario);
 
 			int traceCounter = 0;
 			int errorCounter = 0;
@@ -200,7 +200,7 @@ public class TraceLoader implements IEngine {
 					// Trace entering, so create a new trace
 					if (trace.isEnteringTrace()) {
 						trace.setSequenceNumber(++traceCounter);
-						appLogic.saveTrace(trace);
+						applicationLogic.saveTrace(trace);
 						threadStack.push(trace);
 						Console.writeInfo(this, "  trace entering created: " + trace.getSequenceNumber());
 					}
@@ -211,11 +211,11 @@ public class TraceLoader implements IEngine {
 						long traceDuration = trace.getTimestamp() - popedTrace.getTimestamp();
 
 						popedTrace.setDuration(traceDuration);
-						appLogic.saveTrace(trace);
+						applicationLogic.saveTrace(trace);
 
 						trace.setSequenceNumber(++traceCounter);
 						trace.setDuration(traceDuration);
-						appLogic.saveTrace(trace);
+						applicationLogic.saveTrace(trace);
 						Console.writeInfo(this, "  trace exiting created:  " + trace.getSequenceNumber());
 					}
 				}

@@ -38,7 +38,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 	// Private attributes
 	private Context context;
-	private ApplicationLogic appLogic;
+	private ApplicationLogic applicationLogic;
 
 	private Project project;
 	private Ontology ontology;
@@ -48,7 +48,7 @@ public class StemConceptAnalyzer implements IEngine {
 	 * Default constructor.
 	 */
 	public StemConceptAnalyzer() {
-		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 	}
 
 	/**
@@ -180,12 +180,9 @@ public class StemConceptAnalyzer implements IEngine {
 
 			List<StemConcept> stems = new ArrayList<>();
 
-			Console.writeInfo(this, "cleaning previous stem concepts...");
-			appLogic.deleteStemConcepts(ontology);
-
 			// Load all ontology concepts
 			Console.writeInfo(this, "loading ontology concepts...");
-			List<Concept> conceptList = appLogic.getConcepts(ontology);
+			List<Concept> conceptList = applicationLogic.getConcepts(ontology);
 
 			Console.writeInfo(this, "scanning all concepts...");
 
@@ -221,7 +218,8 @@ public class StemConceptAnalyzer implements IEngine {
 				Console.writeInfo(this, stemCount + " stems found in concept: " + concept.getName());
 			}
 
-			appLogic.saveStemConcepts(stems);
+			// Save stems found
+			applicationLogic.saveStemConcepts(ontology, stems);
 			Console.writeInfo(this, stems.size() + " stems found");
 		}
 		catch (Exception e) {
@@ -250,7 +248,7 @@ public class StemConceptAnalyzer implements IEngine {
 		
 		// Retrieve stems for the concept name
 		String conceptName = concept.getName();
-		List<String> stems = appLogic.getStems(conceptName, rejectedList);
+		List<String> stems = applicationLogic.getStems(conceptName, rejectedList);
 
 		if (stems.size() > 0) {
 			
@@ -285,7 +283,7 @@ public class StemConceptAnalyzer implements IEngine {
 		
 		// Retrieve stems for the attribute
 		String attributeName = conceptAttribute.getName();
-		List<String> stems = appLogic.getStems(attributeName, rejectedList);
+		List<String> stems = applicationLogic.getStems(attributeName, rejectedList);
 
 		if (stems.size() > 0) {
 			
@@ -304,7 +302,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 			// Retrieve stems for the identifier
 			String identifierName = conceptAttribute.getIdentifier();
-			stems = appLogic.getStems(identifierName, rejectedList);
+			stems = applicationLogic.getStems(identifierName, rejectedList);
 			
 			if (stems.size() > 0) {
 
@@ -331,7 +329,7 @@ public class StemConceptAnalyzer implements IEngine {
 		
 		// Retrieve stems for the class
 		String className = conceptClass.getName();
-		List<String> stems = appLogic.getStems(className, rejectedList);
+		List<String> stems = applicationLogic.getStems(className, rejectedList);
 
 		if (stems.size() > 0) {
 			
@@ -342,7 +340,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 			// Retrieve stems for the class identifier
 			String identifierName = conceptClass.getIdentifier();
-			stems = appLogic.getStems(identifierName, rejectedList);
+			stems = applicationLogic.getStems(identifierName, rejectedList);
 
 			if (stems.size() > 0) {
 				

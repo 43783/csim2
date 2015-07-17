@@ -273,15 +273,16 @@ class StemLogic {
 	 */
 	public static Map<String, List<StemConcept>> getStemConceptByTermMap(Project project) {
 
+		ApplicationLogic applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		Map<String, List<StemConcept>> stemMap = new HashMap<>();
 
-		Map<Integer, StemConcept> stemTreeMap = ApplicationLogic.UNIQUE_INSTANCE.getStemConceptTreeMap(project);
+		Map<Integer, StemConcept> stemTreeMap = applicationLogic.getStemConceptTreeMap(project);
 
 		// Populate map
 		for (StemConcept rootStem : stemTreeMap.values()) {
 
 			// Get all stem in hierarchy
-			List<StemConcept> stems = ApplicationLogic.UNIQUE_INSTANCE.inflateStemConcepts(rootStem);
+			List<StemConcept> stems = applicationLogic.inflateStemConcepts(rootStem);
 
 			for (StemConcept stem : stems) {
 
@@ -502,32 +503,16 @@ class StemLogic {
 	}
 
 	/**
-	 * Delete all stem concepts associated to an ontology.
-	 * 
-	 * @param ontology
-	 *        the ontology owning stems to delete
-	 */
-	public static void deleteStemConcepts(Ontology ontology) {
-		StemConceptDao.deleteByOntology(ontology);
-	}
-
-	/**
-	 * Delete all stems methods associated to a project.
-	 * 
-	 * @param project
-	 *        the project owning stems to delete
-	 */
-	public static void deleteStemMethods(Project project) {
-		StemMethodDao.deleteByProject(project);
-	}
-
-	/**
 	 * Save a list of stem concept.
 	 * 
-	 * @param stem
-	 *        the StemConcept to save
+	 * @param ontology
+	 *        the ontology owning the stems to save
+	 * @param stems
+	 *        a list of StemConcept to save
 	 */
-	public static void saveStemConcepts(List<StemConcept> stems) {
+	public static void saveStemConcepts(Ontology ontology, List<StemConcept> stems) {
+
+		StemConceptDao.deleteByOntology(ontology);
 
 		for (StemConcept stem : stems) {
 			
@@ -548,11 +533,15 @@ class StemLogic {
 	/**
 	 * Save a list of stem method.
 	 * 
+	 * @param project
+	 *        the project owning stems to save
 	 * @param stem
 	 *        the StemMethod list to save
 	 */
-	public static void saveStemMethods(List<StemMethod> stems) {
+	public static void saveStemMethods(Project project, List<StemMethod> stems) {
 		
+		StemMethodDao.deleteByProject(project);
+
 		for (StemMethod stem : stems) {
 			
 			// Update dependency ids

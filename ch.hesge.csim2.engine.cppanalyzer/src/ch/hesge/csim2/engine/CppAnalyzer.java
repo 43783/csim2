@@ -66,7 +66,7 @@ public class CppAnalyzer implements IEngine {
 
 	// Private attributes
 	private Context context;
-	private ApplicationLogic appLogic;
+	private ApplicationLogic applicationLogic;
 
 	private Project project;
 	private Path sourceFolder;
@@ -82,7 +82,7 @@ public class CppAnalyzer implements IEngine {
 	 * Default constructor
 	 */
 	public CppAnalyzer() {
-		appLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
 		visitedFiles = new HashMap<>();
 		parsedClasses = new HashMap<>();
 	}
@@ -262,10 +262,10 @@ public class CppAnalyzer implements IEngine {
 			Console.writeInfo(this, "saving " + parsedClasses.size() + " classes found...");
 
 			// Updating project
-			appLogic.deleteSources(project);
+			applicationLogic.deleteSources(project);
 			project.getSourceClasses().clear();
 			project.getSourceClasses().addAll(parsedClasses.values());
-			appLogic.saveSourceClasses(project, project.getSourceClasses());
+			applicationLogic.saveSourceClasses(project, project.getSourceClasses());
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing files: " + StringUtils.toString(e));
@@ -514,7 +514,7 @@ public class CppAnalyzer implements IEngine {
 
 				// Retrieve the owning method
 				String methodSignature = CppAnalyzerUtils.getMethodSignature(functionDefinition);
-				SourceMethod sourceMethod = appLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+				SourceMethod sourceMethod = applicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
 
 				// Check if the owning method is already parsed
 				if (sourceMethod != null) {
@@ -565,7 +565,7 @@ public class CppAnalyzer implements IEngine {
 
 					// Retrieve the owning method
 					String methodSignature = CppAnalyzerUtils.getMethodSignature(functionDefinition);
-					SourceMethod sourceMethod = appLogic.getSourceMethodBySignature(sourceClass, methodSignature);
+					SourceMethod sourceMethod = applicationLogic.getSourceMethodBySignature(sourceClass, methodSignature);
 
 					// Check if the owning method is already parsed
 					if (sourceMethod != null) {
