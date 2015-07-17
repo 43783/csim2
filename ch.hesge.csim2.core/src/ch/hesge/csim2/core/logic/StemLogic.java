@@ -503,6 +503,17 @@ class StemLogic {
 	}
 
 	/**
+	 * Delete all stems (method or concept) related to a project.
+	 * 
+	 * @param project
+	 *        the project owning the stems.
+	 */
+	public static void deleteStems(Project project) {
+		StemConceptDao.deleteByProject(project);
+		StemMethodDao.deleteByProject(project);
+	}
+	
+	/**
 	 * Save a list of stem concept.
 	 * 
 	 * @param ontology

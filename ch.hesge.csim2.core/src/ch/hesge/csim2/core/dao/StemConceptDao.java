@@ -34,6 +34,7 @@ public class StemConceptDao {
 	private static String INSERT = "INSERT INTO stem_concepts SET project_id=?projectId, parent_id=?parentId, concept_id=?conceptId, term='?term', stem_type=?stemType";
 	private static String UPDATE = "UPDATE stem_concepts SET project_id=?projectId, parent_id=?parentId, concept_id=?conceptId, term='?term', stem_type=?stemType WHERE key_id=?keyId";
 	private static String DELETE = "DELETE FROM stem_concepts WHERE concept_id in (SELECT key_id FROM concepts WHERE ontology_id=?ontologyId)";
+	private static String DELETE_BY_PROJECT = "DELETE FROM stem_concepts WHERE project_id = ?projectId";
 
 	private static String FIND_BY_CONCEPT = "SELECT key_id, project_id, parent_id, concept_id, term, stem_type FROM stem_concepts WHERE concept_id=?conceptId";
 	private static String FIND_BY_PROJECT = "SELECT key_id, project_id, parent_id, concept_id, term, stem_type FROM stem_concepts WHERE project_id=?projectId";
@@ -144,7 +145,7 @@ public class StemConceptDao {
 	 * Remove all stem concepts associated to an ontology.
 	 * 
 	 * @param ontology
-	 *            the ontology owning all term concepts
+	 *            the ontology owning all stems
 	 */
 	public static void deleteByOntology(Ontology ontology) {
 
@@ -154,6 +155,29 @@ public class StemConceptDao {
 
 			// Build the query to execute
 			String queryString = QueryBuilder.create(StemConceptDao.DELETE, "ontologyId", ontology.getKeyId());
+
+			// Execute the query
+			QueryEngine.executeQuery(connection, queryString);
+		}
+		catch (SQLException e) {
+			Console.writeError(StemConceptDao.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+	}
+
+	/**
+	 * Remove all stem owned by a project.
+	 * 
+	 * @param project
+	 *            the project owning all stems
+	 */
+	public static void deleteByProject(Project project) {
+
+		Connection connection = ConnectionUtils.createConnection();
+
+		try {
+
+			// Build the query to execute
+			String queryString = QueryBuilder.create(StemConceptDao.DELETE_BY_PROJECT, "projectId", project.getKeyId());
 
 			// Execute the query
 			QueryEngine.executeQuery(connection, queryString);

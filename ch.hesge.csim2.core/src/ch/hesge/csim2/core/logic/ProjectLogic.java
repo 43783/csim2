@@ -135,6 +135,7 @@ class ProjectLogic {
 		SourceLogic.deleteSources(project);
 		OntologyLogic.deleteOntologies(project);
 		ScenarioLogic.deleteScenarios(project);
+		StemLogic.deleteStems(project);
 		ProjectDao.delete(project);
 	}
 }
