@@ -138,6 +138,10 @@ public class JavaInstrumenterUtils {
 			methodParameters = StringUtils.removeLastChar(methodParameters);
 		}
 
+		if (methodParameters.trim().length() == 0) {
+			methodParameters = "void";
+		}
+		
 		return methodParameters;
 	}
 

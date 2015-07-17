@@ -11,26 +11,35 @@ import java.util.logging.Logger;
 public class TraceLogger {
 
 	// Private attributes
-	private static Writer		traceWriter;
-	private static String		defautTraceFile		= "log/trace.log";
+	private static Writer traceWriter;
+	private static String defautTraceFile = "log/trace.log";
 
 	// Private constants
-	private static int			TRACE_ENTER			= 0;
-	private static int			TRACE_EXIT			= 1;
+	private static int TRACE_ENTER = 0;
+	private static int TRACE_EXIT = 1;
 
 	// Predefined formatter
-	private static final String	TRACE_ENTER_FORMAT	= "%3$s %4$s %3$s %4$s [%2$s] %7$s(%8$s) AS %9$s [%1$s]%n";
-	private static final String	TRACE_EXIT_FORMAT	= "END %3$s %4$s %3$s %4$s [%2$s] %7$s(%8$s) AS %9$s [%1$s]%n";
+	private static final String TRACE_ENTER_FORMAT = "%3$s %4$s %3$s %4$s [%2$s] %7$s(%8$s) AS %9$s [%1$s]%n";
+	private static final String TRACE_EXIT_FORMAT = "END %3$s %4$s %3$s %4$s [%2$s] %7$s(%8$s) AS %9$s [%1$s]%n";
 
 	/*
-	 * Available info on format within the TRACE_FORMAT string: 1$ = timestamp
-	 * 2$ = threadId 3$ = static package name 4$ = static class name 5$ =
-	 * dynamic package name 6$ = dynamic class name 7$ = methodname 8$ =
-	 * parameters types 9$ = return type
+	 * Available info on format within the TRACE_FORMAT string: 
+	 * 
+	 * <code>
+	 * 		1$ = timestamp
+	 * 		2$ = threadId 
+	 * 		3$ = static package name 
+	 * 		4$ = static class name 
+	 * 		5$ = dynamic package name 
+	 * 		6$ = dynamic class name 
+	 * 		7$ = methodname 
+	 * 		8$ = parameters types 
+	 * 		9$ = return type
+	 * </code>
 	 */
 
 	// Create a trace logger
-	private static final Logger	LOGGER				= Logger.getLogger(TraceLogger.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(TraceLogger.class.getName());
 
 	/**
 	 * Log a single method entry
