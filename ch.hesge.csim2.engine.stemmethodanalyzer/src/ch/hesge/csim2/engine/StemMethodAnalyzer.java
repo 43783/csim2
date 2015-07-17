@@ -241,8 +241,8 @@ public class StemMethodAnalyzer implements IEngine {
 			}
 
 			// Save stems found
+			Console.writeInfo(this, "saving " + stems.size() + " stems found...");
 			applicationLogic.saveStemMethods(project, stems);
-			Console.writeInfo(this, stems.size() + " stems found");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing sources: " + StringUtils.toString(e));

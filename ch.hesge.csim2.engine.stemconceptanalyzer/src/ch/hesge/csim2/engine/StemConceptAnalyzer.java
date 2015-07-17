@@ -219,8 +219,8 @@ public class StemConceptAnalyzer implements IEngine {
 			}
 
 			// Save stems found
+			Console.writeInfo(this, "saving " + stems.size() + " stems found...");
 			applicationLogic.saveStemConcepts(ontology, stems);
-			Console.writeInfo(this, stems.size() + " stems found");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing concepts: " + StringUtils.toString(e));
