@@ -195,9 +195,10 @@ public class ApplicationManager {
 
 				// Retrieve required data from cache
 				List<Scenario> scenarios = applicationLogic.getScenarios(application.getProject());
+				Map<Integer, SourceMethod> methodMap = applicationLogic.getSourceMethodMap(application.getProject());
 
 				// Create the view
-				mainView.showView("Traces", new TracesView(application.getProject(), scenarios));
+				mainView.showView("Traces", new TracesView(application.getProject(), scenarios, methodMap));
 			}
 		});
 	}
@@ -218,6 +219,27 @@ public class ApplicationManager {
 				mainView.showView("Timeseries", new TimeSeriesView(application.getProject(), scenarios));
 			}
 		});
+	}
+
+	/**
+	 * Show a source file with default editor
+	 */
+	public void showSourceFile(SourceMethod method) {
+
+		if (method != null && method.getFilename() != null) {
+			
+			String rootPath = application.getProperties().getProperty("rootSourcePath");
+			
+			if (rootPath == null) {
+				rootPath = SwingUtils.selectFolder(mainView, null);
+				
+				if (rootPath != null) {
+					 application.getProperties().setProperty("rootSourcePath", rootPath);
+				}
+			}
+			
+			SwingUtils.openFile(rootPath, method.getFilename());
+		}
 	}
 
 	/**
@@ -728,13 +750,6 @@ public class ApplicationManager {
 	}
 
 	/**
-	 * Close all views on workspace.
-	 */
-	public void closeAllViews() {
-		mainView.resetWorkspace();
-	}
-
-	/**
 	 * Reload project passed in argument.
 	 * 
 	 * @param project
@@ -748,7 +763,7 @@ public class ApplicationManager {
 
 		// Clear project content
 		mainView.setActiveProject(null);
-		mainView.resetWorkspace();
+		mainView.clearWorkspace();
 		applicationLogic.clearCache();
 
 		// Clear current application project
@@ -791,6 +806,13 @@ public class ApplicationManager {
 	public void closeProject() {
 		application.setProject(null);
 		reloadProject();
+	}
+
+    /**
+	 * Clear console content.
+	 */
+	public void clearConsole() {
+		mainView.clearConsole();
 	}
 
 	/**

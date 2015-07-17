@@ -5,15 +5,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
 
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
-import ch.hesge.csim2.ui.comp.ScenarioTable;
 import ch.hesge.csim2.ui.model.ApplicationManager;
+import ch.hesge.csim2.ui.popup.ScenarioStepPopup;
+import ch.hesge.csim2.ui.table.ScenarioTable;
+import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -46,7 +50,7 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		setLayout(new BorderLayout(0, 0));
 
-		scenarioTable = new ScenarioTable(scenario, appManager);
+		scenarioTable = new ScenarioTable(scenario);
 		scenarioTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(scenarioTable);
@@ -88,17 +92,59 @@ public class ScenarioView extends JPanel implements ActionListener {
 
 		btnStop = new JButton("Stop");
 		btnStop.setPreferredSize(new Dimension(80, 25));
-		btnStop.setEnabled(false);
 		btnStop.addActionListener(this);
 		rightPanel.add(btnStop);
 
 		currentStepIndex = 0;
 		selectScenarioStep(currentStepIndex);
 		
-		// Set focus when visible
-		SwingUtils.setFocusWhenVisible(scenarioTable);
+		refreshBtnState();
+		initListeners();
 	}
 
+	/**
+	 * Initialize component listeners
+	 */
+	private void initListeners() {
+
+		// Set focus when visible
+		SwingUtils.onComponentVisible(this, new SimpleAction<Object>() {
+			@Override
+			public void run(Object o) {
+				scenarioTable.requestFocus();
+			}
+		});
+		
+		// Listen to selection
+		SwingUtils.onTableSelection(scenarioTable, new SimpleAction<ListSelectionEvent>() {
+			@Override
+			public void run(ListSelectionEvent e) {
+				refreshBtnState();
+			}
+		});
+
+		// Listen to selection
+		SwingUtils.onTableDoubleClick(scenarioTable, new SimpleAction<MouseEvent>() {
+			@Override
+			public void run(MouseEvent e) {
+				refreshBtnState();
+				appManager.editScenarioStep(scenarioTable.getSelectedObject());
+			}
+		});
+		
+		// Listen to right-click
+		SwingUtils.onTableRightClick(scenarioTable, new SimpleAction<MouseEvent>() {
+			@Override
+			public void run(MouseEvent e) {
+				
+				// Show context menu
+				ScenarioStepPopup popup = new ScenarioStepPopup();
+				popup.setScenarioStep(scenarioTable.getSelectedObject());
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});		
+	}
+	
 	/**
 	 * Select current step within table
 	 */
@@ -112,6 +158,27 @@ public class ScenarioView extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Refresh button state
+	 */
+	public void refreshBtnState() {
+		
+		if (btnStart.getText().equals("Start")) {
+			btnAdd.setEnabled(true);
+			btnDel.setEnabled(scenarioTable.getSelectedObject() != null);
+			btnSave.setEnabled(scenario.getSteps().size() > 0);
+			btnStart.setEnabled(scenario.getSteps().size() > 0);
+			btnStop.setEnabled(false);		
+		}
+		else {
+			btnAdd.setEnabled(false);
+			btnDel.setEnabled(false);
+			btnSave.setEnabled(false);
+			btnStart.setEnabled(true);
+			btnStop.setEnabled(true);		
+		}
+	}
+	
 	/**
 	 * Start executing current scenario
 	 */
@@ -165,11 +232,13 @@ public class ScenarioView extends JPanel implements ActionListener {
 		if (e.getSource() == btnAdd) {
 			appManager.createScenarioStep(scenario);
 			scenarioTable.refresh();
+			refreshBtnState();
 		}
 		else if (e.getSource() == btnDel) {
-			ScenarioStep step = scenarioTable.getSelectedStep();
+			ScenarioStep step = scenarioTable.getSelectedObject();
 			appManager.deleteScenarioStep(scenario, step);
 			scenarioTable.refresh();
+			refreshBtnState();
 		}
 		else if (e.getSource() == btnSave) {
 			appManager.saveScenario(scenario);
@@ -184,9 +253,14 @@ public class ScenarioView extends JPanel implements ActionListener {
 			else if (btnText.equals("Next")) {
 				nextScenarioStep();
 			}
+
+			refreshBtnState();
 		}
 		else if (e.getSource() == btnStop) {
 			stopScenario();
+			refreshBtnState();
 		}
+
+		scenarioTable.requestFocus();
 	}
 }

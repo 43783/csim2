@@ -10,14 +10,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import ch.hesge.csim2.ui.comp.ConsolePopup;
+import ch.hesge.csim2.ui.popup.ConsolePopup;
 
 @SuppressWarnings("serial")
 public class ConsoleView extends JPanel {
 
 	// Private attributes
 	private JTextArea logArea;
-	private ConsolePopup contextMenu;
 
 	/**
 	 * Default constructor.
@@ -33,18 +32,15 @@ public class ConsoleView extends JPanel {
 
 		setLayout(new BorderLayout(0, 0));
 
-		// Create a context menu
-		contextMenu = new ConsolePopup(this);
-
 		// Create the log area
 		logArea = new JTextArea();
 		logArea.setEditable(true);
 		logArea.setFont(new Font("Courier New", Font.PLAIN, 14));
 		JScrollPane scrollPanel = new JScrollPane();
 		scrollPanel.setViewportView(logArea);
-		
-		add(scrollPanel, BorderLayout.CENTER);	
-		
+
+		add(scrollPanel, BorderLayout.CENTER);
+
 		initListeners();
 	}
 
@@ -55,31 +51,30 @@ public class ConsoleView extends JPanel {
 
 		// Listen to mouse click
 		logArea.addMouseListener(new MouseAdapter() {
-
 			public void mousePressed(MouseEvent e) {
 
 				// Handle single right-click
 				if (SwingUtilities.isRightMouseButton(e)) {
-					
+
 					// Show context menu
+					ConsolePopup contextMenu = new ConsolePopup();
 					contextMenu.show(e.getComponent(), e.getX(), e.getY());
-					e.consume();
 				}
 			}
 		});
 	}
-	
-    /**
+
+	/**
 	 * Clear console logs.
 	 */
-	public void clearLogConsole() {
+	public void clearLogs() {
 		logArea.setText("");
 	}
 
 	/**
 	 * Return the console log area.
 	 * 
-	 * @return the coJTextArea used to log messages
+	 * @return the JTextArea used to log messages
 	 */
 	public JTextArea getLogArea() {
 		return logArea;

@@ -268,7 +268,6 @@ class OntologyLogic {
 		c.getAttributes().addAll(concept.getAttributes());
 		c.getClasses().addAll(concept.getClasses());
 		c.getLinks().addAll(concept.getLinks());
-		c.getOntoTerms().addAll(concept.getOntoTerms());
 		c.getSubConcepts().addAll(concept.getSubConcepts());
 
 		return c;
@@ -296,13 +295,11 @@ class OntologyLogic {
 		target.getAttributes().clear();
 		target.getClasses().clear();
 		target.getLinks().clear();
-		target.getOntoTerms().clear();
 		target.getSubConcepts().clear();
 
 		target.getAttributes().addAll(source.getAttributes());
 		target.getClasses().addAll(source.getClasses());
 		target.getLinks().addAll(source.getLinks());
-		target.getOntoTerms().addAll(source.getOntoTerms());
 		target.getSubConcepts().addAll(source.getSubConcepts());
 	}
 

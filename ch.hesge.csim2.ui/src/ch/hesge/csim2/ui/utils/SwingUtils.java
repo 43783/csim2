@@ -3,6 +3,17 @@ package ch.hesge.csim2.ui.utils;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -15,9 +26,17 @@ import java.nio.file.attribute.BasicFileAttributes;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
@@ -62,46 +81,6 @@ public class SwingUtils {
 		}
 	}
 
-	/**
-	 * Register an action to execute after the component is made visible.
-	 * 
-	 * @param component
-	 *        the component we are listening to
-	 * @param doRun
-	 *        the runnable to execute when component is visible
-	 */
-	public static void invokeWhenVisible(JComponent component, Runnable doRun) {
-
-		component.addAncestorListener(new AncestorAdapter() {
-			@Override
-			public void ancestorAdded(AncestorEvent event) {
-				doRun.run();
-			}
-		});
-	}
-
-	/**
-	 * Set focus on a component when visible.
-	 * 
-	 * @param component
-	 *        the component to put focus on
-	 */
-	public static void setFocusWhenVisible(JComponent component) {
-
-		invokeWhenVisible(component, new Runnable() {
-			@Override
-			public void run() {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						component.requestFocus();
-					}
-				});
-			}
-		});
-	}
-
-	
 	/**
 	 * Execute a long operation with waiting cursor.
 	 * 
@@ -150,6 +129,597 @@ public class SwingUtils {
 	}
 
 	/**
+	 * Register an action to execute when a component become visible.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onComponentVisible(JComponent component, SimpleAction<?> action) {
+
+		component.addAncestorListener(new AncestorAdapter() {
+			@Override
+			public void ancestorAdded(AncestorEvent event) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(null);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component is resized.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onComponentResized(JComponent component, SimpleAction<ComponentEvent> action) {
+
+		component.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component lost focus.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onFocusLost(JComponent component, SimpleAction<FocusEvent> action) {
+
+		component.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component gain focus.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onFocusGained(JComponent component, SimpleAction<FocusEvent> action) {
+
+		component.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component received a key pressed
+	 * event.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onKeyPressed(JComponent component, SimpleAction<KeyEvent> action) {
+
+		component.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component received a mouse pressed
+	 * event.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onMousePressed(JComponent component, SimpleAction<MouseEvent> action) {
+
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component received a mouse pressed
+	 * event.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onMouseReleased(JComponent component, SimpleAction<MouseEvent> action) {
+
+		component.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component received a mouse move
+	 * event.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onMouseMoved(JComponent component, SimpleAction<MouseEvent> action) {
+
+		component.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseMoved(MouseEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component received a mouse drag
+	 * event.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onMouseDragged(JComponent component, SimpleAction<MouseEvent> action) {
+
+		component.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component received a mouse wheel
+	 * event.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onMouseWheeled(JComponent component, SimpleAction<MouseWheelEvent> action) {
+
+		component.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute on table item selection.
+	 * 
+	 * @param table
+	 *        the JTable we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTableSelection(JTable table, SimpleAction<ListSelectionEvent> action) {
+		
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});	
+			}
+		});
+	}
+	
+	/**
+	 * Register an action to execute on table click.
+	 * 
+	 * @param table
+	 *        the JTable we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTableSingleClick2(JTable table, SimpleAction<MouseEvent> action) {
+
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+
+				if (SwingUtilities.isLeftMouseButton(e)) {
+
+					table.requestFocus();
+					int clickedRow = table.rowAtPoint(e.getPoint());
+
+					// Select row under the mouse
+					if (clickedRow != -1) {
+						table.setRowSelectionInterval(clickedRow, clickedRow);
+					}
+
+					// Detect double-click
+					if (e.getClickCount() == 1) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								action.run(e);
+							}
+						});
+					}
+
+					e.consume();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute on table double-click.
+	 * 
+	 * @param table
+	 *        the JTable we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTableDoubleClick(JTable table, SimpleAction<MouseEvent> action) {
+
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+
+				if (SwingUtilities.isLeftMouseButton(e)) {
+
+					table.requestFocus();
+					int clickedRow = table.rowAtPoint(e.getPoint());
+
+					// Select row under the mouse
+					if (clickedRow != -1) {
+						table.setRowSelectionInterval(clickedRow, clickedRow);
+					}
+
+					// Detect double-click
+					if (e.getClickCount() == 2) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								action.run(e);
+							}
+						});
+					}
+
+					e.consume();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute on table single-click.
+	 * 
+	 * @param table
+	 *        the JTable we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTableRightClick(JTable table, SimpleAction<MouseEvent> action) {
+
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+
+				if (SwingUtilities.isRightMouseButton(e)) {
+
+					table.requestFocus();
+					int clickedRow = table.rowAtPoint(e.getPoint());
+
+					// Select row under the mouse
+					if (clickedRow != -1) {
+						table.setRowSelectionInterval(clickedRow, clickedRow);
+					}
+
+					// Detect double-click
+					if (e.getClickCount() == 1) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								action.run(e);
+							}
+						});
+					}
+
+					e.consume();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Retrieve the user object underlying a mouse coordinate.
+	 * 
+	 * @param tree
+	 *        The JTree to analyze
+	 * @param x
+	 *        The x coordinate
+	 * @param y
+	 *        The y coordinate
+	 * @return
+	 *         a user object or null
+	 */
+	public static Object getTreeUserObject(JTree tree, int x, int y) {
+
+		Object userObject = null;
+		TreePath path = tree.getPathForLocation(x, y);
+
+		if (path != null) {
+
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+
+			if (node != null) {
+				userObject = node.getUserObject();
+			}
+		}
+
+		return userObject;
+	}
+	
+	/**
+	 * Retrieve the object, within a JTree, under the coordinates
+	 * passed in argument.
+	 * 
+	 * @param path
+	 *        The JTree path
+	 * @return
+	 *         a user object or null
+	 */
+	public static Object getTreeUserObject(TreePath path) {
+
+		Object userObject = null;
+
+		if (path != null) {
+
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+
+			if (node != null) {
+				userObject = node.getUserObject();
+			}
+		}
+
+		return userObject;
+	}
+	
+	/**
+	 * Register an action to execute on tree item selection.
+	 * 
+	 * @param tree
+	 *        the JTree we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTreeSelection(JTree tree, SimpleAction<TreeSelectionEvent> action) {
+		
+		tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(e);
+					}
+				});	
+			}
+		});
+	}
+	
+	/**
+	 * Register an action to execute on tree click.
+	 * 
+	 * @param tree
+	 *        the JTree we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTreeSingleClick2(JTree tree, SimpleAction<MouseEvent> action) {
+
+		tree.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+
+				if (SwingUtilities.isLeftMouseButton(e)) {
+
+					tree.requestFocus();
+					int clickedRow = tree.getRowForLocation(e.getX(), e.getY());
+
+					// Select row under the mouse
+					if (clickedRow != -1) {
+						tree.setSelectionRow(clickedRow);
+					}
+
+					// Detect double-click
+					if (e.getClickCount() == 1) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								action.run(e);
+							}
+						});
+					}
+
+					e.consume();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute on tree double-click.
+	 * 
+	 * @param tree
+	 *        the JTree we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTreeDoubleClick(JTree tree, SimpleAction<MouseEvent> action) {
+
+		tree.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+
+				if (SwingUtilities.isLeftMouseButton(e)) {
+
+					tree.requestFocus();
+					int clickedRow = tree.getRowForLocation(e.getX(), e.getY());
+
+					// Select row under the mouse
+					if (clickedRow != -1) {
+						tree.setSelectionRow(clickedRow);
+					}
+
+					// Detect double-click
+					if (e.getClickCount() == 2) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								action.run(e);
+							}
+						});
+					}
+
+					e.consume();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute on tree single-click.
+	 * 
+	 * @param table
+	 *        the JTree we are listening to
+	 * @param action
+	 *        the action to execute
+	 */
+	public static void onTreeRightClick(JTree tree, SimpleAction<MouseEvent> action) {
+
+		tree.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+
+				if (SwingUtilities.isRightMouseButton(e)) {
+
+					tree.requestFocus();
+					int clickedRow = tree.getRowForLocation(e.getX(), e.getY());
+
+					// Select row under the mouse
+					if (clickedRow != -1) {
+						tree.setSelectionRow(clickedRow);
+					}
+
+					// Detect double-click
+					if (e.getClickCount() == 1) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								action.run(e);
+							}
+						});
+					}
+
+					e.consume();
+				}
+			}
+		});
+	}
+
+	/**
 	 * Open the file dialog to select a folder.
 	 * 
 	 * @param owner
@@ -162,7 +732,7 @@ public class SwingUtils {
 
 		JFileChooser dialog = new JFileChooser();
 		dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		
+
 		if (startFolder != null) {
 			dialog.setCurrentDirectory(new File(startFolder));
 		}

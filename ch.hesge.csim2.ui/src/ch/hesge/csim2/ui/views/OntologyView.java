@@ -20,9 +20,7 @@ import javax.swing.event.AncestorEvent;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
-import ch.hesge.csim2.ui.comp.OntologyAnimator;
-import ch.hesge.csim2.ui.comp.OntologyPanel;
-import ch.hesge.csim2.ui.dialogs.ConceptPropertiesDialog;
+import ch.hesge.csim2.ui.dialogs.PropertiesDialog;
 import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.PaintUtils;
 
@@ -181,7 +179,7 @@ public class OntologyView extends JPanel implements ActionListener {
 		
 		// Display dialog
 		MainView mainView = (MainView) SwingUtilities.getAncestorOfClass(MainView.class, this);
-		ConceptPropertiesDialog dialog = new ConceptPropertiesDialog(mainView, concept);
+		PropertiesDialog dialog = new PropertiesDialog(mainView, concept);
 		
 		dialog.setVisible(true);
 

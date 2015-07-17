@@ -30,7 +30,6 @@ public class Concept {
 	private List<ConceptAttribute> attributes;
 	private List<ConceptClass> classes;
 	private List<ConceptLink> links;
-	private List<OntoTerm> ontoTerms;
 	private List<Concept> subconcepts;
 
 	/**
@@ -40,7 +39,6 @@ public class Concept {
 		attributes = new ArrayList<>();
 		classes = new ArrayList<>();
 		links = new ArrayList<>();
-		ontoTerms = new ArrayList<>();
 		subconcepts = new ArrayList<>();
 	}
 
@@ -102,10 +100,6 @@ public class Concept {
 
 	public List<ConceptLink> getLinks() {
 		return links;
-	}
-
-	public List<OntoTerm> getOntoTerms() {
-		return ontoTerms;
 	}
 
 	public Rectangle getBounds() {

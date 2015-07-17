@@ -8,23 +8,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceClass;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemMethod;
-import ch.hesge.csim2.ui.comp.SourceTree;
-import ch.hesge.csim2.ui.comp.StemMethodTable;
 import ch.hesge.csim2.ui.model.ApplicationManager;
+import ch.hesge.csim2.ui.table.StemMethodTable;
+import ch.hesge.csim2.ui.tree.SourceTree;
+import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class StemSourcesView extends JPanel {
 
 	// Private attributes
-	private ApplicationManager appManager;
 	private SourceTree sourceTree;
 	private StemMethodTable stemTable;
 	
@@ -35,9 +33,8 @@ public class StemSourcesView extends JPanel {
 	 */
 	public StemSourcesView(Project project, List<SourceClass> sourceClasses) {
 
-		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		this.sourceClasses = sourceClasses;
-		this.stemTree = appManager.getStemMethodTreeMap(project);
+		this.stemTree = ApplicationManager.UNIQUE_INSTANCE.getStemMethodTreeMap(project);
 		
 		initComponent();
 	}
@@ -63,7 +60,7 @@ public class StemSourcesView extends JPanel {
 		splitPanel1.setLeftComponent(scrollPane1);
 
 		// Initialize stem table
-		stemTable = new StemMethodTable(appManager);
+		stemTable = new StemMethodTable();
 		stemTable.setFillsViewportHeight(true);
 		stemTable.setFocusable(true);
 		JScrollPane scrollPane2 = new JScrollPane();
@@ -79,26 +76,35 @@ public class StemSourcesView extends JPanel {
 	private void initListeners() {
 
 		// Set focus when visible
-		SwingUtils.setFocusWhenVisible(sourceTree);
-
-		// Add tree listener
-		sourceTree.addTreeSelectionListener(new TreeSelectionListener() {
+		SwingUtils.onComponentVisible(sourceTree, new SimpleAction<Object>() {
 			@Override
-			public void valueChanged(TreeSelectionEvent e) {
+			public void run(Object o) {
+				sourceTree.requestFocus();
+			}
+		});
 
-				Object userObject = ((DefaultMutableTreeNode) e.getPath().getLastPathComponent()).getUserObject();
+		// Listen to tree selection
+		SwingUtils.onTreeSelection(sourceTree, new SimpleAction<TreeSelectionEvent>() {
+			@Override
+			public void run(TreeSelectionEvent e) {
 
-				if (userObject instanceof SourceMethod) {
+				// Retrieve current user object
+				Object userObject = SwingUtils.getTreeUserObject(e.getPath());
+				
+				if (userObject != null) {
 					
-					// Update current stem list
-					SourceMethod method = (SourceMethod) userObject;
-					StemMethod stemMethodTree = stemTree.get(method.getKeyId());
-					stemTable.setStemTree(stemMethodTree);
-				}
-				else {
-					stemTable.setStemTree(null);
+					if (userObject instanceof SourceMethod) {
+						
+						// Update current stem list
+						SourceMethod method = (SourceMethod) userObject;
+						StemMethod stemMethodTree = stemTree.get(method.getKeyId());
+						stemTable.setStemTree(stemMethodTree);
+					}
+					else {
+						stemTable.setStemTree(null);
+					}
 				}
 			}
-		});		
+		});
 	}
 }

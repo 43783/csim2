@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
@@ -23,24 +23,25 @@ import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.Trace;
-import ch.hesge.csim2.ui.comp.MatcherComboBox;
-import ch.hesge.csim2.ui.comp.MatchingTable;
-import ch.hesge.csim2.ui.comp.ScenarioComboBox;
-import ch.hesge.csim2.ui.comp.TraceTable;
+import ch.hesge.csim2.ui.combo.MatcherComboBox;
+import ch.hesge.csim2.ui.combo.ScenarioComboBox;
 import ch.hesge.csim2.ui.model.ApplicationManager;
+import ch.hesge.csim2.ui.popup.MethodPopup;
+import ch.hesge.csim2.ui.table.MatchingTable;
+import ch.hesge.csim2.ui.table.TraceTable;
+import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
-public class TracesView extends JPanel {
+public class TracesView extends JPanel implements ActionListener {
 
 	// Private attribute	
-	private String rootSourceFolder;
 	private Project project;
 	private ApplicationManager appManager;
 	private List<Scenario> scenarios;
 	private List<Trace> traces;
-	private Map<Integer, List<MethodConceptMatch>> matchMap;
 	private Map<Integer, SourceMethod> methodMap;
+	private Map<Integer, List<MethodConceptMatch>> matchMap;
 
 	private JPanel paramsPanel;
 	private JPanel mainPanel;
@@ -56,12 +57,12 @@ public class TracesView extends JPanel {
 	/**
 	 * Default constructor.
 	 */
-	public TracesView(Project project, List<Scenario> scenarios) {
+	public TracesView(Project project, List<Scenario> scenarios, Map<Integer, SourceMethod> methodMap) {
 
-		this.project   = project;
-		this.scenarios = scenarios;
+		this.project    = project;
+		this.scenarios  = scenarios;
+		this.methodMap  = methodMap;
 		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
-		this.methodMap = appManager.getSourceMethodMap(project);
 
 		initComponent();
 	}
@@ -105,6 +106,7 @@ public class TracesView extends JPanel {
 		// Create the load button
 		loadBtn = new JButton("Load");
 		loadBtn.setPreferredSize(new Dimension(80, 25));
+		loadBtn.addActionListener(this);
 		paramsPanel.add(loadBtn);
 
 		// Create the method panel
@@ -142,47 +144,20 @@ public class TracesView extends JPanel {
 	private void initListeners() {
 
 		// Set focus when visible
-		SwingUtils.setFocusWhenVisible(scenarioComboBox);
-
-		// Add listener to load button
-		loadBtn.addActionListener(new ActionListener() {
+		SwingUtils.onComponentVisible(this, new SimpleAction<Object>() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
-				IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
-
-				if (scenario != null && matcher != null) {
-
-					SwingUtils.invokeLongOperation(TracesView.this, new Runnable() {
-						@Override
-						public void run() {
-
-							// Retrieve method-concept matchings
-							matchMap = matcher.getMethodMatchingMap(project);
-							
-							// Retrieve required trace list for current scenario
-							traces = appManager.getTraces(scenario);
-
-							// Initialize trace table
-							traceTable.setTraces(traces);
-						}
-					});
-				}
-				else {
-					traceTable.setTraces(null);
-				}
+			public void run(Object o) {
+				scenarioComboBox.requestFocus();
 			}
 		});
 
-		// Add listener to trace selection
-		traceTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
+		// Listen to selection
+		SwingUtils.onTableSelection(traceTable, new SimpleAction<ListSelectionEvent>() {
 			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				
+			public void run(ListSelectionEvent e) {
+
 				// Retrieve selected trace
-				Trace trace = traceTable.getSelectedValue();
+				Trace trace = traceTable.getSelectedObject();
 
 				// Retrieve the matching list
 				if (trace != null) {
@@ -195,26 +170,63 @@ public class TracesView extends JPanel {
 			}
 		});
 		
-		traceTable.addDoubleClickListener(new ListSelectionListener() {
+		// Listen to right-click
+		SwingUtils.onTableRightClick(traceTable, new SimpleAction<MouseEvent>() {
 			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				Trace trace = traceTable.getSelectedValue();
-
+			public void run(MouseEvent e) {
+				
+				// Retrieve selected trace
+				Trace trace = traceTable.getSelectedObject();
+				
+				// Retrieve trace method
 				if (trace != null) {
-
+					
 					SourceMethod method = methodMap.get(trace.getMethodId());
-
-					if (method != null && method.getFilename() != null) {
-
-						if (rootSourceFolder == null) {
-							rootSourceFolder = SwingUtils.selectFolder(TracesView.this, null);
-						}
+					
+					if (method != null) {
 						
-						SwingUtils.openFile(rootSourceFolder, method.getFilename());
+						// Show context menu
+						MethodPopup popup = new MethodPopup();
+						popup.setMethod(method);
+						popup.show(e.getComponent(), e.getX(), e.getY());
 					}
 				}
 			}
-		});
+		});		
+	}
+	
+	/**
+	 * Handle action generated by button.
+	 */
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == loadBtn) {
+			
+			Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
+			IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
+
+			if (scenario != null && matcher != null) {
+
+				SwingUtils.invokeLongOperation(TracesView.this, new Runnable() {
+					@Override
+					public void run() {
+
+						// Retrieve method-concept matchings
+						matchMap = matcher.getMethodMatchingMap(project);
+						
+						// Retrieve required trace list for current scenario
+						traces = appManager.getTraces(scenario);
+
+						// Initialize trace table
+						traceTable.setTraces(traces);
+					}
+				});
+			}
+			else {
+				traceTable.setTraces(null);
+			}
+		}
+		
+		loadBtn.requestFocus();		
 	}
 }

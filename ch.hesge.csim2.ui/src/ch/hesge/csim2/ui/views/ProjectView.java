@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import ch.hesge.csim2.ui.comp.ProjectTree;
+import ch.hesge.csim2.ui.tree.ProjectTree;
 
 @SuppressWarnings("serial")
 public class ProjectView extends JPanel {

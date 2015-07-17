@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
@@ -29,19 +29,20 @@ import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.ui.comp.MatcherComboBox;
-import ch.hesge.csim2.ui.comp.MatchingTable;
-import ch.hesge.csim2.ui.comp.SourceMethodTable;
-import ch.hesge.csim2.ui.comp.StemConceptTable;
-import ch.hesge.csim2.ui.comp.StemMethodTable;
+import ch.hesge.csim2.ui.combo.MatcherComboBox;
 import ch.hesge.csim2.ui.model.ApplicationManager;
+import ch.hesge.csim2.ui.popup.MethodPopup;
+import ch.hesge.csim2.ui.table.MatchingTable;
+import ch.hesge.csim2.ui.table.SourceMethodTable;
+import ch.hesge.csim2.ui.table.StemConceptTable;
+import ch.hesge.csim2.ui.table.StemMethodTable;
+import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
-public class MatchingView extends JPanel {
+public class MatchingView extends JPanel implements ActionListener {
 
 	// Private attribute	
-	private String rootSourceFolder;
 	private Project project;
 	private ApplicationManager appManager;
 	private List<SourceMethod> sourceMethods;
@@ -71,10 +72,10 @@ public class MatchingView extends JPanel {
 		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		this.sourceMethods = new ArrayList<>(appManager.getSourceMethodMap(project).values());
 		ObjectSorter.sortSourceMethods(sourceMethods);
-		
+
 		stemConceptMap = appManager.getStemConceptTreeMap(project);
 		stemMethodMap = appManager.getStemMethodTreeMap(project);
-		
+
 		initComponent();
 	}
 
@@ -92,23 +93,25 @@ public class MatchingView extends JPanel {
 
 		// Create the params panel
 		JPanel paramsPanel = new JPanel();
-		((FlowLayout)paramsPanel.getLayout()).setAlignment(FlowLayout.LEFT);
+		((FlowLayout) paramsPanel.getLayout()).setAlignment(FlowLayout.LEFT);
 		paramsPanel.add(new JLabel("Matching algorithm:"));
 		matcherComboBox = new MatcherComboBox(appManager.getMatchers());
 		matcherComboBox.setPreferredSize(new Dimension(150, 20));
-		paramsPanel.add(matcherComboBox);		
-		
+		paramsPanel.add(matcherComboBox);
+
 		loadBtn = new JButton("Load");
 		loadBtn.setPreferredSize(new Dimension(80, 25));
+		loadBtn.addActionListener(this);
 		paramsPanel.add(loadBtn);
 		settingsPanel.add(paramsPanel, BorderLayout.CENTER);
 
 		// Create export panel
 		JPanel exportPanel = new JPanel();
-		((FlowLayout)exportPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
-		
+		((FlowLayout) exportPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
+
 		exportBtn = new JButton("Export");
 		exportBtn.setPreferredSize(new Dimension(80, 25));
+		exportBtn.addActionListener(this);
 		exportBtn.setEnabled(false);
 		exportPanel.add(exportBtn);
 		settingsPanel.add(exportPanel, BorderLayout.EAST);
@@ -117,17 +120,17 @@ public class MatchingView extends JPanel {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		JSplitPane splitPane1 = new JSplitPane();
-		splitPane1.setResizeWeight(0.3);	
+		splitPane1.setResizeWeight(0.3);
 		JSplitPane splitPane2 = new JSplitPane();
-		splitPane2.setResizeWeight(0.5);	
+		splitPane2.setResizeWeight(0.5);
 		splitPane1.setRightComponent(splitPane2);
 		JSplitPane splitPane3 = new JSplitPane();
-		splitPane3.setResizeWeight(0.5);	
+		splitPane3.setResizeWeight(0.5);
 		splitPane3.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane2.setRightComponent(splitPane3);
 		mainPanel.add(splitPane1, BorderLayout.CENTER);
 		this.add(mainPanel, BorderLayout.CENTER);
-		
+
 		// Create the method panel
 		methodPanel = new JPanel();
 		methodPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Methods", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -139,7 +142,7 @@ public class MatchingView extends JPanel {
 		conceptPanel.setBorder(new TitledBorder(null, "Concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 		splitPane2.setLeftComponent(conceptPanel);
-		
+
 		// Create the stem-concept panel
 		stemConceptPanel = new JPanel();
 		stemConceptPanel.setBorder(new TitledBorder(null, "Stem Concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -165,16 +168,16 @@ public class MatchingView extends JPanel {
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportView(matchTable);
 		conceptPanel.add(scrollPane2, BorderLayout.CENTER);
-		
+
 		// Create stem-concept table
-		stemConceptTable = new StemConceptTable(appManager);
+		stemConceptTable = new StemConceptTable();
 		stemConceptTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane3 = new JScrollPane();
 		scrollPane3.setViewportView(stemConceptTable);
 		stemConceptPanel.add(scrollPane3, BorderLayout.CENTER);
 
 		// Create stem-concept table
-		stemMethodTable = new StemMethodTable(appManager);
+		stemMethodTable = new StemMethodTable();
 		stemMethodTable.setFillsViewportHeight(true);
 		JScrollPane scrollPane4 = new JScrollPane();
 		scrollPane4.setViewportView(stemMethodTable);
@@ -189,60 +192,43 @@ public class MatchingView extends JPanel {
 	private void initListeners() {
 
 		// Set focus when visible
-		SwingUtils.setFocusWhenVisible(matcherComboBox);
-
-		// Add listener to load button
-		loadBtn.addActionListener(new ActionListener() {
+		SwingUtils.onComponentVisible(this, new SimpleAction<Object>() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void run(Object o) {
+				matcherComboBox.requestFocus();
+			}
+		});
 
-				IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
+		// Listen to method right-click
+		SwingUtils.onTableRightClick(methodTable, new SimpleAction<MouseEvent>() {
+			@Override
+			public void run(MouseEvent e) {
 
-				methodTable.setSourceMethods(null);
-				matchTable.setMatchings(null);
-				stemConceptTable.setStemTree(null);
-				stemMethodTable.setStemTree(null);
+				// Retrieve selected trace
+				SourceMethod method = methodTable.getSelectedObject();
 
-				if (matcher != null) {
+				// Retrieve trace method
+				if (method != null) {
 
-					SwingUtils.invokeLongOperation(MatchingView.this, new Runnable() {
-						@Override
-						public void run() {
-
-							// Retrieve method-concept matchings
-							matchMap = appManager.getMethodMatchingMap(project,  matcher);
-
-							// Initialize method table
-							methodTable.setSourceMethods(sourceMethods);
-							
-							// Enable export button
-							exportBtn.setEnabled(true);
-						}
-					});
+					// Show context menu
+					MethodPopup popup = new MethodPopup();
+					popup.setMethod(method);
+					popup.show(e.getComponent(), e.getX(), e.getY());
 				}
 			}
 		});
 
-		// Add listener to export button
-		exportBtn.addActionListener(new ActionListener() {
+		// Listen to method selection
+		SwingUtils.onTableSelection(methodTable, new SimpleAction<ListSelectionEvent>() {
 			@Override
-			public void actionPerformed(ActionEvent e) {	
-				appManager.exportMatchings(MatchingView.this, matchMap);
-			}
-		});
-
-		// Add listener to trace selection
-		methodTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
+			public void run(ListSelectionEvent e) {
 
 				matchTable.setMatchings(null);
 				stemConceptTable.setStemTree(null);
 				stemMethodTable.setStemTree(null);
-				
+
 				// Retrieve selected trace
-				SourceMethod sourceMethod = methodTable.getSelectedValue();
+				SourceMethod sourceMethod = methodTable.getSelectedObject();
 
 				// Retrieve the matching list
 				if (sourceMethod != null) {
@@ -252,49 +238,70 @@ public class MatchingView extends JPanel {
 			}
 		});
 
-		// Add listener to concept selection
-		matchTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
+		// Listen to match selection
+		SwingUtils.onTableSelection(matchTable, new SimpleAction<ListSelectionEvent>() {
 			@Override
-			public void valueChanged(ListSelectionEvent e) {
+			public void run(ListSelectionEvent e) {
 
 				stemConceptTable.setStemTree(null);
 				stemMethodTable.setStemTree(null);
 
 				// Retrieve selected match
-				MethodConceptMatch match = matchTable.getSelectedValue();
+				MethodConceptMatch match = matchTable.getSelectedObject();
 
 				// Retrieve the matching list
 				if (match != null) {
-					
+
 					Set<String> termsIntersection = appManager.getTermsIntersection(match.getStemConcepts(), match.getStemMethods());
-										
+
 					StemConcept rootStemConcept = stemConceptMap.get(match.getConcept().getKeyId());
 					stemConceptTable.setTermsIntersection(termsIntersection);
 					stemConceptTable.setStemTree(rootStemConcept);
-					
+
 					StemMethod rootStemMethod = stemMethodMap.get(match.getSourceMethod().getKeyId());
 					stemMethodTable.setTermsIntersection(termsIntersection);
 					stemMethodTable.setStemTree(rootStemMethod);
 				}
 			}
 		});
+	}
 
-		methodTable.addDoubleClickListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
+	/**
+	 * Handle action generated by button.
+	 */
+	public void actionPerformed(ActionEvent e) {
 
-				SourceMethod method = methodTable.getSelectedValue();
+		if (e.getSource() == loadBtn) {
 
-				if (method != null && method.getFilename() != null) {
+			IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
 
-					if (rootSourceFolder == null) {
-						rootSourceFolder = SwingUtils.selectFolder(MatchingView.this, null);
+			methodTable.setSourceMethods(null);
+			matchTable.setMatchings(null);
+			stemConceptTable.setStemTree(null);
+			stemMethodTable.setStemTree(null);
+
+			if (matcher != null) {
+
+				SwingUtils.invokeLongOperation(MatchingView.this, new Runnable() {
+					@Override
+					public void run() {
+
+						// Retrieve method-concept matchings
+						matchMap = appManager.getMethodMatchingMap(project, matcher);
+
+						// Initialize method table
+						methodTable.setSourceMethods(sourceMethods);
+
+						// Enable export button
+						exportBtn.setEnabled(true);
 					}
-					
-					SwingUtils.openFile(rootSourceFolder, method.getFilename());
-				}
+				});
 			}
-		});
+		}
+		else if (e.getSource() == exportBtn) {
+			appManager.exportMatchings(MatchingView.this, matchMap);
+		}
+		
+		methodTable.requestFocus();
 	}
 }

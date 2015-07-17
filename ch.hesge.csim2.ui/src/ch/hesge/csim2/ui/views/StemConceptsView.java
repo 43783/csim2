@@ -8,21 +8,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.StemConcept;
-import ch.hesge.csim2.ui.comp.ConceptTree;
-import ch.hesge.csim2.ui.comp.StemConceptTable;
-import ch.hesge.csim2.ui.model.ApplicationManager;
+import ch.hesge.csim2.ui.table.StemConceptTable;
+import ch.hesge.csim2.ui.tree.ConceptTree;
+import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class StemConceptsView extends JPanel {
 
 	// Private attribute
-	private ApplicationManager appManager;
 	private ConceptTree conceptTree;
 	private StemConceptTable stemTable;
 
@@ -33,7 +30,6 @@ public class StemConceptsView extends JPanel {
 	 * Default constructor.
 	 */
 	public StemConceptsView(List<Concept> concepts, Map<Integer, StemConcept> stemTree) {
-		this.appManager = ApplicationManager.UNIQUE_INSTANCE;
 		this.concepts = concepts;
 		this.stemTree = stemTree;
 		initComponent();
@@ -60,7 +56,7 @@ public class StemConceptsView extends JPanel {
 		splitPanel1.setLeftComponent(scrollPane1);
 
 		// Initialize stem table
-		stemTable = new StemConceptTable(appManager);
+		stemTable = new StemConceptTable();
 		stemTable.setFillsViewportHeight(true);
 		stemTable.setFocusable(true);
 		JScrollPane scrollPane2 = new JScrollPane();
@@ -76,24 +72,33 @@ public class StemConceptsView extends JPanel {
 	private void initListeners() {
 
 		// Set focus when visible
-		SwingUtils.setFocusWhenVisible(conceptTree);
-
-		// Add tree listener
-		conceptTree.addTreeSelectionListener(new TreeSelectionListener() {
+		SwingUtils.onComponentVisible(this, new SimpleAction<Object>() {
 			@Override
-			public void valueChanged(TreeSelectionEvent e) {
+			public void run(Object o) {
+				conceptTree.requestFocus();
+			}
+		});
 
-				Object userObject = ((DefaultMutableTreeNode) e.getPath().getLastPathComponent()).getUserObject();
+		// Listen to tree selection
+		SwingUtils.onTreeSelection(conceptTree, new SimpleAction<TreeSelectionEvent>() {
+			@Override
+			public void run(TreeSelectionEvent e) {
 
-				if (userObject instanceof Concept) {
+				// Retrieve current user object
+				Object userObject = SwingUtils.getTreeUserObject(e.getPath());
+				
+				if (userObject != null) {
+					
+					if (userObject instanceof Concept) {
 
-					// Update current stem list
-					Concept concept = (Concept) userObject;
-					StemConcept stemConceptTree = stemTree.get(concept.getKeyId());
-					stemTable.setStemTree(stemConceptTree);
-				}
-				else {
-					stemTable.setStemTree(null);
+						// Update current stem list
+						Concept concept = (Concept) userObject;
+						StemConcept stemConceptTree = stemTree.get(concept.getKeyId());
+						stemTable.setStemTree(stemConceptTree);
+					}
+					else {
+						stemTable.setStemTree(null);
+					}
 				}
 			}
 		});
