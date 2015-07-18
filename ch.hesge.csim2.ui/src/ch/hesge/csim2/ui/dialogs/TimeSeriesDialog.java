@@ -482,10 +482,13 @@ public class TimeSeriesDialog extends JDialog implements ActionListener, ChangeL
 		}
 		else if (e.getSource() == btnReset) {
 			
-			setShowLegend(false);
-			setThreshold(TimeSeriesView.DEFAULT_THRESHOLD);
-			setSegmentCount(TimeSeriesView.DEFAULT_SEGMENT_COUNT);
-			setSelectedConcepts(new ArrayList<>());
+			isShowLegend = showLegendCheckbox.isSelected();
+			threshold = TimeSeriesView.DEFAULT_THRESHOLD;
+			segmentCount = TimeSeriesView.DEFAULT_SEGMENT_COUNT;
+			conceptTable.getSelectedConcepts().clear();
+			
+			dialogResult = true;
+			this.setVisible(false);
 		}
 	}
 }

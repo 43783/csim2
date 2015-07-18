@@ -361,7 +361,7 @@ public class ApplicationManager {
 	 * Create a segmented time series.
 	 */
 	public TimeSeries getFilteredTimeSeries(TimeSeries timeSeries, int segmentCount, double threshold, List<Concept> concepts) {
-		return applicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
+		return applicationLogic.getFilteredTimeSeries(timeSeries, segmentCount, threshold, concepts);
 	}
 
 	/**
