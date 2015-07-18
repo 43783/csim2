@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -50,15 +49,15 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 	private TimeSeries filteredSeries;
 	private int segmentCount;
 	private double threshold;
-	private boolean showLegend;
+	private boolean isLegendVisible;
 
 	private ScenarioComboBox scenarioComboBox;
 	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
-	public static int DEFAULT_SEGMENT_COUNT = 50;
-	public static double DEFAULT_THRESHOLD = 0.4d;
+	public static int DEFAULT_SEGMENT_COUNT = 200;
+	public static double DEFAULT_THRESHOLD  = 0.3d;
 
 	/**
 	 * Default constructor.
@@ -70,7 +69,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		this.scenarios = appManager.getScenarios(project);
 		this.segmentCount = DEFAULT_SEGMENT_COUNT;
 		this.threshold = DEFAULT_THRESHOLD;
-		this.showLegend = false;
+		this.isLegendVisible = false;
 		
 		initComponent();
 	}
@@ -193,7 +192,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		newChartPanel.setInitialDelay(0); // tooltip delay
 		newChartPanel.restoreAutoBounds();
 
-		if (!showLegend) {
+		if (!isLegendVisible) {
 			newChartPanel.getChart().removeLegend();
 		}
 		
@@ -235,25 +234,22 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 					@Override
 					public void run() {
 
-						// Retrieve timeseries associated to current scenario
+						// Retrieve timeseries associated to the current scenario
 						timeSeries = appManager.getTimeSeries(project, scenario, matcher);
 
-						// Reset current settings
-						segmentCount = DEFAULT_SEGMENT_COUNT;
-						threshold = DEFAULT_THRESHOLD;
-
 						// Extract segmented information
-						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
+						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, DEFAULT_SEGMENT_COUNT, DEFAULT_THRESHOLD, null);
 
-						// Update view attributes
-						selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
-						settingsBtn.setEnabled(true);
+						// Keep concepts found, for future use in dialog
+						selectedConcepts = filteredSeries.getTraceConcepts();
+						
+						// Initialize chart
 						initChartPanel();
+						settingsBtn.setEnabled(true);
+						loadBtn.requestFocus();
 					}
 				});
-			}
-			
-			loadBtn.requestFocus();
+			}			
 		}
 		else if (e.getSource() == settingsBtn) {
 
@@ -265,14 +261,14 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 			dialog.setThreshold(threshold);
 			dialog.setSegmentCount(segmentCount);
 			dialog.setSelectedConcepts(selectedConcepts);
-			dialog.setShowLegend(showLegend);
+			dialog.setShowLegend(isLegendVisible);
 			dialog.setVisible(true);
 
 			// Refresh view with new parameters
 			if (dialog.getDialogResult()) {
 
 				segmentCount = dialog.getSegmentCount();
-				showLegend = dialog.isShowLegend();
+				isLegendVisible = dialog.isShowLegend();
 
 				// If threshold has changed, we need all concepts
 				if (threshold != dialog.getThreshold()) {
@@ -290,14 +286,15 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						// Retrieve filtered timeseries 
 						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, segmentCount, threshold, selectedConcepts);
 
-						// Update view attributes
-						selectedConcepts = new ArrayList<>(filteredSeries.getTraceConcepts());
+						// Keep concepts found, for future use in dialog
+						selectedConcepts = filteredSeries.getTraceConcepts();
+
+						// Initialize chart
 						initChartPanel();
+						settingsBtn.requestFocus();
 					}
 				});
 			}
-			
-			settingsBtn.requestFocus();
 		}
 	}
 }
