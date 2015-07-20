@@ -112,7 +112,7 @@ class MatchingLogic {
 				writer.flush();
 				writer.close();
 			}
-			catch (IOException e) {
+			catch (Exception e) {
 
 				if (writer != null) {
 					try {
@@ -123,7 +123,7 @@ class MatchingLogic {
 					}
 				}
 				
-				Console.writeError(MatchingLogic.class, StringUtils.toString(e));
+				Console.writeError(MatchingLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
 			}
 		}
 	}

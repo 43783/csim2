@@ -299,7 +299,7 @@ public class MatchingView extends JPanel implements ActionListener {
 			}
 		}
 		else if (e.getSource() == exportBtn) {
-			appManager.exportMatchings(MatchingView.this, matchMap);
+			appManager.exportMatchings(matchMap);
 		}
 		
 		methodTable.requestFocus();

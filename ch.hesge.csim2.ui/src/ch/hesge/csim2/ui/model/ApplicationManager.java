@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -638,6 +637,48 @@ public class ApplicationManager {
 	}
 
 	/**
+	 * Export an ontology as a Turtle file.
+	 * 
+	 * @param ontology
+	 *        the ontology to export
+	 */
+	public void exportOntology(Ontology ontology) {
+
+		String filename = SwingUtils.selectSaveFile(mainView, null);
+
+		if (filename != null) {
+
+			SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
+				@Override
+				public void run() {
+					applicationLogic.exportOntology(ontology, filename);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Import an ontology from a Turtle file.
+	 * 
+	 * @param ontology
+	 *        the ontology to populate with file content
+	 */
+	public void importOntology(Ontology ontology) {
+
+		String filename = SwingUtils.selectOpenFile(mainView, null);
+
+		if (filename != null) {
+
+			SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
+				@Override
+				public void run() {
+					applicationLogic.importOntology(ontology, filename);
+				}
+			});
+		}
+	}
+
+	/**
 	 * Save an ontology and its dependencies.
 	 * 
 	 * @param ontology
@@ -901,9 +942,9 @@ public class ApplicationManager {
 	/**
 	 * Export all matchings passed in argument in a CSV file.
 	 */
-	public void exportMatchings(JComponent view, Map<Integer, List<MethodConceptMatch>> matchMap) {
+	public void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap) {
 
-		String filename = SwingUtils.selectSaveFile(view, null);
+		String filename = SwingUtils.selectSaveFile(mainView, null);
 
 		if (filename != null) {
 

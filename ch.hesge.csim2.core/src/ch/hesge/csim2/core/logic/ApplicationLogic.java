@@ -1179,6 +1179,30 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Export an ontology as a Turtle file.
+	 * 
+	 * @param ontology
+	 *        the ontology to export
+	 * @param filename
+	 *        the name of the turtle file
+	 */
+	public void exportOntology(Ontology ontology, String filename) {
+		OntologyLogic.exportOntology(ontology, filename);
+	}
+
+	/**
+	 * Import an ontology from a Turtle file.
+	 * 
+	 * @param ontology
+	 *        the ontology to populate with file content
+	 * @param filename
+	 *        the name of the turtle file
+	 */
+	public void importOntology(Ontology ontology, String filename) {
+		OntologyLogic.importOntology(ontology, filename);
+	}
+
+	/**
 	 * Save an ontology and its concepts.
 	 * 
 	 * @param ontology

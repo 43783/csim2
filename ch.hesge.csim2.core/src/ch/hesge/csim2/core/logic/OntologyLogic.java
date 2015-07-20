@@ -5,6 +5,11 @@
 package ch.hesge.csim2.core.logic;
 
 import java.awt.Rectangle;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +26,16 @@ import ch.hesge.csim2.core.model.ConceptClass;
 import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
+import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
 import ch.hesge.csim2.core.utils.PersistanceUtils;
+import ch.hesge.csim2.core.utils.StringUtils;
+
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.n3.turtle.TurtleEventHandler;
+import com.hp.hpl.jena.n3.turtle.parser.TurtleParser;
 
 /**
  * This class implement all logical rules associated to ontology.
@@ -476,6 +489,269 @@ class OntologyLogic {
 				ConceptLinkDao.add(link);
 			}
 		}
+	}	
+	
+	/**
+	 * Export an ontology as a Turtle owl file.
+	 * 
+	 * @param ontology
+	 *        the ontology to export
+	 * @param filename
+	 *        the name of the turtle file
+	 */
+	public static void exportOntology(Ontology ontology, String filename) {
+		
+		if (ontology != null && filename != null) {
 
+			FileWriter writer = null;
+
+			try {
+
+				String ontologyUrl = "http://hesge.ch/project/csim2/" + ontology.getName().toLowerCase();
+
+				// Delete file, exists
+				if (FileUtils.exists(filename)) {
+					Files.delete(Paths.get(filename));
+				}
+				
+				// Create a new file
+				writer = new FileWriter(filename);
+				
+				// Generate file content
+				writer.append("@prefix owl: <http://www.w3.org/2002/07/owl#>.\n");
+				writer.append("@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.\n");
+				writer.append("@prefix xml: <http://www.w3.org/XML/1998/namespace>.\n");
+				writer.append("@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.\n");
+				writer.append("@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n");
+				writer.append("@prefix : <http://hesge.ch/project/csim2#>.\n");
+				writer.append("@base <http://hesge.ch/project/csim2#>.\n");
+
+				writer.append("\n#\n");
+				writer.append("# Classes\n");
+				writer.append("#\n");
+				
+				for (Concept concept : ontology.getConcepts()) {
+					
+					writer.append(":Class" + concept.getKeyId() + " a owl:Class; rdfs:label \"" + concept.getName() + "\".\n");
+
+					// Create an attribute for visual concept bounds
+					writer.append("   :attributeName" + concept.getKeyId() + " a owl:DatatypeProperty;\n");
+					writer.append("      rdfs:domain :Class" + concept.getKeyId() + ";\n");
+					writer.append("      rdfs:label \"" + concept.getName() + "Location\";\n");
+					writer.append("      rdfs:label \"" + concept.getBounds().x + "," + concept.getBounds().y + "," + concept.getBounds().width + "," + concept.getBounds().height + "\"@ie.\n");
+
+					// Save all classes
+					for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
+						
+						writer.append("   :attributeName" + conceptAttribute.getKeyId() + " a owl:DatatypeProperty;\n");
+						writer.append("      rdfs:domain :Class" + concept.getKeyId() + ";\n");
+						writer.append("      rdfs:label \"" + conceptAttribute.getName() + "\";\n");
+						writer.append("      rdfs:label \"" + conceptAttribute.getIdentifier() + "\"@ie.\n");
+					}
+
+					// Save all attributes
+					for (ConceptClass conceptClass : concept.getClasses()) {
+
+						writer.append("   :attributeClass" + conceptClass.getKeyId() + " a owl:DatatypeProperty;\n");
+						writer.append("      rdfs:domain :Class" + concept.getKeyId() + ";\n");
+						writer.append("      rdfs:label \"" + conceptClass.getName() + "\";\n");
+						writer.append("      rdfs:label \"" + conceptClass.getIdentifier() + "\"@ie.\n");
+					}
+					
+					writer.append("\n");
+				}
+				
+				writer.append("#\n");
+				writer.append("# Relations\n");
+				writer.append("#\n");
+				
+				int linkCount = 0;
+
+				// Save all links
+				for (Concept concept : ontology.getConcepts()) {
+					for (ConceptLink conceptLink : concept.getLinks()) {
+
+						writer.append(":relation" + linkCount + " a owl:ObjectProperty;\n");
+						writer.append("   rdfs:label \"" + conceptLink.getQualifier() + "\";\n");
+						writer.append("   rdfs:domain :Class" + conceptLink.getSourceId() + ";\n");
+						writer.append("   rdfs:range :Class" + conceptLink.getTargetId() + ".\n");
+						
+						linkCount++;
+					}
+				}
+				
+				writer.append("#\n");
+				writer.flush();
+				writer.close();
+			}
+			catch(Exception e)  {
+				
+				if (writer != null) {
+					try {
+						writer.flush();
+						writer.close();
+					}
+					catch (IOException e1) {
+						// Close silently
+					}
+				}
+				
+				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+			}
+		}
+	}
+	
+	/**
+	 * Import an ontology from a Turtle file.
+	 * 
+	 * @param ontology
+	 *        the ontology to populate with file content
+	 * @param filename
+	 *        the name of the turtle file
+	 */
+	public static void importOntology(Ontology ontology, String filename) {
+		
+		if (ontology != null && filename != null) {
+
+			FileReader reader = null;
+
+			try {
+			
+
+				// Create a parser for the turtle file
+				reader = new FileReader(filename);
+				TurtleParser parser = new TurtleParser(reader);
+
+				// Register the visitor
+				parser.setEventHandler(new TurtleEventHandler() {
+					
+					@Override
+					public void triple(int line, int col, Triple triple) {
+
+						//Check it's valid triple.
+				        Node subject   = triple.getSubject() ;
+				        Node predicate = triple.getPredicate() ;
+				        Node object    = triple.getObject() ;
+				        
+				        /*
+				        if ( ! ( s.isURI() || s.isBlank() ) )
+				            throw new TurtleParseException("["+line+", "+col+"] : Error: Subject is not a URI or blank node") ;
+				        if ( ! p.isURI() )
+				            throw new TurtleParseException("["+line+", "+col+"] : Error: Predicate is not a URI") ;
+				        if ( ! ( o.isURI() || o.isBlank() || o.isLiteral() ) ) 
+				            throw new TurtleParseException("["+line+", "+col+"] : Error: Object is not a URI, blank node or literal") ;
+				        */
+				        				        
+				        outputNode(subject) ;
+				        System.out.print(" ");
+				        outputNode(predicate) ;
+				        System.out.print(" ");
+				        outputNode(object) ;
+				        System.out.print(" .");
+				        System.out.println() ;
+				        System.out.flush() ;
+					}
+					
+					@Override
+					public void startFormula(int arg0, int arg1) {
+					}
+					
+					@Override
+					public void prefix(int arg0, int arg1, String arg2, String arg3) {
+					}
+					
+					@Override
+					public void endFormula(int arg0, int arg1) {
+					}
+					
+					private void outputNode(Node node)
+				    {
+				        if ( node.isURI() ) 
+				        { 
+				            System.out.print("<") ;
+				            System.out.print(node.getURI()) ;
+				            System.out.print(">") ;
+				            return ; 
+				        }
+				        if ( node.isBlank() )
+				        {
+				        	System.out.print("_:") ;
+				        	System.out.print(node.getBlankNodeLabel()) ;
+				            return ;
+				        }
+				        if ( node.isLiteral() )
+				        {
+				        	System.out.print('"') ;
+				        	outputEsc(node.getLiteralLexicalForm()) ;
+				        	System.out.print('"') ;
+
+				            if ( node.getLiteralLanguage() != null && node.getLiteralLanguage().length()>0)
+				            {
+				            	System.out.print('@') ;
+				            	System.out.print(node.getLiteralLanguage()) ;
+				            }
+
+				            if ( node.getLiteralDatatypeURI() != null )
+				            {
+				            	System.out.print("^^<") ;
+				            	System.out.print(node.getLiteralDatatypeURI()) ;
+				            	System.out.print(">") ;
+				            }
+				            return ; 
+				        }
+				        System.err.println("Illegal node: "+node) ;
+				    }
+					
+					public  void outputEsc(String s)
+				    {
+				        int len = s.length() ;
+				        for (int i = 0; i < len; i++) {
+				            char c = s.charAt(i);
+				            
+				            // Escape escapes and quotes
+				            if (c == '\\' || c == '"' ) 
+				            {
+				                System.out.print('\\') ;
+				                System.out.print(c) ;
+				            }
+				            else if (c == '\n') System.out.print("\\n");
+				            else if (c == '\t') System.out.print("\\t");
+				            else if (c == '\r') System.out.print("\\r");
+				            else if (c == '\f') System.out.print("\\f");
+				            else if ( c >= 32 && c < 127 )
+				            	System.out.print(c);
+				            else
+				            {
+				                // Unsubtle.  Does not cover beyond 16 bits codepoints 
+				                // which Java keeps as surrogate pairs and wil print as two \ u escapes. 
+				                String hexstr = Integer.toHexString(c).toUpperCase();
+				                int pad = 4 - hexstr.length();
+				                System.out.print("\\u");
+				                for (; pad > 0; pad--)
+				                	System.out.print("0");
+				                System.out.print(hexstr);
+				            }
+				        }
+				    }					
+					
+				});
+				
+			    parser.parse();
+			    reader.close();
+			}
+			catch (Exception e) {
+				
+				if (reader != null) {
+					try {
+						reader.close();
+					}
+					catch (IOException e1) {
+						// Close silently
+					}
+				}
+				
+				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+			}
+		}
 	}
 }

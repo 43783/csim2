@@ -36,6 +36,8 @@ public class OntologyView extends JPanel implements ActionListener {
 	private OntologyAnimator animator;
 	private JCheckBox btnDynamic;
 	private JButton btnShake;
+	private JButton btnExport;
+	private JButton btnImport;
 	private JButton btnSave;
 
 	/**
@@ -81,6 +83,16 @@ public class OntologyView extends JPanel implements ActionListener {
 		FlowLayout fl_leftPanel = (FlowLayout) leftPanel.getLayout();
 		fl_leftPanel.setAlignment(FlowLayout.LEFT);
 		btnPanel.add(leftPanel, BorderLayout.WEST);
+
+		btnExport = new JButton("Export");
+		btnExport.setPreferredSize(new Dimension(80, 25));
+		btnExport.addActionListener(this);
+		leftPanel.add(btnExport);
+
+		btnImport = new JButton("Import");
+		btnImport.setPreferredSize(new Dimension(80, 25));
+		btnImport.addActionListener(this);
+		leftPanel.add(btnImport);
 
 		btnSave = new JButton("Save");
 		btnSave.setPreferredSize(new Dimension(80, 25));
@@ -225,7 +237,13 @@ public class OntologyView extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == btnSave) {
+		if (e.getSource() == btnExport) {
+			appManager.exportOntology(ontology);
+		}
+		else if (e.getSource() == btnImport) {
+			appManager.importOntology(ontology);
+		}
+		else if (e.getSource() == btnSave) {
 			appManager.saveOntology(ontology);
 		}
 		else if (e.getSource() == btnShake) {
