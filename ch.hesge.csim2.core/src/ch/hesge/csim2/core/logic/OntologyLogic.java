@@ -616,7 +616,6 @@ class OntologyLogic {
 			FileReader reader = null;
 
 			try {
-			
 
 				// Create a parser for the turtle file
 				reader = new FileReader(filename);
@@ -628,28 +627,17 @@ class OntologyLogic {
 					@Override
 					public void triple(int line, int col, Triple triple) {
 
-						//Check it's valid triple.
-				        Node subject   = triple.getSubject() ;
-				        Node predicate = triple.getPredicate() ;
-				        Node object    = triple.getObject() ;
+						// Retrieve triplet
+				        Node subjectNode   = triple.getSubject();
+				        Node predicateNode = triple.getPredicate();
+				        Node objectNode    = triple.getObject();
 				        
-				        /*
-				        if ( ! ( s.isURI() || s.isBlank() ) )
-				            throw new TurtleParseException("["+line+", "+col+"] : Error: Subject is not a URI or blank node") ;
-				        if ( ! p.isURI() )
-				            throw new TurtleParseException("["+line+", "+col+"] : Error: Predicate is not a URI") ;
-				        if ( ! ( o.isURI() || o.isBlank() || o.isLiteral() ) ) 
-				            throw new TurtleParseException("["+line+", "+col+"] : Error: Object is not a URI, blank node or literal") ;
-				        */
-				        				        
-				        outputNode(subject) ;
-				        System.out.print(" ");
-				        outputNode(predicate) ;
-				        System.out.print(" ");
-				        outputNode(object) ;
-				        System.out.print(" .");
-				        System.out.println() ;
-				        System.out.flush() ;
+				        // Extract names
+				        String subject = subjectNode.getURI().substring(subjectNode.getURI().indexOf('#')+1);
+				        String predicate = predicateNode.getURI().substring(predicateNode.getURI().indexOf('#')+1);
+				        String object = objectNode.isURI() ? objectNode.getURI().substring(objectNode.getURI().indexOf('#')+1) : objectNode.getLiteral().getValue().toString();
+
+				        System.out.println(subject + " " + predicate + " " + object);
 					}
 					
 					@Override
@@ -663,77 +651,6 @@ class OntologyLogic {
 					@Override
 					public void endFormula(int arg0, int arg1) {
 					}
-					
-					private void outputNode(Node node)
-				    {
-				        if ( node.isURI() ) 
-				        { 
-				            System.out.print("<") ;
-				            System.out.print(node.getURI()) ;
-				            System.out.print(">") ;
-				            return ; 
-				        }
-				        if ( node.isBlank() )
-				        {
-				        	System.out.print("_:") ;
-				        	System.out.print(node.getBlankNodeLabel()) ;
-				            return ;
-				        }
-				        if ( node.isLiteral() )
-				        {
-				        	System.out.print('"') ;
-				        	outputEsc(node.getLiteralLexicalForm()) ;
-				        	System.out.print('"') ;
-
-				            if ( node.getLiteralLanguage() != null && node.getLiteralLanguage().length()>0)
-				            {
-				            	System.out.print('@') ;
-				            	System.out.print(node.getLiteralLanguage()) ;
-				            }
-
-				            if ( node.getLiteralDatatypeURI() != null )
-				            {
-				            	System.out.print("^^<") ;
-				            	System.out.print(node.getLiteralDatatypeURI()) ;
-				            	System.out.print(">") ;
-				            }
-				            return ; 
-				        }
-				        System.err.println("Illegal node: "+node) ;
-				    }
-					
-					public  void outputEsc(String s)
-				    {
-				        int len = s.length() ;
-				        for (int i = 0; i < len; i++) {
-				            char c = s.charAt(i);
-				            
-				            // Escape escapes and quotes
-				            if (c == '\\' || c == '"' ) 
-				            {
-				                System.out.print('\\') ;
-				                System.out.print(c) ;
-				            }
-				            else if (c == '\n') System.out.print("\\n");
-				            else if (c == '\t') System.out.print("\\t");
-				            else if (c == '\r') System.out.print("\\r");
-				            else if (c == '\f') System.out.print("\\f");
-				            else if ( c >= 32 && c < 127 )
-				            	System.out.print(c);
-				            else
-				            {
-				                // Unsubtle.  Does not cover beyond 16 bits codepoints 
-				                // which Java keeps as surrogate pairs and wil print as two \ u escapes. 
-				                String hexstr = Integer.toHexString(c).toUpperCase();
-				                int pad = 4 - hexstr.length();
-				                System.out.print("\\u");
-				                for (; pad > 0; pad--)
-				                	System.out.print("0");
-				                System.out.print(hexstr);
-				            }
-				        }
-				    }					
-					
 				});
 				
 			    parser.parse();
