@@ -5,9 +5,13 @@
 package ch.hesge.csim2.core.logic;
 
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -31,10 +35,8 @@ import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
 import ch.hesge.csim2.core.utils.PersistanceUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
+import ch.hesge.csim2.core.utils.TurtleConverter;
 
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.n3.turtle.TurtleEventHandler;
 import com.hp.hpl.jena.n3.turtle.parser.TurtleParser;
 
 /**
@@ -449,6 +451,9 @@ class OntologyLogic {
 	 */
 	public static void saveOntology(Ontology ontology) {
 		
+		// Delete current dependencies
+		deleteDependencies(ontology);
+
 		// Save the ontology
 		if (PersistanceUtils.isNewObject(ontology)) {
 			OntologyDao.add(ontology);
@@ -456,9 +461,6 @@ class OntologyLogic {
 		else {
 			OntologyDao.update(ontology);
 		}
-
-		// Delete current dependencies
-		deleteDependencies(ontology);
 
 		// Now, save all concepts and their attributes
 		for (Concept concept : ontology.getConcepts()) {
@@ -503,19 +505,18 @@ class OntologyLogic {
 		
 		if (ontology != null && filename != null) {
 
-			FileWriter writer = null;
+			FileOutputStream fileStream = null;
 
 			try {
-
-				String ontologyUrl = "http://hesge.ch/project/csim2/" + ontology.getName().toLowerCase();
 
 				// Delete file, exists
 				if (FileUtils.exists(filename)) {
 					Files.delete(Paths.get(filename));
 				}
 				
-				// Create a new file
-				writer = new FileWriter(filename);
+				// Create a file writer (UTF8 support)
+				fileStream = new FileOutputStream(new File(filename));
+				OutputStreamWriter writer = new OutputStreamWriter(fileStream, "UTF-8");
 				
 				// Generate file content
 				writer.append("@prefix owl: <http://www.w3.org/2002/07/owl#>.\n");
@@ -586,10 +587,10 @@ class OntologyLogic {
 			}
 			catch(Exception e)  {
 				
-				if (writer != null) {
+				if (fileStream != null) {
 					try {
-						writer.flush();
-						writer.close();
+						fileStream.flush();
+						fileStream.close();
 					}
 					catch (IOException e1) {
 						// Close silently
@@ -613,61 +614,41 @@ class OntologyLogic {
 		
 		if (ontology != null && filename != null) {
 
-			FileReader reader = null;
+			FileInputStream fileStream = null;
 
 			try {
 
-				// Create a parser for the turtle file
-				reader = new FileReader(filename);
-				TurtleParser parser = new TurtleParser(reader);
-
-				// Register the visitor
-				parser.setEventHandler(new TurtleEventHandler() {
-					
-					@Override
-					public void triple(int line, int col, Triple triple) {
-
-						// Retrieve triplet
-				        Node subjectNode   = triple.getSubject();
-				        Node predicateNode = triple.getPredicate();
-				        Node objectNode    = triple.getObject();
-				        
-				        // Extract names
-				        String subject = subjectNode.getURI().substring(subjectNode.getURI().indexOf('#')+1);
-				        String predicate = predicateNode.getURI().substring(predicateNode.getURI().indexOf('#')+1);
-				        String object = objectNode.isURI() ? objectNode.getURI().substring(objectNode.getURI().indexOf('#')+1) : objectNode.getLiteral().getValue().toString();
-
-				        System.out.println(subject + " " + predicate + " " + object);
-					}
-					
-					@Override
-					public void startFormula(int arg0, int arg1) {
-					}
-					
-					@Override
-					public void prefix(int arg0, int arg1, String arg2, String arg3) {
-					}
-					
-					@Override
-					public void endFormula(int arg0, int arg1) {
-					}
-				});
+				// Create a file reader (UTF8 support)
+				fileStream = new FileInputStream(new File(filename));
+				InputStreamReader reader = new InputStreamReader(fileStream, "UTF-8");
 				
+				// Parse the turtle file
+				TurtleConverter turtleConverter = new TurtleConverter(true);
+				TurtleParser parser = new TurtleParser(reader);
+				parser.setEventHandler(turtleConverter);
 			    parser.parse();
 			    reader.close();
+			    			    
+			    // Retrieve all concepts found
+			    List<Concept> concepts = turtleConverter.getConcepts();
+			    
+			    // Now save the ontology with the concepts
+			    ontology.getConcepts().clear();
+			    ontology.getConcepts().addAll(concepts);
+			    saveOntology(ontology);
 			}
-			catch (Exception e) {
+			catch (Throwable t) {
 				
-				if (reader != null) {
+				if (fileStream != null) {
 					try {
-						reader.close();
+						fileStream.close();
 					}
 					catch (IOException e1) {
 						// Close silently
 					}
 				}
 				
-				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(t));
 			}
 		}
 	}
