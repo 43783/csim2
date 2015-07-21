@@ -36,6 +36,7 @@ public class TurtleConverter {
 	private Map<String, ConceptAttribute> attributeMap;
 	private Map<String, ConceptClass> classMap;
 	private Map<String, ConceptLink> relationMap;
+	private Map<String, Concept> instanceMap;
 	
 	/**
 	 * Default constructor
@@ -48,6 +49,7 @@ public class TurtleConverter {
 		this.attributeMap = new HashMap<>();
 		this.classMap = new HashMap<>();
 		this.relationMap = new HashMap<>();
+		this.instanceMap = new HashMap<>();
 	}
 	
 	/**
@@ -310,6 +312,8 @@ public class TurtleConverter {
 			else if (object.equals("ObjectProperty") && !relationMap.containsKey(subject)) {
 				relationMap.put(subject, new ConceptLink());
 			}
+			
+			// :instance0 a :Class5946, owl:NamedIndividual; rdfs:label "cat".
 		}
 
 		else if (predicate.equals("domain")) {
