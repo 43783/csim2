@@ -36,8 +36,6 @@ import ch.hesge.csim2.core.utils.PersistanceUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.core.utils.TurtleConverter;
 
-import com.hp.hpl.jena.n3.turtle.parser.TurtleParser;
-
 /**
  * This class implement all logical rules associated to ontology.
  *
@@ -517,70 +515,10 @@ class OntologyLogic {
 				fileStream = new FileOutputStream(new File(filename));
 				OutputStreamWriter writer = new OutputStreamWriter(fileStream, "UTF-8");
 				
-				// Generate file content
-				writer.append("@prefix owl: <http://www.w3.org/2002/07/owl#>.\n");
-				writer.append("@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.\n");
-				writer.append("@prefix xml: <http://www.w3.org/XML/1998/namespace>.\n");
-				writer.append("@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.\n");
-				writer.append("@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n");
-				writer.append("@prefix : <http://hesge.ch/project/csim2#>.\n");
-				writer.append("@base <http://hesge.ch/project/csim2#>.\n");
+				// Generate the turtle file
+				TurtleConverter emitter = new TurtleConverter(true);
+				emitter.generate(writer, ontology.getConcepts());
 
-				writer.append("\n#\n");
-				writer.append("# Classes\n");
-				writer.append("#\n");
-				
-				for (Concept concept : ontology.getConcepts()) {
-					
-					writer.append(":Class" + concept.getKeyId() + " a owl:Class; rdfs:label \"" + concept.getName() + "\".\n");
-
-					// Create an attribute for visual concept bounds
-					writer.append("   :attributeName" + concept.getKeyId() + " a owl:DatatypeProperty;\n");
-					writer.append("      rdfs:domain :Class" + concept.getKeyId() + ";\n");
-					writer.append("      rdfs:label \"" + concept.getName() + "Location\";\n");
-					writer.append("      rdfs:label \"" + concept.getBounds().x + "," + concept.getBounds().y + "," + concept.getBounds().width + "," + concept.getBounds().height + "\"@ie.\n");
-
-					// Save all classes
-					for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
-						
-						writer.append("   :attributeName" + conceptAttribute.getKeyId() + " a owl:DatatypeProperty;\n");
-						writer.append("      rdfs:domain :Class" + concept.getKeyId() + ";\n");
-						writer.append("      rdfs:label \"" + conceptAttribute.getName() + "\";\n");
-						writer.append("      rdfs:label \"" + conceptAttribute.getIdentifier() + "\"@ie.\n");
-					}
-
-					// Save all attributes
-					for (ConceptClass conceptClass : concept.getClasses()) {
-
-						writer.append("   :attributeClass" + conceptClass.getKeyId() + " a owl:DatatypeProperty;\n");
-						writer.append("      rdfs:domain :Class" + concept.getKeyId() + ";\n");
-						writer.append("      rdfs:label \"" + conceptClass.getName() + "\";\n");
-						writer.append("      rdfs:label \"" + conceptClass.getIdentifier() + "\"@ie.\n");
-					}
-					
-					writer.append("\n");
-				}
-				
-				writer.append("#\n");
-				writer.append("# Relations\n");
-				writer.append("#\n");
-				
-				int linkCount = 0;
-
-				// Save all links
-				for (Concept concept : ontology.getConcepts()) {
-					for (ConceptLink conceptLink : concept.getLinks()) {
-
-						writer.append(":relation" + linkCount + " a owl:ObjectProperty;\n");
-						writer.append("   rdfs:label \"" + conceptLink.getQualifier() + "\";\n");
-						writer.append("   rdfs:domain :Class" + conceptLink.getSourceId() + ";\n");
-						writer.append("   rdfs:range :Class" + conceptLink.getTargetId() + ".\n");
-						
-						linkCount++;
-					}
-				}
-				
-				writer.append("#\n");
 				writer.flush();
 				writer.close();
 			}
@@ -622,14 +560,12 @@ class OntologyLogic {
 				InputStreamReader reader = new InputStreamReader(fileStream, "UTF-8");
 				
 				// Parse the turtle file
-				TurtleConverter turtleConverter = new TurtleConverter(true);
-				TurtleParser parser = new TurtleParser(reader);
-				parser.setEventHandler(turtleConverter);
-			    parser.parse();
+				TurtleConverter parser = new TurtleConverter(true);
+			    parser.parse(reader);
 			    reader.close();
 			    			    
 			    // Retrieve all concepts found
-			    List<Concept> concepts = turtleConverter.getConcepts();
+			    List<Concept> concepts = parser.getConcepts();
 			    
 			    // Now save the ontology with the concepts
 			    ontology.getConcepts().clear();

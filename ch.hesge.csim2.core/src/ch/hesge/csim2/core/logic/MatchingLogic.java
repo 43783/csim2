@@ -4,8 +4,10 @@
  */
 package ch.hesge.csim2.core.logic;
 
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ class MatchingLogic {
 
 		if (matchMap != null && filename != null) {
 
-			FileWriter writer = null;
+			FileOutputStream fileStream = null;
 
 			try {
 
@@ -86,7 +88,11 @@ class MatchingLogic {
 				}
 				
 				String fieldSeparator = ";";
-				writer = new FileWriter(filename);
+
+				// Create a file writer (UTF8 support)
+				fileStream = new FileOutputStream(new File(filename));
+				OutputStreamWriter writer = new OutputStreamWriter(fileStream, "UTF-8");				
+				
 				writer.append("Class" + fieldSeparator + "Method" + fieldSeparator + "Concept" + fieldSeparator + "Weight" + fieldSeparator + "Validated" + fieldSeparator + "Stems\n");
 
 				for (Integer matchKey : matchMap.keySet()) {
@@ -114,9 +120,9 @@ class MatchingLogic {
 			}
 			catch (Exception e) {
 
-				if (writer != null) {
+				if (fileStream != null) {
 					try {
-						writer.close();
+						fileStream.close();
 					}
 					catch (IOException e1) {
 						// Close silently
