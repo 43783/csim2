@@ -72,6 +72,7 @@
 		<ant antfile="../ch.hesge.csim2.matcher.wtfidfmatcher/build.xml"       dir="../ch.hesge.csim2.matcher.wtfidfmatcher" />
 		<ant antfile="../ch.hesge.csim2.matcher.sourcematcher/build.xml"       dir="../ch.hesge.csim2.matcher.sourcematcher" />
 		<ant antfile="../ch.hesge.csim2.matcher.jaccardmatcher/build.xml"      dir="../ch.hesge.csim2.matcher.jaccardmatcher" />
+		<ant antfile="../ch.hesge.csim2.matcher.levenshteinmatcher/build.xml"  dir="../ch.hesge.csim2.matcher.levenshteinmatcher" />
 	</target>
 
 	<!-- distribution -->
