@@ -137,12 +137,6 @@ public class ApplicationLogic {
 
 		Properties properties = application.getProperties();
 
-		/*
-		// Configuration log4j configuration
-		String log4jConfigPath = "conf/log4j2.xml";
-		System.setProperty("log4j.configurationFile", log4jConfigPath);
-		*/		
-
 		Console.writeDebug(ApplicationLogic.class, "initializing application properties.");
 
 		// Load properties from environment variables
@@ -172,16 +166,6 @@ public class ApplicationLogic {
 		catch (IOException e) {
 			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + e.toString());
 		}
-
-		/*
-		// Retrieve ehcache configuration
-		String ehConfigPath = "conf/ehcache.conf";
-		Configuration config = ConfigurationFactory.parseConfiguration(new File("conf/ehcache.xml"));
-		CacheManager cacheManager = CacheManager.create(config);
-		APPCACHE = cacheManager.getCache("csim2");
-
-		Console.writeDebug(ApplicationLogic.class, "loading ehcache configuration from " + ehConfigPath + ".");
-		*/
 	}
 
 	/**
