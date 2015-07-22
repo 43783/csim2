@@ -221,6 +221,8 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 		if (e.getSource() == loadBtn) {
 			
+			threshold    = DEFAULT_THRESHOLD;
+			segmentCount = DEFAULT_SEGMENT_COUNT;
 			Scenario scenario = (Scenario) scenarioComboBox.getSelectedItem();
 			IMethodConceptMatcher matcher = (IMethodConceptMatcher) matcherComboBox.getSelectedItem();
 
@@ -238,7 +240,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 						timeSeries = appManager.getTimeSeries(project, scenario, matcher);
 
 						// Extract segmented information
-						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, DEFAULT_SEGMENT_COUNT, DEFAULT_THRESHOLD, null);
+						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);
 
 						// Keep concepts found, for future use in dialog
 						selectedConcepts = filteredSeries.getTraceConcepts();

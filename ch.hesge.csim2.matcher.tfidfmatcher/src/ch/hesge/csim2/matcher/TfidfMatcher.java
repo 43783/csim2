@@ -150,12 +150,12 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 			}
 		}
 
-		// Now build a map of concept matching, classified by method id
 		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
 
+		// Now, aggregate all matchings by method
 		for (MethodConceptMatch match : matchings) {
 
-			// Create an associated array if missing
+			// Create an method list if not already initialized
 			if (!matchingMap.containsKey(match.getSourceMethod().getKeyId())) {
 				matchingMap.put(match.getSourceMethod().getKeyId(), new ArrayList<>());
 			}
