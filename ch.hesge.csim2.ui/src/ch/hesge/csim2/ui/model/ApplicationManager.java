@@ -208,8 +208,11 @@ public class ApplicationManager {
 					 application.getProperties().setProperty("rootSourcePath", rootPath);
 				}
 			}
-			
-			SwingUtils.openFile(rootPath, method.getFilename());
+
+			// Try to open the file
+			if (!SwingUtils.openFile(rootPath, method.getFilename())) {
+				showMessage("Warning", "Unable to find file: " + method.getFilename(), JOptionPane.OK_OPTION);
+			}
 		}
 	}
 
@@ -289,6 +292,13 @@ public class ApplicationManager {
 	 */
 	public List<Trace> getTraces(Scenario scenario) {
 		return applicationLogic.getTraces(scenario);
+	}
+
+	/**
+	 * Retrieve all traces owned by a scenario as a hierarchy.
+	 */
+	public Trace getTraceTree(Scenario scenario) {
+		return applicationLogic.getTraceTree(scenario);
 	}
 
 	/**

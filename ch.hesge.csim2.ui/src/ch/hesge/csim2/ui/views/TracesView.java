@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TreeSelectionEvent;
 
 import ch.hesge.csim2.core.model.IMethodConceptMatcher;
 import ch.hesge.csim2.core.model.MethodConceptMatch;
@@ -28,7 +28,7 @@ import ch.hesge.csim2.ui.combo.ScenarioComboBox;
 import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.popup.MethodPopup;
 import ch.hesge.csim2.ui.table.MatchingTable;
-import ch.hesge.csim2.ui.table.TraceTable;
+import ch.hesge.csim2.ui.tree.TraceTree;
 import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
@@ -39,7 +39,6 @@ public class TracesView extends JPanel implements ActionListener {
 	private Project project;
 	private ApplicationManager appManager;
 	private List<Scenario> scenarios;
-	private List<Trace> traces;
 	private Map<Integer, SourceMethod> methodMap;
 	private Map<Integer, List<MethodConceptMatch>> matchMap;
 
@@ -51,7 +50,7 @@ public class TracesView extends JPanel implements ActionListener {
 	private MatcherComboBox matcherComboBox;
 	private JButton loadBtn;
 	private JSplitPane splitPane;
-	private TraceTable traceTable;
+	private TraceTree traceTree;
 	private MatchingTable matchTable;
 
 	/**
@@ -85,7 +84,7 @@ public class TracesView extends JPanel implements ActionListener {
 		this.add(mainPanel, BorderLayout.CENTER);
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.7);
+		splitPane.setResizeWeight(0.5);
 		mainPanel.add(splitPane, BorderLayout.CENTER);
 
 		// Create the scenario selection panel
@@ -121,19 +120,19 @@ public class TracesView extends JPanel implements ActionListener {
 		splitPane.setRightComponent(conceptPanel);
 		conceptPanel.setLayout(new BorderLayout(0, 0));
 
-		// Create trace table
-		traceTable = new TraceTable();
-		traceTable.setFillsViewportHeight(true);
-		JScrollPane scrollPane1 = new JScrollPane();
-		scrollPane1.setViewportView(traceTable);
-		methodPanel.add(scrollPane1, BorderLayout.CENTER);
-
+		// Create trace tree
+		traceTree = new TraceTree();
+		traceTree.setPreferredSize(new Dimension(500, 500));
+		JScrollPane scrollPane2 = new JScrollPane();
+		scrollPane2.setViewportView(traceTree);
+		methodPanel.add(scrollPane2, BorderLayout.CENTER);
+		
 		// Create match table
 		matchTable = new MatchingTable();
 		matchTable.setFillsViewportHeight(true);
-		JScrollPane scrollPane2 = new JScrollPane();
-		scrollPane2.setViewportView(matchTable);
-		conceptPanel.add(scrollPane2, BorderLayout.CENTER);
+		JScrollPane scrollPane3 = new JScrollPane();
+		scrollPane3.setViewportView(matchTable);
+		conceptPanel.add(scrollPane3, BorderLayout.CENTER);
 
 		initListeners();
 	}
@@ -152,17 +151,23 @@ public class TracesView extends JPanel implements ActionListener {
 		});
 
 		// Listen to selection
-		SwingUtils.onTableSelection(traceTable, new SimpleAction<ListSelectionEvent>() {
+		SwingUtils.onTreeSelection(traceTree, new SimpleAction<TreeSelectionEvent>() {
 			@Override
-			public void run(ListSelectionEvent e) {
+			public void run(TreeSelectionEvent e) {
 
-				// Retrieve selected trace
-				Trace trace = traceTable.getSelectedObject();
+				// Retrieve current user object
+				Object userObject = SwingUtils.getTreeUserObject(e.getPath());
+				
+				if (userObject != null && userObject instanceof Trace) {
+					
+					// Retrieve selected trace
+					Trace trace = (Trace) userObject;
 
-				// Retrieve the matching list
-				if (trace != null) {
-					List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
-					matchTable.setMatchings(matchings);
+					// Retrieve its matching list
+					if (trace != null) {
+						List<MethodConceptMatch> matchings = matchMap.get(trace.getMethodId());
+						matchTable.setMatchings(matchings);
+					}
 				}
 				else {
 					matchTable.setMatchings(null);
@@ -171,16 +176,18 @@ public class TracesView extends JPanel implements ActionListener {
 		});
 		
 		// Listen to right-click
-		SwingUtils.onTableRightClick(traceTable, new SimpleAction<MouseEvent>() {
+		SwingUtils.onTreeRightClick(traceTree, new SimpleAction<MouseEvent>() {
 			@Override
 			public void run(MouseEvent e) {
 				
-				// Retrieve selected trace
-				Trace trace = traceTable.getSelectedObject();
+				// Retrieve current user object
+				Object userObject = SwingUtils.getTreeUserObject(traceTree, e.getX(), e.getY());
 				
-				// Retrieve trace method
-				if (trace != null) {
+				if (userObject != null && userObject instanceof Trace) {
 					
+					// Retrieve selected trace
+					Trace trace = (Trace) userObject;
+
 					SourceMethod method = methodMap.get(trace.getMethodId());
 					
 					if (method != null) {
@@ -211,22 +218,20 @@ public class TracesView extends JPanel implements ActionListener {
 					@Override
 					public void run() {
 
-						// Retrieve method-concept matchings
+						// Retrieve matching for trace selection
 						matchMap = matcher.getMethodMatchingMap(project);
 						
-						// Retrieve required trace list for current scenario
-						traces = appManager.getTraces(scenario);
-
-						// Initialize trace table
-						traceTable.setTraces(traces);
+						// Retrieve scenario trace and update trace tree
+						Trace traceRoot = appManager.getTraceTree(scenario);
+						traceTree.setTraceRoot(traceRoot);
 					}
 				});
 			}
 			else {
-				traceTable.setTraces(null);
+				traceTree.setTraceRoot(null);
 			}
 		}
 		
-		traceTable.requestFocus();
+		traceTree.requestFocus();
 	}
 }

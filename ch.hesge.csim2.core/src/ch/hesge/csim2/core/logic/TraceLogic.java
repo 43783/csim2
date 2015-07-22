@@ -26,9 +26,8 @@ class TraceLogic {
 	 */
 	public static List<Trace> getTraces(Scenario scenario) {
 		
+		int level = -1;
 		List<Trace> traces = new ArrayList<>();
-		
-		long level = -1;
 		
 		for (Trace trace : TraceDao.findByScenario(scenario)) {
 			
@@ -44,6 +43,50 @@ class TraceLogic {
 		return traces;
 	}
 
+	/**
+	 * Retrieve all traces owned by a scenario as a hierarchy.
+	 * 
+	 * @param scenario
+	 * @return an instance of the root trace
+	 */
+	public static Trace getTraceTree(Scenario scenario) {
+		
+		int level = -1;
+		Trace root = null;
+		Trace currentTrace = null;
+
+		// Scan all trace entering/exiting
+		for (Trace trace : TraceDao.findByScenario(scenario)) {
+			
+			if (trace.isEnteringTrace()) {
+				
+				level++;
+
+				// Keep root reference to return
+				if (currentTrace == null) {
+					root = trace;
+					currentTrace = trace;
+				}
+				else {
+					
+					// Update child and define as current element
+					currentTrace.getChildren().add(trace);
+					trace.setParent(currentTrace);
+					trace.setLevel(level);
+					currentTrace = trace;
+				}
+			}
+			else {
+				
+				// Restore previous element in stack
+				level--;
+				currentTrace = currentTrace.getParent();
+			}
+		}
+		
+		return root;
+	}
+	
 	/**
 	 * Delete all traces owned by a scenario.
 	 * 

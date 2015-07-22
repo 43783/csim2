@@ -93,18 +93,17 @@ public class StemConceptsView extends JPanel {
 				// Retrieve current user object
 				Object userObject = SwingUtils.getTreeUserObject(e.getPath());
 				
-				if (userObject != null) {
+				if (userObject != null && userObject instanceof Concept) {
 					
-					if (userObject instanceof Concept) {
-
-						// Update current stem list
-						Concept concept = (Concept) userObject;
-						StemConcept stemConceptTree = stemTree.get(concept.getKeyId());
-						stemTable.setStemTree(stemConceptTree);
-					}
-					else {
-						stemTable.setStemTree(null);
-					}
+					// Retrieve selected concept
+					Concept concept = (Concept) userObject;
+					
+					// Update current stem list
+					StemConcept stemConceptTree = stemTree.get(concept.getKeyId());
+					stemTable.setStemTree(stemConceptTree);
+				}
+				else {
+					stemTable.setStemTree(null);
 				}
 			}
 		});

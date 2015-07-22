@@ -22,6 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -803,29 +805,41 @@ public class SwingUtils {
 	 * @param filename
 	 *        the filename to open
 	 */
-	public static void openFile(String rootFolder, String filename) {
+	public static boolean openFile(String rootFolder, String filename) {
 
+		final List<Path> pathFound = new ArrayList<>();
+		
 		if (rootFolder != null) {
-
+			
 			try {
+				
+				// Scan file system for filename
 				Files.walkFileTree(Paths.get(rootFolder), new SimpleFileVisitor<Path>() {
 
 					@Override
 					public FileVisitResult visitFile(Path filepath, BasicFileAttributes attrs) throws IOException {
 
-						String fileFound = filepath.getFileName().toString().toLowerCase();
+						String visitedName = filepath.getFileName().toString().toLowerCase();
 
-						if (fileFound.equals(filename.toLowerCase())) {
-							Desktop.getDesktop().open(filepath.toFile());
+						if (visitedName.equals(filename.toLowerCase())) {
+							pathFound.add(filepath);
 						}
 
 						return FileVisitResult.CONTINUE;
 					}
 				});
+				
+				// If a file has been found, try to open it
+				if (!pathFound.isEmpty()) {
+					Desktop.getDesktop().open(pathFound.get(0).toFile());
+				}
+				
 			}
 			catch (IOException e1) {
 				Console.writeError(SwingUtils.class, "error while scanning file: '" + filename + "', error = " + StringUtils.toString(e1));
 			}
 		}
+		
+		return !pathFound.isEmpty();
 	}
 }
