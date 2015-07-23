@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/ehcache-2.10.0.jar" sourcepath="lib/ehcache-2.10.0-src.zip"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.35.jar" sourcepath="lib/mysql-connector-java-5.1.35-src.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-api-2.3.jar" sourcepath="lib/log4j-api-2.3-src.jar"/>
-	<classpathentry kind="lib" path="lib/snowball-20150621.jar" sourcepath="lib/snowball-20150621-src.jar"/>
-	<classpathentry kind="lib" path="lib/jena-core-2.12.0.jar"/>
-	<classpathentry kind="lib" path="lib/jena-iri-1.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl-2.11.0.jar"/>
-	<classpathentry kind="lib" path="lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="lib/cache/ehcache-2.10.0.jar"/>
+	<classpathentry kind="lib" path="lib/owl/jena-core-2.12.0.jar"/>
+	<classpathentry kind="lib" path="lib/owl/jena-iri-1.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/log4j/log4j-api-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/mysql/mysql-connector-java-5.1.35.jar"/>
+	<classpathentry kind="lib" path="lib/cache/slf4j-simple-1.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/stemmization/snowball-20150621.jar"/>
+	<classpathentry kind="lib" path="lib/owl/xercesImpl-2.11.0.jar"/>
+	<classpathentry kind="lib" path="lib/owl/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

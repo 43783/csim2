@@ -33,6 +33,7 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -42,8 +43,6 @@ import javax.swing.tree.TreePath;
 
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.StringUtils;
-
-import com.alee.utils.swing.AncestorAdapter;
 
 /**
  * This is a general purpose utility class dedicated to swing utility functions.
@@ -140,7 +139,8 @@ public class SwingUtils {
 	 */
 	public static void onComponentVisible(JComponent component, SimpleAction<?> action) {
 
-		component.addAncestorListener(new AncestorAdapter() {
+		component.addAncestorListener(new AncestorListener() {
+			
 			@Override
 			public void ancestorAdded(AncestorEvent event) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -149,6 +149,42 @@ public class SwingUtils {
 						action.run(null);
 					}
 				});
+			}
+			@Override
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+			@Override
+			public void ancestorMoved(AncestorEvent event) {
+			}
+		});
+	}
+
+	/**
+	 * Register an action to execute when a component become hidden.
+	 * 
+	 * @param component
+	 *        the component we are listening to
+	 * @param doRun
+	 *        the action to execute
+	 */
+	public static void onComponentHidden(JComponent component, SimpleAction<?> action) {
+
+		component.addAncestorListener(new AncestorListener() {
+			
+			@Override
+			public void ancestorRemoved(AncestorEvent event) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						action.run(null);
+					}
+				});
+			}
+			@Override
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			@Override
+			public void ancestorAdded(AncestorEvent event) {
 			}
 		});
 	}

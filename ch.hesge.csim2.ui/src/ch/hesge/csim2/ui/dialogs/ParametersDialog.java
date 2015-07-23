@@ -41,8 +41,6 @@ import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.FileTableCellEditor;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
-import com.alee.utils.swing.WebDefaultCellEditor;
-
 @SuppressWarnings("serial")
 public class ParametersDialog extends JDialog implements ActionListener {
 
@@ -198,15 +196,15 @@ public class ParametersDialog extends JDialog implements ActionListener {
 
 		// Initialize project editor
 		ProjectComboBox projectComboBox = new ProjectComboBox(projects);
-		projectCellEditor = new WebDefaultCellEditor<>(projectComboBox);
+		projectCellEditor = new DefaultCellEditor(projectComboBox);
 
 		// Initialize ontology editor
 		OntologyComboBox ontologyComboBox = new OntologyComboBox(ontologies);
-		ontologyCellEditor = new WebDefaultCellEditor<>(ontologyComboBox);
+		ontologyCellEditor = new DefaultCellEditor(ontologyComboBox);
 
 		// Initialize scenario editor
 		ScenarioComboBox scenarioComboBox = new ScenarioComboBox(scenarios);
-		scenarioCellEditor = new WebDefaultCellEditor<>(scenarioComboBox);
+		scenarioCellEditor = new DefaultCellEditor(scenarioComboBox);
 
 		// Initialize file browser editor
 		fileCellEditor = new FileTableCellEditor();

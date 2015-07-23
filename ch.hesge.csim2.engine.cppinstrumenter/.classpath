@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/com.ibm.icu_50.1.1.v201304230130.jar" sourcepath="libsrc/com.ibm.icu.source_50.1.1.v201304230130.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.cdt.core_5.5.0.201309180223.jar" sourcepath="libsrc/org.eclipse.cdt.core.source_5.5.0.201309180223.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar" sourcepath="libsrc/org.eclipse.equinox.common.source_3.6.200.v20130402-1505.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.core"/>
+	<classpathentry kind="lib" path="lib/cdt/com.ibm.icu_50.1.1.v201304230130.jar"/>
+	<classpathentry kind="lib" path="lib/cdt/org.eclipse.cdt.core_5.5.0.201309180223.jar"/>
+	<classpathentry kind="lib" path="lib/cdt/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

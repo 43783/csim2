@@ -41,7 +41,7 @@
 	<!-- copy dependencies -->
 
 	<target name="copy-dependencies" if="lib-folder-present2">		
-		<copy todir="${dist.dir}/lib">
+		<copy todir="${dist.dir}/lib" flatten="true">
 			<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
 		</copy>		    	
     </target>

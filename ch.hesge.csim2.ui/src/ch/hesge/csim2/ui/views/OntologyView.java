@@ -15,7 +15,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.AncestorEvent;
 
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptLink;
@@ -23,8 +22,8 @@ import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.ui.dialogs.PropertiesDialog;
 import ch.hesge.csim2.ui.model.ApplicationManager;
 import ch.hesge.csim2.ui.utils.PaintUtils;
-
-import com.alee.utils.swing.AncestorAdapter;
+import ch.hesge.csim2.ui.utils.SimpleAction;
+import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
 public class OntologyView extends JPanel implements ActionListener {
@@ -117,16 +116,19 @@ public class OntologyView extends JPanel implements ActionListener {
 	 */
 	private void initListeners() {
 
-		// Listen to view visibility
-		addAncestorListener(new AncestorAdapter() {
+		// Initialize the view when visible
+		SwingUtils.onComponentVisible(this, new SimpleAction<Object>() {
 			@Override
-			public void ancestorAdded(AncestorEvent event) {
+			public void run(Object o) {
 				ontologyPanel.requestFocus();
 				animator.resume();
 			}
+		});
 
+		// Initialize the view when hidden
+		SwingUtils.onComponentVisible(this, new SimpleAction<Object>() {
 			@Override
-			public void ancestorRemoved(AncestorEvent event) {
+			public void run(Object o) {
 				animator.suspend();
 			}
 		});
