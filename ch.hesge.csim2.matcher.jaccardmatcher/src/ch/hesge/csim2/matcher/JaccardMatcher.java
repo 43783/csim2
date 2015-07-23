@@ -5,8 +5,10 @@ package ch.hesge.csim2.matcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ch.hesge.csim2.core.logic.ApplicationLogic;
 import ch.hesge.csim2.core.model.Concept;
@@ -53,7 +55,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.3";
+		return "1.0.18";
 	}
 
 	/**
@@ -151,25 +153,32 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
 		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
 
-		int intersectingTerms = 0;
+		// Retrieve intersecting terms
+		Set<String> intersectionTerms = new HashSet<>();
+		for (StemMethod stem : methodStems) intersectionTerms.add(stem.getTerm());
+		List<String> conceptTerms = new ArrayList<>();
+		for (StemConcept stem : conceptStems) conceptTerms.add(stem.getTerm());
+		intersectionTerms.retainAll(conceptTerms);
 		
-		// Scan all method stems
-		for (StemMethod stemMethod : methodStems) {
-
-			// Scan all concept stems
-			for (StemConcept stemConcept : conceptStems) {
-			
-				if (stemConcept.getTerm().equals(stemMethod.getTerm())) {
-					
-					intersectingTerms++;
-					
-					if (!matchingMethodStems.contains(stemMethod))
-						matchingMethodStems.add(stemMethod);
-					matchingConceptStems.add(stemConcept);
-				}				
-			}			
+		// Retrieve intersecting method stems
+		for (StemMethod stem : methodStems) {
+			if (intersectionTerms.contains(stem.getTerm())) {
+				matchingMethodStems.add(stem);
+			}
 		}
-
-		return ((double) intersectingTerms / (methodStems.size() + conceptStems.size()));
+		
+		// Retrieve intersecting concept stems
+		for (StemConcept stem : conceptStems) {
+			if (intersectionTerms.contains(stem.getTerm())) {
+				matchingConceptStems.add(stem);
+			}
+		}
+		
+		// Compute jaccard indice
+		int intersectionSize = intersectionTerms.size();
+		int totalTermCount = methodStems.size() + conceptStems.size();
+		double similarity = ((double) 2 * intersectionSize / totalTermCount);
+		
+		return similarity;
 	}
 }

@@ -53,7 +53,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.1";
+		return "1.0.9";
 	}
 
 	/**
@@ -159,17 +159,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 				
 				// Compute the max weight found
 				double weight = computeLevenshteinCoefficient(stemMethod.getTerm(), stemConcept.getTerm());
-
-				if (weight > similarity) {
-
-					similarity = weight;
-					
-					if (weight > 0.5) {
-						if (!matchingMethodStems.contains(stemMethod))
-							matchingMethodStems.add(stemMethod);
-						matchingConceptStems.add(stemConcept);
-					}
-				}
+				similarity = Math.max(similarity,  weight);
 			}
 		}
 		
@@ -331,15 +321,6 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 				}
 			}
 		}
-
-		/*
-		for (int i = 0; i < a.length() + 1; i++) {
-			for (int j = 0; j < b.length() + 1; j++) {
-				System.out.print(String.format("%3d", costs[i][j]));
-			}
-			System.out.println();
-		}
-		*/
 		
 		// Now normalize result between [0..1]
 		int editCost = costs[a.length()][b.length()];
