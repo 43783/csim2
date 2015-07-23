@@ -332,7 +332,7 @@ public class CppAnalyzer implements IEngine {
 		FileContent sourceFile = FileContent.createForExternalFileLocation(filepath);
 		final IASTTranslationUnit translationUnit = CppAnalyzerUtils.createTranslationUnit(sourceFile, scannerInfo, logService, fileProvider);
 
-		Console.writeInfo(this, "parsing file " + filename + ".");
+		Console.writeDebug(this, "parsing file " + filename + ".");
 
 		// Analyze all declared methods
 		translationUnit.accept(new ASTVisitor() {
@@ -424,10 +424,10 @@ public class CppAnalyzer implements IEngine {
 
 			parsedClasses.put(sourceClass.getName(), sourceClass);
 
-			Console.writeInfo(this, "visiting " + sourceClass.getType() + " " + sourceClass.getName() + " in " + sourceClass.getFilename() + ".");
+			Console.writeDebug(this, "visiting " + sourceClass.getType() + " " + sourceClass.getName() + " in " + sourceClass.getFilename() + ".");
 
 			for (SourceAttribute sourceAttribute : sourceClass.getAttributes()) {
-				Console.writeInfo(this, "  attribute " + sourceAttribute.getType() + " " + sourceAttribute.getName() + ".");
+				Console.writeDebug(this, "  attribute " + sourceAttribute.getType() + " " + sourceAttribute.getName() + ".");
 			}
 		}
 	}
@@ -455,7 +455,7 @@ public class CppAnalyzer implements IEngine {
 			// Add method if not already parsed
 			if (!sourceClass.getMethods().contains(sourceMethod)) {
 				sourceClass.getMethods().add(sourceMethod);
-				Console.writeInfo(this, "visiting method " + sourceClass.getName() + "::" + sourceMethod.getSignature() + " in " + sourceMethod.getFilename() + ".");
+				Console.writeDebug(this, "visiting method " + sourceClass.getName() + "::" + sourceMethod.getSignature() + " in " + sourceMethod.getFilename() + ".");
 			}
 		}
 	}
@@ -492,7 +492,7 @@ public class CppAnalyzer implements IEngine {
 					// And add each one to its owning class
 					if (!sourceClass.getAttributes().contains(sourceAttribute)) {
 						sourceClass.getAttributes().add(sourceAttribute);
-						Console.writeInfo(this, "  global variable " + sourceAttribute.getType() + " " + sourceAttribute.getName());
+						Console.writeDebug(this, "  global variable " + sourceAttribute.getType() + " " + sourceAttribute.getName());
 					}
 				}
 			}
@@ -576,7 +576,7 @@ public class CppAnalyzer implements IEngine {
 						// And add each one to its owning method
 						if (!sourceMethod.getReferences().contains(sourceReference)) {
 							sourceMethod.getReferences().add(sourceReference);
-							Console.writeInfo(this, "  identifier " + sourceReference.getName() + ", type: " + sourceReference.getType() + ".");
+							Console.writeDebug(this, "  identifier " + sourceReference.getName() + ", type: " + sourceReference.getType() + ".");
 						}
 					}
 				}

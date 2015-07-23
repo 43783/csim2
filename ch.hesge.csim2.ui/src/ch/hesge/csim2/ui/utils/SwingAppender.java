@@ -8,6 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
@@ -86,11 +87,21 @@ public class SwingAppender extends AbstractAppender {
 		}
 	}
 
+	/**
+	 * Create a log4j append to attach to a swing component.
+	 * 
+	 * @param name
+	 * @param layout
+	 * @param filter
+	 * @param otherAttribute
+	 * @return
+	 */
 	@PluginFactory
 	public static SwingAppender createAppender(@PluginAttribute("name") String name, @PluginElement("Layout") Layout<? extends Serializable> layout, @PluginElement("Filter") final Filter filter, @PluginAttribute("otherAttribute") String otherAttribute) {
 
+		
 		if (name == null) {
-			LOGGER.error("No name provided for SwingConsole");
+			LogManager.getLogger(SwingAppender.class.getName()).error("No name provided for SwingConsole");
 			return null;
 		}
 

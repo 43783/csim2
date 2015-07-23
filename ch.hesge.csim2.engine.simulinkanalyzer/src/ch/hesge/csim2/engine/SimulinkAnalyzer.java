@@ -267,7 +267,7 @@ public class SimulinkAnalyzer implements IEngine {
 
 		String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
 
-		Console.writeInfo(this, "parsing file " + filename + ".");
+		Console.writeDebug(this, "parsing file " + filename + ".");
 
 		SimulinkModel model = new SimulinkParser(filepath.toString()).parse();
 
@@ -298,7 +298,7 @@ public class SimulinkAnalyzer implements IEngine {
 		SourceClass sourceClass = createSourceClass(block, filename);
 
 		// Retrieve block name
-		Console.writeInfo(this, "visiting " + sourceClass.getName() + " in " + filename + ".");
+		Console.writeDebug(this, "visiting " + sourceClass.getName() + " in " + filename + ".");
 
 		// Parse children
 		for (SimulinkBlock child : block.getChildren()) {

@@ -260,6 +260,8 @@ public class CppInstrumenter implements IEngine {
 					return FileVisitResult.CONTINUE;
 				}
 			});
+			
+			Console.writeInfo(this, "instrumentation completed.");
 		}
 		catch(Exception e) {
 			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
@@ -317,7 +319,7 @@ public class CppInstrumenter implements IEngine {
 		FileContent sourceFile = FileContent.createForExternalFileLocation(filepath);
 		final IASTTranslationUnit translationUnit = GPPLanguage.getDefault().getASTTranslationUnit(sourceFile, scannerInfo, fileProvider, null, ILanguage.OPTION_IS_SOURCE_UNIT, logService);
 
-		Console.writeInfo(this, "parsing file " + filename + ".");
+		Console.writeDebug(this, "parsing file " + filename + ".");
 
 		// Analyze all declared methods
 		translationUnit.accept(new ASTVisitor() {
@@ -421,10 +423,10 @@ public class CppInstrumenter implements IEngine {
 				// Modify original body content
 				originalFileContent.set(fragment.line, modifiedLine);
 				
-				Console.writeInfo(this, "instrumenting file: " + path.getFileName().toString() + ", function: " + fragment.method + ".");
+				Console.writeDebug(this, "instrumenting file: " + path.getFileName().toString() + ", function: " + fragment.method + ".");
 			}
 
-			Console.writeInfo(this, "saving file: " + path.getFileName().toString() + ".");
+			Console.writeDebug(this, "saving file: " + path.getFileName().toString() + ".");
 
 			// Finally save modified file
 			Files.write(path, originalFileContent, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);

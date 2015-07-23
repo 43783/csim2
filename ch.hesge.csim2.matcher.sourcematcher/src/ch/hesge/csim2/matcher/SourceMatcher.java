@@ -18,6 +18,7 @@ import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
+import ch.hesge.csim2.core.utils.Console;
 
 /**
  * This engine allow matching calculation based
@@ -99,9 +100,6 @@ public class SourceMatcher implements IMethodConceptMatcher {
 
 				// Register result within the matchMap
 				if (similarity > 0d) {
-
-					// Bound similarity between [0..1] 
-					similarity = Math.min(1d, similarity);
 					
 					MethodConceptMatch match = new MethodConceptMatch();
 
@@ -154,8 +152,10 @@ public class SourceMatcher implements IMethodConceptMatcher {
 
 		// Get number of concept attributes
 		int conceptAttrCount = concept.getAttributes().isEmpty() ? 1 : concept.getAttributes().size();
-		
-		//Console.writeDebug(this, "similarity analyzing method: " + method.getSourceClass().getName() + "." + method.getName() + ", concept: " + concept.getName());
+
+		Console.writeDebug(this, "computing matching coefficient:"); 
+		Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
+		Console.writeDebug(this, "  concept: " + concept.getName()); 
 		
 		// Scan all method stems
 		for (StemMethod stemMethod : methodStems) {
@@ -222,14 +222,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 				// and the stem concept is not yet used in weight calculation
 				if (stemWeight > 0d && !matchingStemConcepts.contains(stemConcept)) {
 
-					/*
-					Console.writeDebug(this, "   matching term: " + stemMethod.getTerm());
-					Console.writeDebug(this, "      methodStem type:  " + stemMethodType.name());
-					Console.writeDebug(this, "      conceptStem type: " + stemConceptType.name());
-					Console.writeDebug(this, "      conceptAttrCount: " + conceptAttrCount);
-					Console.writeDebug(this, "      stemPartCount: " + stemPartCount);
-					Console.writeDebug(this, "      weight: " + stemWeight);
-					*/
+					Console.writeDebug(this, "  methodStem: " + stemMethodType.name() + ", conceptStem: " + stemConceptType.name() + ", conceptAttrCount: " + conceptAttrCount + ", stemPartCount: " + stemPartCount + ", weight: " + stemWeight); 
 					
 					matchingStemMethods.add(stemMethod);
 					matchingStemConcepts.add(stemConcept);
@@ -237,7 +230,12 @@ public class SourceMatcher implements IMethodConceptMatcher {
 				}
 			}
 		}
+		
+		// Bound similarity between [0..1] 
+		double normalizeSimilarity = Math.min(1d, similarity);
+		
+		Console.writeDebug(this, "  similarity: " + similarity + ", normalized: " + normalizeSimilarity);
 
-		return similarity;
+		return normalizeSimilarity;
 	}
 }

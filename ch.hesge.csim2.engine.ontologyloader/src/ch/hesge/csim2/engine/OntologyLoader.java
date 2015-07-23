@@ -478,18 +478,18 @@ public class OntologyLoader implements IEngine {
 		// Dump all concepts found into the ontology
 		for (Concept concept : conceptMap.values()) {
 
-			Console.writeInfo(this, "concept: " + concept.getName());
+			Console.writeDebug(this, "concept: " + concept.getName());
 
 			for (ConceptClass conceptClass : concept.getClasses()) {
-				Console.writeInfo(this, "  class: " + conceptClass.getName() + ", id: " + conceptClass.getIdentifier());
+				Console.writeDebug(this, "  class: " + conceptClass.getName() + ", id: " + conceptClass.getIdentifier());
 			}
 
 			for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
-				Console.writeInfo(this, "  attribute: " + conceptAttribute.getName() + ", id: " + conceptAttribute.getIdentifier());
+				Console.writeDebug(this, "  attribute: " + conceptAttribute.getName() + ", id: " + conceptAttribute.getIdentifier());
 			}
 
 			for (ConceptLink conceptLink : concept.getLinks()) {
-				Console.writeInfo(this, "  link: <" + conceptLink.getQualifier() + "> " + conceptLink.getTargetConcept().getName());
+				Console.writeDebug(this, "  link: <" + conceptLink.getQualifier() + "> " + conceptLink.getTargetConcept().getName());
 			}
 		}
 	}

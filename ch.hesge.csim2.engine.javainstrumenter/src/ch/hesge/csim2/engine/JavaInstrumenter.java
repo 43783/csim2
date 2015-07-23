@@ -227,6 +227,8 @@ public class JavaInstrumenter implements IEngine {
 					return FileVisitResult.CONTINUE;
 				}
 			});
+			
+			Console.writeInfo(this, "instrumentation completed.");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
@@ -280,7 +282,7 @@ public class JavaInstrumenter implements IEngine {
 		String originalContent = FileUtils.readFileAsString(Paths.get(filepath));
 		Document originalSources = new Document(originalContent);
 
-		Console.writeInfo(this, "parsing file " + filename + ".");
+		Console.writeDebug(this, "parsing file " + filename + ".");
 
 		// Create a parser
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
@@ -392,6 +394,8 @@ public class JavaInstrumenter implements IEngine {
 
 			// Apply the new try-statement as the second statement
 			originalBody.statements().add(tryStatement);
+			
+			Console.writeDebug(this, "  method: " + methodDeclaration.getName().toString() + " instrumented.");
 		}
 	}
 }

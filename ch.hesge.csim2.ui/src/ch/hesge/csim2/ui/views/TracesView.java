@@ -122,8 +122,8 @@ public class TracesView extends JPanel implements ActionListener {
 
 		// Create trace tree
 		traceTree = new TraceTree();
-		traceTree.setPreferredSize(new Dimension(500, 500));
 		JScrollPane scrollPane2 = new JScrollPane();
+		scrollPane2.setPreferredSize(new Dimension(500, 500));
 		scrollPane2.setViewportView(traceTree);
 		methodPanel.add(scrollPane2, BorderLayout.CENTER);
 		

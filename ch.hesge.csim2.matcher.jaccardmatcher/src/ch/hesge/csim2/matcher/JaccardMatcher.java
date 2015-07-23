@@ -18,6 +18,7 @@ import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
+import ch.hesge.csim2.core.utils.Console;
 
 /**
  * This engine allow matching calculation based
@@ -93,7 +94,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 
 				List<StemMethod> matchingMethodStems = new ArrayList<>();
 				List<StemConcept> matchingConceptStems = new ArrayList<>();
-
+				
 				double similarity = computeSimilarity(method, concept, stemMethodTreeMap, stemConceptTreeMap, matchingMethodStems, matchingConceptStems);
 
 				// Register result within the matchMap
@@ -153,6 +154,10 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
 		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
 
+		Console.writeDebug(this, "computing jaccard coefficient:"); 
+		Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
+		Console.writeDebug(this, "  concept: " + concept.getName()); 
+
 		// Retrieve intersecting terms
 		Set<String> intersectionTerms = new HashSet<>();
 		for (StemMethod stem : methodStems) intersectionTerms.add(stem.getTerm());
@@ -160,10 +165,13 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		for (StemConcept stem : conceptStems) conceptTerms.add(stem.getTerm());
 		intersectionTerms.retainAll(conceptTerms);
 		
+		int intersectionSize = 0;
+
 		// Retrieve intersecting method stems
 		for (StemMethod stem : methodStems) {
 			if (intersectionTerms.contains(stem.getTerm())) {
 				matchingMethodStems.add(stem);
+				intersectionSize++;
 			}
 		}
 		
@@ -171,13 +179,15 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 		for (StemConcept stem : conceptStems) {
 			if (intersectionTerms.contains(stem.getTerm())) {
 				matchingConceptStems.add(stem);
+				intersectionSize++;
 			}
 		}
 		
 		// Compute jaccard indice
-		int intersectionSize = intersectionTerms.size();
 		int totalTermCount = methodStems.size() + conceptStems.size();
-		double similarity = ((double) 2 * intersectionSize / totalTermCount);
+		double similarity = ((double) intersectionSize / totalTermCount);
+			
+		Console.writeDebug(this, "  matching terms: " + intersectionSize + " total: " + totalTermCount + ", similarity: " + similarity); 
 		
 		return similarity;
 	}

@@ -314,7 +314,7 @@ public class JavaAnalyzer implements IEngine {
 		String fileContent = FileUtils.readFileAsString(Paths.get(filepath));
 		Document sourceDocument = new Document(fileContent);
 
-		Console.writeInfo(this, "parsing file " + filename + ".");
+		Console.writeDebug(this, "parsing file " + filename + ".");
 
 		// Create a parser
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
@@ -351,10 +351,10 @@ public class JavaAnalyzer implements IEngine {
 
 					parsedClasses.put(classname, sourceClass);
 
-					Console.writeInfo(this, "visiting " + sourceClass.getType() + " " + sourceClass.getName() + " in " + sourceClass.getFilename() + ".");
+					Console.writeDebug(this, "visiting " + sourceClass.getType() + " " + sourceClass.getName() + " in " + sourceClass.getFilename() + ".");
 
 					for (SourceAttribute sourceAttribute : sourceClass.getAttributes()) {
-						Console.writeInfo(this, "  attribute " + sourceAttribute.getType() + " " + sourceAttribute.getName() + ".");
+						Console.writeDebug(this, "  attribute " + sourceAttribute.getType() + " " + sourceAttribute.getName() + ".");
 					}
 				}
 
@@ -374,9 +374,11 @@ public class JavaAnalyzer implements IEngine {
 
 					// Add method if not already parsed
 					if (!sourceClass.getMethods().contains(sourceMethod)) {
+						
 						sourceMethod.setFilename(filename);
 						sourceClass.getMethods().add(sourceMethod);
-						Console.writeInfo(this, "  method " + sourceMethod.getReturnType() + " " + sourceClass.getName() + "::" + sourceMethod.getSignature());
+						
+						Console.writeDebug(this, "  method " + sourceMethod.getReturnType() + " " + sourceClass.getName() + "::" + sourceMethod.getSignature());
 					}
 				}
 
@@ -403,7 +405,7 @@ public class JavaAnalyzer implements IEngine {
 							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, sourceVariable);
 							sourceMethod.getReferences().add(sourceReference);
 							
-							Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
+							Console.writeDebug(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
 						}
 					}
 				}
@@ -431,7 +433,7 @@ public class JavaAnalyzer implements IEngine {
 							SourceReference sourceReference = JavaAnalyzerUtils.createSourceReference(sourceClass, sourceMethod, sourceVariable);
 							sourceMethod.getReferences().add(sourceReference);
 							
-							Console.writeInfo(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
+							Console.writeDebug(this, "    var " + sourceVariable.getType() + " " + sourceVariable.getName());
 						}
 					}
 				}
@@ -462,7 +464,7 @@ public class JavaAnalyzer implements IEngine {
 							// And add each one to its owning method
 							if (sourceReference != null) {
 								sourceMethod.getReferences().add(sourceReference);
-								Console.writeInfo(this, "    ref(frag) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+								Console.writeDebug(this, "    ref(frag) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
 							}
 						}
 					}
@@ -484,7 +486,7 @@ public class JavaAnalyzer implements IEngine {
 						// And add each one to its owning method
 						if (sourceReference != null) {
 							sourceMethod.getReferences().add(sourceReference);
-							Console.writeInfo(this, "    ref(stmt) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+							Console.writeDebug(this, "    ref(stmt) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
 						}
 					}
 				}
@@ -516,7 +518,7 @@ public class JavaAnalyzer implements IEngine {
 							// And add each one to its owning method
 							if (sourceReference != null) {
 								sourceMethod.getReferences().add(sourceReference);
-								Console.writeInfo(this, "    ref(expr) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
+								Console.writeDebug(this, "    ref(expr) " + sourceReference.getType() + " " + sourceReference.getName() + ", origin: " + sourceReference.getOrigin());
 							}
 						}
 					}

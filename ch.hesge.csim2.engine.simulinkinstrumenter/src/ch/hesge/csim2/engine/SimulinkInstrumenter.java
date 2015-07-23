@@ -225,6 +225,8 @@ public class SimulinkInstrumenter implements IEngine {
 					return FileVisitResult.CONTINUE;
 				}
 			});
+
+			Console.writeInfo(this, "instrumentation completed.");
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while instrumenting files: " + StringUtils.toString(e));
@@ -276,7 +278,7 @@ public class SimulinkInstrumenter implements IEngine {
 
 		final String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
 
-		Console.writeInfo(this, "parsing file " + filename + ".");
+		Console.writeDebug(this, "parsing file " + filename + ".");
 
 		// Parse mdl file and produce its model in memory 
 		SimulinkModel model = new SimulinkParser(filepath).parse();

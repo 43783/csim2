@@ -106,8 +106,11 @@ class MatchingLogic {
 
 						String stems = "";
 						Set<String> matchingTerms = StemLogic.getTermIntersection(match.getStemConcepts(), match.getStemMethods());
-						for (String stem : matchingTerms)
+						
+						for (String stem : matchingTerms) {
 							stems += stem + ",";
+						}
+						
 						stems = StringUtils.removeTrailString(stems, ",");
 						writer.append(stems);
 

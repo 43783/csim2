@@ -3,21 +3,41 @@
 
 	<Appenders>
 	
-		<File name="File" fileName="log/csim2.log" immediateFlush="false" append="false">
+		<File name="FILE" fileName="log/csim2.log" immediateFlush="false" append="false">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
         		 
-		<SwingAppender name="Console">		
+	    <Console name="STDOUT" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+	    </Console>
+    
+		<SwingAppender name="CONSOLE">		
+			<PatternLayout pattern="%msg%n"/>
 		</SwingAppender>
 		
 	</Appenders>
 
   <Loggers>
-    <Root level="debug">
-      <AppenderRef ref="File"/>
-      <AppenderRef ref="Console"/>
+  
+	<!-- 
+	 	Loggins levels:
+	 	
+	 		- OFF 	(most specific, no logging)
+			- FATAL (most specific, little data)
+			- ERROR
+			- WARN
+			- INFO
+			- DEBUG
+			- TRACE (least specific, a lot of data)
+			- ALL 	(least specific, all
+	-->
+		  
+    <Root level="ALL">
+      <AppenderRef ref="FILE" level="TRACE" />
+      <AppenderRef ref="STDOUT" level="DEBUG" />
+      <AppenderRef ref="CONSOLE" level="INFO" />
     </Root>
+    
   </Loggers>
   
 </Configuration>

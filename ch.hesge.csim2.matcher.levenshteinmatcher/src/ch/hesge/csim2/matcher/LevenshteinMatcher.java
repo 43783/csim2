@@ -16,6 +16,7 @@ import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
+import ch.hesge.csim2.core.utils.Console;
 
 /**
  * This engine allow matching calculation based
@@ -153,6 +154,10 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
 		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
 
+		Console.writeDebug(this, "computing levenshtein coefficient:"); 
+		Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
+		Console.writeDebug(this, "  concept: " + concept.getName()); 
+		
 		// Scan all method & method stems
 		for (StemMethod stemMethod : methodStems) {
 			for (StemConcept stemConcept : conceptStems) {
@@ -160,10 +165,14 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 				// Compute the levenshtein coefficient for current method/concept stem
 				double weight = computeLevenshteinCoefficient(stemMethod.getTerm(), stemConcept.getTerm());
 				
+				Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), weight: " + weight); 
+				
 				// Compute average weight globally to all stems
 				similarity += weight / (methodStems.size() * conceptStems.size());
 			}
 		}
+		
+		Console.writeDebug(this, "  similarity: " + similarity);
 		
 		return similarity;
 	}
