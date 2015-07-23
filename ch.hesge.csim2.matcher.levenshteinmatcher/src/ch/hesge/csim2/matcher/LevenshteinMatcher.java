@@ -53,7 +53,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.9";
+		return "1.0.10";
 	}
 
 	/**
@@ -153,13 +153,15 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
 		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
 
-		// Scan all method stems
+		// Scan all method & method stems
 		for (StemMethod stemMethod : methodStems) {
 			for (StemConcept stemConcept : conceptStems) {
 				
-				// Compute the max weight found
+				// Compute the levenshtein coefficient for current method/concept stem
 				double weight = computeLevenshteinCoefficient(stemMethod.getTerm(), stemConcept.getTerm());
-				similarity = Math.max(similarity,  weight);
+				
+				// Compute global average weight
+				similarity += weight / (methodStems.size() * conceptStems.size());
 			}
 		}
 		
@@ -337,13 +339,17 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 	 */
 	public static void main(String[] args) {
 
+		/*
+		String term1 = "levenshtein";
+		String term2 = "meilenstein";
+		*/
 		String term1 = "levenshtein";
 		String term2 = "meilenstein";
 		LevenshteinMatcher matcher = new LevenshteinMatcher();
 		
 		double cost = matcher.computeLevenshteinCoefficient(term1,  term2);
 		
-		System.out.println("cost: " + cost);
+		System.out.println("similarity: " + cost);
 		
 	}
 	

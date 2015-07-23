@@ -46,7 +46,7 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getName() {
-		return "JaccardMatcher";
+		return "JaccardMatcher*";
 	}
 
 	/**
