@@ -1,0 +1,16 @@
+sur
+sous
+entre
+devant
+derriere
+dans
+chez
+avant
+apres
+vers
+depuis
+pendant
+pour
+de
+par
+
