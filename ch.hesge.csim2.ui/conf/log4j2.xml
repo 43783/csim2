@@ -41,7 +41,7 @@
     -->
 
       <AppenderRef ref="FILE" level="TRACE" />
-      <AppenderRef ref="STDOUT" level="DEBUG" />
+      <AppenderRef ref="STDOUT" level="INFO" />
       <AppenderRef ref="CONSOLE" level="INFO" />
     </Root>
     
