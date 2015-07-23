@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/owl/jena-iri-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/owl/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/owl/xml-apis-1.4.01.jar"/>
-	<classpathentry kind="lib" path="lib/owl/slf4j-api-1.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/owl/slf4j-simple-1.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owl/slf4j-api-1.7.12.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

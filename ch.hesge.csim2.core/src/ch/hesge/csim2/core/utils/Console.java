@@ -1,6 +1,6 @@
 package ch.hesge.csim2.core.utils;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class centralize all request to display message on the system console.
@@ -23,7 +23,7 @@ public class Console {
 	 *        the string to display on the console
 	 */
 	public static void writeInfo(Object caller, String message) {
-		LogManager.getLogger(caller.getClass().getName()).info(message);
+		LoggerFactory.getLogger(caller.getClass().getName()).info(message);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class Console {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void writeInfo(Class callerClass, String message) {
-		LogManager.getLogger(callerClass).info(message);
+		LoggerFactory.getLogger(callerClass).info(message);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class Console {
 	 *        the string to display on the console
 	 */
 	public static void writeError(Object caller, String message) {
-		LogManager.getLogger(caller.getClass().getName()).error(message);
+		LoggerFactory.getLogger(caller.getClass().getName()).error(message);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Console {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void writeError(Class callerClass, String message) {
-		LogManager.getLogger(callerClass).error(message);
+		LoggerFactory.getLogger(callerClass).error(message);
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Console {
 	 *        the string to display on the console
 	 */
 	public static void writeDebug(Object caller, String message) {
-		LogManager.getLogger(caller.getClass().getName()).debug(message);
+		LoggerFactory.getLogger(caller.getClass().getName()).debug(message);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class Console {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void writeDebug(Class callerClass, String message) {
-		LogManager.getLogger(callerClass).debug(message);
+		LoggerFactory.getLogger(callerClass).debug(message);
 	}
 
 }

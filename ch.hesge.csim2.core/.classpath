@@ -9,8 +9,6 @@
 	<classpathentry kind="lib" path="lib/stemmization/snowball-20150621.jar"/>
 	<classpathentry kind="lib" path="lib/owl/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/owl/xml-apis-1.4.01.jar"/>
-	<classpathentry kind="lib" path="lib/log4j/log4j-core-2.3.jar"/>
-	<classpathentry kind="lib" path="lib/log4j/log4j-api-2.3.jar"/>
-	<classpathentry kind="lib" path="lib/cache/slf4j-api-1.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/cache/slf4j-api-1.7.12.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
