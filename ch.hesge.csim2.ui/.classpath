@@ -25,7 +25,6 @@
 	<classpathentry kind="lib" path="lib/docking/docking-frames-core-1.1.2p14d.jar" sourcepath="lib/docking/docking-frames-core-1.1.2p14d-src.jar"/>
 	<classpathentry kind="lib" path="lib/chart/jfreechart-1.0.19.jar" sourcepath="lib/chart/jfreechart-1.0.19-src.jar"/>
 	<classpathentry kind="lib" path="lib/chart/jcommon-1.0.23.jar" sourcepath="lib/chart/jcommon-1.0.23-src.jar"/>
-	<classpathentry kind="lib" path="lib/cache/slf4j-simple-1.7.12.jar"/>
 	<classpathentry kind="lib" path="lib/laf/weblaf-1.28.jar"/>
 	<classpathentry kind="lib" path="lib/laf/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="lib/owl/jena-core-2.12.0-src.jar"/>
@@ -34,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/owl/jena-iri-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/owl/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/owl/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="lib/cache/slf4j-api-1.7.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
