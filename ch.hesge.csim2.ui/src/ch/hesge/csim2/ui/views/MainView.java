@@ -98,18 +98,13 @@ public class MainView extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		// Initialize docking system
-		views = new ConcurrentHashMap<>();
-		dockables = new ConcurrentHashMap<>();
-		dockingControl = new CControl(this);
-		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
-
 		// Create application manager
 		appManager = ApplicationManager.UNIQUE_INSTANCE;
 		appManager.setMainView(this);
 		
 		// Init main layout
 		initLAF();
+		initDockings();
 		initMenu();
 		initStatusbar();
 		initLayout();
@@ -120,6 +115,8 @@ public class MainView extends JFrame implements ActionListener {
 	 * Initialize look and feel.
 	 */
 	private void initLAF() {
+
+		Console.writeDebug(this, "loading look & feel.");
 
 		// Load LAF specified in config file (csim2.conf)
 		String defaultLAF = (String) appManager.getApplication().getProperties().getProperty("look-and-feel");
@@ -142,16 +139,31 @@ public class MainView extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Initialize docking layout
+	 * Initialize docking system
+	 */
+	private void initDockings() {
+		
+		Console.writeDebug(this, "initializing docking system.");
+
+		views = new ConcurrentHashMap<>();
+		dockables = new ConcurrentHashMap<>();
+		dockingControl = new CControl(this);
+		getContentPane().add(dockingControl.getContentArea(), BorderLayout.CENTER);
+	}
+	
+	/**
+	 * Initialize view layout
 	 */
 	private void initLayout() {
-
+		
+		Console.writeDebug(this, "initializing layout.");
+		
 		// Create the workspace area
 		workspace = dockingControl.createWorkingArea("workspace");
 		workspace.setLocation(CLocation.base().normal());
 		dockingControl.addDockable(workspace);
 		workspace.setVisible(true);
-
+		
 		// Create console view (on south)
 		consoleView = new ConsoleView();
 		consoleWrapper = new DefaultSingleCDockable("console");

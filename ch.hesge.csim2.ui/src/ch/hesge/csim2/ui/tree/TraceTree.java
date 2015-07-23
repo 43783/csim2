@@ -1,6 +1,7 @@
 package ch.hesge.csim2.ui.tree;
 
 import java.awt.Component;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JTree;
@@ -15,7 +16,7 @@ import ch.hesge.csim2.core.model.Trace;
 public class TraceTree extends JTree {
 
 	// Private attributes
-	private Trace traceRoot;
+	private List<Trace> traceRoots;
 	
 	/**
 	 * Default constructor
@@ -33,7 +34,7 @@ public class TraceTree extends JTree {
 	private void initComponent() {
 		
 		setEnabled(true);
-		//setRootVisible(false);
+		setRootVisible(false);
 		setLargeModel(true);
 		setShowsRootHandles(true);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -68,12 +69,16 @@ public class TraceTree extends JTree {
 	 */
 	private void initModel() {
 		
-		if (traceRoot != null) {
+		if (traceRoots != null) {
+
+			DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
 			
-			// Create the hierarchy nodes
-			DefaultMutableTreeNode rootNode = createTraceNode(traceRoot);
+			// Create one node by source class
+			for (Trace traceRoot : traceRoots) {
+				rootNode.add(createTraceNode(traceRoot));
+			}
 						
-			// Define tree model
+			// Define concept tree model
 			setModel(new DefaultTreeModel(rootNode));	
 		}
 		else {
@@ -87,8 +92,8 @@ public class TraceTree extends JTree {
 	 * 
 	 * @param traceRoot
 	 */
-	public void setTraceRoot(Trace traceRoot) {
-		this.traceRoot = traceRoot;
+	public void setTraceRoots(List<Trace> traceRoots) {
+		this.traceRoots = traceRoots;
 		initModel();
 		repaint();
 	}
@@ -106,46 +111,4 @@ public class TraceTree extends JTree {
 		
 		return traceNode;
 	}
-	/*
-	@Override
-	public Enumeration<TreePath> getExpandedDescendants(TreePath parent) {
-		if (!isExpanded(parent)) {
-			return null;
-		}
-
-		List<TreePath> openedChildren = getOpenedChildren(parent, new ArrayList<>());
-
-		Iterator<TreePath> iterator = openedChildren.iterator();
-		return new Enumeration<TreePath>() {
-			public boolean hasMoreElements() {
-				return iterator.hasNext();
-			}
-
-			public TreePath nextElement() {
-				return (TreePath) iterator.next();
-			}
-		};
-	}
-	*/
-
-	/**
-	 * Search for opened children recursively
-	 */
-	/*
-	private List<TreePath> getOpenedChildren(TreePath paramTreeNode, List<TreePath> list) {
-		final Object parent = paramTreeNode.getLastPathComponent();
-		final TreeModel model = getModel();
-		int nbChild = model.getChildCount(parent);
-		for (int i = 0; i < nbChild; i++) {
-			Object child = model.getChild(parent, i);
-			final TreePath childPath = paramTreeNode.pathByAddingChild(child);
-			if (!model.isLeaf(child) && isExpanded(childPath)) {
-				//Add child if oppened
-				list.add(childPath);
-				getOpenedChildren(childPath, list);
-			}
-		}
-		return list;
-	}
-	*/
 }

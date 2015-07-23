@@ -222,13 +222,13 @@ public class TracesView extends JPanel implements ActionListener {
 						matchMap = matcher.getMethodMatchingMap(project);
 						
 						// Retrieve scenario trace and update trace tree
-						Trace traceRoot = appManager.getTraceTree(scenario);
-						traceTree.setTraceRoot(traceRoot);
+						List<Trace> traceRoot = appManager.getTraceTree(scenario);
+						traceTree.setTraceRoots(traceRoot);
 					}
 				});
 			}
 			else {
-				traceTree.setTraceRoot(null);
+				traceTree.setTraceRoots(null);
 			}
 		}
 		

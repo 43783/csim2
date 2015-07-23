@@ -33,6 +33,13 @@
 	-->
 		  
     <Root level="ALL">
+    
+    <!-- 
+      <AppenderRef ref="FILE" level="TRACE" />
+      <AppenderRef ref="STDOUT" level="DEBUG" />
+      <AppenderRef ref="CONSOLE" level="INFO" />
+    -->
+
       <AppenderRef ref="FILE" level="TRACE" />
       <AppenderRef ref="STDOUT" level="DEBUG" />
       <AppenderRef ref="CONSOLE" level="INFO" />

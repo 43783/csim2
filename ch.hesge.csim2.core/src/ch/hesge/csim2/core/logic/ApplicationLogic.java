@@ -874,15 +874,14 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all traces owned by a scenario and
-	 * update their parent/child relation ship.
+	 * Retrieve all traces owned by a scenario as a hierarchy.
 	 * 
 	 * @param scenario
-	 * @return an instance of the root trace
+	 * @return a list of trace root
 	 */
-	public Trace getTraceTree(Scenario scenario) {
+	public List<Trace> getTraceTree(Scenario scenario) {
 
-		Trace result = null;
+		List<Trace> result = null;
 		
 		try {
 			
@@ -892,7 +891,7 @@ public class ApplicationLogic {
 				APPCACHE.put(new Element(cacheKey, TraceLogic.getTraceTree(scenario)));
 			}
 
-			result = (Trace) APPCACHE.get(cacheKey).getObjectValue();
+			result = (List<Trace>) APPCACHE.get(cacheKey).getObjectValue();
 		}
 		catch (Exception e) {
 			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));

@@ -297,7 +297,7 @@ public class ApplicationManager {
 	/**
 	 * Retrieve all traces owned by a scenario as a hierarchy.
 	 */
-	public Trace getTraceTree(Scenario scenario) {
+	public List<Trace> getTraceTree(Scenario scenario) {
 		return applicationLogic.getTraceTree(scenario);
 	}
 

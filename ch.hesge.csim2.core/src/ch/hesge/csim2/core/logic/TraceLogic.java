@@ -6,6 +6,7 @@ import java.util.List;
 import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.Trace;
+import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.PersistanceUtils;
 
 /**
@@ -47,16 +48,22 @@ class TraceLogic {
 	 * Retrieve all traces owned by a scenario as a hierarchy.
 	 * 
 	 * @param scenario
-	 * @return an instance of the root trace
+	 * @return a list of trace root
 	 */
-	public static Trace getTraceTree(Scenario scenario) {
+	public static List<Trace> getTraceTree(Scenario scenario) {
 		
 		int level = -1;
-		Trace root = null;
 		Trace currentTrace = null;
+		List<Trace> rootTraces = new ArrayList<>();
 
+		Console.writeInfo(TraceLogic.class, "loading scenario traces.");
+
+		List<Trace> traces = TraceDao.findByScenario(scenario);
+
+		Console.writeInfo(TraceLogic.class, "building trace hierarchy.");
+		
 		// Scan all trace entering/exiting
-		for (Trace trace : TraceDao.findByScenario(scenario)) {
+		for (Trace trace : traces) {
 			
 			if (trace.isEnteringTrace()) {
 				
@@ -64,8 +71,8 @@ class TraceLogic {
 
 				// Keep root reference to return
 				if (currentTrace == null) {
-					root = trace;
 					currentTrace = trace;
+					rootTraces.add(currentTrace);
 				}
 				else {
 					
@@ -78,13 +85,13 @@ class TraceLogic {
 			}
 			else {
 				
-				// Restore previous element in stack
+				// Restore previous element from stack
 				level--;
 				currentTrace = currentTrace.getParent();
 			}
 		}
 		
-		return root;
+		return rootTraces;
 	}
 	
 	/**
