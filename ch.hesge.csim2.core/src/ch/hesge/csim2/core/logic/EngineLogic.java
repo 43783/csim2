@@ -104,14 +104,14 @@ class EngineLogic {
 				try {
 
 					long startTime = System.currentTimeMillis();
-					Console.writeDebug(EngineLogic.class, engine.getName() + " started.");
+					Console.writeInfo(EngineLogic.class, engine.getName() + " started.");
 
 					engine.init();
 					engine.start();
 					engine.stop();
 
 					long endTime = System.currentTimeMillis();
-					Console.writeDebug(EngineLogic.class, engine.getName() + " ended after " + StringUtils.getElapseTime(startTime, endTime) + ".");
+					Console.writeInfo(EngineLogic.class, engine.getName() + " ended after " + StringUtils.getElapseTime(startTime, endTime) + ".");
 				}
 				catch (Exception e) {
 					Console.writeError(EngineLogic.class, "error while running engine: " + StringUtils.toString(e));
