@@ -56,11 +56,11 @@ class TraceLogic {
 		Trace currentTrace = null;
 		List<Trace> rootTraces = new ArrayList<>();
 
-		Console.writeInfo(TraceLogic.class, "loading scenario traces.");
+		Console.writeDebug(TraceLogic.class, "loading scenario traces.");
 
 		List<Trace> traces = TraceDao.findByScenario(scenario);
 
-		Console.writeInfo(TraceLogic.class, "building trace hierarchy.");
+		Console.writeDebug(TraceLogic.class, "building trace hierarchy.");
 		
 		// Scan all trace entering/exiting
 		for (Trace trace : traces) {
@@ -69,19 +69,21 @@ class TraceLogic {
 				
 				level++;
 
-				// Keep root reference to return
+				// The trace has no parent => it is a root trace item
 				if (currentTrace == null) {
-					currentTrace = trace;
-					rootTraces.add(currentTrace);
+					rootTraces.add(trace);
 				}
+				
+				// The trace has a parent, so it is a child
 				else {
 					
 					// Update child and define as current element
 					currentTrace.getChildren().add(trace);
 					trace.setParent(currentTrace);
 					trace.setLevel(level);
-					currentTrace = trace;
 				}
+				
+				currentTrace = trace;
 			}
 			else {
 				
@@ -90,6 +92,8 @@ class TraceLogic {
 				currentTrace = currentTrace.getParent();
 			}
 		}
+		
+		Console.writeDebug(TraceLogic.class, "trace hierarchy successfully built.");
 		
 		return rootTraces;
 	}
