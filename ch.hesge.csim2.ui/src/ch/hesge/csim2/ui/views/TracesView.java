@@ -219,7 +219,7 @@ public class TracesView extends JPanel implements ActionListener {
 					public void run() {
 
 						// Retrieve matching for trace selection
-						matchMap = matcher.getMethodMatchingMap(project);
+						matchMap = appManager.getMethodMatchingMap(project, matcher);
 						
 						// Retrieve scenario trace and update trace tree
 						List<Trace> traceRoot = appManager.getTraceTree(scenario);
