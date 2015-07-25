@@ -11,14 +11,14 @@ import java.lang.reflect.Method;
  * @author Eric Harth
  */
 
-public class PersistanceUtils {
+public class DaoUtils {
 
 	/**
-	 * Convert a String array into a single String
+	 * Check if a business object is already persisted to database.
 	 * 
-	 * @param aStringArray
-	 *        the array to convert
-	 * @return a single String
+	 * @param o
+	 *        the object to test
+	 * @return true or false
 	 */
 	public static boolean isNewObject(Object o) {
 
@@ -29,7 +29,7 @@ public class PersistanceUtils {
 			if (method != null) {
 				Object result = method.invoke(o);
 				int keyId = Integer.valueOf(result.toString());
-				return keyId == 0;
+				return keyId == 0 || keyId == -1;
 			}
 		}
 		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

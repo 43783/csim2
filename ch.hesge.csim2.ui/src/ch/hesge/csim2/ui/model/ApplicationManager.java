@@ -246,7 +246,7 @@ public class ApplicationManager {
 	}
 
 	/**
-	 * Retrieve all available projects without their dependencies.
+	 * Retrieve all available projects.
 	 */
 	public List<Project> getProjects() {
 		return applicationLogic.getProjects();
@@ -563,7 +563,7 @@ public class ApplicationManager {
 	}
 
 	/**
-	 * Delete the project passed in argument.
+	 * Delete a project and all its dependencies.
 	 * 
 	 * @param project
 	 *        the project to delete

@@ -5,7 +5,6 @@ package ch.hesge.csim2.matcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -148,43 +147,39 @@ public class JaccardMatcher implements IMethodConceptMatcher {
 
 		// Retrieve method terms
 		StemMethod methodRootStem = stemMethodTreeMap.get(method.getKeyId());
-		List<StemMethod> methodStems = applicationLogic.inflateStemMethods(methodRootStem);
+		List<StemMethod> stemMethods = applicationLogic.inflateStemMethods(methodRootStem);
 		
 		// Retrieve concept terms
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
-		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
+		List<StemConcept> stemConcepts = applicationLogic.inflateStemConcepts(conceptRootStem);
 
 		Console.writeDebug(this, "computing jaccard coefficient:"); 
 		Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
 		Console.writeDebug(this, "  concept: " + concept.getName()); 
 
 		// Retrieve intersecting terms
-		Set<String> intersectionTerms = new HashSet<>();
-		for (StemMethod stem : methodStems) intersectionTerms.add(stem.getTerm());
-		List<String> conceptTerms = new ArrayList<>();
-		for (StemConcept stem : conceptStems) conceptTerms.add(stem.getTerm());
-		intersectionTerms.retainAll(conceptTerms);
+		Set<String> intersectingTerms = applicationLogic.getTermsIntersection(stemConcepts, stemMethods);
 		
 		int intersectionSize = 0;
 
-		// Retrieve intersecting method stems
-		for (StemMethod stem : methodStems) {
-			if (intersectionTerms.contains(stem.getTerm())) {
+		// Retrieve intersecting method stems count
+		for (StemMethod stem : stemMethods) {
+			if (intersectingTerms.contains(stem.getTerm())) {
 				matchingMethodStems.add(stem);
 				intersectionSize++;
 			}
 		}
 		
-		// Retrieve intersecting concept stems
-		for (StemConcept stem : conceptStems) {
-			if (intersectionTerms.contains(stem.getTerm())) {
+		// Retrieve intersecting concept stems count
+		for (StemConcept stem : stemConcepts) {
+			if (intersectingTerms.contains(stem.getTerm())) {
 				matchingConceptStems.add(stem);
 				intersectionSize++;
 			}
 		}
 		
 		// Compute jaccard indice
-		int totalTermCount = methodStems.size() + conceptStems.size();
+		int totalTermCount = stemMethods.size() + stemConcepts.size();
 		double similarity = ((double) intersectionSize / totalTermCount);
 			
 		Console.writeDebug(this, "  matching terms: " + intersectionSize + " total: " + totalTermCount + ", similarity: " + similarity); 

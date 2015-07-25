@@ -20,7 +20,7 @@ import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.SourceParameter;
 import ch.hesge.csim2.core.model.SourceReference;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.PersistanceUtils;
+import ch.hesge.csim2.core.utils.DaoUtils;
 
 /**
  * This class implement all logical rules associated to source
@@ -202,7 +202,7 @@ class SourceLogic {
 
 		for (SourceClass sourceClass : sourceClasses) {
 
-			if (PersistanceUtils.isNewObject(sourceClass)) {
+			if (DaoUtils.isNewObject(sourceClass)) {
 				SourceClassDao.add(sourceClass);
 			}
 			else {
@@ -242,7 +242,7 @@ class SourceLogic {
 	private static void save(Project project, SourceClass parentClass, SourceClass sourceClass) {
 
 		// Save the source class
-		if (PersistanceUtils.isNewObject(sourceClass)) {
+		if (DaoUtils.isNewObject(sourceClass)) {
 			sourceClass.setProjectId(project.getKeyId());
 			sourceClass.setSuperClassId(parentClass == null ? -1 : parentClass.getKeyId());
 			SourceClassDao.add(sourceClass);

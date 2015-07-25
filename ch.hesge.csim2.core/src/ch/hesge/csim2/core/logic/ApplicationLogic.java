@@ -197,7 +197,7 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all available projects without their dependencies.
+	 * Retrieve all available projects.
 	 * 
 	 * @return
 	 *         a list of project
@@ -483,7 +483,8 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all concepts owned by a project as a (keyId, Concept) map.
+	 * Retrieve a map of concepts owned by a project
+	 * with each entries of the form (keyId, Concept) map.
 	 * 
 	 * @param project
 	 *        the owner
@@ -663,18 +664,18 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all stems associated to a name.
+	 * Retrieve all stems associated to a term.
 	 * Words present in rejectedList will not produce associated stems.
 	 * 
-	 * @param name
+	 * @param term
 	 *        the name to use to extract stems
 	 * @param rejectedList
 	 *        the list of forbidden words
 	 * @return
 	 *         a list of stems associated to the list of names
 	 */
-	public List<String> getStems(String name, List<String> rejectedList) {
-		return StemLogic.getStems(name, rejectedList);
+	public List<String> getStems(String term, List<String> rejectedList) {
+		return StemLogic.getStems(term, rejectedList);
 	}
 	
 	/**
@@ -983,7 +984,7 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Create a new project within the application.
+	 * Create a new project.
 	 * 
 	 * @param name
 	 *        the name of the new project
@@ -1070,7 +1071,7 @@ public class ApplicationLogic {
 	 * @return the newly create step
 	 */
 	public ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
-		return ScenarioLogic.createScenarioStep(name, description, scenario);
+		return ScenarioLogic.createStep(name, description, scenario);
 	}
 
 	/**
@@ -1148,10 +1149,10 @@ public class ApplicationLogic {
 	}
 	
 	/**
-	 * Save project passed in argument.
+	 * Save a project without its dependencies.
 	 * 
 	 * @param project
-	 *        the project to save
+	 *        the project to save.
 	 */
 	public void saveProject(Project project) {
 		ProjectLogic.saveProject(project);
@@ -1224,16 +1225,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Save all ontologies without their concepts.
-	 * 
-	 * @param ontologies
-	 *        the ontology list to save
-	 */
-	public void saveOntologies(List<Ontology> ontologies) {
-		OntologyLogic.saveOntologies(ontologies);
-	}
-
-	/**
 	 * Save the trace passed in argument.
 	 * 
 	 * @param trace
@@ -1289,14 +1280,12 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Load a project with its direct dependencies only.
-	 * That is scenarios, ontologies and sources.
+	 * Load a project with its direct dependencies only. 
+	 * That is scenarios, ontologies (not sources).
 	 * 
 	 * @param project
 	 *        the project to load.
-	 * 
-	 * @return
-	 *         the initialized instance passed in argument
+	 * @return the initialized instance passed in argument
 	 */
 	public void loadProject(Project project) {
 		ProjectLogic.loadProject(project);
@@ -1311,7 +1300,7 @@ public class ApplicationLogic {
 	 *        the csv filename target
 	 */
 	public void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
-		MatchingLogic.saveMatchings(matchMap, filename);
+		MatchingLogic.exportMatchings(matchMap, filename);
 	}
 	
 	/**

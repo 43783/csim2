@@ -30,9 +30,9 @@ import ch.hesge.csim2.core.model.ConceptLink;
 import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.utils.Console;
+import ch.hesge.csim2.core.utils.DaoUtils;
 import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.PersistanceUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
 import ch.hesge.csim2.core.utils.TurtleConverter;
 
@@ -114,7 +114,8 @@ class OntologyLogic {
 	}
 
 	/**
-	 * Retrieve all concepts owned by a project as a (keyId, Concept) map.
+	 * Retrieve a map of concepts owned by a project
+	 * with each entries of the form (keyId, Concept) map.
 	 * 
 	 * @param project
 	 *        the owner
@@ -125,7 +126,6 @@ class OntologyLogic {
 	public static Map<Integer, Concept> getConceptMap(Project project) {
 
 		Map<Integer, Concept> conceptMap = new HashMap<>();
-
 		List<Concept> concepts = ConceptDao.findByProject(project);
 
 		// First populate the concept map
@@ -135,7 +135,39 @@ class OntologyLogic {
 
 		// Then populate dependencies
 		for (Concept concept : concepts) {
-			populateDependencies(concept, conceptMap);
+			
+			// Populate attributes
+			concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
+			ObjectSorter.sortConceptAttributes(concept.getAttributes());
+
+			// Populate concept classes
+			concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
+			ObjectSorter.sortConceptClasses(concept.getClasses());
+			
+			// Populate links between concepts
+			for (ConceptLink link : ConceptLinkDao.findByConcept(concept)) {
+
+				// Update concept with instances
+				link.setSourceConcept(concept);
+				link.setTargetConcept(conceptMap.get(link.getTargetId()));
+
+				// Add the link to the concept
+				concept.getLinks().add(link);
+
+				// Detect concept hierarchy
+				if (link.getQualifier() != null && link.getTargetConcept() != null) {
+					concept.setSuperConcept(link.getTargetConcept());
+					link.getTargetConcept().getSubConcepts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
+				}
+				
+				// Detect concept hierarchy
+				if (link.getQualifier() != null && link.getTargetConcept() != null && link.getQualifier().equals("subclass-of")) {
+					concept.setSuperConcept(link.getTargetConcept());
+					link.getTargetConcept().getSubConcepts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
+				}
+			}
 		}
 
 		return conceptMap;
@@ -164,57 +196,35 @@ class OntologyLogic {
 
 		// Then populate dependencies
 		for (Concept concept : concepts) {
-			populateDependencies(concept, conceptMap);
+			
+			// Populate attributes
+			concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
+			ObjectSorter.sortConceptAttributes(concept.getAttributes());
+
+			// Populate concept classes
+			concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
+			ObjectSorter.sortConceptClasses(concept.getClasses());
+			
+			// Populate links between concepts
+			for (ConceptLink link : ConceptLinkDao.findByConcept(concept)) {
+
+				// Update concept with instances
+				link.setSourceConcept(concept);
+				link.setTargetConcept(conceptMap.get(link.getTargetId()));
+
+				// Add the link to the concept
+				concept.getLinks().add(link);
+
+				// Detect concept hierarchy
+				if (link.getQualifier() != null && link.getTargetConcept() != null && link.getQualifier().equals("subclass-of")) {
+					concept.setSuperConcept(link.getTargetConcept());
+					link.getTargetConcept().getSubConcepts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
+				}
+			}
 		}
 
 		return conceptMap;
-	}
-
-	/**
-	 * Populate a concept will its attributes:
-	 * 
-	 * - its concept attributes
-	 * - its concept classes
-	 * - its links
-	 * - its superconcept
-	 * - its children concept
-	 * 
-	 * @param concept
-	 *        the concept to populate
-	 * @param comparator
-	 *        the comparator used to sort children
-	 * @param conceptMap
-	 *        the map of all concept
-	 */
-	private static void populateDependencies(Concept concept, Map<Integer, Concept> conceptMap) {
-
-		// Populate attributes
-		concept.getAttributes().clear();
-		concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
-		ObjectSorter.sortConceptAttributes(concept.getAttributes());
-
-		// Populate concept classes
-		concept.getClasses().clear();
-		concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
-		ObjectSorter.sortConceptClasses(concept.getClasses());
-
-		// Update concept hierarchy
-		for (ConceptLink link : ConceptLinkDao.findByConcept(concept)) {
-
-			// Update concept with instances
-			link.setSourceConcept(concept);
-			link.setTargetConcept(conceptMap.get(link.getTargetId()));
-
-			// Add the link to the concept
-			concept.getLinks().add(link);
-
-			// Detect concept hierarchy
-			if (link.getQualifier() != null && link.getTargetConcept() != null && link.getQualifier().equals("subclass-of")) {
-				concept.setSuperConcept(link.getTargetConcept());
-				link.getTargetConcept().getSubConcepts().add(concept);
-				ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
-			}
-		}
 	}
 
 	/**
@@ -358,7 +368,7 @@ class OntologyLogic {
 			}
 		}
 
-		// Now delete all marked links
+		// Now remove all marked links
 		for (ConceptLink link : linksToRemove) {
 			link.getSourceConcept().getLinks().remove(link);
 		}
@@ -382,29 +392,22 @@ class OntologyLogic {
 	}
 
 	/**
-	 * Delete all concepts owned by an ontology.
-	 * 
-	 * @param ontology
-	 *        the ontology
-	 */
-	private static void deleteDependencies(Ontology ontology) {
-
-		for (Concept concept : ConceptDao.findByOntology(ontology)) {
-			ConceptLinkDao.deleteByConcept(concept);
-			ConceptAttributeDao.deleteByConcept(concept);
-			ConceptClassDao.deleteByConcept(concept);
-			ConceptDao.delete(concept);
-		}
-	}
-
-	/**
 	 * Delete a single ontology and its dependencies
 	 * 
 	 * @param ontology
 	 *        the ontology to delete
 	 */
 	public static void deleteOntology(Ontology ontology) {
-		deleteDependencies(ontology);
+		
+		// First delete all current concepts
+		for (Concept concept : ConceptDao.findByOntology(ontology)) {
+			ConceptLinkDao.deleteByConcept(concept);
+			ConceptAttributeDao.deleteByConcept(concept);
+			ConceptClassDao.deleteByConcept(concept);
+			ConceptDao.delete(concept);
+		}
+
+		// Then delete the ontology
 		OntologyDao.delete(ontology);
 	}
 
@@ -422,25 +425,6 @@ class OntologyLogic {
 	}
 
 	/**
-	 * Save all ontologies without their concepts.
-	 * 
-	 * @param ontologies
-	 *        the ontology list to save
-	 */
-	public static void saveOntologies(List<Ontology> ontologies) {
-
-		for (Ontology ontology : ontologies) {
-
-			if (PersistanceUtils.isNewObject(ontology)) {
-				OntologyDao.add(ontology);
-			}
-			else {
-				OntologyDao.update(ontology);
-			}
-		}
-	}
-
-	/**
 	 * Save an ontology and its concepts.
 	 * 
 	 * @param ontology
@@ -448,11 +432,16 @@ class OntologyLogic {
 	 */
 	public static void saveOntology(Ontology ontology) {
 		
-		// Delete current dependencies
-		deleteDependencies(ontology);
+		// First delete all current concepts
+		for (Concept concept : ConceptDao.findByOntology(ontology)) {
+			ConceptLinkDao.deleteByConcept(concept);
+			ConceptAttributeDao.deleteByConcept(concept);
+			ConceptClassDao.deleteByConcept(concept);
+			ConceptDao.delete(concept);
+		}
 
 		// Save the ontology
-		if (PersistanceUtils.isNewObject(ontology)) {
+		if (DaoUtils.isNewObject(ontology)) {
 			OntologyDao.add(ontology);
 		}
 		else {

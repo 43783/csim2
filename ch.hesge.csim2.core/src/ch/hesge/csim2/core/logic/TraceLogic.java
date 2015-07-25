@@ -7,7 +7,7 @@ import ch.hesge.csim2.core.dao.TraceDao;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.Trace;
 import ch.hesge.csim2.core.utils.Console;
-import ch.hesge.csim2.core.utils.PersistanceUtils;
+import ch.hesge.csim2.core.utils.DaoUtils;
 
 /**
  * This class implement all logical rules associated to traces owned by scenarios.
@@ -30,6 +30,8 @@ class TraceLogic {
 		int level = -1;
 		List<Trace> traces = new ArrayList<>();
 		
+		Console.writeDebug(TraceLogic.class, "loading scenario traces.");
+
 		for (Trace trace : TraceDao.findByScenario(scenario)) {
 			
 			// Compute trace level
@@ -116,7 +118,7 @@ class TraceLogic {
 	 */
 	public static void saveTrace(Trace trace) {
 
-		if (PersistanceUtils.isNewObject(trace)) {
+		if (DaoUtils.isNewObject(trace)) {
 			TraceDao.add(trace);
 		}
 		else {

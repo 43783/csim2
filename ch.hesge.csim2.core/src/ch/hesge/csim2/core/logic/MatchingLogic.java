@@ -75,7 +75,7 @@ class MatchingLogic {
 	 * @param filename
 	 *        the csv filename target
 	 */
-	public static void saveMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+	public static void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
 
 		if (matchMap != null && filename != null) {
 

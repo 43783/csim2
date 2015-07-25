@@ -24,7 +24,7 @@ import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.PersistanceUtils;
+import ch.hesge.csim2.core.utils.DaoUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
@@ -38,12 +38,13 @@ import ch.hesge.csim2.core.utils.StringUtils;
 class StemLogic {
 
 	/**
-	 * Retrieve all stems associated to a name.
+	 * Retrieve all stems associated to a term.
+	 * 
 	 * Words present in rejectedList will not produce associated stems.
-	 * The first item is the full-name-stem of the name passed in argument,
+	 * The first item returned is the full-name-stem of the name passed in argument,
 	 * all other items are subpart items retrieve with camel-case splitting.
 	 * 
-	 * @param name
+	 * @param term
 	 *        the name to use to extract stems
 	 * @param rejectedList
 	 *        the list of forbidden words
@@ -51,30 +52,31 @@ class StemLogic {
 	 *         a list of stems associated to name passed in argument or an empty
 	 *         list
 	 */
-	public static List<String> getStems(String name, List<String> rejectedList) {
+	public static List<String> getStems(String term, List<String> rejectedList) {
 
 		List<String> stems = new ArrayList<>();
 
-		if (name.isEmpty() || name.startsWith("_"))
+		if (term.isEmpty() || term.startsWith("_"))
 			return stems;
 
 		// Clean name before stemmisation 
-		String cleanName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""); // remove accentuated chars
-		cleanName = cleanName.replaceAll("\\s+", " "); // remove multiple consecutive spaces
-		cleanName = cleanName.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", ""); // remove [, ], {, }, (, )
-		cleanName = cleanName.replaceAll("[^_\\-\\s\\sA-Za-z0-9]", ""); // remove non alphabetics chars
-		cleanName = cleanName.trim(); // trim left/right space
-		cleanName = StringUtils.trimHungarian(cleanName); // remove lpsz, sz, etc...
+		String cleanTerm = term;
+		cleanTerm = Normalizer.normalize(term, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""); // remove accentuated chars
+		cleanTerm = cleanTerm.replaceAll("\\s+", " "); // remove multiple consecutive spaces
+		cleanTerm = cleanTerm.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", ""); // remove [, ], {, }, (, )
+		cleanTerm = cleanTerm.replaceAll("[^_\\-\\s\\sA-Za-z0-9]", ""); // remove non alphabetics chars
+		cleanTerm = cleanTerm.trim(); // trim left/right space
+		cleanTerm = StringUtils.trimHungarian(cleanTerm); // remove lpsz, sz, etc...
 
-		if (cleanName.length() > 0) {
+		if (cleanTerm.length() > 0) {
 
 			List<String> nameParts = new ArrayList<>();
 			List<String> splitWords = new ArrayList<>();
 
 			// The first stem/word is always the full name
-			String fullName = cleanName.replaceAll("[\\_\\-\\s]", "").toLowerCase();
+			String fullName = cleanTerm.replaceAll("[\\_\\-\\s]", "").toLowerCase();
 
-			// Skip forbidden names
+			// Skip full name, if included in rejection list
 			if (rejectedList != null && rejectedList.contains(fullName)) {
 				return stems;
 			}
@@ -83,7 +85,7 @@ class StemLogic {
 			}
 
 			// Split name into its parts (camel casing notation) 
-			List<String> camelWords = StringUtils.splitCamelCase(cleanName);
+			List<String> camelWords = StringUtils.splitCamelCase(cleanTerm);
 
 			if (camelWords.size() > 1) {
 				for (String word : camelWords) {
@@ -91,7 +93,7 @@ class StemLogic {
 				}
 			}
 			
-			// Skip part name included in rejection list
+			// Skip part name, if included in rejection list
 			for (String word : splitWords) {
 
 				if (word.length() > 0) {
@@ -103,7 +105,7 @@ class StemLogic {
 				}
 			}
 
-			// Finally stemmize all name parts found
+			// Finally stemmize all name parts with snowball
 			SnowballStemmer stemmer = new englishStemmer();
 			for (String word : nameParts) {
 
@@ -532,7 +534,7 @@ class StemLogic {
 			stem.setParentId(stem.getParent() == null ? -1 : stem.getParent().getKeyId());
 			stem.setConceptId(stem.getConcept().getKeyId());
 
-			if (PersistanceUtils.isNewObject(stem)) {
+			if (DaoUtils.isNewObject(stem)) {
 				StemConceptDao.add(stem);
 			}
 			else {
@@ -560,7 +562,7 @@ class StemLogic {
 			stem.setParentId(stem.getParent() == null ? -1 : stem.getParent().getKeyId());
 			stem.setSourceMethodId(stem.getSourceMethod().getKeyId());
 			
-			if (PersistanceUtils.isNewObject(stem)) {
+			if (DaoUtils.isNewObject(stem)) {
 				StemMethodDao.add(stem);
 			}
 			else {

@@ -12,7 +12,7 @@ import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.Scenario;
 import ch.hesge.csim2.core.model.ScenarioStep;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.PersistanceUtils;
+import ch.hesge.csim2.core.utils.DaoUtils;
 
 /**
  * This class implement all logical rules associated to scenario.
@@ -105,7 +105,7 @@ class ScenarioLogic {
 	 * @param scenario
 	 * @return the newly create step
 	 */
-	public static ScenarioStep createScenarioStep(String name, String description, Scenario scenario) {
+	public static ScenarioStep createStep(String name, String description, Scenario scenario) {
 
 		ScenarioStep step = new ScenarioStep();
 
@@ -127,7 +127,7 @@ class ScenarioLogic {
 	public static void saveScenario(Scenario scenario) {
 
 		// Save the scenario
-		if (PersistanceUtils.isNewObject(scenario)) {
+		if (DaoUtils.isNewObject(scenario)) {
 			ScenarioDao.add(scenario);
 		}
 		else {
@@ -140,7 +140,7 @@ class ScenarioLogic {
 			step.setScenarioId(scenario.getKeyId());
 
 			// Save the scenario
-			if (PersistanceUtils.isNewObject(step)) {
+			if (DaoUtils.isNewObject(step)) {
 				ScenarioStepDao.add(step);
 			}
 			else {
