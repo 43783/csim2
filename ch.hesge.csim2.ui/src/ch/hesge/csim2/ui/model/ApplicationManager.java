@@ -281,13 +281,6 @@ public class ApplicationManager {
 	}
 
 	/**
-	 * Retrieve a list of all concepts owned by an ontology.
-	 */
-	public List<Concept> getConcepts(Ontology ontology) {
-		return applicationLogic.getConcepts(ontology);
-	}
-
-	/**
 	 * Retrieve all traces owned by a scenario.
 	 */
 	public List<Trace> getTraces(Scenario scenario) {
@@ -302,17 +295,24 @@ public class ApplicationManager {
 	}
 
 	/**
-	 * Retrieve all concepts owned by an project and its ontologies.
+	 * Retrieve a list of all concepts owned by an ontology.
 	 */
-	public List<Concept> getConcepts(Project project) {
-		return applicationLogic.getConcepts(project);
+	public List<Concept> getConcepts(Ontology ontology) {
+		return applicationLogic.getConcepts(ontology);
+	}
+
+	/**
+	 * Retrieve all ontology concepts as a hierarchy.
+	 */
+	public List<Concept> getConceptTree(Project project) {
+		return applicationLogic.getConceptTree(project);
 	}
 	
 	/**
 	 * Retrieve all source classes owned by a project.
 	 */
-	public List<SourceClass> getSourceClasses(Project project) {
-		return applicationLogic.getSourceClasses(project);
+	public List<SourceClass> getSourceClassTree(Project project) {
+		return applicationLogic.getSourceClassTree(project);
 	}
 	
 	/**

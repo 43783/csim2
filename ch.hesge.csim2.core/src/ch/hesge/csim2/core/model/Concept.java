@@ -31,6 +31,7 @@ public class Concept {
 	private List<ConceptClass> classes;
 	private List<ConceptLink> links;
 	private List<Concept> subconcepts;
+	private List<Concept> parts;
 
 	/**
 	 * Default constructor
@@ -40,6 +41,7 @@ public class Concept {
 		classes = new ArrayList<>();
 		links = new ArrayList<>();
 		subconcepts = new ArrayList<>();
+		parts = new ArrayList<>();
 	}
 
 	public int getKeyId() {
@@ -122,7 +124,7 @@ public class Concept {
 		return subconcepts;
 	}
 
-	public void setSubConcepts(List<Concept> subConcepts) {
-		this.subconcepts = subConcepts;
+	public List<Concept> getParts() {
+		return parts;
 	}
 }

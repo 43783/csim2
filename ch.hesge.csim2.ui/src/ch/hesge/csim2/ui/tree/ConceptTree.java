@@ -20,14 +20,14 @@ import ch.hesge.csim2.ui.views.MainView;
 public class ConceptTree extends JTree {
 
 	// Private attributes
-	private List<Concept> concepts;
+	private List<Concept> conceptRoots;
 	
 	/**
 	 * Default constructor
 	 */
-	public ConceptTree(List<Concept> concepts) {
+	public ConceptTree(List<Concept> conceptRoots) {
 
-		this.concepts = concepts;
+		this.conceptRoots = conceptRoots;
 		
 		initComponent();
 		initRenderer();
@@ -86,36 +86,63 @@ public class ConceptTree extends JTree {
 	 */
 	private void initModel() {
 		
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-		
-		// Create one node by concept
-		for (Concept concept : concepts) {
+		if (conceptRoots != null) {
+
+			DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
 			
-			DefaultMutableTreeNode conceptNode = new DefaultMutableTreeNode(concept);
-			
-			for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
-				
-				DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(conceptAttribute);
-				conceptNode.add(attributeNode);
-								
-				DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(conceptAttribute.getIdentifier());
-				attributeNode.add(identifierNode);
+			// Create one node by source class
+			for (Concept conceptRoot : conceptRoots) {
+				rootNode.add(createConceptNode(conceptRoot));
 			}
-
-			for (ConceptClass conceptClass : concept.getClasses()) {
-
-				DefaultMutableTreeNode classNode = new DefaultMutableTreeNode(conceptClass);
-				conceptNode.add(classNode);
-								
-				DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(conceptClass.getIdentifier());
-				classNode.add(identifierNode);
-			}
-
-			rootNode.add(conceptNode);
+						
+			// Define concept tree model
+			setModel(new DefaultTreeModel(rootNode));	
 		}
-					
-		// Define concept tree model
-		setModel(new DefaultTreeModel(rootNode));	
+		else {
+			// Define a null model
+			setModel(null);	
+		}
 	}
 	
+	/**
+	 * Create recursively a concept node for each concept
+	 */
+	private DefaultMutableTreeNode createConceptNode(Concept concept) {
+		
+		DefaultMutableTreeNode conceptNode = new DefaultMutableTreeNode(concept);
+		
+		// Populate concept attributes
+		for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
+			
+			DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(conceptAttribute);
+			conceptNode.add(attributeNode);
+							
+			DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(conceptAttribute.getIdentifier());
+			attributeNode.add(identifierNode);
+		}
+
+		// Populate concept classes
+		for (ConceptClass conceptClass : concept.getClasses()) {
+
+			DefaultMutableTreeNode classNode = new DefaultMutableTreeNode(conceptClass);
+			conceptNode.add(classNode);
+							
+			DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(conceptClass.getIdentifier());
+			classNode.add(identifierNode);
+		}
+
+		// Populate children
+		if (!concept.getSubConcepts().isEmpty()) {
+			
+			DefaultMutableTreeNode childrenNode = new DefaultMutableTreeNode("subconcepts");
+			
+			for (Concept child : concept.getSubConcepts()) {
+				childrenNode.add(createConceptNode(child));
+			}
+
+			conceptNode.add(childrenNode);
+		}
+		
+		return conceptNode;
+	}
 }

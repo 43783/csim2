@@ -1,6 +1,7 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 public class StemSourcesView extends JPanel {
 
 	// Private attributes
-	private List<SourceClass> sourceClasses;
+	private List<SourceClass> classRoots;
 	private Map<Integer, StemMethod> stemTree;
 
 	private SourceTree sourceTree;
@@ -36,7 +37,7 @@ public class StemSourcesView extends JPanel {
 
 		ApplicationManager appManager = ApplicationManager.UNIQUE_INSTANCE;
 
-		this.sourceClasses = appManager.getSourceClasses(project);
+		this.classRoots = appManager.getSourceClassTree(project);
 		this.stemTree = appManager.getStemMethodTreeMap(project);
 		
 		initComponent();
@@ -56,9 +57,10 @@ public class StemSourcesView extends JPanel {
 		add(splitPanel1, BorderLayout.CENTER);
 		
 		// Initialize concept tree
-		sourceTree = new SourceTree(sourceClasses);
+		sourceTree = new SourceTree(classRoots);
 		sourceTree.setFocusable(true);
 		JScrollPane scrollPane1 = new JScrollPane();
+		scrollPane1.setPreferredSize(new Dimension(500, 500));
 		scrollPane1.setViewportView(sourceTree);
 		splitPanel1.setLeftComponent(scrollPane1);
 
@@ -94,18 +96,15 @@ public class StemSourcesView extends JPanel {
 				// Retrieve current user object
 				Object userObject = SwingUtils.getTreeUserObject(e.getPath());
 				
-				if (userObject != null) {
-					
-					if (userObject instanceof SourceMethod) {
+				if (userObject != null && userObject instanceof SourceMethod) {
 						
-						// Update current stem list
-						SourceMethod method = (SourceMethod) userObject;
-						StemMethod stemMethodTree = stemTree.get(method.getKeyId());
-						stemTable.setStemTree(stemMethodTree);
-					}
-					else {
-						stemTable.setStemTree(null);
-					}
+					// Update current stem list
+					SourceMethod method = (SourceMethod) userObject;
+					StemMethod stemMethodTree = stemTree.get(method.getKeyId());
+					stemTable.setStemTree(stemMethodTree);
+				}
+				else {
+					stemTable.setStemTree(null);
 				}
 			}
 		});

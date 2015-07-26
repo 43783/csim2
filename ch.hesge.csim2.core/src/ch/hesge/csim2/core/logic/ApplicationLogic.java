@@ -422,58 +422,26 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all concepts owned by an project and its ontologies.
+	 * Retrieve all ontology concepts as a hierarchy.
 	 * 
 	 * @param project
 	 *        the owner
 	 * 
-	 * @return
-	 *         the list of concept
+	 * @return a list of concept root
 	 */
-	public List<Concept> getConcepts(Project project) {
+	public List<Concept> getConceptTree(Project project) {
 
 		List<Concept> result = null;
 		
 		try {
 			
-			String cacheKey = "getConceptsByProject_" + project.getKeyId();
+			String cacheKey = "getConceptTreeByProject_" + project.getKeyId();
 
 			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(project)));
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptTree(project)));
 			}
 
 			result = (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
-		}
-		catch (Exception e) {
-			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
-		}
-		
-		return result;
-	}
-
-	/**
-	 * Retrieve a map of concepts owned by an ontology
-	 * with each entries of the form (keyId, Concept) map.
-	 * 
-	 * @param ontology
-	 *        the owner
-	 * 
-	 * @return
-	 *         a map of concept
-	 */
-	public Map<Integer, Concept> getConceptMap(Ontology ontology) {
-
-		Map<Integer, Concept> result = null;
-		
-		try {
-			
-			String cacheKey = "getConceptMapByOntology_" + ontology.getKeyId();
-
-			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptMap(ontology)));
-			}
-
-			result = (Map<Integer, Concept>) APPCACHE.get(cacheKey).getObjectValue();
 		}
 		catch (Exception e) {
 			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
@@ -514,64 +482,6 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve all source classes owned by a project.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return a list of SourceClass
-	 */
-	public List<SourceClass> getSourceClasses(Project project) {
-
-		List<SourceClass> result = null;
-		
-		try {
-			
-			String cacheKey = "getSourceClasses_" + project.getKeyId();
-
-			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClasses(project)));
-			}
-
-			result = (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
-		}
-		catch (Exception e) {
-			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
-		}
-		
-		return result;
-	}
-
-	/**
-	 * Retrieve all source class with methods, parameters and references owned by a project.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return a list of SourceClass
-	 */
-	public List<SourceClass> getSourceClassMethodParam(Project project) {
-
-		List<SourceClass> result = null;
-		
-		try {
-			
-			String cacheKey = "getSourceClassMethodParam_" + project.getKeyId();
-
-			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassMethodParam(project)));
-			}
-
-			result = (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
-		}
-		catch (Exception e) {
-			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
-		}
-		
-		return result;
-	}
-	
-	/**
 	 * Retrieve all source class owned by a project as a map of (classId,
 	 * SourceClass).
 	 * 
@@ -601,6 +511,35 @@ public class ApplicationLogic {
 		return result;
 	}
 
+	/**
+	 * Retrieve all source classes as a hierarchy.
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return a list of source class root
+	 */
+	public List<SourceClass> getSourceClassTree(Project project) {
+
+		List<SourceClass> result = null;
+		
+		try {
+			
+			String cacheKey = "getSourceClassTree_" + project.getKeyId();
+
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassTree(project)));
+			}
+
+			result = (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
+		}
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Retrieve all source methods owned by a project as a map of (methodId,
 	 * SourceMethod).
@@ -1187,7 +1126,7 @@ public class ApplicationLogic {
 	 *        the list of SourceClass to save
 	 */
 	public void saveSourceClasses(Project project, List<SourceClass> sourceClasses) {
-		SourceLogic.saveSources(project, sourceClasses);
+		SourceLogic.saveSourceClasses(project, sourceClasses);
 	}
 
 	/**

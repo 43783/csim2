@@ -1,6 +1,7 @@
 package ch.hesge.csim2.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import ch.hesge.csim2.ui.utils.SwingUtils;
 public class StemConceptsView extends JPanel {
 
 	// Private attribute
-	private List<Concept> concepts;
+	private List<Concept> conceptRoots;
 	private Map<Integer, StemConcept> stemTree;
 
 	private ConceptTree conceptTree;
@@ -35,7 +36,7 @@ public class StemConceptsView extends JPanel {
 
 		// Retrieve required data from cache
 		ApplicationManager appManager = ApplicationManager.UNIQUE_INSTANCE;
-		this.concepts = appManager.getConcepts(project);
+		this.conceptRoots = appManager.getConceptTree(project);
 		this.stemTree = appManager.getStemConceptTreeMap(project);
 
 		initComponent();
@@ -55,9 +56,10 @@ public class StemConceptsView extends JPanel {
 		add(splitPanel1, BorderLayout.CENTER);
 
 		// Initialize concept tree
-		conceptTree = new ConceptTree(concepts);
+		conceptTree = new ConceptTree(conceptRoots);
 		conceptTree.setFocusable(true);
 		JScrollPane scrollPane1 = new JScrollPane();
+		scrollPane1.setPreferredSize(new Dimension(500, 500));
 		scrollPane1.setViewportView(conceptTree);
 		splitPanel1.setLeftComponent(scrollPane1);
 

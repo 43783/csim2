@@ -99,7 +99,7 @@ public class TraceTree extends JTree {
 	}
 	
 	/**
-	 * Create recursively a trace node for each trace item
+	 * Create recursively a trace node for each trace
 	 */
 	private DefaultMutableTreeNode createTraceNode(Trace trace) {
 		

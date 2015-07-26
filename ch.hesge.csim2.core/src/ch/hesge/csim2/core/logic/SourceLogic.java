@@ -4,6 +4,7 @@
  */
 package ch.hesge.csim2.core.logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,6 @@ import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.SourceParameter;
 import ch.hesge.csim2.core.model.SourceReference;
 import ch.hesge.csim2.core.utils.ObjectSorter;
-import ch.hesge.csim2.core.utils.DaoUtils;
 
 /**
  * This class implement all logical rules associated to source
@@ -34,79 +34,6 @@ import ch.hesge.csim2.core.utils.DaoUtils;
 class SourceLogic {
 
 	/**
-	 * Retrieve all source classes owned by a project.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return a list of SourceClass
-	 */
-	public static List<SourceClass> getSourceClasses(Project project) {
-
-		List<SourceClass> sourceClasses = SourceClassDao.findByProject(project);
-
-		// Create a map of class
-		Map<Integer, SourceClass> classMap = new HashMap<>();
-		for (SourceClass concept : sourceClasses) {
-			classMap.put(concept.getKeyId(), concept);
-		}
-
-		// Now populate classes with attributes, methods and superclass
-		for (SourceClass sourceClass : sourceClasses) {
-
-			// Populate superclass
-			SourceClass superclass = classMap.get(sourceClass.getSuperClassId());
-			if (superclass != null) {
-				sourceClass.setSuperClass(superclass);
-				superclass.getSubClasses().add(sourceClass);
-				ObjectSorter.sortSourceClasses(superclass.getSubClasses());
-			}
-
-			// Populate attributes
-			sourceClass.getAttributes().clear();
-			sourceClass.getAttributes().addAll(SourceAttributeDao.findByClass(sourceClass));
-			ObjectSorter.sortSourceAttributes(sourceClass.getAttributes());
-
-			// Populate methods
-			sourceClass.getMethods().clear();
-			sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
-			ObjectSorter.sortSourceMethods(sourceClass.getMethods());
-		}
-
-		return sourceClasses;
-	}
-
-	/**
-	 * Retrieve all source class with methods, parameters and references owned by a project.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return a list of SourceClass
-	 */
-	public static List<SourceClass> getSourceClassMethodParam(Project project) {
-		
-		List<SourceClass> sourceClasses = ApplicationLogic.UNIQUE_INSTANCE.getSourceClasses(project);
-		
-		for (SourceClass sourceClass : sourceClasses) {
-			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
-
-				// Populate method parameters
-				sourceMethod.getParameters().clear();
-				sourceMethod.getParameters().addAll(SourceParameterDao.findByMethod(sourceMethod));
-				ObjectSorter.sortSourceParameters(sourceMethod.getParameters());
-	
-				// Populate method references
-				sourceMethod.getReferences().clear();
-				sourceMethod.getReferences().addAll(SourceReferenceDao.findByMethod(sourceMethod));
-				ObjectSorter.sortSourceReferences(sourceMethod.getReferences());
-			}
-		}
-		
-		return sourceClasses;
-	}
-
-	/**
 	 * Retrieve all source class owned by a project as a map of (classId,
 	 * SourceClass).
 	 * 
@@ -117,19 +44,73 @@ class SourceLogic {
 	 */
 	public static Map<Integer, SourceClass> getSourceClassMap(Project project) {
 
+		List<SourceClass> sourceClasses = SourceClassDao.findByProject(project);
+		ObjectSorter.sortSourceClasses(sourceClasses);
+
 		Map<Integer, SourceClass> classMap = new HashMap<>();
 
-		// Populate the map
-		for (SourceClass sourceClass : ApplicationLogic.UNIQUE_INSTANCE.getSourceClasses(project)) {
+		// First populate the class map
+		for (SourceClass sourceClass : sourceClasses) {
 			classMap.put(sourceClass.getKeyId(), sourceClass);
 		}
 
+		// Then populate dependencies
+		for (SourceClass sourceClass : sourceClasses) {
+			
+			// Populate attributes
+			sourceClass.getAttributes().clear();
+			sourceClass.getAttributes().addAll(SourceAttributeDao.findByClass(sourceClass));
+			ObjectSorter.sortSourceAttributes(sourceClass.getAttributes());
+
+			// Populate methods
+			sourceClass.getMethods().clear();
+			sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
+			ObjectSorter.sortSourceMethods(sourceClass.getMethods());
+			
+			// Populate superclass
+			SourceClass superclass = classMap.get(sourceClass.getSuperClassId());
+			
+			if (superclass != null) {
+				sourceClass.setSuperClass(superclass);
+				superclass.getSubClasses().add(sourceClass);
+				ObjectSorter.sortSourceClasses(superclass.getSubClasses());
+			}			
+		}
+		
 		return classMap;
 	}
 
 	/**
-	 * Retrieve all source methods owned by a project as a map of (methodId,
-	 * SourceMethod).
+	 * Retrieve all source classes as a hierarchy.
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return a list of source class root
+	 */
+	public static List<SourceClass> getSourceClassTree(Project project) {
+
+		List<SourceClass> classRoots = new ArrayList<>();
+		
+		// Retrieve a map of all concepts
+		Map<Integer, SourceClass> classMap = ApplicationLogic.UNIQUE_INSTANCE.getSourceClassMap(project);
+
+		// And extract those without parent
+		for (SourceClass sourceClass : classMap.values()) {
+			if (sourceClass.getSuperClass() == null) {
+				classRoots.add(sourceClass);
+			}
+		}
+		
+		// Sort concepts
+		ObjectSorter.sortSourceClasses(classRoots);
+
+		return classRoots;
+	}
+
+	/**
+	 * Retrieve all source methods owned by a project 
+	 * as a map of (methodId, SourceMethod).
 	 * 
 	 * @param project
 	 *        the owner
@@ -138,18 +119,16 @@ class SourceLogic {
 	 */
 	public static Map<Integer, SourceMethod> getSourceMethodMap(Project project) {
 
-		// Create a map of class
-		Map<Integer, SourceClass> classMap = new HashMap<>();
-		for (SourceClass concept : SourceClassDao.findByProject(project)) {
-			classMap.put(concept.getKeyId(), concept);
-		}
+		// Retrieve a map of all classes
+		Map<Integer, SourceClass> classMap = ApplicationLogic.UNIQUE_INSTANCE.getSourceClassMap(project);
 
-		// Create the matp of method
+		// Create the map of all methods
 		Map<Integer, SourceMethod> methodMap = new HashMap<>();
 
-		for (SourceMethod sourceMethod : SourceMethodDao.findByProject(project)) {
-			sourceMethod.setSourceClass(classMap.get(sourceMethod.getClassId()));
-			methodMap.put(sourceMethod.getKeyId(), sourceMethod);
+		for (SourceClass sourceClass : classMap.values()) {
+			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
+				methodMap.put(sourceMethod.getKeyId(), sourceMethod);
+			}
 		}
 
 		return methodMap;
@@ -177,8 +156,8 @@ class SourceLogic {
 	}
 
 	/**
-	 * Delete all sources owned by an project. Thas is class, attribute, method,
-	 * parameter and reference.
+	 * Delete all sources and their dependencies owned by an project. 
+	 * Thas is class, attribute, method, parameter and reference.
 	 * 
 	 * @param project
 	 *        the project to clean sources
@@ -193,25 +172,6 @@ class SourceLogic {
 	}
 
 	/**
-	 * Save all source classes without attribute/method/parameters.
-	 * 
-	 * @param sourceClasses
-	 *        the class list to save
-	 */
-	public static void saveSourceClasses(List<SourceClass> sourceClasses) {
-
-		for (SourceClass sourceClass : sourceClasses) {
-
-			if (DaoUtils.isNewObject(sourceClass)) {
-				SourceClassDao.add(sourceClass);
-			}
-			else {
-				SourceClassDao.update(sourceClass);
-			}
-		}
-	}
-
-	/**
 	 * Save all sources passed in argument.
 	 * 
 	 * @param project
@@ -219,66 +179,53 @@ class SourceLogic {
 	 * @param sourceClasses
 	 *        the sourceClasses to save
 	 */
-	public static void saveSources(Project project, List<SourceClass> sourceClasses) {
+	public static void saveSourceClasses(Project project, List<SourceClass> sourceClasses) {
 
-		// Save recursively each source-class
+		// First delete all sources associated to project
+		deleteSources(project);
+
+		// Create a map of all classes
+		Map<String, SourceClass> sourceClassMap = new HashMap<>();
 		for (SourceClass sourceClass : sourceClasses) {
-			if (sourceClass.getName() != null) {
-				save(project, null, sourceClass);
-			}
-		}
-	}
-
-	/**
-	 * Save a source-class with its dependencies.
-	 * 
-	 * @param project
-	 *        the project owning the source-class
-	 * @param parentClass
-	 *        the parent owning the source-class
-	 * @param sourceClass
-	 *        the source-class to save
-	 */
-	private static void save(Project project, SourceClass parentClass, SourceClass sourceClass) {
-
-		// Save the source class
-		if (DaoUtils.isNewObject(sourceClass)) {
 			sourceClass.setProjectId(project.getKeyId());
-			sourceClass.setSuperClassId(parentClass == null ? -1 : parentClass.getKeyId());
 			SourceClassDao.add(sourceClass);
+			sourceClassMap.put(sourceClass.getName(), sourceClass);
 		}
-		else {
+		
+		// Now update all source dependencies
+		for (SourceClass sourceClass : sourceClasses) {
+
+			// Retrieve its superclass
+			SourceClass superclass = sourceClassMap.get(sourceClass.getSuperClassName());
+
+			// Save the class
+			sourceClass.setSuperClassId(superclass == null ? -1 : superclass.getKeyId());
 			SourceClassDao.update(sourceClass);
-		}
-
-		// Now save all class attributes
-		for (SourceAttribute sourceAttribute : sourceClass.getAttributes()) {
-			sourceAttribute.setClassId(sourceClass.getKeyId());
-			SourceAttributeDao.add(sourceAttribute);
-		}
-
-		// Now save all class methods, parameters and references
-		for (SourceMethod sourceMethod : sourceClass.getMethods()) {
-
-			sourceMethod.setClassId(sourceClass.getKeyId());
-			SourceMethodDao.add(sourceMethod);
-
-			// Save parameters for each method
-			for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
-				sourceParameter.setMethodId(sourceMethod.getKeyId());
-				SourceParameterDao.add(sourceParameter);
+			
+			// Save its attributes
+			for (SourceAttribute sourceAttribute : sourceClass.getAttributes()) {
+				sourceAttribute.setClassId(sourceClass.getKeyId());
+				SourceAttributeDao.add(sourceAttribute);
 			}
 
-			// Save variable references for each method
-			for (SourceReference sourceReference : sourceMethod.getReferences()) {
-				sourceReference.setMethodId(sourceMethod.getKeyId());
-				SourceReferenceDao.add(sourceReference);
-			}
-		}
+			// Save its methods, parameters and references
+			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
-		// Finally save recursively its children
-		for (SourceClass childClass : sourceClass.getSubClasses()) {
-			save(project, sourceClass, childClass);
+				sourceMethod.setClassId(sourceClass.getKeyId());
+				SourceMethodDao.add(sourceMethod);
+
+				// Save parameters for each method
+				for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
+					sourceParameter.setMethodId(sourceMethod.getKeyId());
+					SourceParameterDao.add(sourceParameter);
+				}
+
+				// Save variable references for each method
+				for (SourceReference sourceReference : sourceMethod.getReferences()) {
+					sourceReference.setMethodId(sourceMethod.getKeyId());
+					SourceReferenceDao.add(sourceReference);
+				}
+			}
 		}
 	}
 }

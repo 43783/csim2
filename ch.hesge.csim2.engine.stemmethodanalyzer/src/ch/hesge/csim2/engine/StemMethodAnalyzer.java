@@ -196,12 +196,12 @@ public class StemMethodAnalyzer implements IEngine {
 
 			// Load all project classes
 			Console.writeInfo(this, "loading code sources information...");
-			List<SourceClass> sourceClasses = applicationLogic.getSourceClassMethodParam(project);
+			Map<Integer, SourceClass> classMap = applicationLogic.getSourceClassMap(project);
 
 			Console.writeInfo(this, "scanning source classes...");
 
 			// Build stem method table
-			for (SourceClass sourceClass : sourceClasses) {
+			for (SourceClass sourceClass : classMap.values()) {
 				for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
 					int stemCount = 0;

@@ -20,14 +20,14 @@ import ch.hesge.csim2.ui.views.MainView;
 public class SourceTree extends JTree {
 
 	// Private attributes
-	private List<SourceClass> sourceClasses;
+	private List<SourceClass> classRoots;
 	
 	/**
 	 * Default constructor
 	 */
-	public SourceTree(List<SourceClass> sourceClasses) {
+	public SourceTree(List<SourceClass> classRoots) {
 
-		this.sourceClasses = sourceClasses;
+		this.classRoots = classRoots;
 		
 		initComponent();
 		initRenderer();
@@ -86,15 +86,22 @@ public class SourceTree extends JTree {
 	 */
 	private void initModel() {
 		
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-		
-		// Create one node by source class
-		for (SourceClass sourceClass : sourceClasses) {
-			rootNode.add(createClassNode(sourceClass));
+		if (classRoots != null) {
+
+			DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+			
+			// Create one node by source class
+			for (SourceClass classRoot : classRoots) {
+				rootNode.add(createClassNode(classRoot));
+			}
+						
+			// Define concept tree model
+			setModel(new DefaultTreeModel(rootNode));	
 		}
-					
-		// Define concept tree model
-		setModel(new DefaultTreeModel(rootNode));	
+		else {
+			// Define a null model
+			setModel(null);	
+		}
 	}
 	
 	/**
@@ -104,18 +111,27 @@ public class SourceTree extends JTree {
 		
 		DefaultMutableTreeNode classNode = new DefaultMutableTreeNode(sourceClass);
 		
+		// Populate attributes
 		for (SourceAttribute sourceAttribute : sourceClass.getAttributes()) {
 			classNode.add(new DefaultMutableTreeNode(sourceAttribute));
 		}
 
+		// Populate methods
 		for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 			classNode.add(new DefaultMutableTreeNode(sourceMethod));
 		}
 
-		for (SourceClass childClass : sourceClass.getSubClasses()) {
-			DefaultMutableTreeNode childNode = createClassNode(childClass); 
-			classNode.add(childNode);
-		}		
+		// Populate children
+		if (!sourceClass.getSubClasses().isEmpty()) {
+			
+			DefaultMutableTreeNode childrenNode = new DefaultMutableTreeNode("subclasses");
+			
+			for (SourceClass child : sourceClass.getSubClasses()) {
+				childrenNode.add(createClassNode(child));
+			}
+
+			classNode.add(childrenNode);
+		}
 		
 		return classNode;
 	}

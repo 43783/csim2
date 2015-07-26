@@ -24,7 +24,7 @@ public class SourceClass {
 	private String filename;
 	private String name;
 	private String type;
-	private String superClassName;
+	private String superclassName;
 	private Project project;
 	private SourceClass superclass;
 	private List<SourceAttribute> attributes;
@@ -97,13 +97,21 @@ public class SourceClass {
 	}
 
 	public String getSuperClassName() {
-		return superClassName;
+		return superclassName;
 	}
 
 	public void setSuperClassName(String superClassName) {
-		this.superClassName = superClassName;
+		this.superclassName = superClassName;
 	}
 
+	public SourceClass getSuperClass() {
+		return superclass;
+	}
+
+	public void setSuperClass(SourceClass superclass) {
+		this.superclass = superclass;
+	}
+	
 	public List<SourceClass> getSubClasses() {
 		return subclasses;
 	}
@@ -114,13 +122,5 @@ public class SourceClass {
 
 	public List<SourceMethod> getMethods() {
 		return methods;
-	}
-
-	public SourceClass getSuperClass() {
-		return superclass;
-	}
-
-	public void setSuperClass(SourceClass superclass) {
-		this.superclass = superclass;
 	}
 }

@@ -70,28 +70,6 @@ class OntologyLogic {
 	}
 
 	/**
-	 * Retrieve all concepts owned by an project and its ontologies.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         the list of concept
-	 */
-	public static List<Concept> getConcepts(Project project) {
-
-		Map<Integer, Concept> conceptMap = ApplicationLogic.UNIQUE_INSTANCE.getConceptMap(project);
-
-		// Convert the map into a list
-		List<Concept> concepts = new ArrayList<>(conceptMap.values());
-
-		// Sort concepts
-		ObjectSorter.sortConcepts(concepts);
-
-		return concepts;
-	}
-
-	/**
 	 * Retrieve a list of all concepts owned by an ontology.
 	 * 
 	 * @param ontology
@@ -102,17 +80,104 @@ class OntologyLogic {
 	 */
 	public static List<Concept> getConcepts(Ontology ontology) {
 
-		Map<Integer, Concept> conceptMap = ApplicationLogic.UNIQUE_INSTANCE.getConceptMap(ontology);
-
-		// Convert the map into a list
-		List<Concept> concepts = new ArrayList<>(conceptMap.values());
-
-		// Sort concepts
+		List<Concept> concepts = ConceptDao.findByOntology(ontology);
 		ObjectSorter.sortConcepts(concepts);
 
+		Map<Integer, Concept> conceptMap = new HashMap<>();
+
+		// First populate the concept map
+		for (Concept concept : concepts) {
+			conceptMap.put(concept.getKeyId(), concept);
+		}
+
+		// Then populate dependencies
+		for (Concept concept : concepts) {
+			
+			// Populate attributes
+			concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
+			ObjectSorter.sortConceptAttributes(concept.getAttributes());
+
+			// Populate concept classes
+			concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
+			ObjectSorter.sortConceptClasses(concept.getClasses());
+			
+			// Populate links between concepts
+			for (ConceptLink link : ConceptLinkDao.findByConcept(concept)) {
+
+				// Update concept with instances
+				link.setSourceConcept(concept);
+				link.setTargetConcept(conceptMap.get(link.getTargetId()));
+
+				// Add the link to the concept
+				concept.getLinks().add(link);
+
+				// Detect concept hierarchy
+				if (isSubsumptionLink(link)) {
+					concept.setSuperConcept(link.getTargetConcept());
+					link.getTargetConcept().getSubConcepts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
+				}
+
+				// Detect part relationship
+				if (isMereologyLink(link)) {
+					link.getTargetConcept().getParts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getParts());
+				}
+			}
+		}
+		
 		return concepts;
 	}
 
+
+	/**
+	 * Return true if the link passed in argument
+	 * is a subsumption relation.
+	 * 
+	 * @param link
+	 * @return true or false
+	 */
+	private static boolean isSubsumptionLink(ConceptLink link) {
+		
+		boolean isSubsumption = false;
+
+		if (link != null) {
+			
+			String qualifier = link.getQualifier().toLowerCase();
+			
+			if (qualifier != null && qualifier.length() > 0) {
+				String[] subsumptionTerms = new String[] { "subsumption", "is-subsumption", "subclass", "is-subclass", "subclassof", "subclass-of" };
+				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
+			}
+		}
+		
+		return isSubsumption;
+	}
+	
+	/**
+	 * Return true if the link passed in argument
+	 * is a mereology relation.
+	 * 
+	 * @param link
+	 * @return true or false
+	 */
+	private static boolean isMereologyLink(ConceptLink link) {
+		
+		boolean isSubsumption = false;
+
+		if (link != null) {
+			
+			String qualifier = link.getQualifier().toLowerCase();
+			
+			if (qualifier != null && qualifier.length() > 0) {
+				String[] subsumptionTerms = new String[] { "part", "is-part", "partof", "is-partof" };
+				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
+			}
+		}
+		
+		return isSubsumption;
+	}
+	
 	/**
 	 * Retrieve a map of concepts owned by a project
 	 * with each entries of the form (keyId, Concept) map.
@@ -155,17 +220,16 @@ class OntologyLogic {
 				concept.getLinks().add(link);
 
 				// Detect concept hierarchy
-				if (link.getQualifier() != null && link.getTargetConcept() != null) {
+				if (isSubsumptionLink(link)) {
 					concept.setSuperConcept(link.getTargetConcept());
 					link.getTargetConcept().getSubConcepts().add(concept);
 					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
 				}
-				
-				// Detect concept hierarchy
-				if (link.getQualifier() != null && link.getTargetConcept() != null && link.getQualifier().equals("subclass-of")) {
-					concept.setSuperConcept(link.getTargetConcept());
-					link.getTargetConcept().getSubConcepts().add(concept);
-					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
+
+				// Detect part relationship
+				if (isMereologyLink(link)) {
+					link.getTargetConcept().getParts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getParts());
 				}
 			}
 		}
@@ -174,57 +238,31 @@ class OntologyLogic {
 	}
 
 	/**
-	 * Retrieve a map of concepts owned by an ontology
-	 * with each entries of the form (keyId, Concept) map.
+	 * Retrieve all ontology concepts as a hierarchy.
 	 * 
-	 * @param ontology
+	 * @param project
 	 *        the owner
 	 * 
-	 * @return
-	 *         a map of concept
+	 * @return a list of concept root
 	 */
-	public static Map<Integer, Concept> getConceptMap(Ontology ontology) {
+	public static List<Concept> getConceptTree(Project project) {
 
-		Map<Integer, Concept> conceptMap = new HashMap<>();
+		List<Concept> conceptRoots = new ArrayList<>();
+		
+		// Retrieve a map of all concepts
+		Map<Integer, Concept> conceptMap = ApplicationLogic.UNIQUE_INSTANCE.getConceptMap(project);
 
-		List<Concept> concepts = ConceptDao.findByOntology(ontology);
-
-		// First populate the concept map
-		for (Concept concept : concepts) {
-			conceptMap.put(concept.getKeyId(), concept);
-		}
-
-		// Then populate dependencies
-		for (Concept concept : concepts) {
-			
-			// Populate attributes
-			concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
-			ObjectSorter.sortConceptAttributes(concept.getAttributes());
-
-			// Populate concept classes
-			concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
-			ObjectSorter.sortConceptClasses(concept.getClasses());
-			
-			// Populate links between concepts
-			for (ConceptLink link : ConceptLinkDao.findByConcept(concept)) {
-
-				// Update concept with instances
-				link.setSourceConcept(concept);
-				link.setTargetConcept(conceptMap.get(link.getTargetId()));
-
-				// Add the link to the concept
-				concept.getLinks().add(link);
-
-				// Detect concept hierarchy
-				if (link.getQualifier() != null && link.getTargetConcept() != null && link.getQualifier().equals("subclass-of")) {
-					concept.setSuperConcept(link.getTargetConcept());
-					link.getTargetConcept().getSubConcepts().add(concept);
-					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
-				}
+		// And extract those without parent
+		for (Concept concept : conceptMap.values()) {
+			if (concept.getSuperConcept() == null) {
+				conceptRoots.add(concept);
 			}
 		}
+		
+		// Sort concepts
+		ObjectSorter.sortConcepts(conceptRoots);
 
-		return conceptMap;
+		return conceptRoots;
 	}
 
 	/**
@@ -447,14 +485,25 @@ class OntologyLogic {
 		else {
 			OntologyDao.update(ontology);
 		}
+		
+		// Create a map of all concepts
+		Map<Integer, Concept> conceptMap = new HashMap<>();
+		for (Concept concept : ontology.getConcepts()) {
+			concept.setOntologyId(ontology.getKeyId());
+			ConceptDao.add(concept);
+			conceptMap.put(concept.getKeyId(), concept);
+		}		
 
 		// Now, save all concepts and their attributes
 		for (Concept concept : ontology.getConcepts()) {
 
-			concept.setOntologyId(ontology.getKeyId());
+			// Retrieve its superconcept
+			Concept superconcept = conceptMap.get(concept.getSuperConceptId());
 
 			// Save the concept
-			ConceptDao.add(concept);
+			concept.setOntologyId(ontology.getKeyId());
+			concept.setSuperConceptId(superconcept == null ? -1 : superconcept.getKeyId());
+			ConceptDao.update(concept);
 
 			// Save its attributes
 			for (ConceptAttribute conceptAttribute : concept.getAttributes()) {
