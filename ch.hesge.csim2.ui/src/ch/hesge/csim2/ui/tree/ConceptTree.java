@@ -21,6 +21,7 @@ public class ConceptTree extends JTree {
 
 	// Private attributes
 	private List<Concept> conceptRoots;
+	private static final String ICON_PATH = "/ch/hesge/csim2/ui/icons/";
 	
 	/**
 	 * Default constructor
@@ -60,20 +61,20 @@ public class ConceptTree extends JTree {
 				if (userObject instanceof Concept) {
 					Concept concept = (Concept) userObject;
 					cellRenderer.setText(concept.getName());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concept.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "concept.png")));
 				}
 				else if (userObject instanceof ConceptAttribute) {
 					ConceptAttribute conceptAttribute = (ConceptAttribute) userObject;
 					cellRenderer.setText(conceptAttribute.getName());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/attribute.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "attribute.png")));
 				}
 				else if (userObject instanceof ConceptClass) {
 					ConceptClass conceptClass = (ConceptClass) userObject;
 					cellRenderer.setText(conceptClass.getName());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));
 				}
 				else if (userObject != null && userObject.toString().equals("subconcepts")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concepts.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "concepts.png")));
 				}
 				else {
 					cellRenderer.setIcon(null);

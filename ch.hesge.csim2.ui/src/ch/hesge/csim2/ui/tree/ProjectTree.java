@@ -38,6 +38,8 @@ public class ProjectTree extends JTree {
 	private OntologyPopup ontologyPopup;
 	private AnalysisPopup analysisPopup;
 
+	private static final String ICON_PATH = "/ch/hesge/csim2/ui/icons/";
+	
 	/**
 	 * Default constructor
 	 */
@@ -113,6 +115,7 @@ public class ProjectTree extends JTree {
 		analysisNode.add(new DefaultMutableTreeNode("Sources"));
 		analysisNode.add(new DefaultMutableTreeNode("Concepts"));
 		analysisNode.add(new DefaultMutableTreeNode("Matching"));
+		analysisNode.add(new DefaultMutableTreeNode("Granularity"));
 		analysisNode.add(new DefaultMutableTreeNode("Traces"));
 		analysisNode.add(new DefaultMutableTreeNode("TimeSeries"));
 
@@ -149,25 +152,28 @@ public class ProjectTree extends JTree {
 					Scenario scenario = (Scenario) userObject;
 					cellRenderer.setText(scenario.getName());
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/scenario.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "scenario.png")));
 				}
 				else if (userObject instanceof Ontology) {
 					Ontology ontology = (Ontology) userObject;
 					cellRenderer.setText(ontology.getName());
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/ontology.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "ontology.png")));
 				}
 				else if (userObject.toString().equals("Sources")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));
 				}
 				else if (userObject.toString().equals("Concepts")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concepts.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "concepts.png")));
 				}
 				else if (userObject.toString().equals("Matching")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/match.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "match.png")));
+				}
+				else if (userObject.toString().equals("Granularity")) {
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "granularity.png")));
 				}
 				else if (userObject.toString().equals("Traces")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/trace.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "trace.png")));
 				}
 				else if (userObject.toString().equals("TimeSeries")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/chart.png")));
@@ -175,7 +181,7 @@ public class ProjectTree extends JTree {
 				else {
 					cellRenderer.setText(userObject.toString());
 					cellRenderer.setFont(cellRenderer.getFont().deriveFont(Font.PLAIN));
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/folder.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "folder.png")));
 				}
 
 				return this;
@@ -227,6 +233,9 @@ public class ProjectTree extends JTree {
 				appManager.showConceptStems();
 			}
 			else if (userObject.toString().equals("Matching")) {
+				appManager.showMatching();
+			}
+			else if (userObject.toString().equals("Granularity")) {
 				appManager.showMatching();
 			}
 			else if (userObject.toString().equals("Traces")) {

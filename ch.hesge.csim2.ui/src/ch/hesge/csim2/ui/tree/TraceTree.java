@@ -3,6 +3,7 @@ package ch.hesge.csim2.ui.tree;
 import java.awt.Component;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -11,12 +12,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import ch.hesge.csim2.core.model.Trace;
+import ch.hesge.csim2.ui.views.MainView;
 
 @SuppressWarnings("serial")
 public class TraceTree extends JTree {
 
 	// Private attributes
 	private List<Trace> traceRoots;
+	private static final String ICON_PATH = "/ch/hesge/csim2/ui/icons/";
 	
 	/**
 	 * Default constructor
@@ -57,7 +60,8 @@ public class TraceTree extends JTree {
 					cellRenderer.setText(trace.getStaticClass() + "." + trace.getSignature());
 				}
 
-				cellRenderer.setIcon(null);
+				//cellRenderer.setIcon(null);
+				cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));
 				
 				return this;
 			}			

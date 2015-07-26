@@ -21,6 +21,7 @@ public class SourceTree extends JTree {
 
 	// Private attributes
 	private List<SourceClass> classRoots;
+	private static final String ICON_PATH = "/ch/hesge/csim2/ui/icons/";
 	
 	/**
 	 * Default constructor
@@ -60,20 +61,20 @@ public class SourceTree extends JTree {
 				if (userObject instanceof SourceClass) {
 					SourceClass sourceClass = (SourceClass) userObject;
 					cellRenderer.setText(sourceClass.getName());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));
 				}
 				else if (userObject instanceof SourceMethod) {
 					SourceMethod sourceMethod = (SourceMethod) userObject;
 					cellRenderer.setText(sourceMethod.getSignature());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/method.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "method.png")));
 				}
 				else if (userObject instanceof SourceAttribute) {
 					SourceAttribute sourceAttribute = (SourceAttribute) userObject;
 					cellRenderer.setText(sourceAttribute.getName());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/attribute.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "attribute.png")));
 				}
 				else if (userObject != null && userObject.toString().equals("subclasses")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));
 				}
 				else {
 					cellRenderer.setIcon(null);
