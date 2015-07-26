@@ -201,12 +201,20 @@ class OntologyLogic {
 		// Then populate dependencies
 		for (Concept concept : concepts) {
 			
-			// Populate attributes
-			concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
+			// Populate concept attributes
+			for (ConceptAttribute conceptAttribute : ConceptAttributeDao.findByConcept(concept)) {
+				conceptAttribute.setConcept(concept);
+				concept.getAttributes().add(conceptAttribute);				
+			}
+
 			ObjectSorter.sortConceptAttributes(concept.getAttributes());
 
 			// Populate concept classes
-			concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
+			for (ConceptClass conceptClass : ConceptClassDao.findByConcept(concept)) {
+				conceptClass.setConcept(concept);
+				concept.getClasses().add(conceptClass);				
+			}
+			
 			ObjectSorter.sortConceptClasses(concept.getClasses());
 			
 			// Populate links between concepts

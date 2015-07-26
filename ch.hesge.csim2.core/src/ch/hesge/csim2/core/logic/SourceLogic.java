@@ -57,14 +57,20 @@ class SourceLogic {
 		// Then populate dependencies
 		for (SourceClass sourceClass : sourceClasses) {
 			
-			// Populate attributes
-			sourceClass.getAttributes().clear();
-			sourceClass.getAttributes().addAll(SourceAttributeDao.findByClass(sourceClass));
+			// Populate class attributes
+			for (SourceAttribute sourceAttribute : SourceAttributeDao.findByClass(sourceClass)) {
+				sourceAttribute.setSourceClass(sourceClass);
+				sourceClass.getAttributes().add(sourceAttribute);				
+			}
+
 			ObjectSorter.sortSourceAttributes(sourceClass.getAttributes());
 
-			// Populate methods
-			sourceClass.getMethods().clear();
-			sourceClass.getMethods().addAll(SourceMethodDao.findByClass(sourceClass));
+			// Populate class method
+			for (SourceMethod sourceMethod : SourceMethodDao.findByClass(sourceClass)) {
+				sourceMethod.setSourceClass(sourceClass);
+				sourceClass.getMethods().add(sourceMethod);				
+			}
+
 			ObjectSorter.sortSourceMethods(sourceClass.getMethods());
 			
 			// Populate superclass

@@ -15,10 +15,11 @@ package ch.hesge.csim2.core.model;
 public class ConceptClass {
 
 	// Private attributes
-	private int		keyId;
-	private int		conceptId;
-	private String	name;
-	private String	identifier;
+	private int keyId;
+	private int conceptId;
+	private String name;
+	private String identifier;
+	private Concept concept;
 
 	/**
 	 * Default constructor
@@ -56,5 +57,13 @@ public class ConceptClass {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public Concept getConcept() {
+		return concept;
+	}
+
+	public void setConcept(Concept concept) {
+		this.concept = concept;
 	}
 }

@@ -4,7 +4,6 @@
  */
 package ch.hesge.csim2.core.model;
 
-
 /**
  * Represents attribute of an ontology concept.
  * 
@@ -16,10 +15,11 @@ package ch.hesge.csim2.core.model;
 public class ConceptAttribute {
 
 	// Private attributes
-	private int		keyId;
-	private int		conceptId;
-	private String	name;
-	private String	identifier;
+	private int keyId;
+	private int conceptId;
+	private String name;
+	private String identifier;
+	private Concept concept;
 
 	/**
 	 * Default constructor
@@ -57,5 +57,13 @@ public class ConceptAttribute {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public Concept getConcept() {
+		return concept;
+	}
+
+	public void setConcept(Concept concept) {
+		this.concept = concept;
 	}
 }

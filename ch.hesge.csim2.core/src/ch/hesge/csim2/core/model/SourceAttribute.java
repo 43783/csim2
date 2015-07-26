@@ -19,6 +19,7 @@ public class SourceAttribute {
 	private int classId;
 	private String name;
 	private String type;
+	private SourceClass sourceClass;
 
 	/**
 	 * Default constructor
@@ -56,5 +57,13 @@ public class SourceAttribute {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public SourceClass getSourceClass() {
+		return sourceClass;
+	}
+
+	public void setSourceClass(SourceClass sourceClass) {
+		this.sourceClass = sourceClass;
 	}
 }
