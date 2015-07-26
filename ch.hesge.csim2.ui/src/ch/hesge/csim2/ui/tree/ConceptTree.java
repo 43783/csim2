@@ -65,12 +65,15 @@ public class ConceptTree extends JTree {
 				else if (userObject instanceof ConceptAttribute) {
 					ConceptAttribute conceptAttribute = (ConceptAttribute) userObject;
 					cellRenderer.setText(conceptAttribute.getName());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/method.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/attribute.png")));
 				}
 				else if (userObject instanceof ConceptClass) {
 					ConceptClass conceptClass = (ConceptClass) userObject;
 					cellRenderer.setText(conceptClass.getName());
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
+				}
+				else if (userObject != null && userObject.toString().equals("subconcepts")) {
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concepts.png")));
 				}
 				else {
 					cellRenderer.setIcon(null);

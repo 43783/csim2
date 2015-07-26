@@ -161,7 +161,7 @@ public class ProjectTree extends JTree {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
 				}
 				else if (userObject.toString().equals("Concepts")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concept.png")));
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/concepts.png")));
 				}
 				else if (userObject.toString().equals("Matching")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/match.png")));

@@ -72,6 +72,9 @@ public class SourceTree extends JTree {
 					cellRenderer.setText(sourceAttribute.getName());
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/attribute.png")));
 				}
+				else if (userObject != null && userObject.toString().equals("subclasses")) {
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource("/ch/hesge/csim2/ui/icons/class.png")));
+				}
 				else {
 					cellRenderer.setIcon(null);
 				}
