@@ -34,6 +34,7 @@ import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
 import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
+import ch.hesge.csim2.ui.views.GranularityView;
 import ch.hesge.csim2.ui.views.MainView;
 import ch.hesge.csim2.ui.views.MatchingView;
 import ch.hesge.csim2.ui.views.OntologyView;
@@ -162,6 +163,19 @@ public class ApplicationManager {
 			@Override
 			public void run() {
 				mainView.showView("Matching", new MatchingView(application.getProject()));
+			}
+		});
+	}
+
+	/**
+	 * Show the granularity view
+	 */
+	public void showGranularity() {
+
+		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
+			@Override
+			public void run() {
+				mainView.showView("Granularity", new GranularityView(application.getProject()));
 			}
 		});
 	}
@@ -309,6 +323,13 @@ public class ApplicationManager {
 	}
 	
 	/**
+	 * Retrieve concepts granularity.
+	 */
+	public List<Concept> getConceptsGranularity(Project project) {
+		return applicationLogic.getConceptsGranularity(project);
+	}
+	
+	/**
 	 * Retrieve all source classes owned by a project.
 	 */
 	public List<SourceClass> getSourceClassTree(Project project) {
@@ -323,6 +344,13 @@ public class ApplicationManager {
 		return applicationLogic.getSourceMethodMap(project);
 	}
 
+	/**
+	 * Retrieve source class granularity.
+	 */
+	public List<SourceClass> getSourceClassGranularity(Project project) {
+		return applicationLogic.getSourceClassesGranularity(project);
+	}
+	
 	/**
 	 * Retrieve a hierarchy of stem concepts defined for a project.
 	 */

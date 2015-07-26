@@ -27,6 +27,7 @@ public class Concept {
 	private boolean isAction;
 	private Ontology ontology;
 	private Concept superconcept;
+	private double granularity;
 	private List<ConceptAttribute> attributes;
 	private List<ConceptClass> classes;
 	private List<ConceptLink> links;
@@ -126,5 +127,13 @@ public class Concept {
 
 	public List<Concept> getParts() {
 		return parts;
+	}
+
+	public double getGranularity() {
+		return granularity;
+	}
+
+	public void setGranularity(double granularity) {
+		this.granularity = granularity;
 	}
 }

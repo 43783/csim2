@@ -70,6 +70,54 @@ class OntologyLogic {
 	}
 
 	/**
+	 * Return true if the link passed in argument
+	 * is a subsumption relation.
+	 * 
+	 * @param link
+	 * @return true or false
+	 */
+	private static boolean isSubsumptionLink(ConceptLink link) {
+		
+		boolean isSubsumption = false;
+
+		if (link != null) {
+			
+			String qualifier = link.getQualifier().toLowerCase();
+			
+			if (qualifier != null && qualifier.length() > 0) {
+				String[] subsumptionTerms = new String[] { "subsumption", "is-subsumption", "subclass", "is-subclass", "subclassof", "subclass-of" };
+				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
+			}
+		}
+		
+		return isSubsumption;
+	}
+	
+	/**
+	 * Return true if the link passed in argument
+	 * is a mereology relation.
+	 * 
+	 * @param link
+	 * @return true or false
+	 */
+	private static boolean isMereologyLink(ConceptLink link) {
+		
+		boolean isSubsumption = false;
+
+		if (link != null) {
+			
+			String qualifier = link.getQualifier().toLowerCase();
+			
+			if (qualifier != null && qualifier.length() > 0) {
+				String[] subsumptionTerms = new String[] { "part", "is-part", "partof", "is-partof" };
+				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
+			}
+		}
+		
+		return isSubsumption;
+	}
+	
+	/**
 	 * Retrieve a list of all concepts owned by an ontology.
 	 * 
 	 * @param ontology
@@ -129,55 +177,6 @@ class OntologyLogic {
 		return concepts;
 	}
 
-
-	/**
-	 * Return true if the link passed in argument
-	 * is a subsumption relation.
-	 * 
-	 * @param link
-	 * @return true or false
-	 */
-	private static boolean isSubsumptionLink(ConceptLink link) {
-		
-		boolean isSubsumption = false;
-
-		if (link != null) {
-			
-			String qualifier = link.getQualifier().toLowerCase();
-			
-			if (qualifier != null && qualifier.length() > 0) {
-				String[] subsumptionTerms = new String[] { "subsumption", "is-subsumption", "subclass", "is-subclass", "subclassof", "subclass-of" };
-				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
-			}
-		}
-		
-		return isSubsumption;
-	}
-	
-	/**
-	 * Return true if the link passed in argument
-	 * is a mereology relation.
-	 * 
-	 * @param link
-	 * @return true or false
-	 */
-	private static boolean isMereologyLink(ConceptLink link) {
-		
-		boolean isSubsumption = false;
-
-		if (link != null) {
-			
-			String qualifier = link.getQualifier().toLowerCase();
-			
-			if (qualifier != null && qualifier.length() > 0) {
-				String[] subsumptionTerms = new String[] { "part", "is-part", "partof", "is-partof" };
-				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
-			}
-		}
-		
-		return isSubsumption;
-	}
-	
 	/**
 	 * Retrieve a map of concepts owned by a project
 	 * with each entries of the form (keyId, Concept) map.
@@ -271,6 +270,28 @@ class OntologyLogic {
 		ObjectSorter.sortConcepts(conceptRoots);
 
 		return conceptRoots;
+	}
+
+	/**
+	 * Retrieve a list of all concepts with their granularity computed.
+	 * 
+	 * @param ontology
+	 *        the owner
+	 * 
+	 * @return
+	 *         the list of concept
+	 */
+	public static List<Concept> getConceptsGranularity(Project project) {
+		
+		Map<Integer, Concept> conceptMap = getConceptMap(project);
+		
+		for (Concept concept : conceptMap.values()) {
+			
+			// Compute hierarchy depth
+			int depth = 0;
+		}
+		
+		return new ArrayList<>(conceptMap.values());
 	}
 
 	/**

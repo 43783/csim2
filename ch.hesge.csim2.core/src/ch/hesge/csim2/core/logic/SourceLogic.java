@@ -162,6 +162,23 @@ class SourceLogic {
 	}
 
 	/**
+	 * Retrieve a list of all source class with their granularity computed.
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return
+	 *         the list of source classes
+	 */
+	public static List<SourceClass> getSourceClassesGranularity(Project project) {
+		
+		Map<Integer, SourceClass> classMap = getSourceClassMap(project);
+		
+		
+		return new ArrayList<>(classMap.values());
+	}
+
+	/**
 	 * Delete all sources and their dependencies owned by an project. 
 	 * Thas is class, attribute, method, parameter and reference.
 	 * 
