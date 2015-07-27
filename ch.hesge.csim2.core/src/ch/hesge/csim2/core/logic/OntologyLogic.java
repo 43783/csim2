@@ -82,10 +82,10 @@ class OntologyLogic {
 
 		if (link != null) {
 			
-			String qualifier = link.getQualifier().toLowerCase();
-			
+			String qualifier = link.getQualifier().toLowerCase().replaceAll("[^A-Za-z0-9]", "");
+
 			if (qualifier != null && qualifier.length() > 0) {
-				String[] subsumptionTerms = new String[] { "subsumption", "is-subsumption", "subclass", "is-subclass", "subclassof", "subclass-of" };
+				String[] subsumptionTerms = new String[] { "subsumption", "issubsumption", "subclass", "issubclass", "subclassof" };
 				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
 			}
 		}
@@ -106,7 +106,7 @@ class OntologyLogic {
 
 		if (link != null) {
 			
-			String qualifier = link.getQualifier().toLowerCase();
+			String qualifier = link.getQualifier().toLowerCase().replaceAll("[^A-Za-z0-9]", "");
 			
 			if (qualifier != null && qualifier.length() > 0) {
 				String[] subsumptionTerms = new String[] { "part", "is-part", "partof", "is-partof" };
@@ -289,6 +289,23 @@ class OntologyLogic {
 			
 			// Compute hierarchy depth
 			int depth = 0;
+			Concept currentConcept = concept;
+			while (currentConcept.getSuperConcept() != null) {
+				depth++;
+				currentConcept = currentConcept.getSuperConcept();
+			}
+			
+//			// Compute hierarchy parts
+//			int partCount = 0;
+//			
+//			while (concept.getParts() != null) {
+//				partCount = concept.getParts();
+//				
+//				
+//				concept = concept.getSuperConcept();
+//			}
+//			
+			concept.setGranularity(depth);
 		}
 		
 		return new ArrayList<>(conceptMap.values());

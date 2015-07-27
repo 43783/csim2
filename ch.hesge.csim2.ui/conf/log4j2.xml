@@ -41,8 +41,8 @@
     -->
 
       <AppenderRef ref="FILE" level="TRACE" />
-      <AppenderRef ref="STDOUT" level="INFO" />
-      <AppenderRef ref="CONSOLE" level="INFO" />
+      <AppenderRef ref="STDOUT" level="DEBUG" />
+      <AppenderRef ref="CONSOLE" level="DEBUG" />
     </Root>
     
   </Loggers>

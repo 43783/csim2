@@ -38,6 +38,7 @@ public class Concept {
 	 * Default constructor
 	 */
 	public Concept() {
+		bounds = new Rectangle(100, 100, 100, 32);
 		attributes = new ArrayList<>();
 		classes = new ArrayList<>();
 		links = new ArrayList<>();
