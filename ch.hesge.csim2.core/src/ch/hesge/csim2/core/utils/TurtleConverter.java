@@ -33,6 +33,7 @@ public class TurtleConverter {
 	// Private attributes
 	private boolean debug;
 	private List<Concept> concepts;
+	private List<TurtleTriplet> triples;
 	private Map<String, Concept> conceptMap;
 	private Map<String, ConceptAttribute> attributeMap;
 	private Map<String, ConceptClass> conceptClassMap;
@@ -46,6 +47,7 @@ public class TurtleConverter {
 		this.debug = debug;
 
 		this.concepts = new ArrayList<>();
+		this.triples = new ArrayList<>(); 
 		this.conceptMap = new HashMap<>();
 		this.attributeMap = new HashMap<>();
 		this.conceptClassMap = new HashMap<>();
@@ -186,14 +188,9 @@ public class TurtleConverter {
 	 */
 	public void parse(InputStreamReader reader) throws ParseException {
 
-		conceptMap.clear();
-		attributeMap.clear();
-		conceptClassMap.clear();
-		linkMap.clear();
-
-		// Parse and analyze found triples
-		List<TurtleTriplet> triples = parseTriples(reader);
-		analyzeTriples(triples);
+		parseTriples(reader);
+		analyzeTriples();
+		validateConcepts();
 
 		// Dump result
 		if (debug) {
@@ -207,9 +204,9 @@ public class TurtleConverter {
 	 * @param triplets
 	 * @throws ParseException
 	 */
-	private List<TurtleTriplet> parseTriples(InputStreamReader reader) throws ParseException {
+	private void parseTriples(InputStreamReader reader) throws ParseException {
 
-		List<TurtleTriplet> triples = new ArrayList<>();
+		triples.clear();
 
 		Console.writeDebug(this, "parsing turtle triplets...");
 
@@ -255,10 +252,8 @@ public class TurtleConverter {
 			}
 		});
 
-		// Use JENA to parse triples
+		// Parse triples with JENA
 		parser.parse();
-
-		return triples;
 	}
 
 	/**
@@ -266,12 +261,17 @@ public class TurtleConverter {
 	 * 
 	 * @param triplets
 	 */
-	private void analyzeTriples(List<TurtleTriplet> triplets) {
+	private void analyzeTriples() {
+
+		conceptMap.clear();
+		attributeMap.clear();
+		conceptClassMap.clear();
+		linkMap.clear();
 
 		Console.writeDebug(this, "extracting model information...");
 
 		// Detect all concepts, properties and links 
-		for (TurtleTriplet triplet : triplets) {
+		for (TurtleTriplet triplet : triples) {
 
 			String subject = triplet.getSubject();
 			String predicate = triplet.getPredicate();
@@ -304,7 +304,7 @@ public class TurtleConverter {
 		}
 
 		// Now scan all object properties 
-		for (TurtleTriplet triplet : triplets) {
+		for (TurtleTriplet triplet : triples) {
 
 			String object = triplet.getObject();
 			String predicate = triplet.getPredicate();
@@ -350,7 +350,7 @@ public class TurtleConverter {
 			}
 
 			// Detect object owner
-			else if (predicate.equals("domain")) {
+			else if (predicate.equals("domain") && conceptMap.containsKey(object)) {
 
 				// Detect class attribute owner
 				if (conceptClassMap.containsKey(subject)) {
@@ -358,26 +358,24 @@ public class TurtleConverter {
 				}
 				
 				// Detect standard attribute owner
-				else if (attributeMap.containsKey(subject)) {
+				else if (attributeMap.containsKey(subject) && conceptMap.containsKey(object)) {
 					conceptMap.get(object).getAttributes().add(attributeMap.get(subject));
 				}
 
 				// Detect link owner
-				else if (linkMap.containsKey(subject)) {
+				else if (linkMap.containsKey(subject)  && conceptMap.containsKey(object)) {
 					linkMap.get(subject).setSourceConcept(conceptMap.get(object));
 					conceptMap.get(object).getLinks().add(linkMap.get(subject));
 				}
 			}
 
 			// Detect target links
-			else if (predicate.equals("range")) {
-				if (linkMap.containsKey(subject)) {
-					linkMap.get(subject).setTargetConcept(conceptMap.get(object));
-				}
+			else if (linkMap.containsKey(subject) && predicate.equals("range") && conceptMap.containsKey(object)) {
+				linkMap.get(subject).setTargetConcept(conceptMap.get(object));
 			}
 
 			// Detect rdf subsumption relation
-			else if (predicate.equals("subClassOf")) {
+			else if (conceptMap.containsKey(subject) && predicate.equals("subClassOf") && conceptMap.containsKey(object)) {
 
 				Concept concept = conceptMap.get(subject);
 				Concept superconcept = conceptMap.get(object);
@@ -391,20 +389,27 @@ public class TurtleConverter {
 				concept.getLinks().add(link);
 			}
 		}
+	}
 
+	/**
+	 * 
+	 * @param triplets
+	 */
+	private void validateConcepts() {
+		
 		concepts.clear();
 
-		// Finally filter special internal attribute (starting with @)
+		// Filter concept attributes
 		for (Concept concept : conceptMap.values()) {
 
-			// Skip objects without names
+			// Skip concepts without name
 			if (concept.getName() == null || concept.getName().length() == 0) {
 				continue;
 			}
 
+			// Convert bounds & action attributes to property
 			List<ConceptAttribute> attributes = new ArrayList<>();
 
-			// Filter attribute location
 			for (ConceptAttribute attribute : concept.getAttributes()) {
 
 				if (attribute.getName().equals("@Bounds")) {
@@ -433,8 +438,23 @@ public class TurtleConverter {
 
 			concepts.add(concept);
 		}
-	}
 
+		// Filter links to Thing concept
+		for (Concept concept : concepts) {
+			
+			List<ConceptLink> links = new ArrayList<>();
+			
+			for (ConceptLink link : concept.getLinks()) {
+				if (link.getTargetConcept() != null) {
+					links.add(link);
+				}
+			}
+
+			concept.getLinks().clear();
+			concept.getLinks().addAll(links);
+		}			
+	}
+	
 	/**
 	 * Dump concepts found.
 	 * 
