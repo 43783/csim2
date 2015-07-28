@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.hesge.csim2.core.logic.OntologyLogic;
 import ch.hesge.csim2.core.model.Concept;
 import ch.hesge.csim2.core.model.ConceptAttribute;
 import ch.hesge.csim2.core.model.ConceptClass;
@@ -68,6 +69,8 @@ public class TurtleConverter {
 	 */
 	public void generate(OutputStreamWriter writer, List<Concept> concepts) throws IOException {
 
+		int linkCount = 0;
+
 		// Generate file content
 		emitLine(writer, "@prefix owl: <http://www.w3.org/2002/07/owl#>.");
 		emitLine(writer, "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.");
@@ -77,22 +80,46 @@ public class TurtleConverter {
 		emitLine(writer, "@prefix : <http://hesge.ch/project/csim2#>.");
 		emitLine(writer, "@base <http://hesge.ch/project/csim2#>.");
 		emitLine(writer, "");
-		emitLine(writer, "#");
-		emitLine(writer, "# Classes");
-		emitLine(writer, "#");
-		emitLine(writer, "");
 
 		for (Concept concept : concepts) {
 
-			emitLine(writer, ":Class" + concept.getKeyId() + " a owl:Class; rdfs:label \"" + concept.getName() + "\".");
+			// Create a class
+			emitLine(writer, ":Class" + concept.getKeyId() + " a owl:Class;");
 
-			// Create an attribute for visual concept location
+			// Retrieve subsumption links
+			List<ConceptLink> subclassLinks = new ArrayList<>();
+			for (ConceptLink link : concept.getLinks()) {
+				if (OntologyLogic.isSubsumptionLink(link)) {
+					subclassLinks.add(link);
+				}
+			}
+			
+			// Create subclass predicates
+			if (subclassLinks.isEmpty()) {
+				emitLine(writer, "   rdfs:label \"" + concept.getName() + "\".");
+				
+			}
+			else {
+				emitLine(writer, "   rdfs:label \"" + concept.getName() + "\";");
+				
+				for (int i = 0; i < subclassLinks.size(); i++) {
+					ConceptLink link = subclassLinks.get(i);
+					if (i != subclassLinks.size() - 1) {
+						emitLine(writer, "   rdfs:subClassOf :Class" + link.getTargetConcept().getKeyId() + ";");
+					}
+					else {
+						emitLine(writer, "   rdfs:subClassOf :Class" + link.getTargetConcept().getKeyId() + ".");
+					}
+				}
+			}
+			
+			// Create an attribute for concept location
 			emitLine(writer, "   :attributeBounds" + concept.getKeyId() + " a owl:DatatypeProperty;");
 			emitLine(writer, "      rdfs:domain :Class" + concept.getKeyId() + ";");
 			emitLine(writer, "      rdfs:label \"@Bounds\";");
 			emitLine(writer, "      rdfs:label \"" + concept.getBounds().x + "," + concept.getBounds().y + "," + concept.getBounds().width + "," + concept.getBounds().height + "\"@ie.");
 
-			// Create an attribute for visual concept location
+			// Create an attribute for concept action
 			emitLine(writer, "   :attributeAction" + concept.getKeyId() + " a owl:DatatypeProperty;");
 			emitLine(writer, "      rdfs:domain :Class" + concept.getKeyId() + ";");
 			emitLine(writer, "      rdfs:label \"@IsAction\";");
@@ -107,7 +134,7 @@ public class TurtleConverter {
 				emitLine(writer, "      rdfs:label \"" + conceptAttribute.getIdentifier() + "\"@ie.");
 			}
 
-			// Save all attributes
+			// Save attributes
 			for (ConceptClass conceptClass : concept.getClasses()) {
 
 				emitLine(writer, "   :attributeClass" + conceptClass.getKeyId() + " a owl:DatatypeProperty;");
@@ -116,28 +143,20 @@ public class TurtleConverter {
 				emitLine(writer, "      rdfs:label \"" + conceptClass.getIdentifier() + "\"@ie.");
 			}
 
+			// Save links
+			for (ConceptLink link : concept.getLinks()) {
+				if (!OntologyLogic.isSubsumptionLink(link)) {
+					emitLine(writer, "   :conceptLink" + linkCount++ + " a owl:ObjectProperty;");
+					emitLine(writer, "      rdfs:domain :Class" + concept.getKeyId() + ";");
+					emitLine(writer, "      rdfs:range :Class" + link.getTargetConcept().getKeyId() + ";");
+					emitLine(writer, "      rdfs:label \"" + link.getQualifier() + "\".");
+				}
+			}
+			
 			emitLine(writer, "");
 		}
 
-		emitLine(writer, "#");
-		emitLine(writer, "# Relations");
-		emitLine(writer, "#");
 		emitLine(writer, "");
-
-		int linkCount = 0;
-
-		// Save all links
-		for (Concept concept : concepts) {
-			for (ConceptLink conceptLink : concept.getLinks()) {
-
-				emitLine(writer, ":relation" + linkCount + " a owl:ObjectProperty;");
-				emitLine(writer, "   rdfs:label \"" + conceptLink.getQualifier() + "\";");
-				emitLine(writer, "   rdfs:domain :Class" + conceptLink.getSourceId() + ";");
-				emitLine(writer, "   rdfs:range :Class" + conceptLink.getTargetId() + ".");
-
-				linkCount++;
-			}
-		}
 	}
 
 	/**
@@ -172,7 +191,25 @@ public class TurtleConverter {
 		conceptClassMap.clear();
 		linkMap.clear();
 
-		List<TurtleTriplet> triplets = new ArrayList<>();
+		// Parse and analyze found triples
+		List<TurtleTriplet> triples = parseTriples(reader);
+		analyzeTriples(triples);
+
+		// Dump result
+		if (debug) {
+			dumpConcept(concepts);
+		}
+	}
+
+	/**
+	 * Parse turtle triples.
+	 * 
+	 * @param triplets
+	 * @throws ParseException
+	 */
+	private List<TurtleTriplet> parseTriples(InputStreamReader reader) throws ParseException {
+
+		List<TurtleTriplet> triples = new ArrayList<>();
 
 		Console.writeDebug(this, "parsing turtle triplets...");
 
@@ -196,7 +233,7 @@ public class TurtleConverter {
 
 				// Create the triplet
 				TurtleTriplet triplet = new TurtleTriplet(subject, predicate, object, lang);
-				triplets.add(triplet);
+				triples.add(triplet);
 
 				// Trace triplet, if required
 				if (debug) {
@@ -218,30 +255,47 @@ public class TurtleConverter {
 			}
 		});
 
-		// Start parsing
+		// Use JENA to parse triples
 		parser.parse();
+
+		return triples;
+	}
+
+	/**
+	 * Extract all informations from triples.
+	 * 
+	 * @param triplets
+	 */
+	private void analyzeTriples(List<TurtleTriplet> triplets) {
 
 		Console.writeDebug(this, "extracting model information...");
 
-		// Detect all concepts, properties and link between them 
+		// Detect all concepts, properties and links 
 		for (TurtleTriplet triplet : triplets) {
 
-			String object = triplet.getObject().toLowerCase();
-			String predicate = triplet.getPredicate().toLowerCase();
 			String subject = triplet.getSubject();
+			String predicate = triplet.getPredicate();
+			String object = triplet.getObject();
 
 			if (predicate.equals("type")) {
 
 				// Detect classes
-				if (!conceptMap.containsKey(subject) && object.equals("class")) {
-					conceptMap.put(triplet.getSubject(), new Concept());
+				if (!conceptMap.containsKey(subject) && object.equals("Class")) {
+					conceptMap.put(subject, new Concept());
 				}
-				
+
 				// Detect attributes
-				else if (!attributeMap.containsKey(subject) && object.equals("DatatypeProperty")) {
-					attributeMap.put(subject, new ConceptAttribute());
+				if (object.equals("DatatypeProperty")) {
+					
+					// Detect standard/class attributes
+					if (subject.startsWith("attributeClass") && !conceptClassMap.containsKey(subject)) {
+						conceptClassMap.put(subject, new ConceptClass());
+					}
+					else if (!attributeMap.containsKey(subject)) {
+						attributeMap.put(subject, new ConceptAttribute());
+					}
 				}
-				
+
 				// Detect relations
 				else if (!linkMap.containsKey(subject) && object.equals("ObjectProperty")) {
 					linkMap.put(subject, new ConceptLink());
@@ -253,42 +307,40 @@ public class TurtleConverter {
 		for (TurtleTriplet triplet : triplets) {
 
 			String object = triplet.getObject();
-			String predicate = triplet.getPredicate().toLowerCase();
+			String predicate = triplet.getPredicate();
 			String subject = triplet.getSubject();
 			String lang = triplet.getLang();
 
-			// Detect subsumption relation
-			if (predicate.equals("subclassof")) {
-				
-				if (conceptMap.containsKey(subject) && conceptMap.containsKey(object)) {
-					Concept concept = conceptMap.get(subject);
-					Concept superconcept = conceptMap.get(object);
-					ConceptLink link = new ConceptLink();
-					link.setQualifier("subclass-of");
-					link.setSourceConcept(concept);
-					link.setTargetConcept(superconcept);
-					concept.getLinks().add(link);
-					linkMap.put(concept.getClass() + "_subclassof_" + superconcept.getClass(), link);
-				}
-			}
-			
 			// Detect labels
-			else if (predicate.equals("label")) {
+			if (predicate.equals("label")) {
 
 				// Detect class label
 				if (conceptMap.containsKey(subject)) {
-					Concept concept = conceptMap.get(subject);
-					concept.setName(object);
+					conceptMap.get(subject).setName(object);
 				}
 
-				// Detect attribute name
-				else if (attributeMap.containsKey(subject) && lang.isEmpty()) {
-					attributeMap.get(subject).setName(object);
+				// Detect class attribute
+				else if (conceptClassMap.containsKey(subject)) {
+					
+					// Detect attribute/identifier name
+					if (lang.equals("ie")) {
+						conceptClassMap.get(subject).setIdentifier(object);
+					}
+					else {
+						conceptClassMap.get(subject).setName(object);
+					}
 				}
-
-				// Detect attribute identifier
-				else if (attributeMap.containsKey(subject) && !lang.isEmpty()) {
-					attributeMap.get(subject).setIdentifier(subject);
+				
+				// Detect standard attribute
+				else if (attributeMap.containsKey(subject)) {
+					
+					// Detect attribute/identifier name
+					if (lang.equals("ie")) {
+						attributeMap.get(subject).setIdentifier(object);
+					}
+					else {
+						attributeMap.get(subject).setName(object);
+					}
 				}
 
 				// Detect relation qualifier
@@ -296,34 +348,52 @@ public class TurtleConverter {
 					linkMap.get(subject).setQualifier(object);
 				}
 			}
-			
+
 			// Detect object owner
 			else if (predicate.equals("domain")) {
 
-				// Detect attribute owner
-				if (attributeMap.containsKey(subject) && conceptMap.containsKey(object)) {
+				// Detect class attribute owner
+				if (conceptClassMap.containsKey(subject)) {
+					conceptMap.get(object).getClasses().add(conceptClassMap.get(subject));
+				}
+				
+				// Detect standard attribute owner
+				else if (attributeMap.containsKey(subject)) {
 					conceptMap.get(object).getAttributes().add(attributeMap.get(subject));
 				}
 
 				// Detect link owner
-				else if (linkMap.containsKey(subject) && conceptMap.containsKey(object)) {
-					Concept concept = conceptMap.get(object);
-					ConceptLink link = linkMap.get(subject);
-					link.setSourceConcept(concept);
-					concept.getLinks().add(link);
+				else if (linkMap.containsKey(subject)) {
+					linkMap.get(subject).setSourceConcept(conceptMap.get(object));
+					conceptMap.get(object).getLinks().add(linkMap.get(subject));
 				}
 			}
 
 			// Detect target links
 			else if (predicate.equals("range")) {
-				if (linkMap.containsKey(subject) && conceptMap.containsKey(object)) {
+				if (linkMap.containsKey(subject)) {
 					linkMap.get(subject).setTargetConcept(conceptMap.get(object));
 				}
 			}
+
+			// Detect rdf subsumption relation
+			else if (predicate.equals("subClassOf")) {
+
+				Concept concept = conceptMap.get(subject);
+				Concept superconcept = conceptMap.get(object);
+
+				ConceptLink link = new ConceptLink();
+				link.setQualifier("subclass-of");
+				link.setSourceConcept(concept);
+				link.setTargetConcept(superconcept);
+				
+				concept.setSuperConcept(superconcept);
+				concept.getLinks().add(link);
+			}
 		}
-		
+
 		concepts.clear();
-		
+
 		// Finally filter special internal attribute (starting with @)
 		for (Concept concept : conceptMap.values()) {
 
@@ -331,7 +401,7 @@ public class TurtleConverter {
 			if (concept.getName() == null || concept.getName().length() == 0) {
 				continue;
 			}
-			
+
 			List<ConceptAttribute> attributes = new ArrayList<>();
 
 			// Filter attribute location
@@ -360,24 +430,25 @@ public class TurtleConverter {
 
 			concept.getAttributes().clear();
 			concept.getAttributes().addAll(attributes);
-			
-			concepts.add(concept);
-		}
 
-		if (debug) {
-			dumpConcept(concepts);
+			concepts.add(concept);
 		}
 	}
 
-	public void dumpConcept(List<Concept> concepts) {
-		
+	/**
+	 * Dump concepts found.
+	 * 
+	 * @param concepts
+	 */
+	private void dumpConcept(List<Concept> concepts) {
+
 		Console.writeDebug(this, concepts.size() + " concepts found:");
 
 		// Dump all concepts found
 		for (Concept concept : concepts) {
 
 			Console.writeDebug(this, "concept: " + concept.getName());
-			
+
 			Console.writeDebug(this, "   bounds: x=" + concept.getBounds().x + ",y=" + concept.getBounds().y + ",width=" + concept.getBounds().width + ",height=" + concept.getBounds().height);
 
 			Console.writeDebug(this, "   action: " + concept.isAction());
@@ -395,125 +466,4 @@ public class TurtleConverter {
 			}
 		}
 	}
-	
-	/**
-	 * Parse a single triplet.
-	 * 
-	 * @param subject
-	 * @param predicate
-	 * @param subject
-	 */
-	private void parseTriplet(String subject, String predicate, String object, String objectLang) {
-
-		if (predicate.equals("type")) {
-
-			// Detect classes
-			if (object.toLowerCase().equals("class") && !conceptMap.containsKey(subject)) {
-				conceptMap.put(subject, new Concept());
-			}
-
-			// Detect data properties
-			else if (object.equals("DatatypeProperty")) {
-
-				if (subject.startsWith("attributeClass") && !conceptClassMap.containsKey(subject)) {
-					conceptClassMap.put(subject, new ConceptClass());
-				}
-				else {
-					attributeMap.put(subject, new ConceptAttribute());
-				}
-			}
-
-			// Detect links between concepts
-			else if (object.equals("ObjectProperty") && !linkMap.containsKey(subject)) {
-				linkMap.put(subject, new ConceptLink());
-			}
-		}
-
-		else if (predicate.equals("domain")) {
-
-			// Auto create class, if not already declared
-			if (object.toLowerCase().equals("class") && !conceptMap.containsKey(subject)) {
-				conceptMap.put(object, new Concept());
-			}
-
-			// Detect class attribute owner
-			if (conceptClassMap.containsKey(subject)) {
-				Concept concept = conceptMap.get(object);
-				ConceptClass clazz = conceptClassMap.get(subject);
-				concept.getClasses().add(clazz);
-			}
-
-			// Detect name attribute owner
-			else if (attributeMap.containsKey(subject)) {
-				Concept concept = conceptMap.get(object);
-				ConceptAttribute attribute = attributeMap.get(subject);
-				concept.getAttributes().add(attribute);
-			}
-
-			// Detect link source
-			else if (linkMap.containsKey(subject)) {
-				Concept concept = conceptMap.get(object);
-				ConceptLink link = linkMap.get(subject);
-				link.setSourceConcept(concept);
-				concept.getLinks().add(link);
-			}
-		}
-
-		// Detect link target
-		else if (predicate.equals("range")) {
-
-			// Auto create class, if not already declared
-			if (object.toLowerCase().equals("class") && !conceptMap.containsKey(subject)) {
-				conceptMap.put(object, new Concept());
-			}
-
-			// Detect target concept
-			if (linkMap.containsKey(subject)) {
-				Concept concept = conceptMap.get(object);
-				ConceptLink link = linkMap.get(subject);
-				link.setTargetConcept(concept);
-			}
-		}
-
-		// Detect concept, attribute, link names
-		else if (predicate.equals("label")) {
-
-			// Detect class label
-			if (conceptMap.containsKey(subject)) {
-				Concept concept = conceptMap.get(subject);
-				concept.setName(object);
-			}
-
-			// Detect class name
-			else if (conceptClassMap.containsKey(subject) && objectLang.isEmpty()) {
-				ConceptClass clazz = conceptClassMap.get(subject);
-				clazz.setName(object);
-			}
-
-			// Detect class identifier
-			else if (conceptClassMap.containsKey(subject) && !objectLang.isEmpty()) {
-				ConceptClass clazz = conceptClassMap.get(subject);
-				clazz.setIdentifier(object);
-			}
-
-			// Detect attribute name
-			else if (attributeMap.containsKey(subject) && objectLang.isEmpty()) {
-				ConceptAttribute attribute = attributeMap.get(subject);
-				attribute.setName(object);
-			}
-
-			// Detect attribute identifier
-			else if (attributeMap.containsKey(subject) && !objectLang.isEmpty()) {
-				ConceptAttribute attribute = attributeMap.get(subject);
-				attribute.setIdentifier(object);
-			}
-
-			// Detect relation qualifier
-			else if (linkMap.containsKey(subject)) {
-				ConceptLink link = linkMap.get(subject);
-				link.setQualifier(object);
-			}
-		}
-	}
-
 }

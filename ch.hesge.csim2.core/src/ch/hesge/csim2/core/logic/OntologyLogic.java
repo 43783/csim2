@@ -44,7 +44,7 @@ import ch.hesge.csim2.core.utils.TurtleConverter;
  * @author Eric Harth
  */
 
-class OntologyLogic {
+public class OntologyLogic {
 
 	/**
 	 * Retrieve all available ontologies without their dependencies.
@@ -76,7 +76,7 @@ class OntologyLogic {
 	 * @param link
 	 * @return true or false
 	 */
-	private static boolean isSubsumptionLink(ConceptLink link) {
+	public static boolean isSubsumptionLink(ConceptLink link) {
 		
 		boolean isSubsumption = false;
 
@@ -100,7 +100,7 @@ class OntologyLogic {
 	 * @param link
 	 * @return true or false
 	 */
-	private static boolean isMereologyLink(ConceptLink link) {
+	public static boolean isMereologyLink(ConceptLink link) {
 		
 		boolean isSubsumption = false;
 

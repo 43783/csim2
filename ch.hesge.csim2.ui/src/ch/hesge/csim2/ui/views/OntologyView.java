@@ -83,15 +83,15 @@ public class OntologyView extends JPanel implements ActionListener {
 		fl_leftPanel.setAlignment(FlowLayout.LEFT);
 		btnPanel.add(leftPanel, BorderLayout.WEST);
 
-		btnExport = new JButton("Export");
-		btnExport.setPreferredSize(new Dimension(80, 25));
-		btnExport.addActionListener(this);
-		leftPanel.add(btnExport);
-
 		btnImport = new JButton("Import");
 		btnImport.setPreferredSize(new Dimension(80, 25));
 		btnImport.addActionListener(this);
 		leftPanel.add(btnImport);
+
+		btnExport = new JButton("Export");
+		btnExport.setPreferredSize(new Dimension(80, 25));
+		btnExport.addActionListener(this);
+		leftPanel.add(btnExport);
 
 		btnSave = new JButton("Save");
 		btnSave.setPreferredSize(new Dimension(80, 25));
@@ -214,7 +214,8 @@ public class OntologyView extends JPanel implements ActionListener {
 
 		double scaleFactor = ontologyPanel.getScaledFactor();
 		List<Concept> concepts = Collections.synchronizedList(ontology.getConcepts());
-
+		ontologyPanel.computePreferredSize();
+		
 		// Randomize all concept location
 		for (Concept concept : concepts) {
 
@@ -222,8 +223,8 @@ public class OntologyView extends JPanel implements ActionListener {
 			Rectangle conceptBounds = PaintUtils.toViewCoordinates(concept.getBounds(), scaleFactor);
 
 			// Recompute random position
-			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random();
-			double newY = (ontologyPanel.getPreferredSize().height - conceptBounds.height) * Math.random();
+			double newX = (ontologyPanel.getPreferredSize().width - conceptBounds.width) * Math.random() + conceptBounds.width;
+			double newY = (ontologyPanel.getPreferredSize().height - conceptBounds.height) * Math.random() + conceptBounds.height;
 
 			// Update concept position
 			concept.getBounds().x = Double.valueOf(newX).intValue();

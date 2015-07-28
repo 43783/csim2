@@ -407,7 +407,7 @@ public class OntologyPanel extends JPanel {
 	/**
 	 * Recompute current ontology size
 	 */
-	private void computePreferredSize() {
+	public void computePreferredSize() {
 
 		Rectangle ontoRect = new Rectangle();
 
