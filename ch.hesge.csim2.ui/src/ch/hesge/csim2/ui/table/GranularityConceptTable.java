@@ -46,7 +46,7 @@ public class GranularityConceptTable extends JTable {
 
 			@Override
 			public int getColumnCount() {
-				return 2;
+				return 3;
 			}
 
 			@Override
@@ -56,6 +56,8 @@ public class GranularityConceptTable extends JTable {
 					case 0:
 						return "Concept";
 					case 1:
+						return "Ontology";
+					case 2:
 						return "Granularity";
 				}
 
@@ -78,6 +80,8 @@ public class GranularityConceptTable extends JTable {
 					case 0:
 						return concept.getName();
 					case 1:
+						return concept.getOntology().getName();
+					case 2:
 						return String.format("%.3f", concept.getGranularity());
 				}
 
@@ -93,7 +97,9 @@ public class GranularityConceptTable extends JTable {
 		
 		// Adjust column size
 		TableColumnModel columnModel = getColumnModel(); 
-		columnModel.getColumn(1).setMaxWidth(120);
-		columnModel.getColumn(1).setMinWidth(120);
+		columnModel.getColumn(1).setMaxWidth(80);
+		columnModel.getColumn(1).setMinWidth(80);
+		columnModel.getColumn(2).setMaxWidth(80);
+		columnModel.getColumn(2).setMinWidth(80);
 	}
 }

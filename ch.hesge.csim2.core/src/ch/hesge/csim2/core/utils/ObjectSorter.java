@@ -58,6 +58,30 @@ public class ObjectSorter {
 	}
 
 	/**
+	 * Sort a list of concepts base on their granularity.
+	 * 
+	 * @param concepts
+	 */
+	public static void sortConceptsByGranularity(List<Concept> concepts) {
+
+		concepts.sort(new Comparator<Concept>() {
+			@Override
+			public int compare(Concept a, Concept b) {
+				
+				if (a.getGranularity() != b.getGranularity()) {
+					return (int) ((double)a.getGranularity() - b.getGranularity());
+				}
+
+				if (a.getOntology().getName() != b.getOntology().getName()) {
+					return a.getOntology().getName().compareTo(b.getOntology().getName());
+				}
+
+				return a.getName().compareTo(b.getName());
+			}
+		});
+	}
+
+	/**
 	 * Sort a list of concept attributes.
 	 * 
 	 * @param attributes

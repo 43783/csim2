@@ -189,16 +189,25 @@ public class OntologyLogic {
 	 */
 	public static Map<Integer, Concept> getConceptMap(Project project) {
 
+		Map<Integer, Ontology> ontologyMap = new HashMap<>();
 		Map<Integer, Concept> conceptMap = new HashMap<>();
 		List<Concept> concepts = ConceptDao.findByProject(project);
 
 		// First populate the concept map
+		for (Ontology ontology : getOntologies(project)) {
+			ontologyMap.put(ontology.getKeyId(), ontology);
+		}
+		
+		// Then populate the concept map
 		for (Concept concept : concepts) {
 			conceptMap.put(concept.getKeyId(), concept);
 		}
 
 		// Then populate dependencies
 		for (Concept concept : concepts) {
+			
+			// Attach correct ontology
+			concept.setOntology(ontologyMap.get(concept.getOntologyId()));
 			
 			// Populate concept attributes
 			for (ConceptAttribute conceptAttribute : ConceptAttributeDao.findByConcept(concept)) {
@@ -283,6 +292,7 @@ public class OntologyLogic {
 	 */
 	public static List<Concept> getConceptsGranularity(Project project) {
 		
+		List<Concept> concepts = new ArrayList<>();
 		Map<Integer, Concept> conceptMap = getConceptMap(project);
 		
 		for (Concept concept : conceptMap.values()) {
@@ -306,9 +316,12 @@ public class OntologyLogic {
 //			}
 //			
 			concept.setGranularity(depth);
+			concepts.add(concept);
 		}
 		
-		return new ArrayList<>(conceptMap.values());
+		ObjectSorter.sortConceptsByGranularity(concepts);
+		
+		return concepts;
 	}
 
 	/**
