@@ -482,24 +482,24 @@ public class ApplicationLogic {
 	}
 
 	/**
-	 * Retrieve a list of all concepts with their granularity computed.
+	 * Retrieve a list of all concepts with their computed weight.
+	 * Greatest is the weight, more concrete is the concept.
+	 * The weight is bounds to [0..1]
 	 * 
-	 * @param ontology
-	 *        the owner
-	 * 
+	 * @param project
 	 * @return
 	 *         the list of concept
 	 */
-	public List<Concept> getConceptsGranularity(Project project) {
+	public List<Concept> getWeightedConcepts(Project project) {
 
 		List<Concept> result = null;
 		
 		try {
 			
-			String cacheKey = "getConceptsGranularity_" + project.getKeyId();
+			String cacheKey = "getWeightedConcepts_" + project.getKeyId();
 
 			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConceptsGranularity(project)));
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getWeightedConcepts(project)));
 			}
 
 			result = (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
@@ -632,36 +632,6 @@ public class ApplicationLogic {
 		return result;
 	}
 
-	/**
-	 * Retrieve a list of all source class with their granularity computed.
-	 * 
-	 * @param project
-	 *        the owner
-	 * 
-	 * @return
-	 *         the list of source classes
-	 */
-	public List<SourceClass> getSourceClassesGranularity(Project project) {
-
-		List<SourceClass> result = null;
-		
-		try {
-			
-			String cacheKey = "getSourceClassesGranularity_" + project.getKeyId();
-
-			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, SourceLogic.getSourceClassesGranularity(project)));
-			}
-
-			result = (List<SourceClass>) APPCACHE.get(cacheKey).getObjectValue();
-		}
-		catch (Exception e) {
-			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
-		}
-		
-		return result;
-	}
-	
 	/**
 	 * Retrieve all stems associated to a term.
 	 * Words present in rejectedList will not produce associated stems.

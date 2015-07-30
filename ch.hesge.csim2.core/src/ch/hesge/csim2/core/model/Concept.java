@@ -27,7 +27,7 @@ public class Concept {
 	private boolean isAction;
 	private Ontology ontology;
 	private Concept superconcept;
-	private double granularity;
+	private double weight;
 	private List<ConceptAttribute> attributes;
 	private List<ConceptClass> classes;
 	private List<ConceptLink> links;
@@ -130,11 +130,11 @@ public class Concept {
 		return parts;
 	}
 
-	public double getGranularity() {
-		return granularity;
+	public double getWeight() {
+		return weight;
 	}
 
-	public void setGranularity(double granularity) {
-		this.granularity = granularity;
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 }

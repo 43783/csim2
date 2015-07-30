@@ -62,14 +62,16 @@ public class ObjectSorter {
 	 * 
 	 * @param concepts
 	 */
-	public static void sortConceptsByGranularity(List<Concept> concepts) {
+	public static void sortConceptsByWeight(List<Concept> concepts) {
 
 		concepts.sort(new Comparator<Concept>() {
 			@Override
 			public int compare(Concept a, Concept b) {
 				
-				if (a.getGranularity() != b.getGranularity()) {
-					return (int) ((double)a.getGranularity() - b.getGranularity());
+				int weightComparison = Double.compare(a.getWeight(), b.getWeight());
+				
+				if (weightComparison != 0) {
+					return weightComparison;
 				}
 
 				if (a.getOntology().getName() != b.getOntology().getName()) {

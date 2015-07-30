@@ -34,7 +34,7 @@ import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
 import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
-import ch.hesge.csim2.ui.views.GranularityView;
+import ch.hesge.csim2.ui.views.AbstractionView;
 import ch.hesge.csim2.ui.views.MainView;
 import ch.hesge.csim2.ui.views.MatchingView;
 import ch.hesge.csim2.ui.views.OntologyView;
@@ -170,12 +170,12 @@ public class ApplicationManager {
 	/**
 	 * Show the granularity view
 	 */
-	public void showGranularity() {
+	public void showWeights() {
 
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-				mainView.showView("Granularity", new GranularityView(application.getProject()));
+				mainView.showView("Weights", new AbstractionView(application.getProject()));
 			}
 		});
 	}
@@ -323,10 +323,10 @@ public class ApplicationManager {
 	}
 	
 	/**
-	 * Retrieve concepts granularity.
+	 * Retrieve a list of all concepts with their computed weight.
 	 */
-	public List<Concept> getConceptsGranularity(Project project) {
-		return applicationLogic.getConceptsGranularity(project);
+	public List<Concept> getWeightedConcepts(Project project) {
+		return applicationLogic.getWeightedConcepts(project);
 	}
 	
 	/**
@@ -335,7 +335,7 @@ public class ApplicationManager {
 	public List<SourceClass> getSourceClassTree(Project project) {
 		return applicationLogic.getSourceClassTree(project);
 	}
-	
+
 	/**
 	 * Retrieve all source methods owned by a project as a map of (methodId,
 	 * SourceMethod).
@@ -344,13 +344,6 @@ public class ApplicationManager {
 		return applicationLogic.getSourceMethodMap(project);
 	}
 
-	/**
-	 * Retrieve source class granularity.
-	 */
-	public List<SourceClass> getSourceClassGranularity(Project project) {
-		return applicationLogic.getSourceClassesGranularity(project);
-	}
-	
 	/**
 	 * Retrieve a hierarchy of stem concepts defined for a project.
 	 */

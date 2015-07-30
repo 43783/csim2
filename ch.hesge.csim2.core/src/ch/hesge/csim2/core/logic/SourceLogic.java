@@ -162,7 +162,7 @@ class SourceLogic {
 	}
 
 	/**
-	 * Retrieve a list of all source class with their granularity computed.
+	 * Retrieve a list of all source class with their abstract factor computed.
 	 * 
 	 * @param project
 	 *        the owner
@@ -170,7 +170,7 @@ class SourceLogic {
 	 * @return
 	 *         the list of source classes
 	 */
-	public static List<SourceClass> getSourceClassesGranularity(Project project) {
+	public static List<SourceClass> getSourceClassAbstractions(Project project) {
 		
 		Map<Integer, SourceClass> classMap = getSourceClassMap(project);
 		

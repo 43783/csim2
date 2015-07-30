@@ -11,16 +11,16 @@ import javax.swing.table.TableColumnModel;
 import ch.hesge.csim2.core.model.Concept;
 
 @SuppressWarnings("serial")
-public class GranularityConceptTable extends JTable {
+public class WeightedConceptTable extends JTable {
 
 	// Private attributes
-	private List<Concept> concepts;
+	private List<Concept> weightedConcepts;
 
 	/**
 	 * Default constructor
 	 */
-	public GranularityConceptTable(List<Concept> concepts) {
-		this.concepts = concepts;
+	public WeightedConceptTable(List<Concept> weightedConcepts) {
+		this.weightedConcepts = weightedConcepts;
 		initComponent();
 	}
 
@@ -58,7 +58,7 @@ public class GranularityConceptTable extends JTable {
 					case 1:
 						return "Ontology";
 					case 2:
-						return "Granularity";
+						return "Weight";
 				}
 
 				return null;
@@ -66,15 +66,15 @@ public class GranularityConceptTable extends JTable {
 
 			@Override
 			public int getRowCount() {
-				if (concepts == null)
+				if (weightedConcepts == null)
 					return 0;
-				return concepts.size();
+				return weightedConcepts.size();
 			}
 
 			@Override
 			public Object getValueAt(int row, int col) {
 
-				Concept concept = concepts.get(row);
+				Concept concept = weightedConcepts.get(row);
 
 				switch (col) {
 					case 0:
@@ -82,7 +82,7 @@ public class GranularityConceptTable extends JTable {
 					case 1:
 						return concept.getOntology().getName();
 					case 2:
-						return String.format("%.3f", concept.getGranularity());
+						return String.format("%.3f", concept.getWeight());
 				}
 
 				return null;
@@ -97,9 +97,9 @@ public class GranularityConceptTable extends JTable {
 		
 		// Adjust column size
 		TableColumnModel columnModel = getColumnModel(); 
-		columnModel.getColumn(1).setMaxWidth(80);
-		columnModel.getColumn(1).setMinWidth(80);
-		columnModel.getColumn(2).setMaxWidth(80);
-		columnModel.getColumn(2).setMinWidth(80);
+		columnModel.getColumn(1).setMaxWidth(90);
+		columnModel.getColumn(1).setMinWidth(90);
+		columnModel.getColumn(2).setMaxWidth(90);
+		columnModel.getColumn(2).setMinWidth(90);
 	}
 }

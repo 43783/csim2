@@ -114,7 +114,7 @@ public class ProjectTree extends JTree {
 		projectNode.add(analysisNode);
 		analysisNode.add(new DefaultMutableTreeNode("Sources"));
 		analysisNode.add(new DefaultMutableTreeNode("Concepts"));
-		analysisNode.add(new DefaultMutableTreeNode("Granularity"));
+		analysisNode.add(new DefaultMutableTreeNode("Weights"));
 		analysisNode.add(new DefaultMutableTreeNode("Matching"));
 		analysisNode.add(new DefaultMutableTreeNode("Traces"));
 		analysisNode.add(new DefaultMutableTreeNode("TimeSeries"));
@@ -166,8 +166,8 @@ public class ProjectTree extends JTree {
 				else if (userObject.toString().equals("Concepts")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "concepts.png")));
 				}
-				else if (userObject.toString().equals("Granularity")) {
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "granularity.png")));
+				else if (userObject.toString().equals("Weights")) {
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "weight.png")));
 				}
 				else if (userObject.toString().equals("Matching")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "match.png")));
@@ -232,8 +232,8 @@ public class ProjectTree extends JTree {
 			else if (userObject.toString().equals("Concepts")) {
 				appManager.showConceptStems();
 			}
-			else if (userObject.toString().equals("Granularity")) {
-				appManager.showGranularity();
+			else if (userObject.toString().equals("Weights")) {
+				appManager.showWeights();
 			}
 			else if (userObject.toString().equals("Matching")) {
 				appManager.showMatching();
@@ -315,6 +315,7 @@ public class ProjectTree extends JTree {
 				analysisPopup.clearMenuState();
 				analysisPopup.setTimeSeriesMenuState(true);
 				analysisPopup.show(e.getComponent(), e.getX(), e.getY());
-			}		}
+			}		
+		}
 	}
 }

@@ -27,7 +27,6 @@ public class SourceClass {
 	private String superclassName;
 	private Project project;
 	private SourceClass superclass;
-	private double granularity;
 	private List<SourceAttribute> attributes;
 	private List<SourceMethod> methods;
 	private List<SourceClass> subclasses;
@@ -123,13 +122,5 @@ public class SourceClass {
 
 	public List<SourceMethod> getMethods() {
 		return methods;
-	}
-
-	public double getGranularity() {
-		return granularity;
-	}
-
-	public void setGranularity(double granularity) {
-		this.granularity = granularity;
 	}
 }

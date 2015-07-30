@@ -103,7 +103,7 @@ public class OntologyLogic {
 			String qualifier = link.getQualifier().toLowerCase().replaceAll("[^A-Za-z0-9]", "");
 			
 			if (qualifier != null && qualifier.length() > 0) {
-				String[] subsumptionTerms = new String[] { "part", "is-part", "partof", "is-partof" };
+				String[] subsumptionTerms = new String[] { "part", "ispart", "partof", "ispartof" };
 				isSubsumption = StringUtils.contains(qualifier, subsumptionTerms);
 			}
 		}
@@ -276,44 +276,64 @@ public class OntologyLogic {
 	}
 
 	/**
-	 * Retrieve a list of all concepts with their granularity computed.
+	 * Compute concept weight.
+	 * Greatest is the weight, more concrete is the concept.
+	 * The weight is bounds to [1..max-integer]
 	 * 
-	 * @param ontology
-	 *        the owner
+	 * @param concept
+	 * @return the abstract factor
+	 */
+	private static int getConceptWeight(Concept concept) {
+		
+		int weight = 1;
+		
+		for (ConceptLink link : concept.getLinks()) {
+			
+			// Subsumption is heavier that moreonyms
+			if (isSubsumptionLink(link)) {
+				weight += getConceptWeight(link.getTargetConcept());
+			}
+			else if (isMereologyLink(link)) {
+				weight += getConceptWeight(link.getTargetConcept()) * 0.8;
+			}			
+		}
+		
+		return weight;
+	}
+	
+	/**
+	 * Retrieve a list of all concepts with their computed weight.
+	 * Greatest is the weight, more concrete is the concept.
+	 * The weight is bounds to [0..1]
 	 * 
+	 * @param project
 	 * @return
 	 *         the list of concept
 	 */
-	public static List<Concept> getConceptsGranularity(Project project) {
+	public static List<Concept> getWeightedConcepts(Project project) {
 		
 		List<Concept> concepts = new ArrayList<>();
 		Map<Integer, Concept> conceptMap = getConceptMap(project);
 		
+		double maxWeight = 0;
+		
+		// Scan all concepts
 		for (Concept concept : conceptMap.values()) {
-			
-			// Compute hierarchy depth
-			int depth = 0;
-			Concept currentConcept = concept;
-			while (currentConcept.getSuperConcept() != null) {
-				depth++;
-				currentConcept = currentConcept.getSuperConcept();
-			}
-			
-//			// Compute hierarchy parts
-//			int partCount = 0;
-//			
-//			while (concept.getParts() != null) {
-//				partCount = concept.getParts();
-//				
-//				
-//				concept = concept.getSuperConcept();
-//			}
-//			
-			concept.setGranularity(depth);
+						
+			double conceptWeight = getConceptWeight(concept);
+			concept.setWeight(conceptWeight);
 			concepts.add(concept);
+
+			maxWeight = Math.max(conceptWeight, maxWeight);
 		}
 		
-		ObjectSorter.sortConceptsByGranularity(concepts);
+		// Normalize factor within [0..1]
+		for (Concept concept : concepts) {
+			double normalizedWeight = (concept.getWeight() - 1) / (maxWeight - 1);
+			concept.setWeight(normalizedWeight);
+		}
+		
+		ObjectSorter.sortConceptsByWeight(concepts);
 		
 		return concepts;
 	}
