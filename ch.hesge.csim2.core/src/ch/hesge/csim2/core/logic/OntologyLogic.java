@@ -5,12 +5,6 @@
 package ch.hesge.csim2.core.logic;
 
 import java.awt.Rectangle;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,8 +27,8 @@ import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.DaoUtils;
 import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.ObjectSorter;
+import ch.hesge.csim2.core.utils.OntologyParser;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.core.utils.TurtleConverter;
 
 /**
  * This class implement all logical rules associated to ontology.
@@ -599,8 +593,6 @@ public class OntologyLogic {
 		
 		if (ontology != null && filename != null) {
 
-			FileOutputStream fileStream = null;
-
 			try {
 
 				// Delete file, exists
@@ -608,30 +600,11 @@ public class OntologyLogic {
 					Files.delete(Paths.get(filename));
 				}
 				
-				// Create a file writer (UTF8 support)
-				fileStream = new FileOutputStream(new File(filename));
-				OutputStreamWriter writer = new OutputStreamWriter(fileStream, "UTF-8");
-				
-				// Generate the turtle file
-				TurtleConverter emitter = new TurtleConverter(true);
-				emitter.generate(writer, ontology.getConcepts());
-
-				writer.flush();
-				writer.close();
+				OntologyParser parser = new OntologyParser(true);
+				parser.generate(ontology, filename);
 			}
-			catch(Exception e)  {
-				
-				if (fileStream != null) {
-					try {
-						fileStream.flush();
-						fileStream.close();
-					}
-					catch (IOException e1) {
-						// Close silently
-					}
-				}
-				
-				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+			catch (Throwable t) {
+				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(t));
 			}
 		}
 	}
@@ -648,38 +621,18 @@ public class OntologyLogic {
 		
 		if (ontology != null && filename != null) {
 
-			FileInputStream fileStream = null;
-
 			try {
 
-				// Create a file reader (UTF8 support)
-				fileStream = new FileInputStream(new File(filename));
-				InputStreamReader reader = new InputStreamReader(fileStream, "UTF-8");
-				
-				// Parse the turtle file
-				TurtleConverter parser = new TurtleConverter(true);
-			    parser.parse(reader);
-			    reader.close();
-			    			    
-			    // Retrieve all concepts found
-			    List<Concept> concepts = parser.getConcepts();
-			    
-			    // Now save the ontology with the concepts
+				// Retrieve ontology contained in file
+				OntologyParser parser = new OntologyParser(true);
+				Ontology onto = parser.parse(filename);
+
+			    // Now update ontology and save it
 			    ontology.getConcepts().clear();
-			    ontology.getConcepts().addAll(concepts);
+			    ontology.getConcepts().addAll(onto.getConcepts());
 			    saveOntology(ontology);
 			}
 			catch (Throwable t) {
-				
-				if (fileStream != null) {
-					try {
-						fileStream.close();
-					}
-					catch (IOException e1) {
-						// Close silently
-					}
-				}
-				
 				Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(t));
 			}
 		}

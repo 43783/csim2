@@ -3,12 +3,49 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/cache/ehcache-2.10.0.jar"/>
-	<classpathentry kind="lib" path="lib/owl/jena-core-2.12.0.jar"/>
-	<classpathentry kind="lib" path="lib/owl/jena-iri-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/mysql/mysql-connector-java-5.1.35.jar"/>
 	<classpathentry kind="lib" path="lib/stemmization/snowball-20150621.jar"/>
-	<classpathentry kind="lib" path="lib/owl/xercesImpl-2.11.0.jar"/>
-	<classpathentry kind="lib" path="lib/owl/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="lib/cache/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/guice-4.0-beta.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/guice-multibindings-4.0-beta.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/httpclient-4.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/httpclient-cache-4.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/httpcore-4.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jackson-annotations-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jackson-core-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jackson-databind-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/javax.inject-1.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jcl-over-slf4j-1.7.7.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jsonld-java-0.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jsonld-java-sesame-0.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/jsr305-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/org.apache.commons.io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/org.osgi.core-1.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/owlapi-distribution-4.0.2.jar" sourcepath="lib/owlapi/owlapi-distribution-4.0.2.src.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/semargl-core-0.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/semargl-rdf-0.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/semargl-rdfa-0.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/semargl-sesame-0.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-model-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-api-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-binary-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-datatypes-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-languages-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-n3-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-nquads-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-ntriples-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-rdfjson-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-rdfxml-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-trig-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-trix-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-rio-turtle-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/sesame-util-2.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/trove4j-3.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi/xz-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
