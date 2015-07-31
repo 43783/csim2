@@ -15,7 +15,7 @@ import ch.hesge.csim2.ui.utils.SimpleAction;
 import ch.hesge.csim2.ui.utils.SwingUtils;
 
 @SuppressWarnings("serial")
-public class AbstractionView extends JPanel {
+public class WeightedConceptView extends JPanel {
 
 	// Private attribute	
 	private List<Concept> weightedConcepts;
@@ -26,7 +26,7 @@ public class AbstractionView extends JPanel {
 	/**
 	 * Default constructor.
 	 */
-	public AbstractionView(Project project) {
+	public WeightedConceptView(Project project) {
 		this.weightedConcepts = ApplicationManager.UNIQUE_INSTANCE.getWeightedConcepts(project);
 		initComponent();
 	}

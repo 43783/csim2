@@ -233,7 +233,7 @@ public class ProjectTree extends JTree {
 				appManager.showConceptStems();
 			}
 			else if (userObject.toString().equals("Weights")) {
-				appManager.showWeights();
+				appManager.showConceptWeights();
 			}
 			else if (userObject.toString().equals("Matching")) {
 				appManager.showMatching();

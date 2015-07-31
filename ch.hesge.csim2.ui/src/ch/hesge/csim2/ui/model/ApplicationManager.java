@@ -34,7 +34,7 @@ import ch.hesge.csim2.ui.dialogs.ParametersDialog;
 import ch.hesge.csim2.ui.dialogs.ScenarioStepDialog;
 import ch.hesge.csim2.ui.dialogs.SelectProjectDialog;
 import ch.hesge.csim2.ui.utils.SwingUtils;
-import ch.hesge.csim2.ui.views.AbstractionView;
+import ch.hesge.csim2.ui.views.WeightedConceptView;
 import ch.hesge.csim2.ui.views.MainView;
 import ch.hesge.csim2.ui.views.MatchingView;
 import ch.hesge.csim2.ui.views.OntologyView;
@@ -170,12 +170,12 @@ public class ApplicationManager {
 	/**
 	 * Show the granularity view
 	 */
-	public void showWeights() {
+	public void showConceptWeights() {
 
 		SwingUtils.invokeLongOperation(mainView.getRootPane(), new Runnable() {
 			@Override
 			public void run() {
-				mainView.showView("Weights", new AbstractionView(application.getProject()));
+				mainView.showView("Weighted Concepts", new WeightedConceptView(application.getProject()));
 			}
 		});
 	}

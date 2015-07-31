@@ -289,7 +289,7 @@ public class OntologyLogic {
 		
 		for (ConceptLink link : concept.getLinks()) {
 			
-			// Subsumption is heavier that moreonyms
+			// Subsumption is heavier that meronyms
 			if (isSubsumptionLink(link)) {
 				weight += getConceptWeight(link.getTargetConcept());
 			}
@@ -327,10 +327,29 @@ public class OntologyLogic {
 			maxWeight = Math.max(conceptWeight, maxWeight);
 		}
 		
-		// Normalize factor within [0..1]
+		// Now, normalize factor within [0..1]
+		maxWeight--;
+		
 		for (Concept concept : concepts) {
-			double normalizedWeight = (concept.getWeight() - 1) / (maxWeight - 1);
-			concept.setWeight(normalizedWeight);
+		
+			double conceptWeight = concept.getWeight() - 1;
+			
+			// If concept weight is zero
+			if (Double.compare(conceptWeight, 0) == 0) {
+				conceptWeight = 0d;
+			}
+			
+			// If concept weight is max
+			else if (Double.compare(conceptWeight, maxWeight) == 0) {
+				conceptWeight = 1d;
+			}
+			
+			// Otherwise normalized weight
+			else {
+				conceptWeight = conceptWeight / maxWeight;
+			}
+
+			concept.setWeight(conceptWeight);
 		}
 		
 		ObjectSorter.sortConceptsByWeight(concepts);

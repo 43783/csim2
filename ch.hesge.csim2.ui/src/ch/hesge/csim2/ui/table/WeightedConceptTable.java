@@ -97,8 +97,8 @@ public class WeightedConceptTable extends JTable {
 		
 		// Adjust column size
 		TableColumnModel columnModel = getColumnModel(); 
-		columnModel.getColumn(1).setMaxWidth(90);
-		columnModel.getColumn(1).setMinWidth(90);
+		columnModel.getColumn(1).setMaxWidth(150);
+		columnModel.getColumn(1).setMinWidth(150);
 		columnModel.getColumn(2).setMaxWidth(90);
 		columnModel.getColumn(2).setMinWidth(90);
 	}
