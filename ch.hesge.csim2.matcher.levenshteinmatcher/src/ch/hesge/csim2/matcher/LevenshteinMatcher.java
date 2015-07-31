@@ -163,12 +163,12 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 			for (StemConcept stemConcept : conceptStems) {
 				
 				// Compute the levenshtein coefficient for current method/concept stem
-				double weight = computeLevenshteinCoefficient(stemMethod.getTerm(), stemConcept.getTerm());
+				double simTerm = computeLevenshteinCoefficient(stemMethod.getTerm(), stemConcept.getTerm());
 				
-				Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), weight: " + weight); 
+				Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), similarity: " + simTerm); 
 				
 				// Compute average weight globally to all stems
-				similarity += weight / (methodStems.size() * conceptStems.size());
+				similarity += simTerm / (methodStems.size() * conceptStems.size());
 			}
 		}
 		
