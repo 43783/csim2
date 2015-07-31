@@ -17,7 +17,6 @@ import ch.hesge.csim2.core.model.ConceptAttribute;
 import ch.hesge.csim2.core.model.ConceptClass;
 import ch.hesge.csim2.core.model.Context;
 import ch.hesge.csim2.core.model.IEngine;
-import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
@@ -41,7 +40,6 @@ public class StemConceptAnalyzer implements IEngine {
 	private ApplicationLogic applicationLogic;
 
 	private Project project;
-	private Ontology ontology;
 	private List<String> rejectedList;
 
 	/**
@@ -92,7 +90,6 @@ public class StemConceptAnalyzer implements IEngine {
 		Properties params = new Properties();
 
 		params.put("project", "project");
-		params.put("ontology", "ontology");
 		params.put("rejected-names", "file");
 
 		return params;
@@ -136,14 +133,6 @@ public class StemConceptAnalyzer implements IEngine {
 				throw new EngineException("missing project specified !");
 			}
 
-			// Retrieve current ontology
-			if (context.containsKey("ontology")) {
-				ontology = (Ontology) context.getProperty("ontology");
-			}
-			else {
-				throw new EngineException("missing ontology specified !");
-			}
-
 			// Retrieve path to rejected words file
 			Path rejectedPath = Paths.get("conf", "rejected-names.txt").toAbsolutePath();
 			if (context.containsKey("rejected-names")) {
@@ -182,7 +171,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 			// Load all ontology concepts
 			Console.writeInfo(this, "loading ontology concepts...");
-			List<Concept> conceptList = applicationLogic.getConcepts(ontology);
+			List<Concept> conceptList = applicationLogic.getConcepts(project);
 
 			Console.writeInfo(this, "scanning all concepts...");
 
@@ -220,7 +209,7 @@ public class StemConceptAnalyzer implements IEngine {
 
 			// Save stems found
 			Console.writeInfo(this, "saving " + stems.size() + " stems found...");
-			applicationLogic.saveStemConcepts(ontology, stems);
+			applicationLogic.saveStemConcepts(project, stems);
 		}
 		catch (Exception e) {
 			Console.writeError(this, "error while analyzing concepts: " + StringUtils.toString(e));
