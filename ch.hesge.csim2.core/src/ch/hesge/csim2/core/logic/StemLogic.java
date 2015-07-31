@@ -518,14 +518,14 @@ class StemLogic {
 	/**
 	 * Save a list of stem concept.
 	 * 
-	 * @param ontology
-	 *        the ontology owning the stems to save
+	 * @param project
+	 *        the project owning the stems to save
 	 * @param stems
 	 *        a list of StemConcept to save
 	 */
-	public static void saveStemConcepts(Ontology ontology, List<StemConcept> stems) {
+	public static void saveStemConcepts(Project project, List<StemConcept> stems) {
 
-		StemConceptDao.deleteByOntology(ontology);
+		StemConceptDao.deleteByProject(project);
 
 		for (StemConcept stem : stems) {
 			

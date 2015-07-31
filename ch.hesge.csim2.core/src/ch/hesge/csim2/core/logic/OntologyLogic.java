@@ -172,6 +172,66 @@ public class OntologyLogic {
 	}
 
 	/**
+	 * Retrieve a list of all concepts owned by an ontology.
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return
+	 *         the list of concept
+	 */
+	public static List<Concept> getConcepts(Project project) {
+
+		List<Concept> concepts = ConceptDao.findByProject(project);
+		ObjectSorter.sortConcepts(concepts);
+
+		Map<Integer, Concept> conceptMap = new HashMap<>();
+
+		// First populate the concept map
+		for (Concept concept : concepts) {
+			conceptMap.put(concept.getKeyId(), concept);
+		}
+
+		// Then populate dependencies
+		for (Concept concept : concepts) {
+			
+			// Populate attributes
+			concept.getAttributes().addAll(ConceptAttributeDao.findByConcept(concept));
+			ObjectSorter.sortConceptAttributes(concept.getAttributes());
+
+			// Populate concept classes
+			concept.getClasses().addAll(ConceptClassDao.findByConcept(concept));
+			ObjectSorter.sortConceptClasses(concept.getClasses());
+			
+			// Populate links between concepts
+			for (ConceptLink link : ConceptLinkDao.findByConcept(concept)) {
+
+				// Update concept with instances
+				link.setSourceConcept(concept);
+				link.setTargetConcept(conceptMap.get(link.getTargetId()));
+
+				// Add the link to the concept
+				concept.getLinks().add(link);
+
+				// Detect concept hierarchy
+				if (isSubsumptionLink(link)) {
+					concept.setSuperConcept(link.getTargetConcept());
+					link.getTargetConcept().getSubConcepts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getSubConcepts());
+				}
+
+				// Detect part relationship
+				if (isMereologyLink(link)) {
+					link.getTargetConcept().getParts().add(concept);
+					ObjectSorter.sortConcepts(link.getTargetConcept().getParts());
+				}
+			}
+		}
+		
+		return concepts;
+	}
+	
+	/**
 	 * Retrieve a map of concepts owned by a project
 	 * with each entries of the form (keyId, Concept) map.
 	 * 
@@ -415,7 +475,6 @@ public class OntologyLogic {
 		c.setName(concept.getName());
 		c.setBounds(concept.getBounds());
 		c.setOntologyId(concept.getOntologyId());
-		c.setSuperConceptId(concept.getSuperConceptId());
 		c.setAction(concept.isAction());
 		c.getAttributes().addAll(concept.getAttributes());
 		c.getClasses().addAll(concept.getClasses());
@@ -441,7 +500,6 @@ public class OntologyLogic {
 		target.setName(source.getName());
 		target.setBounds(source.getBounds());
 		target.setOntologyId(source.getOntologyId());
-		target.setSuperConceptId(source.getSuperConceptId());
 		target.setAction(source.isAction());
 		
 		target.getAttributes().clear();
@@ -589,12 +647,8 @@ public class OntologyLogic {
 		// Now, save all concepts and their attributes
 		for (Concept concept : ontology.getConcepts()) {
 
-			// Retrieve its superconcept
-			Concept superconcept = conceptMap.get(concept.getSuperConceptId());
-
 			// Save the concept
 			concept.setOntologyId(ontology.getKeyId());
-			concept.setSuperConceptId(superconcept == null ? -1 : superconcept.getKeyId());
 			ConceptDao.update(concept);
 
 			// Save its attributes

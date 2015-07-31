@@ -21,7 +21,6 @@ public class Concept {
 	// Private attributes
 	private int keyId;
 	private int ontologyId;
-	private int superConceptId;
 	private String name;
 	private Rectangle bounds;
 	private boolean isAction;
@@ -60,14 +59,6 @@ public class Concept {
 
 	public void setOntologyId(int ontologyId) {
 		this.ontologyId = ontologyId;
-	}
-
-	public int getSuperConceptId() {
-		return superConceptId;
-	}
-
-	public void setSuperConceptId(int superConceptId) {
-		this.superConceptId = superConceptId;
 	}
 
 	public String getName() {

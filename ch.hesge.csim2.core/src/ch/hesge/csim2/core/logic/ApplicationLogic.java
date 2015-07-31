@@ -422,6 +422,36 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Retrieve a list of all concepts owned by a project.
+	 * 
+	 * @param project
+	 *        the owner
+	 * 
+	 * @return
+	 *         the list of concept
+	 */
+	public List<Concept> getConcepts(Project project) {
+
+		List<Concept> result = null;
+		
+		try {
+			
+			String cacheKey = "getConceptsByProject_" + project.getKeyId();
+
+			if (APPCACHE.get(cacheKey) == null) {
+				APPCACHE.put(new Element(cacheKey, OntologyLogic.getConcepts(project)));
+			}
+
+			result = (List<Concept>) APPCACHE.get(cacheKey).getObjectValue();
+		}
+		catch (Exception e) {
+			Console.writeError(ApplicationLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+		}
+		
+		return result;
+	}
+
+	/**
 	 * Retrieve all ontology concepts as a hierarchy.
 	 * 
 	 * @param project
@@ -1206,13 +1236,13 @@ public class ApplicationLogic {
 	/**
 	 * Save a list of stem concept.
 	 * 
-	 * @param ontology
-	 *        the ontology owning the stems to save
+	 * @param project
+	 *        the project owning the stems to save
 	 * @param stems
 	 *        a list of StemConcept to save
 	 */
-	public void saveStemConcepts(Ontology ontology, List<StemConcept> stems) {
-		StemLogic.saveStemConcepts(ontology, stems);
+	public void saveStemConcepts(Project project, List<StemConcept> stems) {
+		StemLogic.saveStemConcepts(project, stems);
 	}
 
 	/**

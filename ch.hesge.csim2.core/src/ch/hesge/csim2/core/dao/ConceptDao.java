@@ -30,12 +30,12 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class ConceptDao {
 
 	// Private static SQL queries
-	private static String INSERT = "INSERT INTO concepts SET ontology_id=?ontologyId, superconcept_id=?superconceptId, name='?name', bounds='?bounds', action=?action";
-	private static String UPDATE = "UPDATE concepts SET ontology_id=?ontologyId, superconcept_id=?superconceptId, name='?name', bounds='?bounds', action=?action WHERE key_id=?keyId";
+	private static String INSERT = "INSERT INTO concepts SET ontology_id=?ontologyId, name='?name', bounds='?bounds', action=?action";
+	private static String UPDATE = "UPDATE concepts SET ontology_id=?ontologyId, name='?name', bounds='?bounds', action=?action WHERE key_id=?keyId";
 	private static String DELETE = "DELETE FROM concepts WHERE key_id=?keyId";
 
-	private static String FIND_BY_PROJECT  = "SELECT c.key_id, c.ontology_id, c.superconcept_id, c.name, c.bounds, c.action FROM concepts c INNER JOIN ontologies o ON c.ontology_id = o.key_id INNER JOIN projects p ON o.project_id = p.key_id WHERE p.key_id = ?projectId ORDER BY c.name";
-	private static String FIND_BY_ONTOLOGY = "SELECT key_id, ontology_id, superconcept_id, name, bounds, action FROM concepts WHERE ontology_id=?ontologyId ORDER BY name";
+	private static String FIND_BY_PROJECT  = "SELECT c.key_id, c.ontology_id, c.name, c.bounds, c.action FROM concepts c INNER JOIN ontologies o ON c.ontology_id = o.key_id INNER JOIN projects p ON o.project_id = p.key_id WHERE p.key_id = ?projectId ORDER BY c.name";
+	private static String FIND_BY_ONTOLOGY = "SELECT key_id, ontology_id, name, bounds, action FROM concepts WHERE ontology_id=?ontologyId ORDER BY name";
 
 	/**
 	 * Retrieves all concepts owned by an ontology.
@@ -178,7 +178,6 @@ public class ConceptDao {
 
 				map.put("keyId", concept.getKeyId());
 				map.put("ontologyId", concept.getOntologyId());
-				map.put("superconceptId", concept.getSuperConceptId());
 				map.put("name", concept.getName());
 
 				// Fix default bounds, if missing
@@ -217,7 +216,6 @@ public class ConceptDao {
 
 				concept.setKeyId(row.getInteger("key_id"));
 				concept.setOntologyId(row.getInteger("ontology_id"));
-				concept.setSuperConceptId(row.getInteger("superconcept_id"));
 				concept.setName(row.getString("name"));
 
 				String boundsAsString = row.getString("bounds");
