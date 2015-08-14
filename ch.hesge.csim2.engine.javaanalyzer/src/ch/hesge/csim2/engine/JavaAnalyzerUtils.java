@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
@@ -136,7 +137,7 @@ public class JavaAnalyzerUtils {
 
 		if (sourceClass != null && sourceMethod != null) {
 
-			String referenceType = "Unkown";
+			String referenceType = "Unknown";
 			SourceReferenceOrigin referenceOrigin = null;
 
 			// Check if reference is a local variable
@@ -240,6 +241,34 @@ public class JavaAnalyzerUtils {
 
 			sourceVariables.add(sourceVariable);
 		}
+
+		return sourceVariables;
+	}
+
+	/**
+	 * Create a variable reference list base on the declaration statement passed
+	 * passed in argument
+	 * 
+	 * @param declaration
+	 * @return a list of SourceVariable
+	 */
+	public static List<SourceVariable> createSourceVariables(VariableDeclaration declaration) {
+
+		List<SourceVariable> sourceVariables = new ArrayList<>();
+
+//		// Retrieve variable type
+//		String varType = JavaAnalyzerUtils.getSimpleTypeName(declaration.getType().toString());
+//
+//		for (Object o : declaration.fragments()) {
+//
+//			VariableDeclarationFragment varName = (VariableDeclarationFragment) o;
+//
+//			SourceVariable sourceVariable = new SourceVariable();
+//			sourceVariable.setName(varName.getName().getIdentifier());
+//			sourceVariable.setType(varType);
+//
+//			sourceVariables.add(sourceVariable);
+//		}
 
 		return sourceVariables;
 	}

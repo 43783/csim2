@@ -197,14 +197,15 @@ public class StemMethodAnalyzer implements IEngine {
 			// Load all project classes
 			Console.writeInfo(this, "loading code sources information...");
 			Map<Integer, SourceClass> classMap = applicationLogic.getSourceClassMap(project);
+			applicationLogic.populateMethodParametersAndReferences(project, classMap);
 
 			Console.writeInfo(this, "scanning source classes...");
-
+			
 			// Build stem method table
 			for (SourceClass sourceClass : classMap.values()) {
 				for (SourceMethod sourceMethod : sourceClass.getMethods()) {
 
-					int stemCount = 0;
+					Console.writeInfo(this, "scanning method: " + sourceClass.getName() + "." + sourceMethod.getName());
 					
 					// Retrieve stems for the method name
 					List<StemMethod> methodStems = getMethodStems(sourceMethod);
@@ -212,31 +213,51 @@ public class StemMethodAnalyzer implements IEngine {
 					if (methodStems.size() > 0) {
 						
 						stems.addAll(methodStems);			
-						stemCount += methodStems.size();
+
+						for (StemMethod stem : methodStems) {
+							Console.writeDebug(this,   "  method stem name: " + stem.getTerm() + ", type: " + stem.getStemType().toString());
+						}
 						
 						StemMethod rootStem = methodStems.get(0);
 						
 						// Retrieve all parameters
 						for (SourceParameter sourceParameter : sourceMethod.getParameters()) {
+							
 							List<StemMethod> parameterStems = getParameterStems(sourceParameter, sourceMethod, rootStem);
-							stems.addAll(parameterStems);
-							stemCount += methodStems.size();
+							
+							if (parameterStems.size() > 0) {
+								
+								stems.addAll(parameterStems);
+								
+								for (StemMethod stem : parameterStems) {
+									Console.writeDebug(this,   "  param stem name:  " + stem.getTerm() + ", type: " + stem.getStemType().toString());
+								}
+							}
 						}
 
 						// Retrieve all unique references			
 						Map<String, String> referenceMap = new HashMap<>();
 						for (SourceReference sourceReference : sourceMethod.getReferences()) {
+							
 							String refName = sourceReference.getName();
+							
 							if (!referenceMap.containsKey(refName)) {
+								
 								referenceMap.put(refName, refName);
+								
 								List<StemMethod> referenceStems = getReferenceStems(sourceReference, sourceMethod, rootStem);
-								stems.addAll(referenceStems);
-								stemCount += methodStems.size();
+								
+								if (referenceStems.size() > 0) {
+									
+									stems.addAll(referenceStems);
+									
+									for (StemMethod stem : referenceStems) {
+										Console.writeDebug(this,   "  ref stem name:    " + stem.getTerm() + ", type: " + stem.getStemType().toString());
+									}
+								}
 							}
 						}
 					}
-					
-					Console.writeInfo(this, stemCount + " stems found in method: " + sourceMethod.getName());
 				}
 			}
 

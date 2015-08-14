@@ -179,6 +179,30 @@ class SourceLogic {
 	}
 
 	/**
+	 * Retrieve all method parameters and references.
+	 * 
+	 * @param sourceClassMap
+	 *        the source class to populate
+	 */
+	public static void populateMethodParametersAndReferences(Map<Integer, SourceClass> sourceClassMap) {
+		
+		for (SourceClass sourceClass : sourceClassMap.values()) {
+			for (SourceMethod sourceMethod : sourceClass.getMethods()) {
+				
+				// Retrieve method parameters
+				List<SourceParameter> parameters = SourceParameterDao.findByMethod(sourceMethod);
+				sourceMethod.getParameters().clear();
+				sourceMethod.getParameters().addAll(parameters);
+
+				// Retrieve method references
+				List<SourceReference> references = SourceReferenceDao.findByMethod(sourceMethod);
+				sourceMethod.getReferences().clear();
+				sourceMethod.getReferences().addAll(references);
+			}
+		}
+	}
+	
+	/**
 	 * Delete all sources and their dependencies owned by an project. 
 	 * Thas is class, attribute, method, parameter and reference.
 	 * 

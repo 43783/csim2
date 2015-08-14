@@ -663,6 +663,16 @@ public class ApplicationLogic {
 	}
 
 	/**
+	 * Retrieve all method parameters and refernces.
+	 * 
+	 * @param sourceClassMap
+	 *        the source class to populate
+	 */
+	public void populateMethodParametersAndReferences(Project project, Map<Integer, SourceClass> sourceClassMap) {
+		SourceLogic.populateMethodParametersAndReferences(sourceClassMap);
+	}
+	
+	/**
 	 * Retrieve all stems associated to a term.
 	 * Words present in rejectedList will not produce associated stems.
 	 * 
