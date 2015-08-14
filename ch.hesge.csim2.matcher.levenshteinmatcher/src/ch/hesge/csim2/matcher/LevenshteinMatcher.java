@@ -160,17 +160,24 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		
 		// Scan all method & method stems
 		for (StemMethod stemMethod : methodStems) {
+			
 			for (StemConcept stemConcept : conceptStems) {
 				
-				// Compute the levenshtein coefficient for current method/concept stem
-				double simTerm = computeLevenshteinCoefficient(stemMethod.getTerm(), stemConcept.getTerm());
-				
-				Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), similarity: " + simTerm); 
-				
-				// Compute average weight globally to all stems
-				similarity += simTerm / (methodStems.size() * conceptStems.size());
+				// Compute the levenshtein distance for current concept/method stem
+				double levenshteinDistance = computeLevenshteinDistance(stemMethod.getTerm(), stemConcept.getTerm());
+
+				// Make it a similarity measure
+				double levenshteinSimilarity = 1d - levenshteinDistance;
+
+				Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), similarity: " + levenshteinSimilarity); 
+
+				// Compute average weight globally to all terms
+				similarity += levenshteinSimilarity;
 			}
 		}
+		
+		// Calculate average similarity
+		similarity /= methodStems.size() * conceptStems.size();
 		
 		Console.writeDebug(this, "  similarity: " + similarity);
 		
@@ -299,7 +306,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 	 * @param secondTerm
 	 * @return
 	 */
-	private double computeLevenshteinCoefficient(String a, String b) {
+	private double computeLevenshteinDistance(String a, String b) {
 
 		a = a.toLowerCase();
 		b = b.toLowerCase();
@@ -336,10 +343,9 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		// Now normalize result between [0..1]
 		int editCost = costs[a.length()][b.length()];
 		int maxLength = Math.max(a.length(), b.length());
-		double disimilarity = ((double) editCost / maxLength);
-				
-		// Make it a similarity extents
-		return 1d - disimilarity;
+
+		// Return the edit distance
+		return ((double) editCost / maxLength);
 	}
 	
 	/**
@@ -356,7 +362,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		String term2 = "meilenstein";
 		LevenshteinMatcher matcher = new LevenshteinMatcher();
 		
-		double cost = matcher.computeLevenshteinCoefficient(term1,  term2);
+		double cost = matcher.computeLevenshteinDistance(term1,  term2);
 		
 		System.out.println("similarity: " + cost);
 		
