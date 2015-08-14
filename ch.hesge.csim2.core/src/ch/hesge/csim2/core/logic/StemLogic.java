@@ -17,14 +17,13 @@ import org.tartarus.snowball.ext.englishStemmer;
 
 import ch.hesge.csim2.core.dao.StemConceptDao;
 import ch.hesge.csim2.core.dao.StemMethodDao;
-import ch.hesge.csim2.core.model.Ontology;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemConceptType;
 import ch.hesge.csim2.core.model.StemMethod;
 import ch.hesge.csim2.core.model.StemMethodType;
-import ch.hesge.csim2.core.utils.ObjectSorter;
 import ch.hesge.csim2.core.utils.DaoUtils;
+import ch.hesge.csim2.core.utils.ObjectSorter;
 import ch.hesge.csim2.core.utils.StringUtils;
 
 /**
