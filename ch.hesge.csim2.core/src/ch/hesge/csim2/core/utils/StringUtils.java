@@ -21,7 +21,7 @@ public class StringUtils {
 	// Private constants
 	// Note: regex for uppercase letter = \\p{Lu} (ref:
 	// http://fr.wikipedia.org/wiki/Notation_hongroise)
-	private static Pattern	HUNGARIAN_PATTERN	= Pattern.compile("(m_|g_|s_|l_)?(class|char|C|rgb|str|ar|by|dw|fd|pt|sz|a|b|c|d|f|h|i|l|n|o|p|s|t|u|v|w)*(?<varname>\\p{Lu}\\w+)");
+	private static Pattern	HUNGARIAN_PATTERN	= Pattern.compile("(m_|g_|s_|l_)?(char|c|rgb|str|ar|by|dw|fd|pt|sz|a|b|c|d|f|h|i|l|n|o|p|s|t|u|v|w)*(?<name>\\p{Lu}\\w+)");
 
 	/**
 	 * Convert a string into a clean displayable string.
@@ -414,7 +414,7 @@ public class StringUtils {
 		Matcher regexMatcher = HUNGARIAN_PATTERN.matcher(s.trim());
 
 		if (regexMatcher.matches()) {
-			s = regexMatcher.group("varname");
+			s = regexMatcher.group("name");
 		}
 
 		return s;
