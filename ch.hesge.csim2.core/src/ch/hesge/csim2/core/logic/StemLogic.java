@@ -62,9 +62,10 @@ class StemLogic {
 		String cleanTerm = term;
 		cleanTerm = Normalizer.normalize(term, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""); // remove accentuated chars
 		cleanTerm = cleanTerm.replaceAll("\\s+", " "); // remove multiple consecutive spaces
+		cleanTerm = cleanTerm.replaceAll("Class|class", ""); // remove class keyword
 		cleanTerm = cleanTerm.replaceAll("\\[.*\\]|\\{.*\\}|\\(.*\\)", ""); // remove [, ], {, }, (, )
 		cleanTerm = cleanTerm.replaceAll("[^_\\-\\s\\sA-Za-z0-9]", ""); // remove non alphabetics chars
-		cleanTerm = cleanTerm.trim(); // trim left/right space
+		cleanTerm = cleanTerm.trim(); // trim left & right space
 		cleanTerm = StringUtils.trimHungarian(cleanTerm); // remove lpsz, sz, etc...
 
 		if (cleanTerm.length() > 0) {
@@ -116,7 +117,7 @@ class StemLogic {
 
 		return stems;
 	}
-
+	
 	/**
 	 * <pre>
 	 * Retrieve a hierarchy of stem concepts defined for a project.
