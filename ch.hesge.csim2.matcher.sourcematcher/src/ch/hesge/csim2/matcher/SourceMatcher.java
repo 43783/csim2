@@ -33,12 +33,14 @@ public class SourceMatcher implements IMethodConceptMatcher {
 
 	// Private attributes
 	private ApplicationLogic applicationLogic;
+	private List<MethodConceptMatch> matchings;
 
 	/**
 	 * Default constructor
 	 */
 	public SourceMatcher() {
 		applicationLogic = ApplicationLogic.UNIQUE_INSTANCE;
+		matchings = new ArrayList<>();
 	}
 
 	/**
@@ -78,25 +80,31 @@ public class SourceMatcher implements IMethodConceptMatcher {
 	 */
 	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
 
-		List<MethodConceptMatch> matchings = new ArrayList<>();
+		matchings.clear();
+		
+		// Load stem concepts and methods
+		Map<Integer, StemMethod> stemMethodTreeMap   = applicationLogic.getStemMethodTreeMap(project);
+		Map<Integer, StemConcept> stemConceptTreeMap = applicationLogic.getStemConceptTreeMap(project);
 
 		// Load concepts, methods and stems data
 		Map<Integer, SourceMethod> methodMap = applicationLogic.getSourceMethodMap(project);
-		Map<Integer, Concept> conceptMap     = applicationLogic.getConceptMap(project);
-		Map<Integer, StemMethod> stemMethodTreeMap   = applicationLogic.getStemMethodTreeMap(project);
-		Map<Integer, StemConcept> stemConceptTreeMap = applicationLogic.getStemConceptTreeMap(project);;
-
-		List<StemMethod> matchinStemMethods   = new ArrayList<>();
-		List<StemConcept> matchinStemConcepts = new ArrayList<>();
+		Map<Integer, Concept> conceptMap = applicationLogic.getConceptMap(project);
 		
 		// Scan all method and lookup for matching concepts
 		for (SourceMethod method : methodMap.values()) {
 			for (Concept concept : conceptMap.values()) {
 
-				matchinStemMethods.clear();
-				matchinStemConcepts.clear();
+				ArrayList<StemConcept> matchingStemConcepts = new ArrayList<>();
+				ArrayList<StemMethod> matchingStemMethods = new ArrayList<>();
 
-				double similarity = computeSimilarity(method, concept, stemMethodTreeMap, stemConceptTreeMap, matchinStemMethods, matchinStemConcepts);
+				StemConcept rootStemConcept = stemConceptTreeMap.get(concept.getKeyId());
+				StemMethod rootStemMethod   = stemMethodTreeMap.get(method.getKeyId());
+
+				// Compute structural similarity
+				double similarity = computeSimilarity(concept, method, rootStemConcept, rootStemMethod, matchingStemConcepts, matchingStemMethods);
+
+				// Compute structural similarity
+				//double similarity = computeSimilarity2(method, concept, stemMethodTreeMap, stemConceptTreeMap, matchingStemMethods, matchingStemConcepts);
 
 				// Register result within the matchMap
 				if (similarity > 0d) {
@@ -108,8 +116,8 @@ public class SourceMatcher implements IMethodConceptMatcher {
 					match.setSourceMethod(method);
 					match.setConcept(concept);
 					match.setWeight(similarity);
-					match.getStemMethods().addAll(matchinStemMethods);
-					match.getStemConcepts().addAll(matchinStemConcepts);
+					match.getStemMethods().addAll(matchingStemMethods);
+					match.getStemConcepts().addAll(matchingStemConcepts);
 
 					matchings.add(match);
 				}
@@ -136,11 +144,96 @@ public class SourceMatcher implements IMethodConceptMatcher {
 	/**
 	 * Compute similarity between a method and a concept.
 	 * 
+	 * @param concept
+	 * @param method
+	 * @param rootStemConcept
+	 * @param rootStemMethod
+	 * @return a similarity weight
+	 */
+	private double computeSimilarity(Concept concept, SourceMethod method, StemConcept rootStemConcept, StemMethod rootStemMethod, ArrayList<StemConcept> matchingStemConcepts, ArrayList<StemMethod> matchingStemMethods) {
+		
+		double similarity = 0d;
+		
+		List<StemConcept> stemConceptList = SourceMatcherUtils.inflateStemConcepts(rootStemConcept);
+		List<StemMethod> stemMethodList   = SourceMatcherUtils.inflateStemMethods(rootStemMethod);
+		
+		// Check if full concept name is matching
+		if (SourceMatcherUtils.computeFullConceptNameMatching(rootStemConcept, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+			similarity = 1d;
+		}
+
+		// Check if full concept classname is matching
+		else if (SourceMatcherUtils.computeFullClassNameMatching(stemConceptList, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+			similarity = 1d;
+		}
+
+		// Check if full concept identifier is matching
+		else if (SourceMatcherUtils.computeFullClassIdentifierMatching(stemConceptList, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+			similarity = 1d;
+		}
+		
+		// Check if concept identifier have some partial matching
+		else if (SourceMatcherUtils.computePartialClassIdentifierMatching(stemConceptList, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+			similarity = 0.8;
+		}
+		else {
+			
+			List<StemConcept> stemAttributes = SourceMatcherUtils.getStemConceptAttributes(concept, stemConceptList);
+			
+			for (StemConcept rootStemAttribute : stemAttributes) {
+				
+				List<StemConcept> stemAttributeList = SourceMatcherUtils.inflateStemConcepts(rootStemAttribute);
+				
+				if (SourceMatcherUtils.computeFullAttributeNameMatching(rootStemAttribute, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+					similarity += 0.8 / concept.getAttributes().size();
+				}
+				else if (SourceMatcherUtils.computeFullAttributeIdentifierMatching(stemAttributeList, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+					similarity += 0.8 / concept.getAttributes().size();
+				}
+				else if (SourceMatcherUtils.computePartialAttributeIdentifierMatching(stemAttributeList, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+					similarity += 0.8 / concept.getAttributes().size();
+				}
+				else {
+					
+					for (StemConcept stemAttributeNamePart : rootStemAttribute.getParts()) {
+						
+						if (SourceMatcherUtils.computePartialAttributeWordMatching(stemAttributeNamePart, stemMethodList, matchingStemConcepts, matchingStemMethods)) {
+							similarity += 0.7 / rootStemAttribute.getParts().size() / concept.getAttributes().size();
+						}
+					}
+				}
+			}
+		}
+				
+		// If a weight is found and the stem concept is not yet used in weight calculation
+		if (similarity > 0d) {
+
+			Console.writeDebug(this, "found concept in method:"); 
+			Console.writeDebug(this, "  weight: " + similarity); 
+
+			Console.writeDebug(this, "  concept: " + concept.getName()); 
+			for (StemConcept stem : matchingStemConcepts) {
+				Console.writeDebug(this, "    term: " + stem.getTerm() + ", conceptStem: " + stem.getStemType().name()); 
+			}
+
+			Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
+			for (StemMethod stem : matchingStemMethods) {
+				Console.writeDebug(this, "    term: " + stem.getTerm() + ", methodStem: " + stem.getStemType().name()); 
+			}
+		}
+		
+
+		return similarity;
+	}
+	
+	/**
+	 * Compute similarity between a method and a concept.
+	 * 
 	 * @param method
 	 * @param concept
 	 * @return a similarity weight
 	 */
-	private double computeSimilarity(SourceMethod method, Concept concept, Map<Integer, StemMethod> stemMethodTreeMap, Map<Integer, StemConcept> stemConceptTreeMap, List<StemMethod> matchingStemMethods, List<StemConcept> matchingStemConcepts) {
+	public double computeSimilarity2(SourceMethod method, Concept concept, Map<Integer, StemMethod> stemMethodTreeMap, Map<Integer, StemConcept> stemConceptTreeMap, List<StemMethod> matchingStemMethods, List<StemConcept> matchingStemConcepts) {
 
 		double similarity = 0d;
 
@@ -166,7 +259,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 			for (StemConcept stemConcept : conceptStems) {
 
 				StemConceptType stemConceptType = stemConcept.getStemType();
-
+				
 				// Skip stem concept not matching
 				if (!stemConcept.getTerm().equals(stemMethod.getTerm())) continue;
 				
