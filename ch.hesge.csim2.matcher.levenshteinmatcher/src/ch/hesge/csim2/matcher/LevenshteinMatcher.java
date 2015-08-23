@@ -154,9 +154,9 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		StemConcept conceptRootStem = stemConceptTreeMap.get(concept.getKeyId());
 		List<StemConcept> conceptStems = applicationLogic.inflateStemConcepts(conceptRootStem);
 
-		Console.writeDebug(this, "computing levenshtein coefficient:"); 
-		Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
-		Console.writeDebug(this, "  concept: " + concept.getName()); 
+//		Console.writeDebug(this, "computing levenshtein coefficient:"); 
+//		Console.writeDebug(this, "  method: " + method.getSourceClass().getName() + "." + method.getSignature());
+//		Console.writeDebug(this, "  concept: " + concept.getName()); 
 		
 		// Scan all method & method stems
 		for (StemMethod stemMethod : methodStems) {
@@ -169,7 +169,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 				// Make it a similarity measure
 				double levenshteinSimilarity = 1d - levenshteinDistance;
 
-				Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), similarity: " + levenshteinSimilarity); 
+				//Console.writeDebug(this, "  terms: (" + stemMethod.getTerm() + ", " + stemConcept.getTerm() + "), similarity: " + levenshteinSimilarity); 
 
 				// Compute average weight globally to all terms
 				similarity += levenshteinSimilarity;
@@ -179,7 +179,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 		// Calculate average similarity
 		similarity /= methodStems.size() * conceptStems.size();
 		
-		Console.writeDebug(this, "  similarity: " + similarity);
+		//Console.writeDebug(this, "  similarity: " + similarity);
 		
 		return similarity;
 	}
