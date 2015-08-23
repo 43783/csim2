@@ -16,7 +16,6 @@ import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceMethod;
 import ch.hesge.csim2.core.model.StemConcept;
 import ch.hesge.csim2.core.model.StemMethod;
-import ch.hesge.csim2.core.utils.Console;
 
 /**
  * This engine allow matching calculation based
