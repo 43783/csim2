@@ -15,7 +15,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javaanalyzer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.engine.javainstrumenter"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.tfidfmatcher"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.wtfidfmatcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.sourcematcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.jaccardmatcher"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ch.hesge.csim2.matcher.levenshteinmatcher"/>

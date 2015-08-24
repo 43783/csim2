@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.jfree.chart.ChartPanel;
@@ -53,6 +54,7 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 
 	private ScenarioComboBox scenarioComboBox;
 	private MatcherComboBox matcherComboBox;
+	private JTextField thresholdField;
 	private JButton loadBtn;
 	private JButton settingsBtn;
 
@@ -104,6 +106,12 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 		matcherComboBox.setPreferredSize(new Dimension(150, 20));
 		scenarioPanel.add(matcherComboBox);
 		
+		paramsPanel.add(new JLabel("Threshold:"));
+		thresholdField = new JTextField();
+		thresholdField.setPreferredSize(new Dimension(70, 20));
+		thresholdField.setText("0.2");
+		paramsPanel.add(thresholdField);
+
 		// Create the load button
 		loadBtn = new JButton("Load");
 		loadBtn.setPreferredSize(new Dimension(80, 25));
@@ -236,8 +244,11 @@ public class TimeSeriesView extends JPanel implements ActionListener {
 					@Override
 					public void run() {
 
+						// Retrieve threshold
+						float threshold = Float.valueOf(thresholdField.getText());
+
 						// Retrieve timeseries associated to the current scenario
-						timeSeries = appManager.getTimeSeries(project, scenario, matcher);
+						timeSeries = appManager.getTimeSeries(project, scenario, matcher, threshold);
 
 						// Extract segmented information
 						filteredSeries = appManager.getFilteredTimeSeries(timeSeries, segmentCount, threshold, null);

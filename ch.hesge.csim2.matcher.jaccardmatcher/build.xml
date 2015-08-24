@@ -4,7 +4,7 @@
     <!-- script properties -->
 
 	<property name="engine-name" value="jaccard-matcher"/>
-    <property name="engine-version" value="1.0.18"/>
+    <property name="engine-version" value="1.0.19"/>
 	<property name="engine-author" value="Eric Harth"/>
     <property name="engine-classpath" value="."/>
 	

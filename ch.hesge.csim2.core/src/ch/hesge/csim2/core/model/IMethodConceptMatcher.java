@@ -22,5 +22,5 @@ public interface IMethodConceptMatcher {
 	String getDescription();
 
 	// Matcher information retrieval
-	Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project);
+	Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, float threshold);
 }

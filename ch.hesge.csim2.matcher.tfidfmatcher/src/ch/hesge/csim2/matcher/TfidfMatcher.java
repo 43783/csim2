@@ -56,7 +56,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.6";
+		return "1.0.7";
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
+	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, float threshold) {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
@@ -124,7 +124,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 						double similarity = termMethodVector.cosine(termConceptVector);
 
 						// Register result within the matchMap
-						if (similarity > 0d) {
+						if (similarity > threshold) {
 
 							MethodConceptMatch match = new MethodConceptMatch();
 

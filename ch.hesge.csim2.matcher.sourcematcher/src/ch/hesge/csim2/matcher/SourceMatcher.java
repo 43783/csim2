@@ -58,7 +58,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.5";
+		return "1.0.6";
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
+	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, float threshold) {
 
 		matchings.clear();
 		
@@ -107,7 +107,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 				//double similarity = computeSimilarity2(method, concept, stemMethodTreeMap, stemConceptTreeMap, matchingStemMethods, matchingStemConcepts);
 
 				// Register result within the matchMap
-				if (similarity > 0d) {
+				if (similarity > threshold) {
 					
 					MethodConceptMatch match = new MethodConceptMatch();
 

@@ -919,18 +919,20 @@ public class ApplicationLogic {
 	 *        the scenario owning the traces
 	 * @param matchMap
 	 *        the matching map used to associate concepts to method
+	 * @param threshold
+	 *        the threshold to use when selecting matching
 	 * @return the TimeSeries object gathering trace information
 	 */
-	public TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
+	public TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher, float threshold) {
 
 		TimeSeries result = null;
 		
 		try {
 			
-			String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matcher.toString();
+			String cacheKey = "getTimeSeries_" + project.getKeyId() + "_" + scenario.getKeyId() + "_" + matcher.toString() + "_" + threshold;
 
 			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matcher)));
+				APPCACHE.put(new Element(cacheKey, TimeSeriesLogic.getTimeSeries(project, scenario, matcher, threshold)));
 			}
 
 			result = (TimeSeries) APPCACHE.get(cacheKey).getObjectValue();
@@ -949,19 +951,21 @@ public class ApplicationLogic {
 	 *        the project to analyse
 	 * @param matcher
 	 *        the matcher to use to compute matching
+	 * @param threshold
+	 *        the threshold to use when selecting matching
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
+	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher, float threshold) {
 
 		Map<Integer, List<MethodConceptMatch>> result = null;
 		
 		try {
 			
-			String cacheKey = "getMethodConceptMap_" + project.getKeyId() + "_" + matcher.toString();
+			String cacheKey = "getMethodConceptMap_" + project.getKeyId() + "_" + matcher.toString() + "_" + threshold;
 
 			if (APPCACHE.get(cacheKey) == null) {
-				APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matcher)));
+				APPCACHE.put(new Element(cacheKey, MatchingLogic.getMethodMatchingMap(project, matcher, threshold)));
 			}
 
 			result = (Map<Integer, List<MethodConceptMatch>>) APPCACHE.get(cacheKey).getObjectValue();
@@ -1310,6 +1314,18 @@ public class ApplicationLogic {
 	 */
 	public void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
 		MatchingLogic.exportMatchings(matchMap, filename);
+	}
+	
+	/**
+	 * Export all matchings passed in argument in a CSV file.
+	 * 
+	 * @param matchings
+	 *        the MethodConceptMatch to save
+	 * @param filename
+	 *        the csv filename target
+	 */
+	public void exportSummarizedMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+		MatchingLogic.exportSummarizedMatchings(matchMap, filename);
 	}
 	
 	/**

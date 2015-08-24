@@ -368,8 +368,8 @@ public class ApplicationManager {
 	/**
 	 * Retrieve all matchings between a method and a concept.
 	 */
-	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
-		return applicationLogic.getMethodMatchingMap(project, matcher);
+	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher, float threshold) {
+		return applicationLogic.getMethodMatchingMap(project, matcher, threshold);
 	}
 
 	/**
@@ -383,8 +383,8 @@ public class ApplicationManager {
 	/**
 	 * Retrieve the time series associated to a scenario traces.
 	 */
-	public TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher) {
-		return applicationLogic.getTimeSeries(project, scenario, matcher);
+	public TimeSeries getTimeSeries(Project project, Scenario scenario, IMethodConceptMatcher matcher, float threshold) {
+		return applicationLogic.getTimeSeries(project, scenario, matcher, threshold);
 	}
 
 	/**
@@ -980,7 +980,10 @@ public class ApplicationManager {
 		if (filename != null) {
 
 			// Export matchings
-			applicationLogic.exportMatchings(matchMap, filename);
+			//applicationLogic.exportMatchings(matchMap, filename);
+			
+			// Export summarized match (one line by method)
+			applicationLogic.exportSummarizedMatchings(matchMap, filename);
 		}
 	}
 

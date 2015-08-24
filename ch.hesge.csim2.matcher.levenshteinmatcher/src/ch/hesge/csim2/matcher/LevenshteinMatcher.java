@@ -53,7 +53,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.10";
+		return "1.0.11";
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project) {
+	public Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, float threshold) {
 
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class LevenshteinMatcher implements IMethodConceptMatcher {
 				double similarity = computeSimilarity(method, concept, stemMethodTreeMap, stemConceptTreeMap, matchingMethodStems, matchingConceptStems);
 
 				// Register result within the matchMap
-				if (similarity > 0d) {
+				if (similarity > threshold) {
 
 					MethodConceptMatch match = new MethodConceptMatch();
 
