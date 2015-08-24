@@ -60,13 +60,83 @@ class MatchingLogic {
 	 *        the project to analyse
 	 * @param matcher
 	 *        the matcher to use to compute matching
+	 * @param threshold
+	 *        the threshold to use when selecting matching
 	 * @return
 	 *         a map of (MethodId, List<MethodConceptMatch>)
 	 */
-	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher) {
-		return matcher.getMethodMatchingMap(project);
+	public static Map<Integer, List<MethodConceptMatch>> getMethodMatchingMap(Project project, IMethodConceptMatcher matcher, float threshold) {
+		return matcher.getMethodMatchingMap(project, threshold);
 	}
 
+	/**
+	 * Export all matchings passed in argument in a CSV file.
+	 * 
+	 * @param matchings
+	 *        the MethodConceptMatch to save
+	 * @param filename
+	 *        the csv filename target
+	 */
+	public static void exportSummarizedMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, String filename) {
+
+		if (matchMap != null && filename != null) {
+
+			FileOutputStream fileStream = null;
+
+			try {
+
+				if (FileUtils.exists(filename)) {
+					Files.delete(Paths.get(filename));
+				}
+				
+				String fieldSeparator = ";";
+
+				// Create a file writer (UTF8 support)
+				fileStream = new FileOutputStream(new File(filename));
+				OutputStreamWriter writer = new OutputStreamWriter(fileStream, "UTF-8");				
+				
+				writer.append("Class" + fieldSeparator + "Method" + fieldSeparator + "Concepts\n");
+
+				for (Integer matchKey : matchMap.keySet()) {
+					
+					List<MethodConceptMatch> matches = matchMap.get(matchKey);
+					
+					if (matches.size() > 0) {
+						
+						MethodConceptMatch match = matches.get(0);						
+						writer.append(match.getSourceClass().getName() + fieldSeparator);
+						writer.append(match.getSourceMethod().getSignature() + fieldSeparator);
+
+						String concepts = "";
+						for (MethodConceptMatch singleMatch : matches) {
+							concepts += singleMatch.getConcept().getName() + ",";
+						}
+						concepts = StringUtils.removeTrailString(concepts, ",");
+
+						writer.append(concepts);
+						writer.append("\n");
+					}
+				}
+
+				writer.flush();
+				writer.close();
+			}
+			catch (Exception e) {
+
+				if (fileStream != null) {
+					try {
+						fileStream.close();
+					}
+					catch (IOException e1) {
+						// Close silently
+					}
+				}
+				
+				Console.writeError(MatchingLogic.class, "an unexpected error has occured: " + StringUtils.toString(e));
+			}
+		}
+	}
+	
 	/**
 	 * Export all matchings passed in argument in a CSV file.
 	 * 
