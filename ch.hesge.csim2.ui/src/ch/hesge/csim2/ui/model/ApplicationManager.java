@@ -973,17 +973,19 @@ public class ApplicationManager {
 	/**
 	 * Export all matchings passed in argument in a CSV file.
 	 */
-	public void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap) {
+	public void exportMatchings(Map<Integer, List<MethodConceptMatch>> matchMap, boolean isSummaryOnly) {
 
 		String filename = SwingUtils.selectSaveFile(mainView, null);
 
 		if (filename != null) {
 
-			// Export matchings
-			//applicationLogic.exportMatchings(matchMap, filename);
-			
-			// Export summarized match (one line by method)
-			applicationLogic.exportSummarizedMatchings(matchMap, filename);
+			// Export summarized matches or simple ones
+			if (isSummaryOnly) {
+				applicationLogic.exportSummarizedMatchings(matchMap, filename);
+			}
+			else {
+				applicationLogic.exportMatchings(matchMap, filename);
+			}
 		}
 	}
 

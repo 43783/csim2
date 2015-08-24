@@ -110,7 +110,7 @@ public class TracesView extends JPanel implements ActionListener {
 
 		paramsPanel.add(new JLabel("Threshold:"));
 		thresholdField = new JTextField();
-		thresholdField.setPreferredSize(new Dimension(70, 20));
+		thresholdField.setPreferredSize(new Dimension(40, 20));
 		thresholdField.setText("0.2");
 		paramsPanel.add(thresholdField);
 

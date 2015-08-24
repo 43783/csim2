@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -57,6 +58,7 @@ public class MatchingView extends JPanel implements ActionListener {
 	private MatcherComboBox matcherComboBox;
 	private JTextField thresholdField;
 	private JButton loadBtn;
+	private JCheckBox summaryCheckBox;
 	private JButton exportBtn;
 	private JPanel mainPanel;
 	private JPanel methodPanel;
@@ -107,7 +109,7 @@ public class MatchingView extends JPanel implements ActionListener {
 		
 		paramsPanel.add(new JLabel("Threshold:"));
 		thresholdField = new JTextField();
-		thresholdField.setPreferredSize(new Dimension(70, 20));
+		thresholdField.setPreferredSize(new Dimension(40, 20));
 		thresholdField.setText("0.2");
 		paramsPanel.add(thresholdField);
 
@@ -121,6 +123,10 @@ public class MatchingView extends JPanel implements ActionListener {
 		// Create export panel
 		JPanel exportPanel = new JPanel();
 		((FlowLayout) exportPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
+
+		summaryCheckBox = new JCheckBox();
+		summaryCheckBox.setText("Summary only");
+		exportPanel.add(summaryCheckBox);
 
 		exportBtn = new JButton("Export");
 		exportBtn.setPreferredSize(new Dimension(80, 25));
@@ -356,7 +362,9 @@ public class MatchingView extends JPanel implements ActionListener {
 			}
 		}
 		else if (e.getSource() == exportBtn) {
-			appManager.exportMatchings(matchMap);
+
+			boolean isSummaryOnly = summaryCheckBox.isSelected();
+			appManager.exportMatchings(matchMap, isSummaryOnly);
 		}
 		
 		methodTable.requestFocus();
