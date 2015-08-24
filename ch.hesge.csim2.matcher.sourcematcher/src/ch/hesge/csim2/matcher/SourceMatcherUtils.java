@@ -37,7 +37,13 @@ public class SourceMatcherUtils {
 		
 		for (StemMethod stem : stemMethodList) {
 			
-			if (stem.getTerm().equals(fullConceptName) && (stem.getStemType() == StemMethodType.METHOD_NAME_FULL || stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL || stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL)) {
+			if (stem.getTerm().equals(fullConceptName) 
+				&& (stem.getStemType() == StemMethodType.METHOD_NAME_FULL 
+					|| stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL 
+					|| stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL 
+					|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_FULL 
+					|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL)) {
+				
 				isMatching = true;
 				matchingStemConcepts.add(rootStemConcept);
 				matchingStemMethods.add(stem);
@@ -67,7 +73,13 @@ public class SourceMatcherUtils {
 				
 				for (StemMethod stem : stemMethodList) {
 					
-					if (stem.getTerm().equals(fullClassName) && (stem.getStemType() == StemMethodType.PARAMETER_TYPE_FULL || stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL)) {
+					if (stem.getTerm().equals(fullClassName) 
+							&& (stem.getStemType() == StemMethodType.METHOD_NAME_FULL 
+								|| stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL 
+								|| stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL 
+								|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_FULL 
+								|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL)) {
+						
 						isMatching = true;
 						matchingStemConcepts.add(conceptStem);
 						matchingStemMethods.add(stem);
@@ -99,7 +111,13 @@ public class SourceMatcherUtils {
 				
 				for (StemMethod stem : stemMethodList) {
 					
-					if (stem.getTerm().equals(fullClassIdentifier) && (stem.getStemType() == StemMethodType.METHOD_NAME_FULL || stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL || stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL)) {
+					if (stem.getTerm().equals(fullClassIdentifier) 
+						&& (stem.getStemType() == StemMethodType.METHOD_NAME_FULL 
+							|| stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL 
+							|| stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL 
+							|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_FULL 
+							|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL)) {
+						
 						isMatching = true;
 						matchingStemConcepts.add(conceptStem);
 						matchingStemMethods.add(stem);
@@ -127,11 +145,17 @@ public class SourceMatcherUtils {
 			
 			if (conceptStem.getStemType() == StemConceptType.CLASS_IDENTIFIER_FULL) {
 				
-				String fullClassName = conceptStem.getTerm();
+				String fullClassIdentifier = conceptStem.getTerm();
 
 				for (StemMethod stem : stemMethodList) {
 					
-					if (stem.getTerm().equals(fullClassName) && (stem.getStemType() == StemMethodType.METHOD_NAME_PART || stem.getStemType() == StemMethodType.PARAMETER_NAME_PART || stem.getStemType() == StemMethodType.REFERENCE_NAME_PART)) {
+					if (stem.getTerm().equals(fullClassIdentifier) 
+						&& (stem.getStemType() == StemMethodType.METHOD_NAME_PART 
+							|| stem.getStemType() == StemMethodType.PARAMETER_NAME_PART 
+							|| stem.getStemType() == StemMethodType.REFERENCE_NAME_PART 
+							|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_PART 
+							|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_PART)) {
+						
 						isMatching = true;
 						matchingStemConcepts.add(conceptStem);
 						matchingStemMethods.add(stem);
@@ -158,7 +182,13 @@ public class SourceMatcherUtils {
 		
 		for (StemMethod stem : stemMethodList) {
 			
-			if (stem.getTerm().equals(fullAttributeName) && (stem.getStemType() == StemMethodType.METHOD_NAME_FULL || stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL || stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL)) {
+			if (stem.getTerm().equals(fullAttributeName) 
+				&& (stem.getStemType() == StemMethodType.METHOD_NAME_FULL 
+					|| stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL 
+					|| stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL 
+					|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_FULL 
+					|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL)) {
+				
 				isMatching = true;
 				matchingStemConcepts.add(rootStemAttribute);
 				matchingStemMethods.add(stem);
@@ -188,7 +218,13 @@ public class SourceMatcherUtils {
 				
 				for (StemMethod stem : stemMethodList) {
 					
-					if (stem.getTerm().equals(fullAttributeIdentifier) && (stem.getStemType() == StemMethodType.METHOD_NAME_FULL || stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL || stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL)) {
+					if (stem.getTerm().equals(fullAttributeIdentifier) 
+						&& (stem.getStemType() == StemMethodType.METHOD_NAME_FULL 
+							|| stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL 
+							|| stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL 
+							|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_FULL 
+							|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_FULL)) {
+						
 						isMatching = true;
 						matchingStemConcepts.add(attributetStem);
 						matchingStemMethods.add(stem);
@@ -220,7 +256,13 @@ public class SourceMatcherUtils {
 
 				for (StemMethod stem : stemMethodList) {
 					
-					if (stem.getTerm().equals(fullAttributeIdentifier) && (stem.getStemType() == StemMethodType.METHOD_NAME_PART || stem.getStemType() == StemMethodType.PARAMETER_NAME_PART || stem.getStemType() == StemMethodType.REFERENCE_NAME_PART)) {
+					if (stem.getTerm().equals(fullAttributeIdentifier) 
+						&& (stem.getStemType() == StemMethodType.METHOD_NAME_PART 
+							|| stem.getStemType() == StemMethodType.PARAMETER_NAME_PART 
+							|| stem.getStemType() == StemMethodType.REFERENCE_NAME_PART 
+							|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_PART 
+							|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_PART)) {
+						
 						isMatching = true;
 						matchingStemConcepts.add(attributetStem);
 						matchingStemMethods.add(stem);
@@ -247,12 +289,13 @@ public class SourceMatcherUtils {
 		
 		for (StemMethod stem : stemMethodList) {
 			
-			if (stem.getTerm().equals(attributeNamePart) && (stem.getStemType() == StemMethodType.METHOD_NAME_FULL || stem.getStemType() == StemMethodType.PARAMETER_NAME_FULL || stem.getStemType() == StemMethodType.REFERENCE_NAME_FULL)) {
-				isMatching = true;
-				matchingStemConcepts.add(stemAttributeNamePart);
-				matchingStemMethods.add(stem);
-			}
-			else if (stem.getTerm().equals(attributeNamePart) && (stem.getStemType() == StemMethodType.METHOD_NAME_PART || stem.getStemType() == StemMethodType.PARAMETER_NAME_PART || stem.getStemType() == StemMethodType.REFERENCE_NAME_PART)) {
+			if (stem.getTerm().equals(attributeNamePart) 
+				&& (stem.getStemType() == StemMethodType.METHOD_NAME_PART 
+					|| stem.getStemType() == StemMethodType.PARAMETER_NAME_PART 
+					|| stem.getStemType() == StemMethodType.REFERENCE_NAME_PART 
+					|| stem.getStemType() == StemMethodType.PARAMETER_TYPE_PART 
+					|| stem.getStemType() == StemMethodType.REFERENCE_TYPE_PART)) {
+				
 				isMatching = true;
 				matchingStemConcepts.add(stemAttributeNamePart);
 				matchingStemMethods.add(stem);
