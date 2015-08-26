@@ -56,7 +56,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 */
 	@Override
 	public String getVersion() {
-		return "1.0.7";
+		return "1.0.8";
 	}
 
 	/**

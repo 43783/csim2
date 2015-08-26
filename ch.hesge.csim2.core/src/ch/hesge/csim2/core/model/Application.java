@@ -16,7 +16,7 @@ public class Application {
 	private Project project;
 	private Properties properties;
 
-	public static String VERSION = "1.3.25.20150825";
+	public static String VERSION = "1.3.26.20150826";
 	
 	/**
 	 * Default constructor
