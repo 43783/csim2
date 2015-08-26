@@ -23,7 +23,7 @@ import ch.hesge.csim2.core.utils.StemMatrix;
 /**
  * This engine allow matching calculation based
  * on the source-code, ontology item comparison, weighted by TFIDF.
-
+ * 
  * Copyright HEG Geneva 2014, Switzerland
  * 
  * @author Eric Harth
@@ -33,7 +33,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 
 	// Private attributes
 	private ApplicationLogic applicationLogic;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -81,47 +81,95 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 		List<MethodConceptMatch> matchings = new ArrayList<>();
 
 		// Retrieve concept and method map
-		Map<Integer, Concept> conceptMap     = applicationLogic.getConceptMap(project);
+		Map<Integer, Concept> conceptMap = applicationLogic.getConceptMap(project);
 		Map<Integer, SourceMethod> methodMap = applicationLogic.getSourceMethodMap(project);
 
 		// Retrieve stem map
 		Map<String, List<StemConcept>> stemConceptsMap = applicationLogic.getStemConceptByTermMap(project);
-		Map<String, List<StemMethod>> stemMethodsMap   = applicationLogic.getStemMethodByTermMap(project);
+		Map<String, List<StemMethod>> stemMethodsMap = applicationLogic.getStemMethodByTermMap(project);
 
 		// Get linear concepts method and terms (used in matrix cols/rows)
-		List<String> terms = new ArrayList<>(stemConceptsMap.keySet());
 		List<Concept> concepts = new ArrayList<>(conceptMap.values());
 		List<SourceMethod> methods = new ArrayList<>(methodMap.values());
+		List<String> conceptTerms = new ArrayList<>(stemConceptsMap.keySet());
+		List<String> methodTerms = new ArrayList<>(stemMethodsMap.keySet());
 
-		// Calculate term-concept matrix with identifier weight algorithm
-		StemMatrix<StemConcept> stemConceptMatrix = new StemMatrix<>(terms.size(), concepts.size());
-		SimpleMatrix termConceptMatrix = getTermConceptMatrix(terms, concepts, conceptMap, stemConceptsMap, stemConceptMatrix);
+		// Calculate TFIDF matrix for concepts
+		StemMatrix<StemConcept> stemConceptMatrix = new StemMatrix<>(conceptTerms.size(), concepts.size());
+		SimpleMatrix conceptTfidfMatrix = getConceptTfidfMatrix(conceptTerms, concepts, conceptMap, stemConceptsMap, stemConceptMatrix);
 
-		// Calculate term-method matrix
-		StemMatrix<StemMethod> stemMethodMatrix = new StemMatrix<>(terms.size(), methods.size());
-		SimpleMatrix termMethodMatrix = getTermMethodMatrix(terms, methods, methodMap, stemMethodsMap, stemMethodMatrix);
+		// Calculate TFIDF matrix for methods
+		StemMatrix<StemMethod> stemMethodMatrix = new StemMatrix<>(conceptTerms.size(), methods.size());
+		SimpleMatrix methodTfidfMatrix = getMethodTfidfMatrix(conceptTerms, methodTerms, methods, methodMap, stemMethodsMap, stemMethodMatrix, conceptTfidfMatrix);
 
+		// Scan all methods
 		for (int i = 0; i < methods.size(); i++) {
 
-			// Retrieve current method vector
 			SourceMethod sourceMethod = methods.get(i);
-			SimpleVector termMethodVector = termMethodMatrix.getColumnVector(i);
 
-			// If method vector is null, skip
-			if (!termMethodVector.isNullVector()) {
+			// Retrieve the associated tfidf vector
+			SimpleVector tfidfMethodVector = methodTfidfMatrix.getColumnVector(i);
+
+			// Lookup over all concept vectors
+			for (int j = 0; j < conceptTfidfMatrix.getColumnDimension(); j++) {
+
+				Concept concept = concepts.get(j);
+
+				// Retrieve current concept vector
+				SimpleVector tfidfConceptVector = conceptTfidfMatrix.getColumnVector(j);
 				
+				// Propagate tfidfConcept values to tfidfMethod
+				tfidfMethodVector.ebeMultiply(tfidfConceptVector);
+
+				// Skip null vectors
+				if (!tfidfMethodVector.isNullVector() && !tfidfConceptVector.isNullVector()) {
+					
+					// Now calculate similarity between method and concept vectors
+					double similarity = tfidfMethodVector.cosine(tfidfConceptVector);
+					
+					// If threshold is reached, register result within the matchMap
+					if (similarity > threshold) {
+
+						MethodConceptMatch match = new MethodConceptMatch();
+
+						match.setProject(project);
+						match.setSourceClass(sourceMethod.getSourceClass());
+						match.setSourceMethod(sourceMethod);
+						match.setConcept(concept);
+						match.setWeight(similarity);
+
+						// Gather concept and method stems found for matching
+						for (int k = 0; k < conceptTerms.size(); k++) {
+
+							if (tfidfMethodVector.getValue(k) > 0) {
+								match.getStemConcepts().addAll(stemConceptMatrix.get(k, j));
+								match.getStemMethods().addAll(stemMethodMatrix.get(k, i));
+							}
+						}
+
+						matchings.add(match);
+					}				
+				}
+			}
+			
+
+			/*
+			// Check if terms in method contains the current term
+			// If method vector is null, skip
+			if (!tfidfMethodVector.isNullVector()) {
+
 				// Select all concepts with similarity factor > 0
-				for (int j = 0; j < termConceptMatrix.getColumnDimension(); j++) {
+				for (int j = 0; j < conceptTfidfMatrix.getColumnDimension(); j++) {
 
 					// Retrieve current concept vector
 					Concept concept = concepts.get(j);
-					SimpleVector termConceptVector = termConceptMatrix.getColumnVector(j);
+					SimpleVector termConceptVector = conceptTfidfMatrix.getColumnVector(j);
 
 					// If concept vector is null, skip
 					if (!termConceptVector.isNullVector()) {
-						
+
 						// Calculate similarity between method and concept vectors
-						double similarity = termMethodVector.cosine(termConceptVector);
+						double similarity = tfidfMethodVector.cosine(termConceptVector);
 
 						// Register result within the matchMap
 						if (similarity > threshold) {
@@ -135,9 +183,9 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 							match.setWeight(similarity);
 
 							// Gather concept and method stems found for matching
-							for (int k = 0; k < terms.size(); k++) {
-								
-								if (termMethodVector.getValue(k) > 0) {
+							for (int k = 0; k < conceptTerms.size(); k++) {
+
+								if (tfidfMethodVector.getValue(k) > 0) {
 									match.getStemConcepts().addAll(stemConceptMatrix.get(k, j));
 									match.getStemMethods().addAll(stemMethodMatrix.get(k, i));
 								}
@@ -148,6 +196,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 					}
 				}
 			}
+			*/
 		}
 
 		Map<Integer, List<MethodConceptMatch>> matchingMap = new HashMap<>();
@@ -213,38 +262,47 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 *
 	 * </pre>
 	 * 
-	 * @param terms
+	 * @param conceptTerms
 	 *        the terms used to compute weights
 	 * @param concepts
 	 *        the concepts used to compute weights
 	 * @param conceptMap
 	 *        a map of all concepts classified by their keyId
-	 * @param stems
-	 *        the stems allowing links between terms and concepts
+	 * @param stemConceptsMap
+	 *        the stems linking terms and concepts
+	 * @param stemConceptMatrix
+	 *        the stems used to compute weight in tfidf matrix
 	 * @return
 	 *         a tf-idf matrix
 	 */
-	private static SimpleMatrix getTermConceptMatrix(List<String> terms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stems, StemMatrix<StemConcept> stemMatrix) {
+	private static SimpleMatrix getConceptTfidfMatrix(List<String> conceptTerms, List<Concept> concepts, Map<Integer, Concept> conceptMap, Map<String, List<StemConcept>> stemConceptsMap, StemMatrix<StemConcept> stemConceptMatrix) {
 
-		SimpleMatrix tfMatrix    = new SimpleMatrix(terms.size(), concepts.size());
-		SimpleMatrix idfMatrix   = new SimpleMatrix(terms.size(), concepts.size());
-		SimpleMatrix tfidfMatrix = new SimpleMatrix(terms.size(), concepts.size());
+		SimpleVector totalTermInConcept = new SimpleVector(concepts.size());
+		SimpleMatrix termOccurrenceInConcept = new SimpleMatrix(conceptTerms.size(), concepts.size());
 
-		SimpleMatrix termOccurrenceInConcept = new SimpleMatrix(terms.size(), concepts.size());
-		SimpleVector totalTermInConcept      = new SimpleVector(concepts.size());
+		// Scan all terms and build an occurrence matrix.
+		// For instance:
+		// 					|						|
+		// 					|	3		3		0	|		T1		
+		//		TERM 	 =	|	1		0		1	|		T2		terms
+		// 		OCCURR.		|	0		0		0	|		T3
+		// 					|	0		5		2	|		T4
+		// 					|						|
+		// 
+		//						C1		C2		C3		--> concepts
 
-		// Scan all terms and build an occurrence matrix
-		for (int i = 0; i < terms.size(); i++) {
+		for (int i = 0; i < conceptTerms.size(); i++) {
 
 			// Retrieve current term
-			String term = terms.get(i);
+			String conceptTerm = conceptTerms.get(i);
 
-			if (stems.containsKey(term)) {
-				
-				// Loop over all concepts referring a term
-				for (StemConcept stem : stems.get(term)) {
+			// If some stems have been found for this term
+			if (stemConceptsMap.containsKey(conceptTerm)) {
 
-					// Retrieve concept index in row
+				// Loop over all stems referring the term
+				for (StemConcept stem : stemConceptsMap.get(conceptTerm)) {
+
+					// Retrieve column associated to concept
 					int conceptId = stem.getConceptId();
 					Concept concept = conceptMap.get(conceptId);
 					int j = concepts.indexOf(concept);
@@ -252,28 +310,30 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 					// Count term occurrences in concept
 					termOccurrenceInConcept.addValue(i, j, 1d);
 					totalTermInConcept.addValue(j, 1d);
-					stemMatrix.add(i, j, stem);
+					stemConceptMatrix.add(i, j, stem);
 				}
 			}
 		}
 
 		// Calculate the term frequency: tf = termOccurrenceInConcept / totalTermInConcept
+		SimpleMatrix tfMatrix = new SimpleMatrix(conceptTerms.size(), concepts.size());
 		for (int i = 0; i < tfMatrix.getRowDimension(); i++) {
 			SimpleVector occurrenceInConcept = termOccurrenceInConcept.getRowVector(i);
-			tfMatrix.setRowVector(i, occurrenceInConcept.ebeDivide(totalTermInConcept));
+			SimpleVector tfRowVector = occurrenceInConcept.ebeDivide(totalTermInConcept);
+			tfMatrix.setRowVector(i, tfRowVector);
 		}
 
-		// Calculate the inverse term frequency: idf = log(totalTermCount/(occurrenceInConcept+1)
+		// Calculate the inverse term frequency: idf = log( totalConceptCount / (1 + occurrenceInConcept )
+		SimpleMatrix idfMatrix = new SimpleMatrix(conceptTerms.size(), concepts.size());
 		for (int i = 0; i < idfMatrix.getRowDimension(); i++) {
-			SimpleVector totalTermCount = new SimpleVector(concepts.size(), terms.size());
 			SimpleVector occurrenceInConcept = termOccurrenceInConcept.getRowVector(i);
-			occurrenceInConcept = occurrenceInConcept.ebeAdd(1d);
-			idfMatrix.setRowVector(i, totalTermCount.ebeDivide(occurrenceInConcept));
+			SimpleVector idfRowVector = new SimpleVector(idfMatrix.getColumnDimension());
+			idfRowVector.setValues(Math.log(concepts.size() / (1d + occurrenceInConcept.getZeroNorm())));
+			idfMatrix.setRowVector(i, idfRowVector);
 		}
-		
-		idfMatrix = idfMatrix.log10();
 
 		// Finally calculate final matrix: tfidf = tf * idf
+		SimpleMatrix tfidfMatrix = new SimpleMatrix(conceptTerms.size(), concepts.size());
 		tfidfMatrix = tfMatrix.ebeMultiply(idfMatrix);
 
 		return tfidfMatrix;
@@ -282,7 +342,9 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	/**
 	 * <pre>
 	 * 
-	 * Compute the term-method matrix based on terms and methods passed in argument.
+	 * Compute the tf-idf matrix based on terms and methods passed in argument.
+	 * The matrix returned contains the exact same terms (same ordering) as the concept tfidf matrix.
+	 * This is required as conceptTfidf and methodTfidf matrixes will be used to compare each other their column-vectors.
 	 * 
 	 * For instance:
 	 * 
@@ -290,7 +352,7 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 * 								|
 	 * 					|						|		
 	 * 					|	0		1		0	|		T1		
-	 * 		A		=	|	1		1		0	|		T2		terms
+	 * 		TF-IDF	=	|	1		1		0	|		T2		terms
 	 * 					|	0		0		0	|		T3
 	 * 					|	1		0		0	|		T4
 	 * 					|						|
@@ -300,42 +362,49 @@ public class TfidfMatcher implements IMethodConceptMatcher {
 	 *
 	 * </pre>
 	 * 
-	 * @param terms
+	 * @param conceptTerms
+	 *        the terms used to order rows
+	 * @param methodTerms
 	 *        the terms used to compute weights
 	 * @param methods
 	 *        the methods used to compute weights
 	 * @param methodMap
 	 *        a map of all methods classified by their keyId
-	 * @param stems
-	 *        the stems allowing links between terms and methods
+	 * @param stemMethodsMap
+	 *        the stems linking terms and methods
+	 * @param stemMethodMatrix
+	 *        the stems used to compute weight in tfidf matrix
 	 * @return
-	 *         a term-method matrix
+	 *         a tf-idf matrix
 	 */
-	private static SimpleMatrix getTermMethodMatrix(List<String> terms, List<SourceMethod> methods, Map<Integer, SourceMethod> methodMap, Map<String, List<StemMethod>> stems, StemMatrix<StemMethod> stemMatrix) {
-		
-		SimpleMatrix methodMatrix = new SimpleMatrix(terms.size(), methods.size());
+	private static SimpleMatrix getMethodTfidfMatrix(List<String> conceptTerms, List<String> methodTerms, List<SourceMethod> methods, Map<Integer, SourceMethod> methodMap, Map<String, List<StemMethod>> stemMethodsMap, StemMatrix<StemMethod> stemMethodMatrix, SimpleMatrix termConceptMatrix) {
 
-		// Scan all terms and build an occurrence matrix
-		for (int i = 0; i < terms.size(); i++) {
+		SimpleMatrix tfidfMatrix = new SimpleMatrix(conceptTerms.size(), methods.size());
 
+		// Scan all concept terms
+		for (int i = 0; i < conceptTerms.size(); i++) {
+			
 			// Retrieve current term
-			String term = terms.get(i);
-
-			if (stems.containsKey(term)) {
+			String conceptTerm = conceptTerms.get(i);
+			
+			// If the term is used in method and has some method stems
+			if (methodTerms.contains(conceptTerm) && stemMethodsMap.containsKey(conceptTerm)) {
 				
-				// Loop over all concepts referring a term
-				for (StemMethod stem : stems.get(term)) {
-
-					// Retrieve method index in row
-					int j = methods.indexOf(methodMap.get(stem.getSourceMethodId()));
-
-					// Count term occurrences in concept
-					methodMatrix.setValue(i, j, 1d);
-					stemMatrix.add(i, j, stem);
+				// Loop over all method stems referring the term
+				for (StemMethod stem : stemMethodsMap.get(conceptTerm)) {
+					
+					// Retrieve column associated to method
+					int methodId = stem.getSourceMethodId();
+					SourceMethod method = methodMap.get(methodId);
+					int j = methods.indexOf(method);
+					
+					// Init cell with 1.0 (cell with no method matching term are marked by 0.0)
+					tfidfMatrix.setValue(i, j, 1d);
+					stemMethodMatrix.add(i, j, stem);
 				}
 			}
 		}
 
-		return methodMatrix;
+		return tfidfMatrix;
 	}
 }

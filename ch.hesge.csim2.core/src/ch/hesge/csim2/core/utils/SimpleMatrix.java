@@ -338,6 +338,30 @@ public class SimpleMatrix {
 	}
 
 	/**
+	 * Initialize the specified {@code row} with identical values.
+	 *
+	 * @param row
+	 *        row to be set.
+	 * @param value
+	 *        row values to initialize.
+	 * @throws ArrayIndexOutOfBoundsException
+	 *         if the specified row index is invalid.
+	 * @throws IllegalArgumentException
+	 *         if the {@code vector} dimension
+	 *         does not match the column dimension of {@code this} matrix.
+	 */
+	public void setRowValues(int row, double value) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
+
+		if (row > rows) {
+			throw new IllegalArgumentException("Outbound row specified.");
+		}
+
+		for (int j = 0; j < cols; j++) {
+			values[row][j] = value;
+		}
+	}
+
+	/**
 	 * Get the entries at the given column index as a vector. Column indices
 	 * start at 0.
 	 *
@@ -356,6 +380,30 @@ public class SimpleMatrix {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Initialize the specified {@code col} with identical values.
+	 *
+	 * @param col
+	 *        col to be set.
+	 * @param value
+	 *        column values to initialize.
+	 * @throws ArrayIndexOutOfBoundsException
+	 *         if the specified row index is invalid.
+	 * @throws IllegalArgumentException
+	 *         if the {@code vector} dimension
+	 *         does not match the column dimension of {@code this} matrix.
+	 */
+	public void setColumnValues(int col, double value) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
+
+		if (col > cols) {
+			throw new IllegalArgumentException("Outbound col specified.");
+		}
+
+		for (int i = 0; i < cols; i++) {
+			values[i][col] = value;
+		}
 	}
 
 	/**

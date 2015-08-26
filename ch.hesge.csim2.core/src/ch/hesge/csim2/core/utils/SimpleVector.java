@@ -88,6 +88,20 @@ public class SimpleVector {
 	}
 
 	/**
+	 * Initialize all vector elements with the same value.
+	 *
+	 * @param value
+	 *        values to initialize.
+	 */
+	public void setValues(double value) {
+
+		for (int i = 0; i < size; i++) {
+			values[i] = value;
+		}
+	}
+
+	
+	/**
 	 * Compute the sum of this vector and {@code v}.
 	 * Returns a new vector. Does not change instance data.
 	 *
@@ -253,6 +267,27 @@ public class SimpleVector {
 		}
 
 		return sum;
+	}
+
+	/**
+	 * Returns the zero norm of the vector.
+	 * <p>
+	 * The Zero norm is is simply the number of non-zero value of the elements.
+	 * </p>
+	 *
+	 * @return the norm.
+	 * @see #getNorm()
+	 */
+	public double getZeroNorm() {
+
+		double count = 0d;
+
+		for (int i = 0; i < size; i++) {
+			if (values[i] > 0)
+				count++;
+		}
+
+		return count;
 	}
 
 	/**
