@@ -70,7 +70,11 @@ public class SourceTree extends JTree {
 				}
 				else if (userObject instanceof SourceAttribute) {
 					SourceAttribute sourceAttribute = (SourceAttribute) userObject;
-					cellRenderer.setText(sourceAttribute.getName());
+					String displayName = sourceAttribute.getName();
+					if (sourceAttribute.getValue() !=null) {
+						displayName += "(" + sourceAttribute.getValue() + ")";
+					}
+					cellRenderer.setText(displayName);
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "attribute.png")));
 				}
 				else if (userObject != null && userObject.toString().equals("subclasses")) {

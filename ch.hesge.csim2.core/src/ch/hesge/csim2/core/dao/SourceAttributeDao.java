@@ -29,11 +29,11 @@ import ch.hesge.csim2.core.utils.StringUtils;
 public class SourceAttributeDao {
 
 	// Private static SQL queries
-	private static String INSERT = "INSERT INTO source_attributes SET class_id=?classId, name='?name', type='?type'";
-	private static String UPDATE = "UPDATE source_attributes SET class_id=?classId, name='?name', type='?type' WHERE key_id=?keyId";
+	private static String INSERT = "INSERT INTO source_attributes SET class_id=?classId, name='?name', value='?value', type='?type'";
+	private static String UPDATE = "UPDATE source_attributes SET class_id=?classId, name='?name', value='?value', type='?type' WHERE key_id=?keyId";
 	private static String DELETE = "DELETE FROM source_attributes WHERE class_id in (SELECT key_id FROM source_classes WHERE project_id=?projectId)";
 
-	private static String FIND_BY_CLASS = "SELECT key_id, class_id, name, type FROM source_attributes WHERE class_id=?classId ORDER BY name";
+	private static String FIND_BY_CLASS = "SELECT key_id, class_id, name, value, type FROM source_attributes WHERE class_id=?classId ORDER BY name";
 
 	/**
 	 * Retrieves all source attributes owned by an source class.
@@ -147,6 +147,7 @@ public class SourceAttributeDao {
 				map.put("keyId", sourceAttribute.getKeyId());
 				map.put("classId", sourceAttribute.getClassId());
 				map.put("name", sourceAttribute.getName());
+				map.put("value", sourceAttribute.getValue());
 				map.put("type", sourceAttribute.getType());
 
 				return map;
@@ -172,6 +173,7 @@ public class SourceAttributeDao {
 				sourceAttribute.setKeyId(row.getInteger("key_id"));
 				sourceAttribute.setClassId(row.getInteger("class_id"));
 				sourceAttribute.setName(row.getString("name"));
+				sourceAttribute.setValue(row.getString("value"));
 				sourceAttribute.setType(row.getString("type"));
 
 				return sourceAttribute;

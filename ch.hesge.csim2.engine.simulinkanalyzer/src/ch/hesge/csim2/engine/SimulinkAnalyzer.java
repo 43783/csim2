@@ -196,7 +196,7 @@ public class SimulinkAnalyzer implements IEngine {
 
 						try {
 
-							// Extract metadata information from file
+							// Extract information from file
 							doScanFile(filepath.toString());
 
 							// Mark current file as visited
@@ -275,7 +275,7 @@ public class SimulinkAnalyzer implements IEngine {
 		for (SimulinkBlock block : model.getRoot().getChildren()) {
 
 			// Retrieve class from block
-			SourceClass sourceClass = doAnalyzeBlock(block, filepath);
+			SourceClass sourceClass = doExtractBlock(block, filepath);
 
 			// Add it to the parsed class list
 			parsedClasses.add(sourceClass);
@@ -283,7 +283,7 @@ public class SimulinkAnalyzer implements IEngine {
 	}
 
 	/**
-	 * Analyze a simulink block and extract metadata information.
+	 * Analyze a simulink block and extract its associated information.
 	 * 
 	 * @param parent
 	 *        the simulink parent
@@ -292,7 +292,7 @@ public class SimulinkAnalyzer implements IEngine {
 	 * @param filename
 	 *        the file name where the block is defined
 	 */
-	private SourceClass doAnalyzeBlock(SimulinkBlock block, String filename) {
+	private SourceClass doExtractBlock(SimulinkBlock block, String filename) {
 
 		// Parse the block as a class
 		SourceClass sourceClass = createSourceClass(block, filename);
@@ -309,6 +309,7 @@ public class SimulinkAnalyzer implements IEngine {
 				// Create an attribute for each parameter
 				SourceAttribute sourceAttribute = new SourceAttribute();
 				sourceAttribute.setName(child.getName());
+				sourceAttribute.setValue(child.getValue());
 				sourceAttribute.setType("String");
 
 				// Add only if not already present
@@ -321,7 +322,7 @@ public class SimulinkAnalyzer implements IEngine {
 			else {
 
 				// Create a child source class
-				SourceClass childClass = doAnalyzeBlock(child, filename);
+				SourceClass childClass = doExtractBlock(child, filename);
 
 				// Add child to parent
 				sourceClass.getSubClasses().add(childClass);
