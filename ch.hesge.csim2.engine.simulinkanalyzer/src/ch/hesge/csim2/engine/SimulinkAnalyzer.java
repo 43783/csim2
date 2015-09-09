@@ -22,13 +22,13 @@ import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceAttribute;
 import ch.hesge.csim2.core.model.SourceClass;
+import ch.hesge.csim2.core.simulink.SimulinkBlock;
+import ch.hesge.csim2.core.simulink.SimulinkModel;
+import ch.hesge.csim2.core.simulink.SimulinkParser;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.EngineException;
 import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.simulinkparser.SimulinkBlock;
-import ch.hesge.csim2.simulinkparser.SimulinkModel;
-import ch.hesge.csim2.simulinkparser.SimulinkParser;
 
 /**
  * This engine allow simulink analysis.
@@ -266,19 +266,12 @@ public class SimulinkAnalyzer implements IEngine {
 	private void doScanFile(final String filepath) throws Exception {
 
 		String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
-
 		Console.writeDebug(this, "parsing file " + filename + ".");
-
 		SimulinkModel model = new SimulinkParser(filepath.toString()).parse();
 
 		// Scan all blocks in model and extract source classes
 		for (SimulinkBlock block : model.getRoot().getChildren()) {
-
-			// Retrieve class from block
-			SourceClass sourceClass = doExtractBlock(block, filepath);
-
-			// Add it to the parsed class list
-			parsedClasses.add(sourceClass);
+			doExtractBlock(block, filepath);
 		}
 	}
 
@@ -300,34 +293,28 @@ public class SimulinkAnalyzer implements IEngine {
 		// Retrieve block name
 		Console.writeDebug(this, "visiting " + sourceClass.getName() + " in " + filename + ".");
 
-		// Parse children
-		for (SimulinkBlock child : block.getChildren()) {
+		// Parse parameters
+		for (SimulinkBlock parameter : block.getParameters()) {
+			
+			// Create an attribute for each parameter
+			SourceAttribute sourceAttribute = new SourceAttribute();
+			sourceAttribute.setName(parameter.getName());
+			sourceAttribute.setValue(parameter.getValue());
+			sourceAttribute.setType("String");
 
-			// Parameter block
-			if (child.isParameter()) {
-
-				// Create an attribute for each parameter
-				SourceAttribute sourceAttribute = new SourceAttribute();
-				sourceAttribute.setName(child.getName());
-				sourceAttribute.setValue(child.getValue());
-				sourceAttribute.setType("String");
-
-				// Add only if not already present
-				if (!sourceClass.getAttributes().contains(sourceAttribute)) {
-					sourceClass.getAttributes().add(sourceAttribute);
-				}
-			}
-
-			// Standard block
-			else {
-
-				// Create a child source class
-				SourceClass childClass = doExtractBlock(child, filename);
-
-				// Add child to parent
-				sourceClass.getSubClasses().add(childClass);
+			// Add only if not already present
+			if (!sourceClass.getAttributes().contains(sourceAttribute)) {
+				sourceClass.getAttributes().add(sourceAttribute);
 			}
 		}
+		
+		// Parse children blocks
+		for (SimulinkBlock child : block.getChildren()) {
+			doExtractBlock(child, filename);
+		}
+
+		// Add it to the parsed class list
+		parsedClasses.add(sourceClass);
 
 		return sourceClass;
 	}

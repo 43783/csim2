@@ -18,15 +18,15 @@ import java.util.Properties;
 
 import ch.hesge.csim2.core.model.Context;
 import ch.hesge.csim2.core.model.IEngine;
+import ch.hesge.csim2.core.simulink.SimulinkBlock;
+import ch.hesge.csim2.core.simulink.SimulinkFactory;
+import ch.hesge.csim2.core.simulink.SimulinkModel;
+import ch.hesge.csim2.core.simulink.SimulinkParser;
+import ch.hesge.csim2.core.simulink.SimulinkUtils;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.EngineException;
 import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.simulinkparser.SimulinkBlock;
-import ch.hesge.csim2.simulinkparser.SimulinkFactory;
-import ch.hesge.csim2.simulinkparser.SimulinkModel;
-import ch.hesge.csim2.simulinkparser.SimulinkParser;
-import ch.hesge.csim2.simulinkparser.SimulinkUtils;
 
 /**
  * This engine allow simulink model instrumentation.

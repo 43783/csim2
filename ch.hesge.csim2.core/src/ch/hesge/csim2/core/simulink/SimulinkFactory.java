@@ -1,4 +1,4 @@
-package ch.hesge.csim2.simulinkparser;
+package ch.hesge.csim2.core.simulink;
 
 import java.awt.Rectangle;
 import java.text.SimpleDateFormat;
@@ -23,24 +23,6 @@ public class SimulinkFactory {
 		model.setMaxSid(sid);
 
 		return String.valueOf(sid);
-	}
-
-	/**
-	 * Create a parameter with value for block passed in argument.
-	 * 
-	 * @param paramName
-	 * @param paramValue
-	 * @param paramQuotedValue
-	 */
-	public static SimulinkBlock createParameter(String paramName, String paramValue) {
-
-		SimulinkBlock parameterBlock = new SimulinkBlock();
-
-		parameterBlock.setNodeType("Parameter");
-		parameterBlock.setName(paramName);
-		parameterBlock.setValue(paramValue);
-
-		return parameterBlock;
 	}
 
 	/**
@@ -119,6 +101,7 @@ public class SimulinkFactory {
 		// Create a root block
 		SimulinkBlock block = new SimulinkBlock();
 		block.setNodeType("Root");
+		block.setName("Root");
 
 		// Add it to the model
 		model.setRoot(block);

@@ -1,4 +1,4 @@
-package ch.hesge.csim2.simulinkparser;
+package ch.hesge.csim2.core.simulink;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ public class SimulinkBlock {
 	private List<SimulinkBlock>	outputPorts;
 	private List<SimulinkBlock>	inputs;
 	private List<SimulinkBlock>	outputs;
+	private List<SimulinkBlock>	parameters;
 	private List<SimulinkBlock>	children;
 
 	/**
@@ -25,6 +26,7 @@ public class SimulinkBlock {
 	 */
 	public SimulinkBlock() {
 		children = new ArrayList<>();
+		parameters = new ArrayList<>();
 		inputPorts = new ArrayList<>();
 		outputPorts = new ArrayList<>();
 		inputs = new ArrayList<>();
@@ -48,13 +50,6 @@ public class SimulinkBlock {
 	 */
 	public void setSid(String sid) {
 		this.sid = sid;
-	}
-
-	/**
-	 * Return true if block is a parameter
-	 */
-	public boolean isParameter() {
-		return this.nodeType.equals("Parameter");
 	}
 
 	/**
@@ -162,6 +157,15 @@ public class SimulinkBlock {
 	}
 
 	/**
+	 * Return a list of parameters associated to current block.
+	 * 
+	 * @return the parameters
+	 */
+	public List<SimulinkBlock> getParameters() {
+		return parameters;
+	}
+
+	/**
 	 * Return all input port of current block
 	 * 
 	 * @return the inputPorts
@@ -219,16 +223,10 @@ public class SimulinkBlock {
 	 */
 	public String toString() {
 
-		if (this.isParameter()) {
-			return this.getName() + " " + this.getValue();
+		if (this.getName() != null) {
+			return this.getName();
 		}
-		else {
 
-			if (this.getName() != null) {
-				return this.getName();
-			}
-
-			return this.getNodeType();
-		}
+		return this.getNodeType();
 	}
 }

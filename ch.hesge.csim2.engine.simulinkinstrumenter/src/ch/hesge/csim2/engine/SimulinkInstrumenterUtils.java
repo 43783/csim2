@@ -7,9 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import ch.hesge.csim2.core.simulink.SimulinkBlock;
+import ch.hesge.csim2.core.simulink.SimulinkModel;
 import ch.hesge.csim2.core.utils.Console;
-import ch.hesge.csim2.simulinkparser.SimulinkBlock;
-import ch.hesge.csim2.simulinkparser.SimulinkModel;
 
 public class SimulinkInstrumenterUtils {
 
