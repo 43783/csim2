@@ -1,4 +1,4 @@
-package ch.hesge.csim2.simulinkparser;
+package ch.hesge.csim2.core.simulink;
 
 import java.util.HashMap;
 import java.util.Map;

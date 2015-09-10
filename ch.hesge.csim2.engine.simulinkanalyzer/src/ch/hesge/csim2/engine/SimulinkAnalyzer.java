@@ -22,13 +22,13 @@ import ch.hesge.csim2.core.model.IEngine;
 import ch.hesge.csim2.core.model.Project;
 import ch.hesge.csim2.core.model.SourceAttribute;
 import ch.hesge.csim2.core.model.SourceClass;
+import ch.hesge.csim2.core.simulink.SimulinkBlock;
+import ch.hesge.csim2.core.simulink.SimulinkModel;
+import ch.hesge.csim2.core.simulink.SimulinkParser;
 import ch.hesge.csim2.core.utils.Console;
 import ch.hesge.csim2.core.utils.EngineException;
 import ch.hesge.csim2.core.utils.FileUtils;
 import ch.hesge.csim2.core.utils.StringUtils;
-import ch.hesge.csim2.simulinkparser.SimulinkBlock;
-import ch.hesge.csim2.simulinkparser.SimulinkModel;
-import ch.hesge.csim2.simulinkparser.SimulinkParser;
 
 /**
  * This engine allow simulink analysis.

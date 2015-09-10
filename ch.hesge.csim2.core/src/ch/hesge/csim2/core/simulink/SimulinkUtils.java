@@ -1,4 +1,4 @@
-package ch.hesge.csim2.simulinkparser;
+package ch.hesge.csim2.core.simulink;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -82,8 +82,14 @@ public class SimulinkUtils {
 			}
 		}
 
-		if (paramName != null && paramValue != null) {
-			return SimulinkFactory.createParameter(paramName, paramValue);
+		if (paramName != null || paramValue != null) {
+			
+			SimulinkBlock parameterBlock = new SimulinkBlock();
+
+			parameterBlock.setName(paramName);
+			parameterBlock.setValue(paramValue);
+
+			return parameterBlock;
 		}
 
 		return null;
@@ -225,14 +231,10 @@ public class SimulinkUtils {
 	 */
 	public static String getParameterValue(SimulinkBlock block, String paramName) {
 
-		for (SimulinkBlock child : block.getChildren()) {
+		for (SimulinkBlock parameter : block.getParameters()) {
 
-			if (child.isParameter() && child.getName().equals(paramName)) {
-
-				SimulinkBlock param = (SimulinkBlock) child;
-				if (param.getName().equals(paramName)) {
-					return param.getValue();
-				}
+			if (parameter.getName().equals(paramName)) {
+				return parameter.getValue();
 			}
 		}
 
@@ -271,10 +273,10 @@ public class SimulinkUtils {
 	 */
 	public static SimulinkBlock getParameter(SimulinkBlock block, String paramName) {
 
-		for (SimulinkBlock child : block.getChildren()) {
+		for (SimulinkBlock parameter : block.getParameters()) {
 
-			if (child.isParameter() && child.getName().equals(paramName)) {
-				return (SimulinkBlock) child;
+			if (parameter.getName().equals(paramName)) {
+				return parameter;
 			}
 		}
 

@@ -1,11 +1,10 @@
-package ch.hesge.csim2.simulinkparser;
+package ch.hesge.csim2.core.simulink;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class SimulinkParser {
 
@@ -32,29 +31,31 @@ public class SimulinkParser {
 	 */
 	public SimulinkModel parse() throws IOException {
 
-		lineNumber = 1;
+		lineNumber = 0;
 
-		// Create the of all future blocks
+		// Create the root of all future blocks
 		SimulinkFactory.createRootBlock(model);
-
-		// Create a file reader
-		BufferedReader reader = Files.newBufferedReader(filePath, Charset.defaultCharset());
-
+		
+		// Load file
+		List<String> lines = Files.readAllLines(filePath);
+		
 		// Main parsing loop
-		while (true) {
+		while (lineNumber < lines.size()) {
 
 			// Read current line
-			String parsedLine = reader.readLine();
-			if (parsedLine == null)
-				break;
+			String parsedLine = lines.get(lineNumber).trim();
 
 			// Retrieve the current block
 			String nodeType = SimulinkUtils.parseNodeType(parsedLine);
-			SimulinkBlock block = parseBlock(null, nodeType, reader);
+			
+			if (nodeType != null) {
+				
+				SimulinkBlock block = parseBlock(null, nodeType, lines);
 
-			// Add add block to model
-			if (block != null) {
-				model.getRoot().getChildren().add(block);
+				// Add the block to the model
+				if (block != null) {
+					model.getRoot().getChildren().add(block);
+				}
 			}
 		}
 
@@ -73,11 +74,7 @@ public class SimulinkParser {
 	 * @return a simulink block
 	 * @throws IOException
 	 */
-	private SimulinkBlock parseBlock(SimulinkBlock parent, String nodeType, BufferedReader reader) throws IOException {
-
-		// Skip nodes without type
-		if (nodeType == null)
-			return null;
+	private SimulinkBlock parseBlock(SimulinkBlock parent, String nodeType, List<String> lines) throws IOException {
 
 		SimulinkBlock block = new SimulinkBlock();
 
@@ -88,19 +85,23 @@ public class SimulinkParser {
 		// Block parsing loop
 		while (true) {
 
-			// Read current line
-			String parsedLine = reader.readLine();
-			if (parsedLine == null)
+			lineNumber++;
+
+			if (lineNumber > lines.size() - 1)
 				break;
 
-			lineNumber++;
+			// Read current line
+			String parsedLine = lines.get(lineNumber).trim();
 
 			// Detect child block declaration
 			if (parsedLine.contains("{")) {
 
 				// Parse child block (with all its parameters)
 				String childType = SimulinkUtils.parseNodeType(parsedLine);
-				parseBlock(block, childType, reader);
+				
+				if (childType != null) {
+					parseBlock(block, childType, lines);
+				}
 			}
 
 			// End parsing a child block
@@ -109,8 +110,13 @@ public class SimulinkParser {
 			}
 
 			// Otherwise, we have a parameter, so parse it
-			else if (parsedLine.trim().length() > 0) {
-				parseParameter(block, parsedLine);
+			else {
+				
+				SimulinkBlock parameter = parseParameter(block, parsedLine, lines);
+				
+				if (parameter != null) {
+					block.getParameters().add(parameter);
+				}
 			}
 		}
 
@@ -160,11 +166,22 @@ public class SimulinkParser {
 	 *            the string containing the parameter and its value
 	 * @throws IOException
 	 */
-	private void parseParameter(SimulinkBlock parent, String parsedLine) throws IOException {
+	private SimulinkBlock parseParameter(SimulinkBlock parent, String parsedLine, List<String> lines) throws IOException {
 
 		SimulinkBlock parameter = SimulinkUtils.parseParameter(parsedLine);
-
+						
 		if (parameter != null) {
+
+			int paramLine = lineNumber + 1;
+			String nextParsedLine = lines.get(paramLine).trim();
+
+			// Merge multi lines parameter
+			while (paramLine < lines.size() && nextParsedLine.startsWith("\"")) {
+				
+				SimulinkBlock param = SimulinkUtils.parseParameter(nextParsedLine);
+				parameter.setValue(parameter.getValue() + param.getValue());
+				paramLine++;
+			}
 
 			parameter.setParent(parent);
 			parameter.setSourceLine(lineNumber);
@@ -181,8 +198,8 @@ public class SimulinkParser {
 			else if (parameter.getName().equals("BlockType")) {
 				parent.setBlockType(parameter.getValue());
 			}
-
-			parent.getChildren().add(parameter);
 		}
+		
+		return parameter;
 	}
 }
