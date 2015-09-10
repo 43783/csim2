@@ -42,21 +42,15 @@ public class SimulinkParser {
 		// Main parsing loop
 		while (lineNumber < lines.size()) {
 
-			// Read current line
-			String parsedLine = lines.get(lineNumber).trim();
+			// Try to retrieve a block in current line
+			SimulinkBlock block = parseBlock(null, lines);
 
-			// Retrieve the current block
-			String nodeType = SimulinkUtils.parseNodeType(parsedLine);
-			
-			if (nodeType != null) {
-				
-				SimulinkBlock block = parseBlock(null, nodeType, lines);
-
-				// Add the block to the model
-				if (block != null) {
-					model.getRoot().getChildren().add(block);
-				}
+			// If a block is found, add it to the model
+			if (block != null) {
+				model.getRoot().getChildren().add(block);
 			}
+			
+			lineNumber++;
 		}
 
 		return model;
@@ -74,21 +68,24 @@ public class SimulinkParser {
 	 * @return a simulink block
 	 * @throws IOException
 	 */
-	private SimulinkBlock parseBlock(SimulinkBlock parent, String nodeType, List<String> lines) throws IOException {
+	private SimulinkBlock parseBlock(SimulinkBlock parent, List<String> lines) throws IOException {
+
+		// Retrieve the current block type
+		String line = lines.get(lineNumber).trim();
+		String nodeType = SimulinkUtils.parseNodeType(line);
+		
+		if (nodeType == null)
+			return null;
 
 		SimulinkBlock block = new SimulinkBlock();
-
-		block.setNodeType(nodeType);
 		block.setParent(parent);
 		block.setSourceLine(lineNumber);
-
+		block.setNodeType(nodeType);
+		
+		lineNumber++;
+		
 		// Block parsing loop
-		while (true) {
-
-			lineNumber++;
-
-			if (lineNumber > lines.size() - 1)
-				break;
+		while (lineNumber < lines.size()) {
 
 			// Read current line
 			String parsedLine = lines.get(lineNumber).trim();
@@ -97,10 +94,11 @@ public class SimulinkParser {
 			if (parsedLine.contains("{")) {
 
 				// Parse child block (with all its parameters)
-				String childType = SimulinkUtils.parseNodeType(parsedLine);
-				
-				if (childType != null) {
-					parseBlock(block, childType, lines);
+				SimulinkBlock child = parseBlock(block, lines);
+
+				// Add child to its parent
+				if (parent != null) {
+					parent.getChildren().add(child);
 				}
 			}
 
@@ -109,20 +107,32 @@ public class SimulinkParser {
 				break;
 			}
 
-			// Otherwise, we have a parameter, so parse it
+			// Otherwise, we should have a parameter
 			else {
 				
-				SimulinkBlock parameter = parseParameter(block, parsedLine, lines);
+				// Parse block parameter
+				SimulinkBlock parameter = parseParameter(block, lines);
 				
 				if (parameter != null) {
+					
+					// Add parameter to current block
 					block.getParameters().add(parameter);
+					
+					if (parameter.getName().equals("SID")) {
+						block.setSid(parameter.getValue());
+					}
+
+					else if (parameter.getName().equals("Name")) {
+						block.setName(parameter.getValue());
+					}
+
+					else if (parameter.getName().equals("BlockType")) {
+						block.setBlockType(parameter.getValue());
+					}					
 				}
 			}
-		}
-
-		// Add block to its parent
-		if (parent != null) {
-			parent.getChildren().add(block);
+			
+			lineNumber++;
 		}
 
 		// Update map of blocks by SID
@@ -166,37 +176,40 @@ public class SimulinkParser {
 	 *            the string containing the parameter and its value
 	 * @throws IOException
 	 */
-	private SimulinkBlock parseParameter(SimulinkBlock parent, String parsedLine, List<String> lines) throws IOException {
+	private SimulinkBlock parseParameter(SimulinkBlock parent, List<String> lines) throws IOException {
 
+		// Read current line
+		String parsedLine = lines.get(lineNumber).trim();
+		
+		// Extract parameter name + value
 		SimulinkBlock parameter = SimulinkUtils.parseParameter(parsedLine);
 						
 		if (parameter != null) {
-
-			int paramLine = lineNumber + 1;
-			String nextParsedLine = lines.get(paramLine).trim();
-
-			// Merge multi lines parameter
-			while (paramLine < lines.size() && nextParsedLine.startsWith("\"")) {
-				
-				SimulinkBlock param = SimulinkUtils.parseParameter(nextParsedLine);
-				parameter.setValue(parameter.getValue() + param.getValue());
-				paramLine++;
-			}
 
 			parameter.setParent(parent);
 			parameter.setSourceLine(lineNumber);
 			parameter.setNodeType("Parameter");
 
-			if (parameter.getName().equals("SID")) {
-				parent.setSid(parameter.getValue());
-			}
+			lineNumber++;
+			parsedLine = lines.get(lineNumber).trim();
+			
+			// Merge multi lines parameter
+			while (lineNumber < lines.size() && parsedLine.startsWith("\"")) {
+				
+				// Try to retrieve another parameter value
+				SimulinkBlock param = SimulinkUtils.parseParameter(parsedLine);
+				
+				if (param == null) {
+					break;
+				}
 
-			else if (parameter.getName().equals("Name")) {
-				parent.setName(parameter.getValue());
-			}
+				String newParameterValue = parameter.getValue() + param.getValue(); 
+				parameter.setValue(newParameterValue.replace("\"\"", " "));
 
-			else if (parameter.getName().equals("BlockType")) {
-				parent.setBlockType(parameter.getValue());
+				lineNumber++;
+
+				// Read next line
+				parsedLine = lines.get(lineNumber).trim();
 			}
 		}
 		

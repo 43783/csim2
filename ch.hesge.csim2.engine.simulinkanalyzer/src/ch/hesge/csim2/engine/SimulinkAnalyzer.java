@@ -207,7 +207,7 @@ public class SimulinkAnalyzer implements IEngine {
 						}
 					}
 
-					return FileVisitResult.CONTINUE; // test
+					return FileVisitResult.CONTINUE;
 				}
 			});
 
@@ -265,6 +265,7 @@ public class SimulinkAnalyzer implements IEngine {
 	 */
 	private void doScanFile(final String filepath) throws Exception {
 
+		// Load file and parse it
 		String filename = Paths.get(filepath).getFileName().toString().toLowerCase();
 		Console.writeDebug(this, "parsing file " + filename + ".");
 		SimulinkModel model = new SimulinkParser(filepath.toString()).parse();

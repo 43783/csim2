@@ -79,6 +79,15 @@ public class SimulinkUtils {
 					paramName = matcher.group("name").trim();
 					paramValue = matcher.group("value").trim();
 				}
+				else {
+					
+					// Parse parameter rule: value
+					matcher = Pattern.compile("^\\s*(?<value>[^\\s]+)\\s*$").matcher(parsedLine);
+
+					if (matcher.matches()) {
+						paramValue = matcher.group("value").trim();
+					}
+				}
 			}
 		}
 
