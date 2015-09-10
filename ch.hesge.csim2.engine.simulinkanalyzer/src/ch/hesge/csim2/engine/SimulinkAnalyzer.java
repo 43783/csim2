@@ -207,7 +207,7 @@ public class SimulinkAnalyzer implements IEngine {
 						}
 					}
 
-					return FileVisitResult.CONTINUE;
+					return FileVisitResult.CONTINUE; // test
 				}
 			});
 
