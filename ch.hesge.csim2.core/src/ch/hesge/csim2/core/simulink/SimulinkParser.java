@@ -33,12 +33,12 @@ public class SimulinkParser {
 
 		lineNumber = 0;
 
-		// Create the root of all future blocks
-		SimulinkFactory.createRootBlock(model);
-		
-		// Load file
+		// Load simulink file
 		List<String> lines = Files.readAllLines(filePath);
-		
+
+		// Create the root of all blocks
+		SimulinkFactory.createRootBlock(model);
+				
 		// Main parsing loop
 		while (lineNumber < lines.size()) {
 
@@ -118,17 +118,19 @@ public class SimulinkParser {
 					// Add parameter to current block
 					block.getParameters().add(parameter);
 					
-					if (parameter.getName().equals("SID")) {
+					if (parameter.getName().equalsIgnoreCase("sid")) {
 						block.setSid(parameter.getValue());
 					}
 
-					else if (parameter.getName().equals("Name")) {
+					else if (parameter.getName().equalsIgnoreCase("name")) {
 						block.setName(parameter.getValue());
 					}
 
-					else if (parameter.getName().equals("BlockType")) {
+					else if (parameter.getName().equalsIgnoreCase("blocktype")) {
 						block.setBlockType(parameter.getValue());
-					}					
+					}	
+					
+					
 				}
 			}
 			
@@ -137,6 +139,13 @@ public class SimulinkParser {
 
 		// Update map of blocks by SID
 		if (block.getSid() != null) {
+			
+			int blockSid = Integer.parseInt(block.getSid());
+
+			if (blockSid > model.getMaxSid()) {
+				model.setMaxSid(blockSid);
+			}
+			
 			model.getBlocksBySid().put(block.getSid(), block);
 		}
 
@@ -145,22 +154,12 @@ public class SimulinkParser {
 
 		if (blockType != null) {
 
-			if (blockType.equals("Inport")) {
+			if (blockType.equalsIgnoreCase("inport")) {
 				SimulinkFactory.createInputPort(block);
 			}
 
-			if (blockType.equals("Outport")) {
+			if (blockType.equalsIgnoreCase("outport")) {
 				SimulinkFactory.createOutputPort(block);
-			}
-		}
-
-		// Update max available sid
-		if (block.getSid() != null) {
-
-			int blockSid = Integer.parseInt(block.getSid());
-
-			if (blockSid > model.getMaxSid()) {
-				model.setMaxSid(blockSid);
 			}
 		}
 
@@ -179,7 +178,8 @@ public class SimulinkParser {
 	private SimulinkBlock parseParameter(SimulinkBlock parent, List<String> lines) throws IOException {
 
 		// Read current line
-		String parsedLine = lines.get(lineNumber).trim();
+		int paramLineNumber = lineNumber;
+		String parsedLine = lines.get(paramLineNumber).trim();
 		
 		// Extract parameter name + value
 		SimulinkBlock parameter = SimulinkUtils.parseParameter(parsedLine);
@@ -187,14 +187,14 @@ public class SimulinkParser {
 		if (parameter != null) {
 
 			parameter.setParent(parent);
-			parameter.setSourceLine(lineNumber);
+			parameter.setSourceLine(paramLineNumber);
 			parameter.setNodeType("Parameter");
 
-			lineNumber++;
-			parsedLine = lines.get(lineNumber).trim();
+			paramLineNumber++;
+			parsedLine = lines.get(paramLineNumber).trim();
 			
 			// Merge multi lines parameter
-			while (lineNumber < lines.size() && parsedLine.startsWith("\"")) {
+			while (paramLineNumber < lines.size() && parsedLine.startsWith("\"")) {
 				
 				// Try to retrieve another parameter value
 				SimulinkBlock param = SimulinkUtils.parseParameter(parsedLine);
@@ -203,14 +203,14 @@ public class SimulinkParser {
 					break;
 				}
 
-				String newParameterValue = parameter.getValue() + param.getValue(); 
-				parameter.setValue(newParameterValue.replace("\"\"", " "));
-
-				lineNumber++;
+				String newParameterValue = (parameter.getValue() + param.getValue()).replace("\"\"", " "); 
+				parameter.setValue(newParameterValue);
 
 				// Read next line
-				parsedLine = lines.get(lineNumber).trim();
+				parsedLine = lines.get(++paramLineNumber).trim();
 			}
+			
+			lineNumber = paramLineNumber - 1;
 		}
 		
 		return parameter;

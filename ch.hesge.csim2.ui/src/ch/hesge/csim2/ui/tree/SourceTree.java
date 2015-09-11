@@ -63,11 +63,6 @@ public class SourceTree extends JTree {
 					cellRenderer.setText(sourceClass.getName());
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));
 				}
-				else if (userObject instanceof SourceMethod) {
-					SourceMethod sourceMethod = (SourceMethod) userObject;
-					cellRenderer.setText(sourceMethod.getSignature());
-					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "method.png")));
-				}
 				else if (userObject instanceof SourceAttribute) {
 					SourceAttribute sourceAttribute = (SourceAttribute) userObject;
 					String displayName = sourceAttribute.getName();
@@ -76,6 +71,11 @@ public class SourceTree extends JTree {
 					}
 					cellRenderer.setText(displayName);
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "attribute.png")));
+				}
+				else if (userObject instanceof SourceMethod) {
+					SourceMethod sourceMethod = (SourceMethod) userObject;
+					cellRenderer.setText(sourceMethod.getSignature());
+					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "method.png")));
 				}
 				else if (userObject != null && userObject.toString().equals("subclasses")) {
 					cellRenderer.setIcon(new ImageIcon(MainView.class.getResource(ICON_PATH + "class.png")));

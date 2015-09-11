@@ -22,7 +22,7 @@ public class Project {
 	private String				name;
 	private List<Scenario>		scenarios;
 	private List<Ontology>		ontologies;
-	private List<SourceClass>	sourceClass;
+	private List<SourceClass>	sourceClasses;
 
 	/**
 	 * Default constructor
@@ -30,7 +30,7 @@ public class Project {
 	public Project() {
 		scenarios = new ArrayList<>();
 		ontologies = new ArrayList<>();
-		sourceClass = new ArrayList<>();
+		sourceClasses = new ArrayList<>();
 	}
 
 	public int getKeyId() {
@@ -58,6 +58,6 @@ public class Project {
 	}
 
 	public List<SourceClass> getSourceClasses() {
-		return sourceClass;
+		return sourceClasses;
 	}
 }
