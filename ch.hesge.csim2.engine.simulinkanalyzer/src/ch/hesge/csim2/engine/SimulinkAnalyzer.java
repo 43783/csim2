@@ -273,12 +273,7 @@ public class SimulinkAnalyzer implements IEngine {
 
 		// Scan all blocks in model and extract source classes
 		for (SimulinkBlock block : model.getRoot().getChildren()) {
-
-			// Retrieve class from block
-			SourceClass sourceClass = doExtractBlock(block, filepath);
-
-			// Add it to the parsed class list
-			parsedClasses.add(sourceClass);
+			doExtractBlock(block, filepath);
 		}
 	}
 
@@ -321,8 +316,8 @@ public class SimulinkAnalyzer implements IEngine {
 			// Create a child source class
 			SourceClass childClass = doExtractBlock(child, filename);
 
-			// Add child to parent
-			sourceClass.getSubClasses().add(childClass);
+			// Add it to the parsed class list
+			parsedClasses.add(childClass);
 		}
 
 		return sourceClass;

@@ -71,56 +71,6 @@ public class SimulinkUtils {
 			return parameterBlock;			
 		}
 
-		/*
-		// Parse parameter with format: name "value"
-		//Matcher matcher = Pattern.compile("^\\s*(?<name>[^\\\"]+)(?<value>\\\"[^\\\"]+\\\")\\s*$").matcher(parsedLine);
-		Matcher matcher = Pattern.compile("^\\s*(?<name>\\w+)\\s*(?<value>\\\"[^\\\"]+\\\")\\s*$").matcher(parsedLine);
-
-		if (matcher.matches()) {
-			paramName = matcher.group("name").trim();
-			paramValue = matcher.group("value").trim();
-		}
-		else {
-
-			// Parse parameter rule: name <[> value <]>
-			matcher = Pattern.compile("^\\s*(?<name>[^\\[]+)(?<value>\\[[^\\]]+\\])\\s*$").matcher(parsedLine);
-
-			if (matcher.matches()) {
-				paramName = matcher.group("name").trim();
-				paramValue = matcher.group("value").trim();
-			}
-			else {
-
-				// Parse parameter rule: name <space> value
-				matcher = Pattern.compile("^\\s*(?<name>[^\\s]+)\\s+(?<value>[^\\s]+)\\s*$").matcher(parsedLine);
-
-				if (matcher.matches()) {
-					paramName = matcher.group("name").trim();
-					paramValue = matcher.group("value").trim();
-				}
-				else {
-					
-					// Parse parameter rule: <"> value <">
-					matcher = Pattern.compile("^\\s*([^\\\"]+)(?<value>\\\"[^\\\"]+\\\")\\s*$").matcher(parsedLine);
-
-					if (matcher.matches()) {
-						paramValue = matcher.group("value").trim();
-					}
-				}
-			}
-		}
-
-		if (paramName != null || paramValue != null) {
-			
-			SimulinkBlock parameterBlock = new SimulinkBlock();
-
-			parameterBlock.setName(paramName);
-			parameterBlock.setValue(paramValue);
-
-			return parameterBlock;
-		}
-		*/
-
 		return null;
 	}
 
