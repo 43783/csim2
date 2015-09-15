@@ -172,17 +172,18 @@ public class SimulinkParser {
 						
 		if (parameter != null) {
 
-			String nextParsedLine = lines.get(lineNumber+1).trim();
+			lineNumber++;
+			parsedLine = lines.get(lineNumber).trim();
 
 			// Merge multi lines parameter
-			while (lineNumber < lines.size() && nextParsedLine.startsWith("\"")) {
+			while (lineNumber < lines.size() && parsedLine.startsWith("\"")) {
 				
-				SimulinkBlock param = SimulinkUtils.parseParameter(nextParsedLine);
+				SimulinkBlock param = SimulinkUtils.parseParameter(parsedLine);
 				String concatValue = (parameter.getValue() + param.getValue()).replace("\"\"", " "); 
 				parameter.setValue(concatValue);
 
 				lineNumber++;
-				nextParsedLine = lines.get(lineNumber).trim();
+				parsedLine = lines.get(lineNumber).trim();
 			}
 
 			parameter.setParent(parent);
