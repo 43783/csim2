@@ -300,33 +300,29 @@ public class SimulinkAnalyzer implements IEngine {
 		// Retrieve block name
 		Console.writeDebug(this, "visiting " + sourceClass.getName() + " in " + filename + ".");
 
+		// Parse parameters
+		for (SimulinkBlock param : block.getParameters()) {
+			
+			// Create an attribute for each parameter
+			SourceAttribute sourceAttribute = new SourceAttribute();
+			sourceAttribute.setName(param.getName());
+			sourceAttribute.setValue(param.getValue());
+			sourceAttribute.setType("String");
+
+			// Add only if not already present
+			if (!sourceClass.getAttributes().contains(sourceAttribute)) {
+				sourceClass.getAttributes().add(sourceAttribute);
+			}
+		}
+		
 		// Parse children
 		for (SimulinkBlock child : block.getChildren()) {
+			
+			// Create a child source class
+			SourceClass childClass = doExtractBlock(child, filename);
 
-			// Parameter block
-			if (child.isParameter()) {
-
-				// Create an attribute for each parameter
-				SourceAttribute sourceAttribute = new SourceAttribute();
-				sourceAttribute.setName(child.getName());
-				sourceAttribute.setValue(child.getValue());
-				sourceAttribute.setType("String");
-
-				// Add only if not already present
-				if (!sourceClass.getAttributes().contains(sourceAttribute)) {
-					sourceClass.getAttributes().add(sourceAttribute);
-				}
-			}
-
-			// Standard block
-			else {
-
-				// Create a child source class
-				SourceClass childClass = doExtractBlock(child, filename);
-
-				// Add child to parent
-				sourceClass.getSubClasses().add(childClass);
-			}
+			// Add child to parent
+			sourceClass.getSubClasses().add(childClass);
 		}
 
 		return sourceClass;

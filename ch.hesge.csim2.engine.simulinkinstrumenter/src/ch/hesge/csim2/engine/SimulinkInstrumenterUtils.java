@@ -36,38 +36,39 @@ public class SimulinkInstrumenterUtils {
 	 */
 	private static void dumpBlock(SimulinkBlock block, String indentation) {
 
-		if (block.isParameter()) {
-			// Trace parameters
-			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + block.getName() + " = " + block.getValue());
+		// Trace block elements
+		Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + block.getNodeType() + " [" + block.getSourceLine() + "]");
+
+		// Trace parameters
+		for (SimulinkBlock param : block.getParameters()) {
+			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + param.getName() + " = " + param.getValue());
 		}
-		else {
-			
-			// Trace block elements
-			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + block.getNodeType() + " [" + block.getSourceLine() + "]");
 
-			for (SimulinkBlock inputPort : block.getInputPorts()) {
-				for (SimulinkBlock output : inputPort.getOutputs()) {
-					Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  inport:    " + inputPort.getName() + "[" + inputPort.getParent().getName() + "] => " + output.getName() + "[" + output.getParent().getName() + "]");
-				}
+		// Trace input ports
+		for (SimulinkBlock inputPort : block.getInputPorts()) {
+			for (SimulinkBlock output : inputPort.getOutputs()) {
+				Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  inport:    " + inputPort.getName() + "[" + inputPort.getParent().getName() + "] => " + output.getName() + "[" + output.getParent().getName() + "]");
 			}
+		}
 
-			for (SimulinkBlock outputPort : block.getOutputPorts()) {
-				for (SimulinkBlock inputs : outputPort.getInputs()) {
-					Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outport:   " + inputs.getName() + "[" + inputs.getParent().getName() + "] => " + outputPort.getName() + "[" + outputPort.getParent().getName() + "]");
-				}
+		// Trace output ports
+		for (SimulinkBlock outputPort : block.getOutputPorts()) {
+			for (SimulinkBlock inputs : outputPort.getInputs()) {
+				Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outport:   " + inputs.getName() + "[" + inputs.getParent().getName() + "] => " + outputPort.getName() + "[" + outputPort.getParent().getName() + "]");
 			}
+		}
 
-			for (SimulinkBlock inputs : block.getInputs()) {
-				Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  input:     " + inputs.getName() + "[" + inputs.getParent().getName() + "]");
-			}
+		for (SimulinkBlock inputs : block.getInputs()) {
+			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  input:     " + inputs.getName() + "[" + inputs.getParent().getName() + "]");
+		}
 
-			for (SimulinkBlock outputs : block.getOutputs()) {
-				Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outputs:   " + outputs.getName() + "[" + outputs.getParent().getName() + "]");
-			}
+		for (SimulinkBlock outputs : block.getOutputs()) {
+			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outputs:   " + outputs.getName() + "[" + outputs.getParent().getName() + "]");
+		}
 
-			for (SimulinkBlock child : block.getChildren()) {
-				dumpBlock(child, indentation + "  ");
-			}
+		// Trace children recursively
+		for (SimulinkBlock child : block.getChildren()) {
+			dumpBlock(child, indentation + "  ");
 		}
 	}
 
@@ -111,22 +112,20 @@ public class SimulinkInstrumenterUtils {
 	 */
 	private static void saveBlock(SimulinkBlock block, BufferedWriter writer, String indentation) throws IOException {
 
-		if (block.isParameter()) {
-			// Save parameters
-			writer.write(indentation + block.getName() + " " + block.getValue());
+		// Save blocks
+		writer.write(indentation + block.getNodeType() + " {");
+		writer.newLine();
+
+		for (SimulinkBlock param : block.getParameters()) {
+			writer.write(indentation + param.getName() + " " + param.getValue());
 			writer.newLine();
 		}
-		else {
-			// Save blocks
-			writer.write(indentation + block.getNodeType() + " {");
-			writer.newLine();
-
-			for (SimulinkBlock child : block.getChildren()) {
-				saveBlock(child, writer, indentation + "  ");
-			}
-
-			writer.write(indentation + "}");
-			writer.newLine();
+		
+		for (SimulinkBlock child : block.getChildren()) {
+			saveBlock(child, writer, indentation + "  ");
 		}
+
+		writer.write(indentation + "}");
+		writer.newLine();
 	}
 }
