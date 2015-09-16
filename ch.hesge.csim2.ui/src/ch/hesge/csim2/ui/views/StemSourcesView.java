@@ -56,7 +56,7 @@ public class StemSourcesView extends JPanel {
 		splitPanel1.setResizeWeight(0.4);	
 		add(splitPanel1, BorderLayout.CENTER);
 		
-		// Initialize concept tree
+		// Initialize source tree
 		sourceTree = new SourceTree(classRoots);
 		sourceTree.setFocusable(true);
 		JScrollPane scrollPane1 = new JScrollPane();

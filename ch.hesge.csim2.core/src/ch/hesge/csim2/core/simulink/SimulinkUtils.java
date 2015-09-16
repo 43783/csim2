@@ -54,21 +54,51 @@ public class SimulinkUtils {
 		String paramName = null;
 		String paramValue = null;
 
-		Matcher matcher = Pattern.compile("^\\s*(?<name>\\w+)?\\s*((?<quottedvalue>\\\"[^\\\"]+\\\")|(?<bracketvalue>\\[[^\\]]+\\])|(?<value>\\w+))\\s*$").matcher(parsedLine);
+		// Parse parameter rule: name <"> value <">
+		Matcher matcher = Pattern.compile("^\\s*(?<name>[^\\\"]+)(?<value>\\\"[^\\\"]+\\\")\\s*$").matcher(parsedLine);
 
 		if (matcher.matches()) {
-			
-			paramName = matcher.group("name");
-			paramValue = matcher.group("quottedvalue");
-			if (paramValue == null) paramValue = matcher.group("bracketvalue");
-			if (paramValue == null) paramValue = matcher.group("value");
+			paramName = matcher.group("name").trim();
+			paramValue = matcher.group("value").trim();
+		}
+		else {
+
+			// Parse parameter rule: name <[> value <]>
+			matcher = Pattern.compile("^\\s*(?<name>[^\\[]+)(?<value>\\[[^\\]]+\\])\\s*$").matcher(parsedLine);
+
+			if (matcher.matches()) {
+				paramName = matcher.group("name").trim();
+				paramValue = matcher.group("value").trim();
+			}
+			else {
+
+				// Parse parameter rule: name <space> value
+				matcher = Pattern.compile("^\\s*(?<name>[^\\s]+)\\s+(?<value>[^\\s]+)\\s*$").matcher(parsedLine);
+
+				if (matcher.matches()) {
+					paramName = matcher.group("name").trim();
+					paramValue = matcher.group("value").trim();
+				}
+				else {
+					
+					// Parse parameter rule: value
+					matcher = Pattern.compile("^\\s*(?<value>[^\\s]+)\\s*$").matcher(parsedLine);
+
+					if (matcher.matches()) {
+						paramValue = matcher.group("value").trim();
+					}
+				}
+			}
+		}
+
+		if (paramName != null || paramValue != null) {
 			
 			SimulinkBlock parameterBlock = new SimulinkBlock();
 
 			parameterBlock.setName(paramName);
 			parameterBlock.setValue(paramValue);
 
-			return parameterBlock;			
+			return parameterBlock;
 		}
 
 		return null;
@@ -285,25 +315,5 @@ public class SimulinkUtils {
 		}
 
 		return branches;
-	}
-	
-	public static void main(String[] args) {
-		
-		//String parsedLine = "	MinMaxOverflowLogging		\"Use LocalSettings\"";
-		//String parsedLine = "	\"UseLocal Settings\"    ";
-		//String parsedLine = "		MinMaxOverflowLogging		UseLocalSettings";
-		String parsedLine = "		MinMaxOverflowLogging		[1, 2, 3]";
-
-		Matcher matcher = Pattern.compile("^\\s*(?<name>\\w+)?\\s*((?<quottedvalue>\\\"[^\\\"]+\\\")|(?<bracketvalue>\\[[^\\]]+\\])|(?<value>\\w+))\\s*$").matcher(parsedLine);
-		
-		if (matcher.matches()) {
-			System.out.println("name: " + matcher.group("name"));
-			
-			String value = matcher.group("quottedvalue");
-			if (value == null) value = matcher.group("bracketvalue");
-			if (value == null) value = matcher.group("value");
-			
-			System.out.println("value: " + value);
-		}
 	}
 }

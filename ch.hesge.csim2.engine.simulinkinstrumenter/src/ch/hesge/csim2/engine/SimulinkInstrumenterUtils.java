@@ -43,7 +43,7 @@ public class SimulinkInstrumenterUtils {
 		for (SimulinkBlock param : block.getParameters()) {
 			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + param.getName() + " = " + param.getValue());
 		}
-
+		
 		// Trace input ports
 		for (SimulinkBlock inputPort : block.getInputPorts()) {
 			for (SimulinkBlock output : inputPort.getOutputs()) {
@@ -58,15 +58,17 @@ public class SimulinkInstrumenterUtils {
 			}
 		}
 
+		// Trace inputs ports
 		for (SimulinkBlock inputs : block.getInputs()) {
 			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  input:     " + inputs.getName() + "[" + inputs.getParent().getName() + "]");
 		}
 
+		// Trace outputs ports
 		for (SimulinkBlock outputs : block.getOutputs()) {
 			Console.writeInfo(SimulinkInstrumenterUtils.class, indentation + "  outputs:   " + outputs.getName() + "[" + outputs.getParent().getName() + "]");
 		}
 
-		// Trace children recursively
+		// Trace children
 		for (SimulinkBlock child : block.getChildren()) {
 			dumpBlock(child, indentation + "  ");
 		}
@@ -116,11 +118,13 @@ public class SimulinkInstrumenterUtils {
 		writer.write(indentation + block.getNodeType() + " {");
 		writer.newLine();
 
+		// Save parameters
 		for (SimulinkBlock param : block.getParameters()) {
 			writer.write(indentation + param.getName() + " " + param.getValue());
 			writer.newLine();
 		}
-		
+
+		// Save children
 		for (SimulinkBlock child : block.getChildren()) {
 			saveBlock(child, writer, indentation + "  ");
 		}
