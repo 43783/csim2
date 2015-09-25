@@ -197,13 +197,13 @@ public class SimulinkParser {
 			while (paramLineNumber < lines.size() && parsedLine.startsWith("\"")) {
 				
 				// Try to retrieve another parameter value
-				SimulinkBlock param = SimulinkUtils.parseParameter(parsedLine);
+				SimulinkBlock newParam = SimulinkUtils.parseParameter(parsedLine);
 				
-				if (param == null) {
+				if (newParam == null) {
 					break;
 				}
 
-				String newParameterValue = (parameter.getValue() + param.getValue()).replace("\"\"", " "); 
+				String newParameterValue = (parameter.getValue() + newParam.getValue()).replace("\"\"", " "); 
 				parameter.setValue(newParameterValue);
 
 				// Read next line
