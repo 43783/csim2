@@ -31,6 +31,7 @@ public class AccountDao {
 		List<Account> accountList = new ArrayList<>();
 
 		CsvReader reader = new CsvReader(accountPath, ',', Charset.forName("UTF8"));
+		reader.setSkipEmptyRecords(true);
 		reader.readHeaders();
 
 		while (reader.readRecord()) {
@@ -41,6 +42,7 @@ public class AccountDao {
 			String type = StringUtils.clean(reader.get("type"));
 
 			Account account = new Account();
+			
 			account.setKeyId(keyId);
 			account.setCode(code);
 			account.setName(name);

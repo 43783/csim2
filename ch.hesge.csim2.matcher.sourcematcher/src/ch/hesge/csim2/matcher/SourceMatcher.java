@@ -206,6 +206,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 		}
 				
 		// If a weight is found and the stem concept is not yet used in weight calculation
+		/*
 		if (similarity > 0d) {
 
 			Console.writeDebug(this, "found concept in method:"); 
@@ -221,6 +222,7 @@ public class SourceMatcher implements IMethodConceptMatcher {
 				Console.writeDebug(this, "    term: " + stem.getTerm() + ", methodStem: " + stem.getStemType().name()); 
 			}
 		}
+		*/
 		
 
 		return similarity;

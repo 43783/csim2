@@ -12,7 +12,7 @@ package ch.hesge.cragsi.model;
  * @author Eric Harth
  */
 
-public class Activity {
+public class Project {
 
 	// Private attributes
 	private String keyId;
@@ -37,7 +37,7 @@ public class Activity {
 	/**
 	 * Default constructor
 	 */
-	public Activity() {
+	public Project() {
 	}
 
 	public String getKeyId() {
