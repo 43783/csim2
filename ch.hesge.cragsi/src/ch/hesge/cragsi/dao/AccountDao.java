@@ -10,7 +10,7 @@ import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
- * Class responsible to manage DAO access for Concept.
+ * Class responsible to manage DAO access for Account.
  * 
  * Copyright HEG Geneva 2014, Switzerland
  * 
@@ -19,11 +19,10 @@ import ch.hesge.cragsi.utils.StringUtils;
 
 public class AccountDao {
 
-	private static String accountPath = "res/adoo.plan-comptable.csv";
+	private static String accountPath = "res/accounts.csv";
 
 	/**
 	 * Retrieve all accounts contained in file
-	 * @param path
 	 * @return
 	 * @throws IOException
 	 */

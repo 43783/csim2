@@ -1,5 +1,0 @@
-id;date;journal_id/id;name;period_id/id;line_id/account_id/id;line_id/date;line_id/name;line_id/credit;line_id/debit;line_id/journal_id/id;line_id/period_id/id
-7;2015-9-1;__export__.account_journal_5;1;__export__.account_period_10;__export__.account_account_172;2015-9-1;Career Women;;6000;__export__.account_journal_5;__export__.account_period_10
-;;;;;__export__.account_account_134;2015-9-1;Career Women;6000;;__export__.account_journal_5;__export__.account_period_10
-121;2015-9-1;__export__.account_journal_5;1;__export__.account_period_10;__export__.account_account_173;2015-9-1;Dépôt - RCSO;;1600;__export__.account_journal_5;__export__.account_period_10
-;;;;;__export__.account_account_134;2015-9-1;Dépôt - RCSO;1600;;__export__.account_journal_5;__export__.account_period_10

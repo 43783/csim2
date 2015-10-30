@@ -16,10 +16,10 @@ package ch.hesge.cragsi.model;
 public class Account {
 
 	// Private attributes
-	private String keyId;
-	private String code;
-	private String name;
-	private String type;
+	private String keyId; // id
+	private String code; // code
+	private String name; // name
+	private String type; // type
 
 	/**
 	 * Default constructor
