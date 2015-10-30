@@ -2,13 +2,12 @@ package ch.hesge.cragsi.loader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
-import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.dao.AccountDao;
+import ch.hesge.cragsi.model.Account;
 
 public class CragLoader {
-
-	private String inputPath = "res/adoo.export.écritures.account.move.line.csv";
-	//private String outputPath = "";
 
 	/**
 	 * Default constructor
@@ -19,39 +18,20 @@ public class CragLoader {
 	public void start() {
 		
 		try {
+			
+			List<Account> accounts = AccountDao.findAll();
 
-			CsvReader reader = new CsvReader(inputPath);
-			reader.readHeaders();
-
-			while (reader.readRecord()) {
+			for (Account account : accounts) {
 				
-				String lineId = reader.get("id");
-				String accountId = reader.get("account_id/id");
-				String date = reader.get("date");
-				String name = reader.get("name");
-				String journalId = reader.get("journal_id/id");
-				String moveId = reader.get("move_id/id");
-				String periodId = reader.get("period_id/id");
+				System.out.println("----------------------------------");
+				System.out.println("Account list:");
+				System.out.println("----------------------------------");
 
-				lineId = lineId.replaceAll("__export__.", "");
-				accountId = accountId.replaceAll("__export__.", "");
-				date = date.replaceAll("__export__.", "");
-				name = name.replaceAll("__export__.", "");
-				journalId = journalId.replaceAll("__export__.", "");
-				moveId = moveId.replaceAll("__export__.", "");
-				periodId = periodId.replaceAll("__export__.", "");
-				
-				// perform program logic here
-				System.out.println("id: " + lineId);
-				System.out.println("  accountId: " + accountId);
-				System.out.println("  date: " + date);
-				System.out.println("  name: " + name);
-				System.out.println("  journalId: " + journalId);
-				System.out.println("  moveId: " + moveId);
-				System.out.println("  periodId: " + periodId);
+				System.out.println("name: " + account.getName());
+				System.out.println("  keyId: " + account.getKeyId());
+				System.out.println("  code:  " + account.getCode());
+				System.out.println("  type:  " + account.getType());
 			}
-
-			reader.close();
 
 		}
 		catch (FileNotFoundException e) {
