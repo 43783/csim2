@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
 encoding//res/accounts.csv=UTF-8
-encoding//res/activities.csv=UTF-8
+encoding//res/fdc.csv=UTF-8
+encoding//res/projects.csv=UTF-8

@@ -15,24 +15,14 @@ package ch.hesge.cragsi.model;
 public class Project {
 
 	// Private attributes
-	private String keyId;
-
-	private String unit; // Unité
-	private String lastname; // Nom
-	private String firstname; // Prénom
-	private String contract; // Type Contrat
-	private String function; // Fonction
-	private String studentCount; // Nbr Etud.
-	private String hours; // Heures
-	private String coefficient; // Coefficient
-	private String weeks; // Semaine-s
-	private String total; // Total
-	private String activity; // Activité
-	private String pillarGe; // Pilier GE
-	private String pillarHeg; // Pilier HES
-	private String studyType; // Filière
-	private String detail; // Détail
-	private String projectNumber; // Num. projet
+	private String keyId; // N° HESSO
+	
+	private String code; // N° HESSO
+	private String date; // Date
+	private String startDate; // Date de début
+	private String endDate; // Date de fin
+	private String description; // Libellé
+	private String status; // Statut
 
 	/**
 	 * Default constructor
@@ -48,131 +38,55 @@ public class Project {
 		this.keyId = keyId;
 	}
 
-	public String getUnit() {
-		return unit;
+	public String getDate() {
+		return date;
 	}
 
-	public void setUnit(String unit) {
-		this.unit = unit;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getCode() {
+		return code;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public String getContract() {
-		return contract;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setContract(String contract) {
-		this.contract = contract;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
-	public String getFunction() {
-		return function;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setFunction(String function) {
-		this.function = function;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getStudentCount() {
-		return studentCount;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setStudentCount(String studentCount) {
-		this.studentCount = studentCount;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public String getHours() {
-		return hours;
-	}
-
-	public void setHours(String hours) {
-		this.hours = hours;
-	}
-
-	public String getCoefficient() {
-		return coefficient;
-	}
-
-	public void setCoefficient(String coefficient) {
-		this.coefficient = coefficient;
-	}
-
-	public String getWeeks() {
-		return weeks;
-	}
-
-	public void setWeeks(String weeks) {
-		this.weeks = weeks;
-	}
-
-	public String getTotal() {
-		return total;
-	}
-
-	public void setTotal(String total) {
-		this.total = total;
-	}
-
-	public String getActivity() {
-		return activity;
-	}
-
-	public void setActivity(String activity) {
-		this.activity = activity;
-	}
-
-	public String getPillarGe() {
-		return pillarGe;
-	}
-
-	public void setPillarGe(String gePillar) {
-		this.pillarGe = gePillar;
-	}
-
-	public String getPillarHeg() {
-		return pillarHeg;
-	}
-
-	public void setPillarHeg(String hegPillar) {
-		this.pillarHeg = hegPillar;
-	}
-
-	public String getStudyType() {
-		return studyType;
-	}
-
-	public void setStudyType(String studyType) {
-		this.studyType = studyType;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
-	public String getProjectNumber() {
-		return projectNumber;
-	}
-
-	public void setProjectNumber(String projectNumber) {
-		this.projectNumber = projectNumber;
+	public String toString() {
+		return "type: Project, keyId: " + keyId + ", code: " + code + ", date: " + date + ", startDate: " + startDate + ", endDate: " + endDate + ", description: " + description + ", statut: " + status;
 	}
 }

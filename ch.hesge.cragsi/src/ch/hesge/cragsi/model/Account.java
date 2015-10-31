@@ -17,6 +17,7 @@ public class Account {
 
 	// Private attributes
 	private String keyId; // id
+	
 	private String code; // code
 	private String name; // name
 	private String type; // type
@@ -57,5 +58,9 @@ public class Account {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String toString() {
+		return "type: Account, keyId: " + keyId + ", name: " + name + ", code: " + code + ", type: " + type;
 	}
 }

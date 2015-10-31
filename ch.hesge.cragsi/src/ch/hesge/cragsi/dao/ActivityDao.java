@@ -7,7 +7,6 @@ import java.util.List;
 
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.utils.CsvReader;
-import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to manage DAO access for Activity.
@@ -19,7 +18,7 @@ import ch.hesge.cragsi.utils.StringUtils;
 
 public class ActivityDao {
 
-	private static String activityPath = "res/activities.csv";
+	private static String activityPath = "res/fdc.csv";
 
 	/**
 	 * Retrieve all activities contained in file
@@ -44,22 +43,22 @@ public class ActivityDao {
 		// Start parsing activities
 		while (reader.readRecord()) {
 				
-			String unit = StringUtils.clean(reader.get("Unité"));
-			String lastname = StringUtils.clean(reader.get("Nom"));
-			String firstname = StringUtils.clean(reader.get("Prénom"));
-			String contract = StringUtils.clean(reader.get("Type Contrat"));
-			String function = StringUtils.clean(reader.get("Fonction"));
-			String studentCount = StringUtils.clean(reader.get("Nbr Etud."));
-			String hours = StringUtils.clean(reader.get("Heures"));
-			String coefficient = StringUtils.clean(reader.get("Coefficient"));
-			String weeks = StringUtils.clean(reader.get("Semaine-s"));
-			String total = StringUtils.clean(reader.get("Total"));
-			String activityType = StringUtils.clean(reader.get("Activité"));
-			String pillarGe = StringUtils.clean(reader.get("Pilier GE"));
-			String pillarHeg = StringUtils.clean(reader.get("Pilier HES"));
-			String studyType = StringUtils.clean(reader.get("Filière"));
-			String detail = StringUtils.clean(reader.get("Détail"));
-			String projectNumber = StringUtils.clean(reader.get("Num. projet"));
+			String unit = reader.get(0);
+			String lastname = reader.get(1);
+			String firstname = reader.get(2);
+			String contract = reader.get(3);
+			String function = reader.get(4);
+			String studentCount = reader.get(5);
+			String hours = reader.get(6);
+			String coefficient = reader.get(6);
+			String weeks = reader.get(7);
+			String total = reader.get(8);
+			String activityType = reader.get(9);
+			String pillarGe = reader.get(10);
+			String pillarHeg = reader.get(11);
+			String studyType = reader.get(12);
+			String detail = reader.get(13);
+			String projectNumber = reader.get(14);
 			
 			if (!unit.equals("Total")) {
 				

@@ -25,7 +25,4 @@ package ch.hesge.cragsi.utils;
  */
 public class StringUtils {
 	
-	public static String clean(String value) {
-		return value.replaceAll("__export__.", "");
-	}
 }

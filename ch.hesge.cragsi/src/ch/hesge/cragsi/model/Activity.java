@@ -175,4 +175,8 @@ public class Activity {
 	public void setProjectNumber(String projectNumber) {
 		this.projectNumber = projectNumber;
 	}
+
+	public String toString() {
+		return "type: Activity, keyId: " + keyId + ", unit: " + unit + ", lastname: " + lastname + ", firstname: " + firstname + ", contract: " + contract + ", function: " + function + ", studentCount: " + studentCount + ", hours: " + hours + ", coefficient: " + coefficient + ", weeks: " + weeks + ", total: " + total + ", activity: " + activity + ", pillarGe: " + pillarGe + ", pillarHeg: " + pillarHeg + ", studyType: " + studyType + ", detail: " + detail + ", projectNumber: " + projectNumber;
+	}
 }
