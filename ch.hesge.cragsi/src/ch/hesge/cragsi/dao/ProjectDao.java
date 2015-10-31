@@ -18,10 +18,10 @@ import ch.hesge.cragsi.utils.CsvReader;
 
 public class ProjectDao {
 
-	private static String projectPath = "res/projects.csv";
+	private static String projectPath = "D:/projects/cragsi/files/projects.csv";
 
 	/**
-	 * Retrieve all accounts contained in file
+	 * Retrieve all projects contained in file
 	 * @return
 	 * @throws IOException
 	 */

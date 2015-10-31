@@ -18,7 +18,7 @@ import ch.hesge.cragsi.utils.CsvReader;
 
 public class ActivityDao {
 
-	private static String activityPath = "res/fdc.csv";
+	private static String activityPath = "D:/projects/cragsi/files/fdc.csv";
 
 	/**
 	 * Retrieve all activities contained in file

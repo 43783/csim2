@@ -18,7 +18,7 @@ import ch.hesge.cragsi.utils.CsvReader;
 
 public class AccountDao {
 
-	private static String accountPath = "res/accounts.csv";
+	private static String accountPath = "D:/projects/cragsi/files/accounts.csv";
 
 	/**
 	 * Retrieve all accounts contained in file
