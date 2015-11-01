@@ -1,8 +1,8 @@
 package ch.hesge.cragsi.dao;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -20,8 +20,8 @@ public class AccountingDao {
 			Files.delete(Paths.get(outputPath));
 		}
 
-		CsvWriter csvOutput = new CsvWriter(new FileWriter(outputPath, true), ';');
-		
+		CsvWriter csvOutput = new CsvWriter(outputPath, ';', Charset.forName("UTF8"));
+
 		// Write header
 		csvOutput.write("id");
 		csvOutput.write("date");
