@@ -25,7 +25,7 @@ public class ActivityDao {
 		reader.setSkipEmptyRecords(true);
 		reader.setCaptureRawRecord(true);
 
-		// Detect headers
+		// Skip lines without headers
 		while (reader.readHeaders()) {
 			if (reader.getRawRecord().startsWith("Unité")) {
 				break;
@@ -52,6 +52,7 @@ public class ActivityDao {
 			String detail = reader.get(13);
 			String projectNumber = reader.get(14);
 			
+			// Skip last line with Total
 			if (!unit.equals("Total")) {
 				
 				Activity activity = new Activity();
