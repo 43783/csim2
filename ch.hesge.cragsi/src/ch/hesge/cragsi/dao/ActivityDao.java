@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.utils.CsvReader;
 

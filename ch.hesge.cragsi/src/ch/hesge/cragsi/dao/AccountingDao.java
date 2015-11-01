@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.utils.CsvWriter;
 

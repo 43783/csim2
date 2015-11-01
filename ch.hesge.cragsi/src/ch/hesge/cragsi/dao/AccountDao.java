@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.utils.CsvReader;
 
@@ -28,7 +29,7 @@ public class AccountDao {
 		List<Account> accountList = new ArrayList<>();
 		String accountPath = UserSettings.getInstance().getAccountPath();
 
-		CsvReader reader = new CsvReader(accountPath, ',', Charset.forName("UTF8"));
+		CsvReader reader = new CsvReader(accountPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
 		reader.readHeaders();
 

@@ -1,4 +1,4 @@
-package ch.hesge.cragsi.dao;
+package ch.hesge.cragsi.loader;
 
 
 /**
@@ -12,11 +12,10 @@ package ch.hesge.cragsi.dao;
 public class UserSettings {
 
 	// Private attributes
-	private String accountPath  = "E:/projects/cragsi/files/accounts.csv";
-	private String projectPath  = "E:/projects/cragsi/files/projects.csv";
-	private String activityPath = "E:/projects/cragsi/files/fdc.csv";
-
-	private String outputPath   = "E:/projects/cragsi/files/output.csv";
+	private String accountPath  = "D:/projects/cragsi/files/accounts.csv";
+	private String projectPath  = "D:/projects/cragsi/files/projects.csv";
+	private String activityPath = "D:/projects/cragsi/files/fdc.csv";
+	private String outputPath   = "D:/projects/cragsi/files/output.csv";
 
 	// Singleton access
 	private static UserSettings uniqueInstance;
