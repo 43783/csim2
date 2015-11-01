@@ -10,7 +10,7 @@ import ch.hesge.cragsi.model.Project;
 import ch.hesge.cragsi.utils.CsvReader;
 
 /**
- * Class responsible to manage DAO access for Account.
+ * Class responsible to manage DAO access for Project.
  * 
  * Copyright HEG Geneva 2014, Switzerland
  * 

@@ -13,6 +13,11 @@ import ch.hesge.cragsi.utils.CsvWriter;
 
 public class AccountingDao {
 
+	/**
+	 * Retrieve all accountings contained in file
+	 * @return
+	 * @throws IOException
+	 */
 	public static void saveAll(List<Accounting> accountings) throws IOException {
 		
 		String outputPath = UserSettings.getInstance().getOutputPath();

@@ -9,14 +9,6 @@ import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.utils.CsvReader;
 
-/**
- * Class responsible to manage DAO access for Activity.
- * 
- * Copyright HEG Geneva 2014, Switzerland
- * 
- * @author Eric Harth
- */
-
 public class ActivityDao {
 
 	/**

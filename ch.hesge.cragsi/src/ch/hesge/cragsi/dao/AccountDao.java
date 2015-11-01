@@ -9,14 +9,6 @@ import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.utils.CsvReader;
 
-/**
- * Class responsible to manage DAO access for Account.
- * 
- * Copyright HEG Geneva 2014, Switzerland
- * 
- * @author Eric Harth
- */
-
 public class AccountDao {
 
 	/**
@@ -35,10 +27,10 @@ public class AccountDao {
 
 		while (reader.readRecord()) {
 
-			String keyId = reader.get(1);//.replaceAll("__export__.", "");
-			String code = reader.get(2);
-			String name = reader.get(3);
-			String type = reader.get(4);
+			String keyId = reader.get(0);
+			String code = reader.get(1);
+			String name = reader.get(2);
+			String type = reader.get(3);
 			
 			Account account = new Account();
 			

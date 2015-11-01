@@ -1,6 +1,5 @@
 package ch.hesge.cragsi.loader;
 
-
 /**
  * Class responsible to manage DAO access for Account.
  * 
@@ -12,10 +11,12 @@ package ch.hesge.cragsi.loader;
 public class UserSettings {
 
 	// Private attributes
-	private String accountPath  = "D:/projects/cragsi/files/accounts.csv";
-	private String projectPath  = "D:/projects/cragsi/files/projects.csv";
+	private String accountPath = "D:/projects/cragsi/files/accounts.csv";
+	private String projectPath = "D:/projects/cragsi/files/projects.csv";
 	private String activityPath = "D:/projects/cragsi/files/fdc.csv";
-	private String outputPath   = "D:/projects/cragsi/files/output.csv";
+	private String contributorPath = "D:/projects/cragsi/files/contributors.csv";
+	private String fundingPath = "D:/projects/cragsi/files/financement.csv";
+	private String outputPath = "D:/projects/cragsi/files/output.csv";
 
 	// Singleton access
 	private static UserSettings uniqueInstance;
@@ -61,11 +62,19 @@ public class UserSettings {
 		this.outputPath = outputPath;
 	}
 
-	public static UserSettings getUniqueInstance() {
-		return uniqueInstance;
+	public String getContributorPath() {
+		return contributorPath;
 	}
 
-	public static void setUniqueInstance(UserSettings uniqueInstance) {
-		UserSettings.uniqueInstance = uniqueInstance;
+	public void setContributorPath(String contributorPath) {
+		this.contributorPath = contributorPath;
+	}
+
+	public String getFundingPath() {
+		return fundingPath;
+	}
+
+	public void setFundingPath(String fundingPath) {
+		this.fundingPath = fundingPath;
 	}
 }
