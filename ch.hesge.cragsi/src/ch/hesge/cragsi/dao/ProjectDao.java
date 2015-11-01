@@ -18,8 +18,6 @@ import ch.hesge.cragsi.utils.CsvReader;
 
 public class ProjectDao {
 
-	private static String projectPath = "D:/projects/cragsi/files/projects.csv";
-
 	/**
 	 * Retrieve all projects contained in file
 	 * @return
@@ -28,6 +26,7 @@ public class ProjectDao {
 	public static List<Project> findAll() throws IOException {
 
 		List<Project> projectList = new ArrayList<>();
+		String projectPath = UserSettings.getInstance().getProjectPath();
 
 		CsvReader reader = new CsvReader(projectPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);

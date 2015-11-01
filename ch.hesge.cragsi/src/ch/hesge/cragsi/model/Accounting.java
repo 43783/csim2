@@ -12,27 +12,26 @@ package ch.hesge.cragsi.model;
  * @author Eric Harth
  */
 
-public class AccountingEntry {
+public class Accounting {
 
 	// Private attributes
-	private String keyId; // id
-	
+	private String keyId; // id	
 	private String date; // date
 	private String journalId; // journal_id/id
 	private String name; // name
 	private String periodId; // period_id/id
 	private String accountId; // line_id/account_id/id
-	private String accountDate; // line_id/date
-	private String libelle; // line_id/name
-	private String creditId; // line_id/credit
-	private String debitId; // line_id/debit
+	private String lineDate; // line_id/date
+	private String lineName; // line_id/name
+	private String lineCredit; // line_id/credit
+	private String lineDebit; // line_id/debit
 	private String lineJournalId; // line_id/journal_id/id
 	private String linePeriodId; // line_id/period_id/id 
 
 	/**
 	 * Default constructor
 	 */
-	public AccountingEntry() {
+	public Accounting() {
 	}
 
 	public String getKeyId() {
@@ -83,36 +82,36 @@ public class AccountingEntry {
 		this.accountId = accountId;
 	}
 
-	public String getAccountDate() {
-		return accountDate;
+	public String getLineDate() {
+		return lineDate;
 	}
 
-	public void setAccountDate(String accountDate) {
-		this.accountDate = accountDate;
+	public void setLineDate(String lineDate) {
+		this.lineDate = lineDate;
 	}
 
-	public String getLibelle() {
-		return libelle;
+	public String getLineName() {
+		return lineName;
 	}
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
+	public void setLineName(String lineName) {
+		this.lineName = lineName;
 	}
 
-	public String getCreditId() {
-		return creditId;
+	public String getLineCredit() {
+		return lineCredit;
 	}
 
-	public void setCreditId(String creditId) {
-		this.creditId = creditId;
+	public void setLineCredit(String lineCredit) {
+		this.lineCredit = lineCredit;
 	}
 
-	public String getDebitId() {
-		return debitId;
+	public String getLineDebit() {
+		return lineDebit;
 	}
 
-	public void setDebitId(String debitId) {
-		this.debitId = debitId;
+	public void setLineDebit(String lineDebit) {
+		this.lineDebit = lineDebit;
 	}
 
 	public String getLineJournalId() {
@@ -132,6 +131,7 @@ public class AccountingEntry {
 	}
 
 	public String toString() {
-		return "type: AccountEntry, date: " + date + ", journalId: " + journalId + ", name: " + name + ", periodId: " + periodId + ", accountDate: " + accountDate + ", libelle: " + libelle + ", creditId: " + creditId + ", debitId: " + debitId + ", lineJournalId: " + lineJournalId + ", linePeriodId: " + linePeriodId;
+		return "type: Accounting, date: " + date + ", journalId: " + journalId + ", name: " + name + ", periodId: " + periodId + ", lineDate: " + lineDate + ", lineName: " + lineCredit + ", creditId: " + lineCredit + ", lineDebit: " + lineDebit + ", lineJournalId: " + lineJournalId + ", linePeriodId: " + linePeriodId;
 	}
+
 }

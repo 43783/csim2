@@ -18,8 +18,6 @@ import ch.hesge.cragsi.utils.CsvReader;
 
 public class ActivityDao {
 
-	private static String activityPath = "D:/projects/cragsi/files/fdc.csv";
-
 	/**
 	 * Retrieve all activities contained in file
 	 * @return
@@ -28,6 +26,7 @@ public class ActivityDao {
 	public static List<Activity> findAll() throws IOException {
 
 		List<Activity> activityList = new ArrayList<>();
+		String activityPath = UserSettings.getInstance().getActivityPath();
 
 		CsvReader reader = new CsvReader(activityPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);

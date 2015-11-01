@@ -18,8 +18,6 @@ import ch.hesge.cragsi.utils.CsvReader;
 
 public class AccountDao {
 
-	private static String accountPath = "D:/projects/cragsi/files/accounts.csv";
-
 	/**
 	 * Retrieve all accounts contained in file
 	 * @return
@@ -28,6 +26,7 @@ public class AccountDao {
 	public static List<Account> findAll() throws IOException {
 
 		List<Account> accountList = new ArrayList<>();
+		String accountPath = UserSettings.getInstance().getAccountPath();
 
 		CsvReader reader = new CsvReader(accountPath, ',', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
