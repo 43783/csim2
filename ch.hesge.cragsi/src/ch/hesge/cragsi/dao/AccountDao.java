@@ -34,7 +34,7 @@ public class AccountDao {
 
 		while (reader.readRecord()) {
 
-			String keyId = reader.get(1).replaceAll("__export__.", "");
+			String keyId = reader.get(1);//.replaceAll("__export__.", "");
 			String code = reader.get(2);
 			String name = reader.get(3);
 			String type = reader.get(4);

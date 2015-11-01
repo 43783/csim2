@@ -45,7 +45,7 @@ public class CragsiLoader {
 			accounting.setLineDate("2015-9-1");
 			accounting.setLineName("Career Women");
 			accounting.setLineDebit("6000");
-			accounting.setLineCredit("");
+			//accounting.setLineCredit("");
 			accounting.setLineJournalId("__export__.account_journal_5");
 			accounting.setLinePeriodId("__export__.account_period_10");
 			accountings.add(accounting);
@@ -54,15 +54,15 @@ public class CragsiLoader {
 			//;;;;;__export__.account_account_134;2015-9-1;Career Women;6000;;__export__.account_journal_5;__export__.account_period_10
 			
 			accounting = new Accounting();
-			accounting.setKeyId("");
-			accounting.setDate("");
-			accounting.setJournalId("");
-			accounting.setName("");
-			accounting.setPeriodId("");
+			//accounting.setKeyId("");
+			//accounting.setDate("");
+			//accounting.setJournalId("");
+			//accounting.setName("");
+			//accounting.setPeriodId("");
 			accounting.setAccountId("__export__.account_account_134");
 			accounting.setLineDate("2015-9-1");
 			accounting.setLineName("Career Women");
-			accounting.setLineDebit("");
+			//accounting.setLineDebit("");
 			accounting.setLineCredit("6000");
 			accounting.setLineJournalId("__export__.account_journal_5");
 			accounting.setLinePeriodId("__export__.account_period_10");
@@ -81,7 +81,7 @@ public class CragsiLoader {
 			accounting.setLineDate("2015-9-1");
 			accounting.setLineName("Dépôt - RCSO");
 			accounting.setLineDebit("1600");
-			accounting.setLineCredit("");
+			//accounting.setLineCredit("");
 			accounting.setLineJournalId("__export__.account_journal_5");
 			accounting.setLinePeriodId("__export__.account_period_10");
 			accountings.add(accounting);
@@ -90,15 +90,15 @@ public class CragsiLoader {
 			//;;;;;__export__.account_account_134;2015-9-1;Dépôt - RCSO;1600;;__export__.account_journal_5;__export__.account_period_10
 			
 			accounting = new Accounting();
-			accounting.setKeyId("");
-			accounting.setDate("");
-			accounting.setJournalId("");
-			accounting.setName("");
-			accounting.setPeriodId("");
+			//accounting.setKeyId("");
+			//accounting.setDate("");
+			//accounting.setJournalId("");
+			//accounting.setName("");
+			//accounting.setPeriodId("");
 			accounting.setAccountId("__export__.account_account_134");
 			accounting.setLineDate("2015-9-1");
 			accounting.setLineName("Dépôt - RCSO");
-			accounting.setLineDebit("");
+			//accounting.setLineDebit("");
 			accounting.setLineCredit("1600");
 			accounting.setLineJournalId("__export__.account_journal_5");
 			accounting.setLinePeriodId("__export__.account_period_10");

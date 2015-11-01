@@ -16,8 +16,7 @@ package ch.hesge.cragsi.model;
 public class Account {
 
 	// Private attributes
-	private String keyId; // id
-	
+	private String keyId; // id	
 	private String code; // code
 	private String name; // name
 	private String type; // type

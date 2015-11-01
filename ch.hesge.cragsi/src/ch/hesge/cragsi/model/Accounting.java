@@ -131,7 +131,7 @@ public class Accounting {
 	}
 
 	public String toString() {
-		return "type: Accounting, date: " + date + ", journalId: " + journalId + ", name: " + name + ", periodId: " + periodId + ", lineDate: " + lineDate + ", lineName: " + lineCredit + ", creditId: " + lineCredit + ", lineDebit: " + lineDebit + ", lineJournalId: " + lineJournalId + ", linePeriodId: " + linePeriodId;
+		return "type: Accounting, keyId: " + keyId + ", date: " + date + ", journalId: " + journalId + ", name: " + name + ", periodId: " + periodId + ", lineDate: " + lineDate + ", lineName: " + lineCredit + ", creditId: " + lineCredit + ", lineDebit: " + lineDebit + ", lineJournalId: " + lineJournalId + ", linePeriodId: " + linePeriodId;
 	}
 
 }
