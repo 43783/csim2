@@ -51,16 +51,8 @@ public class ActivityDao {
 			String lastname = reader.get(1);
 			String firstname = reader.get(2);
 			String category = reader.get(3);
-			String studentCount = reader.get(4);
-			String hours = reader.get(5);
-			String coefficient = reader.get(6);
-			String weeks = reader.get(7);
 			String total = reader.get(8);
-			String activityType = reader.get(9);
 			String pillarGE = reader.get(10);
-			String pillarHES = reader.get(11);
-			String sector = reader.get(12);
-			String projectNumber = reader.get(13);
 			String startContract = reader.get(14);
 			String endContract = reader.get(15);
 			String totalMonths = reader.get(16);

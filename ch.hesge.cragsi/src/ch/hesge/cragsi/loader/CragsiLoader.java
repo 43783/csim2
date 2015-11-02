@@ -30,7 +30,6 @@ public class CragsiLoader {
 
 			List<Account> accounts = AccountDao.findAll();
 			List<Price> prices = PriceDao.findAll();
-
 			List<Activity> activities = ActivityDao.findAll();
 
 			/*
@@ -144,17 +143,6 @@ public class CragsiLoader {
 
 		for (Project project : projects) {
 			System.out.println(project.toString());
-		}
-	}
-
-	public void dumpActivities(List<DetailedActivity> activities) {
-
-		System.out.println("----------------------------------");
-		System.out.println(" Activity list:");
-		System.out.println("----------------------------------");
-
-		for (DetailedActivity activity : activities) {
-			System.out.println(activity.toString());
 		}
 	}
 
