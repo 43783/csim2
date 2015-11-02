@@ -20,13 +20,14 @@ public class AccountingDao {
 	 */
 	public static void saveAll(List<Accounting> accountings) throws IOException {
 		
-		String outputPath = UserSettings.getInstance().getOutputPath();
-		
-		if (new File(outputPath).exists()) {
-			Files.delete(Paths.get(outputPath));
+		String accountingPath = UserSettings.getInstance().getProperty("accountingPath");
+
+		// Delete old file, if present
+		if (new File(accountingPath).exists()) {
+			Files.delete(Paths.get(accountingPath));
 		}
 
-		CsvWriter csvOutput = new CsvWriter(outputPath, ';', Charset.forName("UTF8"));
+		CsvWriter csvOutput = new CsvWriter(accountingPath, ';', Charset.forName("UTF8"));
 
 		// Write header
 		csvOutput.write("id");

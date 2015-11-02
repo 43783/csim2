@@ -27,9 +27,9 @@ public class FundingDao {
 	public static List<Funding> findAll() throws IOException {
 
 		List<Funding> fundingList = new ArrayList<>();
-		String projectPath = UserSettings.getInstance().getFundingPath();
+		String fundingPath = UserSettings.getInstance().getProperty("fundingPath");
 
-		CsvReader reader = new CsvReader(projectPath, ';', Charset.forName("UTF8"));
+		CsvReader reader = new CsvReader(fundingPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
 		reader.readHeaders();
 

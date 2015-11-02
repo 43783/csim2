@@ -27,7 +27,7 @@ public class ContributorDao {
 	public static List<Contributor> findAll() throws IOException {
 
 		List<Contributor> contributorList = new ArrayList<>();
-		String contributorPath = UserSettings.getInstance().getContributorPath();
+		String contributorPath = UserSettings.getInstance().getProperty("contributorPath");
 
 		CsvReader reader = new CsvReader(contributorPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);

@@ -6,16 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesge.cragsi.dao.AccountDao;
-import ch.hesge.cragsi.dao.AccountingDao;
 import ch.hesge.cragsi.dao.ActivityDao;
-import ch.hesge.cragsi.dao.ContributorDao;
-import ch.hesge.cragsi.dao.FundingDao;
-import ch.hesge.cragsi.dao.ProjectDao;
+import ch.hesge.cragsi.dao.PriceDao;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.model.Contributor;
 import ch.hesge.cragsi.model.Funding;
+import ch.hesge.cragsi.model.Price;
 import ch.hesge.cragsi.model.Project;
 
 public class CragsiLoader {
@@ -27,12 +25,15 @@ public class CragsiLoader {
 	}
 
 	public void start() {
-		
-		try {
-			
-			List<Account> accounts = AccountDao.findAll();
-			dumpAccounts(accounts);
 
+		try {
+
+			List<Account> accounts = AccountDao.findAll();
+			List<Price> prices = PriceDao.findAll();
+
+			List<Activity> activities = ActivityDao.findAll();
+
+			/*
 			List<Project> projects = ProjectDao.findAll();
 			dumpProjects(projects);
 
@@ -48,23 +49,24 @@ public class CragsiLoader {
 			List<Accounting> accountings= createAccountings();			
 			AccountingDao.saveAll(accountings);
 			dumpAccountings(accountings);
-			
+			*/
+
 		}
 		catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
 		}
 	}
 
 	public List<Accounting> createAccountings() {
-		
+
 		List<Accounting> accountings = new ArrayList<>();
-		
+
 		//id;date;journal_id/id;name;period_id/id;line_id/account_id/id;line_id/date;line_id/name;line_id/credit;line_id/debit;line_id/journal_id/id;line_id/period_id/id
 		//7;2015-9-1;__export__.account_journal_5;1;__export__.account_period_10;__export__.account_account_172;2015-9-1;Career Women;;6000;__export__.account_journal_5;__export__.account_period_10
-		
+
 		Accounting accounting = new Accounting();
 		accounting.setKeyId("7");
 		accounting.setDate("2015-9-1");
@@ -78,10 +80,10 @@ public class CragsiLoader {
 		accounting.setLineJournalId("__export__.account_journal_5");
 		accounting.setLinePeriodId("__export__.account_period_10");
 		accountings.add(accounting);
-		
+
 		//id;date;journal_id/id;name;period_id/id;line_id/account_id/id;line_id/date;line_id/name;line_id/credit;line_id/debit;line_id/journal_id/id;line_id/period_id/id
 		//;;;;;__export__.account_account_134;2015-9-1;Career Women;6000;;__export__.account_journal_5;__export__.account_period_10
-		
+
 		accounting = new Accounting();
 		accounting.setAccountId("__export__.account_account_134");
 		accounting.setLineDate("2015-9-1");
@@ -90,10 +92,10 @@ public class CragsiLoader {
 		accounting.setLineJournalId("__export__.account_journal_5");
 		accounting.setLinePeriodId("__export__.account_period_10");
 		accountings.add(accounting);
-		
+
 		//id;date;journal_id/id;name;period_id/id;line_id/account_id/id;line_id/date;line_id/name;line_id/credit;line_id/debit;line_id/journal_id/id;line_id/period_id/id
 		//121;2015-9-1;__export__.account_journal_5;1;__export__.account_period_10;__export__.account_account_173;2015-9-1;Dépôt - RCSO;;1600;__export__.account_journal_5;__export__.account_period_10
-		
+
 		accounting = new Accounting();
 		accounting.setKeyId("121");
 		accounting.setDate("2015-9-1");
@@ -107,10 +109,10 @@ public class CragsiLoader {
 		accounting.setLineJournalId("__export__.account_journal_5");
 		accounting.setLinePeriodId("__export__.account_period_10");
 		accountings.add(accounting);
-		
+
 		//id;date;journal_id/id;name;period_id/id;line_id/account_id/id;line_id/date;line_id/name;line_id/credit;line_id/debit;line_id/journal_id/id;line_id/period_id/id
 		//;;;;;__export__.account_account_134;2015-9-1;Dépôt - RCSO;1600;;__export__.account_journal_5;__export__.account_period_10
-		
+
 		accounting = new Accounting();
 		accounting.setAccountId("__export__.account_account_134");
 		accounting.setLineDate("2015-9-1");
@@ -119,12 +121,12 @@ public class CragsiLoader {
 		accounting.setLineJournalId("__export__.account_journal_5");
 		accounting.setLinePeriodId("__export__.account_period_10");
 		accountings.add(accounting);
-		
+
 		return accountings;
 	}
-	
+
 	public void dumpAccounts(List<Account> accounts) {
-		
+
 		System.out.println("----------------------------------");
 		System.out.println(" Account list:");
 		System.out.println("----------------------------------");
@@ -133,9 +135,9 @@ public class CragsiLoader {
 			System.out.println(account.toString());
 		}
 	}
-	
+
 	public void dumpProjects(List<Project> projects) {
-		
+
 		System.out.println("----------------------------------");
 		System.out.println(" Project list:");
 		System.out.println("----------------------------------");
@@ -145,19 +147,19 @@ public class CragsiLoader {
 		}
 	}
 
-	public void dumpActivities(List<Activity> activities) {
-		
+	public void dumpActivities(List<DetailedActivity> activities) {
+
 		System.out.println("----------------------------------");
 		System.out.println(" Activity list:");
 		System.out.println("----------------------------------");
 
-		for (Activity activity : activities) {
+		for (DetailedActivity activity : activities) {
 			System.out.println(activity.toString());
 		}
 	}
 
 	public void dumpContributors(List<Contributor> contributors) {
-		
+
 		System.out.println("----------------------------------");
 		System.out.println(" Contributor list:");
 		System.out.println("----------------------------------");
@@ -168,7 +170,7 @@ public class CragsiLoader {
 	}
 
 	public void dumpFundings(List<Funding> fundings) {
-		
+
 		System.out.println("----------------------------------");
 		System.out.println(" Funding list:");
 		System.out.println("----------------------------------");
@@ -179,7 +181,7 @@ public class CragsiLoader {
 	}
 
 	public void dumpAccountings(List<Accounting> accountings) {
-		
+
 		System.out.println("----------------------------------");
 		System.out.println(" Accounting list:");
 		System.out.println("----------------------------------");
@@ -187,7 +189,7 @@ public class CragsiLoader {
 		for (Accounting acc : accountings) {
 			System.out.println(acc.toString());
 		}
-		
+
 	}
 
 	/**

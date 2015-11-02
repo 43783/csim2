@@ -19,7 +19,7 @@ public class AccountDao {
 	public static List<Account> findAll() throws IOException {
 
 		List<Account> accountList = new ArrayList<>();
-		String accountPath = UserSettings.getInstance().getAccountPath();
+		String accountPath = UserSettings.getInstance().getProperty("accountPath");
 
 		CsvReader reader = new CsvReader(accountPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
@@ -27,14 +27,14 @@ public class AccountDao {
 
 		while (reader.readRecord()) {
 
-			String keyId = reader.get(0);
+			String id = reader.get(0);
 			String code = reader.get(1);
 			String name = reader.get(2);
 			String type = reader.get(3);
-			
+
 			Account account = new Account();
-			
-			account.setKeyId(keyId);
+
+			account.setId(id);
 			account.setCode(code);
 			account.setName(name);
 			account.setType(type);
@@ -43,7 +43,7 @@ public class AccountDao {
 		}
 
 		reader.close();
-		
+
 		return accountList;
 	}
 }

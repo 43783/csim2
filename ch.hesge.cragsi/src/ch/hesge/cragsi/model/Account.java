@@ -16,7 +16,7 @@ package ch.hesge.cragsi.model;
 public class Account {
 
 	// Private attributes
-	private String keyId; // id	
+	private String id; // id	
 	private String code; // code
 	private String name; // name
 	private String type; // type
@@ -27,12 +27,16 @@ public class Account {
 	public Account() {
 	}
 
-	public String getKeyId() {
-		return keyId;
+	public String toString() {
+		return "type: Account, id: " + id + ", name: " + name + ", code: " + code + ", type: " + type;
 	}
 
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getCode() {
@@ -57,9 +61,5 @@ public class Account {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-	
-	public String toString() {
-		return "type: Account, keyId: " + keyId + ", name: " + name + ", code: " + code + ", type: " + type;
 	}
 }

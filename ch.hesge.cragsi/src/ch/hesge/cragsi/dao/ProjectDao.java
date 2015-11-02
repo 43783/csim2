@@ -27,7 +27,7 @@ public class ProjectDao {
 	public static List<Project> findAll() throws IOException {
 
 		List<Project> projectList = new ArrayList<>();
-		String projectPath = UserSettings.getInstance().getProjectPath();
+		String projectPath = UserSettings.getInstance().getProperty("projectPath");
 
 		CsvReader reader = new CsvReader(projectPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
