@@ -19,82 +19,48 @@ import ch.hesge.cragsi.model.Price;
 
 public class CragsiLoader {
 
+	// Private attributes
+	private int accountingSequence;
+	private Date accountingDate;
+	private String journalId_S1;
+	private String periodId_S1;
+
+	private List<Account> accounts;
+	private Map<String, Price> priceMap;
+
+	private List<Accounting> accountings;
+
 	/**
 	 * Default constructor
 	 */
 	public CragsiLoader() {
+
+		accountingSequence = 1;
+		accountings = new ArrayList<>();
+		accountingDate = Calendar.getInstance().getTime();
+		journalId_S1 = UserSettings.getInstance().getProperty("journalId_S1");
+		periodId_S1 = UserSettings.getInstance().getProperty("periodId_S1");
+
+		try {
+			accounts = AccountDao.findAll();
+			priceMap = PriceDao.findMapByLibelle();
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+		}
+		catch (IOException e) {
+			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+		}
 	}
 
 	public void start() {
 
+		accountings.clear();
+
 		try {
 
-			int accountingSequence = 1;
-			List<Accounting> accountings = new ArrayList<>();
-
-			Date accountingDate = Calendar.getInstance().getTime();
-			String journalId_S1 = UserSettings.getInstance().getProperty("journalId_S1");
-			String periodId_S1 = UserSettings.getInstance().getProperty("periodId_S1");
-
-			List<Account> accounts = AccountDao.findAll();
-			Map<String, Price> priceMap = PriceDao.findMapByLibelle();
-
-			for (Activity activity : ActivityDao.findAll()) {
-
-				if (!priceMap.containsKey(activity.getContractType())) {
-					System.out.println("==> missing contract '" + activity.getContractType() + "' !");
-				}
-				else {
-					double activityPrice = priceMap.get(activity.getContractType()).getPrice();
-
-					// Compute costs
-					activity.setCostS1(activity.getTotalS1() * activityPrice);
-					activity.setCostS2(activity.getTotalS2() * activityPrice);
-
-					// Retrieve collaborator account
-					Account resourceAccount = AccountDao.findByName(activity.getLastname(), accounts);
-
-					if (resourceAccount == null) {
-						System.out.println("==> missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
-					}
-					else {
-
-						// Retrieve salary account
-						String salaryAccountCode = UserSettings.getInstance().getProperty("salaryAccount");
-						Account salaryAccount = AccountDao.findByCode("5000", accounts);
-
-						if (salaryAccount == null) {
-							System.out.println("==> missing account for salaries with code '" + salaryAccountCode + "' !");
-						}
-						else {
-
-							Accounting debitAccounting = new Accounting();
-							debitAccounting.setKeyId(accountingSequence++);
-							debitAccounting.setDate(accountingDate);
-							debitAccounting.setJournalId(journalId_S1);
-							debitAccounting.setName("1");
-							debitAccounting.setPeriodId(periodId_S1);
-							debitAccounting.setAccountId(resourceAccount.getId());
-							debitAccounting.setLineDate(accountingDate);
-							debitAccounting.setLineName(activity.getDetail());
-							debitAccounting.setLineDebit(activity.getCostS1());
-							debitAccounting.setLineJournalId(journalId_S1);
-							debitAccounting.setLinePeriodId(periodId_S1);
-
-							Accounting creditAccounting = new Accounting();
-							creditAccounting.setAccountId(salaryAccount.getId());
-							creditAccounting.setLineDate(accountingDate);
-							creditAccounting.setLineName(activity.getDetail());
-							creditAccounting.setLineCredit(activity.getCostS1());
-							debitAccounting.setLineJournalId(journalId_S1);
-							debitAccounting.setLinePeriodId(periodId_S1);
-
-							accountings.add(debitAccounting);
-							accountings.add(creditAccounting);
-						}
-					}
-				}
-			}
+			// Generate all accountings
+			generateFDCAccountings();
 
 			// Finally save accountings
 			AccountingDao.saveAll(accountings);
@@ -105,6 +71,81 @@ public class CragsiLoader {
 		}
 		catch (IOException e) {
 			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void generateFDCAccountings() throws IOException {
+
+		for (Activity activity : ActivityDao.findAll()) {
+
+			if (!priceMap.containsKey(activity.getContractType())) {
+				System.out.println("==> missing contract '" + activity.getContractType() + "' !");
+			}
+			else {
+				double activityPrice = priceMap.get(activity.getContractType()).getPrice();
+
+				// Compute costs
+				activity.setCostS1(activity.getTotalS1() * activityPrice);
+				activity.setCostS2(activity.getTotalS2() * activityPrice);
+
+				// Retrieve collaborator account
+				Account resourceAccount = AccountDao.findByName(activity.getLastname(), accounts);
+
+				if (resourceAccount == null) {
+					System.out.println("==> missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
+				}
+				else {
+
+					// Retrieve salary account
+					String salaryAccountCode = UserSettings.getInstance().getProperty("salaryAccount");
+					Account salaryAccount = AccountDao.findByCode("5000", accounts);
+
+					if (salaryAccount == null) {
+						System.out.println("==> missing account for salaries with code '" + salaryAccountCode + "' !");
+					}
+					else {
+
+						Accounting debitAccounting = new Accounting();
+						
+						// Automatically add project number in libelle
+						String libelle = activity.getDetail();
+						String projectNumber = activity.getProjectNumber();
+						if (projectNumber != null && projectNumber.length() > 0 && !libelle.contains(projectNumber)) {
+							libelle = "@" + projectNumber + "@" + "-" + "#" + libelle + "#";
+						}
+						
+						debitAccounting.setKeyId(accountingSequence);
+						debitAccounting.setDate(accountingDate);
+						debitAccounting.setJournalId(journalId_S1);
+						debitAccounting.setName("1");
+						debitAccounting.setPeriodId(periodId_S1);
+						debitAccounting.setAccountId(resourceAccount.getId());
+						debitAccounting.setLineDate(accountingDate);
+						debitAccounting.setLineName(libelle);
+						debitAccounting.setLineDebit(activity.getCostS1());
+						debitAccounting.setLineJournalId(journalId_S1);
+						debitAccounting.setLinePeriodId(periodId_S1);
+
+						accountings.add(debitAccounting);
+
+						Accounting creditAccounting = new Accounting();
+						
+						creditAccounting.setAccountId(salaryAccount.getId());
+						creditAccounting.setLineDate(accountingDate);
+						creditAccounting.setLineName(libelle);
+						creditAccounting.setLineCredit(activity.getCostS1());
+						debitAccounting.setLineJournalId(journalId_S1);
+						debitAccounting.setLinePeriodId(periodId_S1);
+
+						accountings.add(creditAccounting);
+
+						accountingSequence++;
+					}
+				}
+			}
 		}
 	}
 

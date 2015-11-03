@@ -20,6 +20,7 @@
  */
 package ch.hesge.cragsi.utils;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,16 +42,20 @@ public class StringUtils {
 	}
 
 	public static String toString(int value) {
+		if (value == 0)
+			return null;
 		return String.valueOf(value);
 	}
 
 	public static String toString(double value) {
-		return String.valueOf(value);
+		if (value == 0)
+			return null;
+		return new DecimalFormat("#0.00").format(value);
 	}
 
 	public static String toString(Date date) {
 		if (date == null)
 			return null;
-		return new SimpleDateFormat("yyyy-mm-dd").format(date);
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
 }

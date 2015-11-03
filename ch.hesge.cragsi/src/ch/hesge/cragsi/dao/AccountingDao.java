@@ -55,8 +55,8 @@ public class AccountingDao {
 			csvOutput.write(accounting.getAccountId());
 			csvOutput.write(StringUtils.toString(accounting.getLineDate()));
 			csvOutput.write(accounting.getLineName());
-			csvOutput.write(StringUtils.toString(accounting.getLineCredit()));
 			csvOutput.write(StringUtils.toString(accounting.getLineDebit()));
+			csvOutput.write(StringUtils.toString(accounting.getLineCredit()));
 			csvOutput.write(accounting.getLineJournalId());
 			csvOutput.write(accounting.getLinePeriodId());
 			csvOutput.endRecord();
