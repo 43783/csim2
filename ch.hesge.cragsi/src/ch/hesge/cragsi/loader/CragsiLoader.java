@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ch.hesge.cragsi.dao.AccountDao;
 import ch.hesge.cragsi.dao.AccountingDao;
@@ -16,6 +18,7 @@ import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.model.Price;
+import ch.hesge.cragsi.utils.StringUtils;
 
 public class CragsiLoader {
 
@@ -112,9 +115,9 @@ public class CragsiLoader {
 						
 						// Automatically add project number in libelle
 						String libelle = activity.getDetail();
-						String projectNumber = activity.getProjectNumber();
-						if (projectNumber != null && projectNumber.length() > 0 && !libelle.contains(projectNumber)) {
-							libelle = "@" + projectNumber + "@" + "-" + "#" + libelle + "#";
+						String projectNumber = StringUtils.toNumber(activity.getProjectNumber());
+						if (projectNumber.length() > 0 && !libelle.contains(projectNumber)) {
+							libelle = projectNumber + "-" + libelle;
 						}
 						
 						debitAccounting.setKeyId(accountingSequence);

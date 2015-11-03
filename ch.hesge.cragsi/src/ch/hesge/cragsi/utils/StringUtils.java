@@ -23,6 +23,8 @@ package ch.hesge.cragsi.utils;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -57,5 +59,19 @@ public class StringUtils {
 		if (date == null)
 			return null;
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+	
+	public static String toNumber(String value) {
+		
+		if (value == null) 
+			return "";
+
+		Matcher regexMatcher = Pattern.compile("([0-9]+)").matcher(value);
+
+		if (regexMatcher.matches()) {
+			return regexMatcher.group(1);
+		}
+
+		return "";
 	}
 }
