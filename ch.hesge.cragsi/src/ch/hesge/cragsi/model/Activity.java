@@ -18,32 +18,23 @@ public class Activity {
 	private String unit; // Unité
 	private String lastname; // Nom
 	private String firstname; // Prénom
-	private String category; // Catégorie officielle
-	private String studentCount; // Nbr etud.
-	private String hours; // Heures
-	private String coefficient; // Coefficient
-	private String weeks; // Semaine-s
-	private String total; // Total
+	private String contractType; // Type Contrat
+	private String function; // Fonction
+	private int studentCount; // Nbr etud.
+	private double hours; // Heures
+	private double coefficient; // Coefficient
+	private double weeks; // Semaine-s
+	private double total; // Total
+	private double totalS1; // first semester total (computed)
+	private double totalS2; // second semester total (computed)
+	private double costS1; // first semester cost (computed)
+	private double costS2; // second semester cost (computed)
 	private String activity; // Activité
 	private String pillarGE; // Pilier GE
 	private String pillarHES; // Pilier HES
 	private String sector; // Filière
-	private String projectNumber; // Num. projet
-	private String startContract; // Debut contrat
-	private String endContract; // Fin contrat
-	private String totalMonths; // Nb mois total
-	private String firstSemesterTotalMonths; // Nb mois total 2015
-	private String firstSemesterTotalHours; // Nb heures total 2015
-	private String secondSemesterTotalMonth; // Nb mois total 2016
-	private String secondSemesterTotalHours; // Nb heure total 2016
-	private String personId; // Id personne
-	private String contractId; // Id contrat
-	private String cursus; // Cursus
-
-	// from fdc.detail.csv
-	private String contractType; // Type Contrat
-	private String function; // Fonction
 	private String detail; // Détail
+	private String projectNumber; // Num. projet
 
 	/**
 	 * Default constructor
@@ -75,52 +66,92 @@ public class Activity {
 		this.firstname = firstname;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getContractType() {
+		return contractType;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setContractType(String contractType) {
+		this.contractType = contractType;
 	}
 
-	public String getStudentCount() {
+	public String getFunction() {
+		return function;
+	}
+
+	public void setFunction(String function) {
+		this.function = function;
+	}
+
+	public int getStudentCount() {
 		return studentCount;
 	}
 
-	public void setStudentCount(String studentCount) {
+	public void setStudentCount(int studentCount) {
 		this.studentCount = studentCount;
 	}
 
-	public String getHours() {
+	public double getHours() {
 		return hours;
 	}
 
-	public void setHours(String hours) {
+	public void setHours(double hours) {
 		this.hours = hours;
 	}
 
-	public String getCoefficient() {
+	public double getCoefficient() {
 		return coefficient;
 	}
 
-	public void setCoefficient(String coefficient) {
+	public void setCoefficient(double coefficient) {
 		this.coefficient = coefficient;
 	}
 
-	public String getWeeks() {
+	public double getWeeks() {
 		return weeks;
 	}
 
-	public void setWeeks(String weeks) {
+	public void setWeeks(double weeks) {
 		this.weeks = weeks;
 	}
 
-	public String getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
-	public void setTotal(String total) {
+	public void setTotal(double total) {
 		this.total = total;
+	}
+
+	public double getTotalS1() {
+		return totalS1;
+	}
+
+	public void setTotalS1(double totalS1) {
+		this.totalS1 = totalS1;
+	}
+
+	public double getTotalS2() {
+		return totalS2;
+	}
+
+	public void setTotalS2(double totalS2) {
+		this.totalS2 = totalS2;
+	}
+
+	public double getCostS1() {
+		return costS1;
+	}
+
+	public void setCostS1(double costS1) {
+		this.costS1 = costS1;
+	}
+
+	public double getCostS2() {
+		return costS2;
+	}
+
+	public void setCostS2(double costS2) {
+		this.costS2 = costS2;
 	}
 
 	public String getActivity() {
@@ -155,110 +186,6 @@ public class Activity {
 		this.sector = sector;
 	}
 
-	public String getProjectNumber() {
-		return projectNumber;
-	}
-
-	public void setProjectNumber(String projectNumber) {
-		this.projectNumber = projectNumber;
-	}
-
-	public String getStartContract() {
-		return startContract;
-	}
-
-	public void setStartContract(String startContract) {
-		this.startContract = startContract;
-	}
-
-	public String getEndContract() {
-		return endContract;
-	}
-
-	public void setEndContract(String endContract) {
-		this.endContract = endContract;
-	}
-
-	public String getTotalMonths() {
-		return totalMonths;
-	}
-
-	public void setTotalMonths(String totalMonths) {
-		this.totalMonths = totalMonths;
-	}
-
-	public String getFirstSemesterTotalMonths() {
-		return firstSemesterTotalMonths;
-	}
-
-	public void setFirstSemesterTotalMonths(String firstSemesterTotalMonths) {
-		this.firstSemesterTotalMonths = firstSemesterTotalMonths;
-	}
-
-	public String getFirstSemesterTotalHours() {
-		return firstSemesterTotalHours;
-	}
-
-	public void setFirstSemesterTotalHours(String firstSemesterTotalHours) {
-		this.firstSemesterTotalHours = firstSemesterTotalHours;
-	}
-
-	public String getSecondSemesterTotalMonth() {
-		return secondSemesterTotalMonth;
-	}
-
-	public void setSecondSemesterTotalMonth(String secondSemesterTotalMonth) {
-		this.secondSemesterTotalMonth = secondSemesterTotalMonth;
-	}
-
-	public String getSecondSemesterTotalHours() {
-		return secondSemesterTotalHours;
-	}
-
-	public void setSecondSemesterTotalHours(String secondSemesterTotalHours) {
-		this.secondSemesterTotalHours = secondSemesterTotalHours;
-	}
-
-	public String getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(String personId) {
-		this.personId = personId;
-	}
-
-	public String getContractId() {
-		return contractId;
-	}
-
-	public void setContractId(String contractId) {
-		this.contractId = contractId;
-	}
-
-	public String getCursus() {
-		return cursus;
-	}
-
-	public void setCursus(String cursus) {
-		this.cursus = cursus;
-	}
-
-	public String getContractType() {
-		return contractType;
-	}
-
-	public void setContractType(String contractType) {
-		this.contractType = contractType;
-	}
-
-	public String getFunction() {
-		return function;
-	}
-
-	public void setFunction(String function) {
-		this.function = function;
-	}
-
 	public String getDetail() {
 		return detail;
 	}
@@ -267,4 +194,11 @@ public class Activity {
 		this.detail = detail;
 	}
 
+	public String getProjectNumber() {
+		return projectNumber;
+	}
+
+	public void setProjectNumber(String projectNumber) {
+		this.projectNumber = projectNumber;
+	}
 }

@@ -25,4 +25,15 @@ package ch.hesge.cragsi.utils;
  */
 public class StringUtils {
 	
+	public static int toInteger(String value) {
+		if (value == null || value.trim().length() == 0)
+			return 0;
+		return Integer.valueOf(value);
+	}
+
+	public static double toDouble(String value) {
+		if (value == null || value.trim().length() == 0)
+			return 0d;
+		return Double.valueOf(value);
+	}
 }

@@ -17,7 +17,7 @@ public class Price {
 	// Private attributes
 	private String category; // Categorie	
 	private String libelle; // Libelle
-	private String price; // Prix
+	private double price; // Prix
 
 	/**
 	 * Default constructor
@@ -41,15 +41,11 @@ public class Price {
 		this.libelle = libelle;
 	}
 
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	public String toString() {
-		return "type: Price, category: " + category + ", libelle: " + libelle + ", price: " + price;
 	}
 }

@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import ch.hesge.cragsi.dao.AccountDao;
 import ch.hesge.cragsi.dao.ActivityDao;
 import ch.hesge.cragsi.dao.PriceDao;
 import ch.hesge.cragsi.model.Account;
@@ -27,10 +27,30 @@ public class CragsiLoader {
 	public void start() {
 
 		try {
+			Map<String, Price> priceMap = PriceDao.findMapByLibelle();
 
+			List<Activity> activities = ActivityDao.findAll();
+
+			for (Activity activity : activities) {
+
+				if (!priceMap.containsKey(activity.getContractType())) {
+					System.out.print("==> missing contract '" + activity.getContractType() + "' in prices file !");
+				}
+				else {
+					double activityPrice = priceMap.get(activity.getContractType()).getPrice();
+
+					activity.setCostS1(activity.getTotalS1() * activityPrice);
+					activity.setCostS2(activity.getTotalS2() * activityPrice);
+
+					dumpActivities(activities);
+				}
+			}
+
+			/*
 			List<Account> accounts = AccountDao.findAll();
 			List<Price> prices = PriceDao.findAll();
 			List<Activity> activities = ActivityDao.findAll();
+			*/
 
 			/*
 			List<Project> projects = ProjectDao.findAll();
@@ -154,6 +174,38 @@ public class CragsiLoader {
 
 		for (Contributor contributor : contributors) {
 			System.out.println(contributor.toString());
+		}
+	}
+
+	public void dumpActivities(List<Activity> activities) {
+
+		System.out.println("----------------------------------");
+		System.out.println(" Activity list:");
+		System.out.println("----------------------------------");
+
+		for (Activity activity : activities) {
+
+			System.out.println("  unit:      " + activity.getUnit());
+			System.out.println("  lastname:  " + activity.getLastname());
+			System.out.println("  firstname: " + activity.getFirstname());
+			System.out.println("  contract:  " + activity.getContractType());
+			System.out.println("  function:  " + activity.getFunction());
+			System.out.println("  student:   " + activity.getStudentCount());
+			System.out.println("  hours:     " + activity.getHours());
+			System.out.println("  coeff:     " + activity.getCoefficient());
+			System.out.println("  weeks:     " + activity.getWeeks());
+			System.out.println("  total:     " + activity.getTotal());
+			System.out.println("  total S1:  " + activity.getTotalS1());
+			System.out.println("  total S2:  " + activity.getTotalS2());
+			System.out.println("  cost S1:   " + activity.getCostS1());
+			System.out.println("  cost S2:   " + activity.getCostS2());
+			System.out.println("  activity:  " + activity.getActivity());
+			System.out.println("  pillarGE:  " + activity.getPillarGE());
+			System.out.println("  pillarHES: " + activity.getPillarHES());
+			System.out.println("  sector:    " + activity.getSector());
+			System.out.println("  project:   " + activity.getProjectNumber());
+
+			System.out.println();
 		}
 	}
 

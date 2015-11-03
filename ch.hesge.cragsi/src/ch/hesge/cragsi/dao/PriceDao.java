@@ -3,11 +3,14 @@ package ch.hesge.cragsi.dao;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Price;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.StringUtils;
 
 public class PriceDao {
 
@@ -35,7 +38,7 @@ public class PriceDao {
 
 			priceObject.setCategory(category);
 			priceObject.setLibelle(libelle);
-			priceObject.setPrice(price);
+			priceObject.setPrice(StringUtils.toDouble(price));
 
 			priceList.add(priceObject);
 		}
@@ -44,4 +47,19 @@ public class PriceDao {
 
 		return priceList;
 	}
+
+	public static Map<String, Price> findMapByLibelle() throws IOException {
+
+		Map<String, Price> priceMap = new HashMap<>();
+
+		for (Price price : findAll()) {
+
+			if (!priceMap.containsKey(price.getLibelle())) {
+				priceMap.put(price.getLibelle(), price);
+			}
+		}
+
+		return priceMap;
+	}
+
 }
