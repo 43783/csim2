@@ -24,7 +24,7 @@ public class ActivityDao {
 	}
 
 	/**
-	 * Retrieve all activities contained in file
+	 * Retrieve all activities contained in file (only C1, C2 pillar)
 	 * @return
 	 * @throws IOException
 	 */

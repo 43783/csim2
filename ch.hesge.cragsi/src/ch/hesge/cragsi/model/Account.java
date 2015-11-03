@@ -27,10 +27,6 @@ public class Account {
 	public Account() {
 	}
 
-	public String toString() {
-		return "type: Account, id: " + id + ", name: " + name + ", code: " + code + ", type: " + type;
-	}
-
 	public String getId() {
 		return id;
 	}

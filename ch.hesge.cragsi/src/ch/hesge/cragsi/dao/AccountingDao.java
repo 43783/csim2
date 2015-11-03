@@ -10,6 +10,7 @@ import java.util.List;
 import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.utils.CsvWriter;
+import ch.hesge.cragsi.utils.StringUtils;
 
 public class AccountingDao {
 
@@ -46,16 +47,16 @@ public class AccountingDao {
 		
 		// Write one record by accounting
 		for (Accounting accounting : accountings) {
-			csvOutput.write(accounting.getKeyId());
-			csvOutput.write(accounting.getDate());
+			csvOutput.write(StringUtils.toString(accounting.getKeyId()));
+			csvOutput.write(StringUtils.toString(accounting.getDate()));
 			csvOutput.write(accounting.getJournalId());
 			csvOutput.write(accounting.getName());
 			csvOutput.write(accounting.getPeriodId());
 			csvOutput.write(accounting.getAccountId());
-			csvOutput.write(accounting.getLineDate());
+			csvOutput.write(StringUtils.toString(accounting.getLineDate()));
 			csvOutput.write(accounting.getLineName());
-			csvOutput.write(accounting.getLineCredit());
-			csvOutput.write(accounting.getLineDebit());
+			csvOutput.write(StringUtils.toString(accounting.getLineCredit()));
+			csvOutput.write(StringUtils.toString(accounting.getLineDebit()));
 			csvOutput.write(accounting.getLineJournalId());
 			csvOutput.write(accounting.getLinePeriodId());
 			csvOutput.endRecord();

@@ -4,6 +4,8 @@
  */
 package ch.hesge.cragsi.model;
 
+import java.util.Date;
+
 /**
  * Represents a domain object.
  * 
@@ -15,16 +17,16 @@ package ch.hesge.cragsi.model;
 public class Accounting {
 
 	// Private attributes
-	private String keyId; // id	
-	private String date; // date
+	private int keyId; // id	
+	private Date date; // date
 	private String journalId; // journal_id/id
 	private String name; // name
 	private String periodId; // period_id/id
 	private String accountId; // line_id/account_id/id
-	private String lineDate; // line_id/date
+	private Date lineDate; // line_id/date
 	private String lineName; // line_id/name
-	private String lineCredit; // line_id/credit
-	private String lineDebit; // line_id/debit
+	private double lineCredit; // line_id/credit
+	private double lineDebit; // line_id/debit
 	private String lineJournalId; // line_id/journal_id/id
 	private String linePeriodId; // line_id/period_id/id 
 
@@ -34,19 +36,19 @@ public class Accounting {
 	public Accounting() {
 	}
 
-	public String getKeyId() {
+	public int getKeyId() {
 		return keyId;
 	}
 
-	public void setKeyId(String keyId) {
+	public void setKeyId(int keyId) {
 		this.keyId = keyId;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -82,11 +84,11 @@ public class Accounting {
 		this.accountId = accountId;
 	}
 
-	public String getLineDate() {
+	public Date getLineDate() {
 		return lineDate;
 	}
 
-	public void setLineDate(String lineDate) {
+	public void setLineDate(Date lineDate) {
 		this.lineDate = lineDate;
 	}
 
@@ -98,19 +100,19 @@ public class Accounting {
 		this.lineName = lineName;
 	}
 
-	public String getLineCredit() {
+	public double getLineCredit() {
 		return lineCredit;
 	}
 
-	public void setLineCredit(String lineCredit) {
+	public void setLineCredit(double lineCredit) {
 		this.lineCredit = lineCredit;
 	}
 
-	public String getLineDebit() {
+	public double getLineDebit() {
 		return lineDebit;
 	}
 
-	public void setLineDebit(String lineDebit) {
+	public void setLineDebit(double lineDebit) {
 		this.lineDebit = lineDebit;
 	}
 
@@ -128,10 +130,6 @@ public class Accounting {
 
 	public void setLinePeriodId(String linePeriodId) {
 		this.linePeriodId = linePeriodId;
-	}
-
-	public String toString() {
-		return "type: Accounting, keyId: " + keyId + ", date: " + date + ", journalId: " + journalId + ", name: " + name + ", periodId: " + periodId + ", lineDate: " + lineDate + ", lineName: " + lineCredit + ", creditId: " + lineCredit + ", lineDebit: " + lineDebit + ", lineJournalId: " + lineJournalId + ", linePeriodId: " + linePeriodId;
 	}
 
 }

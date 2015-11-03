@@ -48,6 +48,11 @@ public class PriceDao {
 		return priceList;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
 	public static Map<String, Price> findMapByLibelle() throws IOException {
 
 		Map<String, Price> priceMap = new HashMap<>();

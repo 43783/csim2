@@ -46,4 +46,38 @@ public class AccountDao {
 
 		return accountList;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public static Account findByName(String name, List<Account> accounts) {
+
+		for (Account account : accounts) {
+
+			if (account.getName().toLowerCase().contains(name.toLowerCase())) {
+				return account;
+			}
+		}
+
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public static Account findByCode(String code, List<Account> accounts) {
+
+		for (Account account : accounts) {
+
+			if (account.getCode().toLowerCase().equals(code.toLowerCase())) {
+				return account;
+			}
+		}
+
+		return null;
+	}
 }

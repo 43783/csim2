@@ -20,6 +20,9 @@
  */
 package ch.hesge.cragsi.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  */
@@ -35,5 +38,19 @@ public class StringUtils {
 		if (value == null || value.trim().length() == 0)
 			return 0d;
 		return Double.valueOf(value);
+	}
+
+	public static String toString(int value) {
+		return String.valueOf(value);
+	}
+
+	public static String toString(double value) {
+		return String.valueOf(value);
+	}
+
+	public static String toString(Date date) {
+		if (date == null)
+			return null;
+		return new SimpleDateFormat("yyyy-mm-dd").format(date);
 	}
 }
