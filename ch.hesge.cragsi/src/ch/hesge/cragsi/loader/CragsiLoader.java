@@ -12,10 +12,12 @@ import ch.hesge.cragsi.dao.AccountDao;
 import ch.hesge.cragsi.dao.AccountingDao;
 import ch.hesge.cragsi.dao.ActivityDao;
 import ch.hesge.cragsi.dao.PriceDao;
+import ch.hesge.cragsi.dao.ProjectDao;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.model.Price;
+import ch.hesge.cragsi.model.Project;
 import ch.hesge.cragsi.utils.StringUtils;
 
 public class CragsiLoader {
@@ -27,8 +29,8 @@ public class CragsiLoader {
 	private String periodId_S1;
 
 	private List<Account> accounts;
+	private List<Project> projects;
 	private Map<String, Price> priceMap;
-
 	private List<Accounting> accountings;
 
 	/**
@@ -44,6 +46,7 @@ public class CragsiLoader {
 
 		try {
 			accounts = AccountDao.findAll();
+			projects = ProjectDao.findAll();
 			priceMap = PriceDao.findMapByLibelle();
 		}
 		catch (FileNotFoundException e) {
@@ -95,29 +98,41 @@ public class CragsiLoader {
 				// Retrieve collaborator account
 				Account resourceAccount = AccountDao.findByName(activity.getLastname(), accounts);
 
+				// Retrieve salary account
+				String salaryCode = UserSettings.getInstance().getProperty("salaryAccountCode");
+				Account salaryAccount = AccountDao.findByCode(salaryCode, accounts);
+
+				// Retrieve socle account
+				String socleCode = UserSettings.getInstance().getProperty("socleAccountCode");
+				Account socleAccount = AccountDao.findByCode(socleCode, accounts);
+
 				if (resourceAccount == null) {
 					System.out.println("==> missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
 				}
+				else if (salaryAccount == null) {
+					System.out.println("==> missing account for salaries with code '" + salaryCode + "' !");
+				}
+				else if (socleAccount == null) {
+					System.out.println("==> missing account for socle with code '" + socleCode + "' !");
+				}
 				else {
 
-					// Retrieve salary account
-					String salaryAccountCode = UserSettings.getInstance().getProperty("salaryAccount");
-					Account salaryAccount = AccountDao.findByCode("5000", accounts);
+					// Retrieve project from activity
+					String projectNumber = StringUtils.toNumber(activity.getProjectNumber());
 
-					if (salaryAccount == null) {
-						System.out.println("==> missing account for salaries with code '" + salaryAccountCode + "' !");
+					// Automatically add project number in libelle
+					String libelle = activity.getDetail();
+					if (projectNumber.length() > 0 && !libelle.contains(projectNumber)) {
+						libelle = projectNumber + " - " + libelle;
 					}
-					else {
+						
+					// Retrieve project associated to the activity
+					Project project = ProjectDao.findByCode(projectNumber, projects);
 
+					if (projectNumber != null) {
+						
+						// Create resource debit accounting
 						Accounting debitAccounting = new Accounting();
-						
-						// Automatically add project number in libelle
-						String libelle = activity.getDetail();
-						String projectNumber = StringUtils.toNumber(activity.getProjectNumber());
-						if (projectNumber.length() > 0 && !libelle.contains(projectNumber)) {
-							libelle = projectNumber + "-" + libelle;
-						}
-						
 						debitAccounting.setKeyId(accountingSequence);
 						debitAccounting.setDate(accountingDate);
 						debitAccounting.setJournalId(journalId_S1);
@@ -129,19 +144,92 @@ public class CragsiLoader {
 						debitAccounting.setLineDebit(activity.getCostS1());
 						debitAccounting.setLineJournalId(journalId_S1);
 						debitAccounting.setLinePeriodId(periodId_S1);
-
 						accountings.add(debitAccounting);
 
+						// Create resource credit accounting
 						Accounting creditAccounting = new Accounting();
-						
 						creditAccounting.setAccountId(salaryAccount.getId());
 						creditAccounting.setLineDate(accountingDate);
 						creditAccounting.setLineName(libelle);
 						creditAccounting.setLineCredit(activity.getCostS1());
 						debitAccounting.setLineJournalId(journalId_S1);
 						debitAccounting.setLinePeriodId(periodId_S1);
-
 						accountings.add(creditAccounting);
+
+						accountingSequence++;
+						
+						// Retrieve account associated to the project
+						String projectAccountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
+						Account account = AccountDao.findByCode(projectAccountSuffix + projectNumber, accounts);
+
+						if (account == null) {
+							System.out.println("==> missing account for project '" + projectNumber + "' !");
+						}
+						else {
+							
+							// Create project debit accounting
+							debitAccounting = new Accounting();
+							debitAccounting.setKeyId(accountingSequence);
+							debitAccounting.setDate(accountingDate);
+							debitAccounting.setJournalId(journalId_S1);
+							debitAccounting.setName("1");
+							debitAccounting.setPeriodId(periodId_S1);
+							debitAccounting.setAccountId(account.getId());
+							debitAccounting.setLineDate(accountingDate);
+							debitAccounting.setLineName(libelle);
+							debitAccounting.setLineDebit(activity.getCostS1());
+							debitAccounting.setLineJournalId(journalId_S1);
+							debitAccounting.setLinePeriodId(periodId_S1);
+							accountings.add(debitAccounting);
+
+							accountingSequence++;
+						}
+						
+					}
+					else {
+						// Activity not associated to project
+
+						// Create resource counterpart
+						Accounting debitAccounting = new Accounting();
+						debitAccounting.setKeyId(accountingSequence);
+						debitAccounting.setDate(accountingDate);
+						debitAccounting.setJournalId(journalId_S1);
+						debitAccounting.setName("1");
+						debitAccounting.setPeriodId(periodId_S1);
+						debitAccounting.setAccountId(resourceAccount.getId());
+						debitAccounting.setLineDate(accountingDate);
+						debitAccounting.setLineName(libelle);
+						debitAccounting.setLineDebit(activity.getCostS1());
+						debitAccounting.setLineJournalId(journalId_S1);
+						debitAccounting.setLinePeriodId(periodId_S1);
+						accountings.add(debitAccounting);
+
+						// Create salary counterpart
+						Accounting creditAccounting = new Accounting();
+						creditAccounting.setAccountId(salaryAccount.getId());
+						creditAccounting.setLineDate(accountingDate);
+						creditAccounting.setLineName(libelle);
+						creditAccounting.setLineCredit(activity.getCostS1());
+						debitAccounting.setLineJournalId(journalId_S1);
+						debitAccounting.setLinePeriodId(periodId_S1);
+						accountings.add(creditAccounting);
+
+						accountingSequence++;
+
+						// Create project counterpart
+						debitAccounting = new Accounting();
+						debitAccounting.setKeyId(accountingSequence);
+						debitAccounting.setDate(accountingDate);
+						debitAccounting.setJournalId(journalId_S1);
+						debitAccounting.setName("1");
+						debitAccounting.setPeriodId(periodId_S1);
+						debitAccounting.setAccountId(socleAccount.getId());
+						debitAccounting.setLineDate(accountingDate);
+						debitAccounting.setLineName(libelle);
+						debitAccounting.setLineDebit(activity.getCostS1());
+						debitAccounting.setLineJournalId(journalId_S1);
+						debitAccounting.setLinePeriodId(periodId_S1);
+						accountings.add(debitAccounting);
 
 						accountingSequence++;
 					}

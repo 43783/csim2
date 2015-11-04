@@ -15,9 +15,7 @@ package ch.hesge.cragsi.model;
 public class Project {
 
 	// Private attributes
-	private String keyId; // N° HESSO
-	
-	private String code; // N° HESSO
+	private String code; // N° HESSO (SAGEX)
 	private String date; // Date
 	private String startDate; // Date de début
 	private String endDate; // Date de fin
@@ -28,14 +26,6 @@ public class Project {
 	 * Default constructor
 	 */
 	public Project() {
-	}
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
 	}
 
 	public String getDate() {
@@ -84,9 +74,5 @@ public class Project {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String toString() {
-		return "type: Project, keyId: " + keyId + ", code: " + code + ", date: " + date + ", startDate: " + startDate + ", endDate: " + endDate + ", description: " + description + ", statut: " + status;
 	}
 }

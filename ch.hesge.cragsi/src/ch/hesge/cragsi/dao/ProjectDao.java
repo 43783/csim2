@@ -34,16 +34,16 @@ public class ProjectDao {
 		reader.readHeaders();
 
 		while (reader.readRecord()) {
-			
+
 			String date = reader.get(0);
 			String code = reader.get(1);
 			String startDate = reader.get(2);
 			String endDate = reader.get(3);
 			String description = reader.get(4);
 			String status = reader.get(5);
-			
+
 			Project project = new Project();
-			
+
 			project.setDate(date);
 			project.setCode(code);
 			project.setStartDate(startDate);
@@ -55,7 +55,20 @@ public class ProjectDao {
 		}
 
 		reader.close();
-		
+
 		return projectList;
 	}
+
+	public static Project findByCode(String code, List<Project> projects) {
+
+		for (Project project : projects) {
+
+			if (project.getCode().toLowerCase().equals(code.toLowerCase())) {
+				return project;
+			}
+		}
+
+		return null;
+	}
+
 }
