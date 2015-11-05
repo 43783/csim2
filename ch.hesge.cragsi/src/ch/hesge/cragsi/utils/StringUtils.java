@@ -21,16 +21,20 @@
 package ch.hesge.cragsi.utils;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  */
 public class StringUtils {
-	
+
+	public static boolean isEmtpy(String value) {
+		return value == null || value.trim().length() == 0;
+	}
+
 	public static int toInteger(String value) {
 		if (value == null || value.trim().length() == 0)
 			return 0;
@@ -60,10 +64,20 @@ public class StringUtils {
 			return null;
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
-	
+
+	public static Date fromString(String value) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(value);
+		}
+		catch (ParseException e) {
+			// Ignore exception
+		}
+		return null;
+	}
+
 	public static String toNumber(String value) {
-		
-		if (value == null) 
+
+		if (value == null)
 			return "";
 
 		Matcher regexMatcher = Pattern.compile("([0-9]+)").matcher(value);

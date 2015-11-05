@@ -4,6 +4,8 @@
  */
 package ch.hesge.cragsi.model;
 
+import java.util.Date;
+
 /**
  * Represents a domain object.
  * 
@@ -15,9 +17,9 @@ package ch.hesge.cragsi.model;
 public class Funding {
 
 	// Private attributes
-	private String keyId; // id	
+	private String id; // id	
 	private String hessoId; // N° HESSO
-	private String date; // Date
+	private Date date; // Date
 	private String name; // Nom du partenaire
 	private String amount; // Montant
 
@@ -27,12 +29,12 @@ public class Funding {
 	public Funding() {
 	}
 
-	public String getKeyId() {
-		return keyId;
+	public String getId() {
+		return id;
 	}
 
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getHessoId() {
@@ -43,11 +45,11 @@ public class Funding {
 		this.hessoId = hessoId;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -65,9 +67,5 @@ public class Funding {
 
 	public void setAmount(String amount) {
 		this.amount = amount;
-	}
-
-	public String toString() {
-		return "type: Funding, keyId: " + keyId + ", hessoId: " + hessoId + ", date: " + date + ", name: " + name + ", amount: " + amount;
 	}
 }

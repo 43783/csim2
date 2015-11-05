@@ -8,6 +8,7 @@ import java.util.List;
 import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Funding;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to manage DAO access for Account.
@@ -42,8 +43,8 @@ public class FundingDao {
 
 			Funding funding = new Funding();
 			
-			funding.setKeyId(hessoId);
-			funding.setDate(date);
+			funding.setId(hessoId);
+			funding.setDate(StringUtils.fromString(date));
 			funding.setHessoId(hessoId);
 			funding.setName(name);
 			funding.setAmount(amount);
