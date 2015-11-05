@@ -175,56 +175,56 @@ public class CragsiLoader {
 				accountingLabel = accountingLabel.replace("-", " - ");
 				
 				// Create debit resource entry (S1)
-				Accounting debitS1ResourceAccounting = new Accounting();
-				debitS1ResourceAccounting.setId(accountingSequence);
-				debitS1ResourceAccounting.setDate(accountingDate);
-				debitS1ResourceAccounting.setJournalId(journalId_S1);
-				debitS1ResourceAccounting.setName(StringUtils.toString(accountingSequence));
-				debitS1ResourceAccounting.setPeriodId(periodId_S1);
-				debitS1ResourceAccounting.setAccountId(resourceAccount.getId());
-				debitS1ResourceAccounting.setLineDate(accountingDate);
-				debitS1ResourceAccounting.setLineName(accountingLabel + "(" + academicPeriodS1 + ")");
-				debitS1ResourceAccounting.setLineDebit(activity.getCostS1());
-				debitS1ResourceAccounting.setLineJournalId(journalId_S1);
-				debitS1ResourceAccounting.setLinePeriodId(periodId_S1);
-				accountings.add(debitS1ResourceAccounting);
+				Accounting debitResourceS1Accounting = new Accounting();
+				debitResourceS1Accounting.setId(accountingSequence);
+				debitResourceS1Accounting.setDate(accountingDate);
+				debitResourceS1Accounting.setJournalId(journalId_S1);
+				debitResourceS1Accounting.setName(StringUtils.toString(accountingSequence));
+				debitResourceS1Accounting.setPeriodId(periodId_S1);
+				debitResourceS1Accounting.setAccountId(resourceAccount.getId());
+				debitResourceS1Accounting.setLineDate(accountingDate);
+				debitResourceS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
+				debitResourceS1Accounting.setLineDebit(activity.getCostS1());
+				debitResourceS1Accounting.setLineJournalId(journalId_S1);
+				debitResourceS1Accounting.setLinePeriodId(periodId_S1);
+				accountings.add(debitResourceS1Accounting);
 
 				// Create credit resource entry  (S1)
-				Accounting creditS1ResourceAccounting = new Accounting();
-				creditS1ResourceAccounting.setAccountId(salaryAccount.getId());
-				creditS1ResourceAccounting.setLineDate(accountingDate);
-				creditS1ResourceAccounting.setLineName(accountingLabel + "(" + academicPeriodS1 + ")");
-				creditS1ResourceAccounting.setLineCredit(activity.getCostS1());
-				debitS1ResourceAccounting.setLineJournalId(journalId_S1);
-				debitS1ResourceAccounting.setLinePeriodId(periodId_S1);
-				accountings.add(creditS1ResourceAccounting);
+				Accounting creditResourceS1Accounting = new Accounting();
+				creditResourceS1Accounting.setAccountId(salaryAccount.getId());
+				creditResourceS1Accounting.setLineDate(accountingDate);
+				creditResourceS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
+				creditResourceS1Accounting.setLineCredit(activity.getCostS1());
+				debitResourceS1Accounting.setLineJournalId(journalId_S1);
+				debitResourceS1Accounting.setLinePeriodId(periodId_S1);
+				accountings.add(creditResourceS1Accounting);
 
 				accountingSequence++;
 
 				// Create debit resource entry (S2)
-				Accounting debitS2ResourceAccounting = new Accounting();
-				debitS2ResourceAccounting.setId(accountingSequence);
-				debitS2ResourceAccounting.setDate(accountingDate);
-				debitS2ResourceAccounting.setJournalId(journalId_S2);
-				debitS2ResourceAccounting.setName(StringUtils.toString(accountingSequence));
-				debitS2ResourceAccounting.setPeriodId(periodId_S2);
-				debitS2ResourceAccounting.setAccountId(resourceAccount.getId());
-				debitS2ResourceAccounting.setLineDate(accountingDate);
-				debitS2ResourceAccounting.setLineName(accountingLabel + "(" + academicPeriodS2 + ")");
-				debitS2ResourceAccounting.setLineDebit(activity.getCostS1());
-				debitS2ResourceAccounting.setLineJournalId(journalId_S2);
-				debitS2ResourceAccounting.setLinePeriodId(periodId_S2);
-				accountings.add(debitS2ResourceAccounting);
+				Accounting debitResourceS2Accounting = new Accounting();
+				debitResourceS2Accounting.setId(accountingSequence);
+				debitResourceS2Accounting.setDate(accountingDate);
+				debitResourceS2Accounting.setJournalId(journalId_S2);
+				debitResourceS2Accounting.setName(StringUtils.toString(accountingSequence));
+				debitResourceS2Accounting.setPeriodId(periodId_S2);
+				debitResourceS2Accounting.setAccountId(resourceAccount.getId());
+				debitResourceS2Accounting.setLineDate(accountingDate);
+				debitResourceS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
+				debitResourceS2Accounting.setLineDebit(activity.getCostS2());
+				debitResourceS2Accounting.setLineJournalId(journalId_S2);
+				debitResourceS2Accounting.setLinePeriodId(periodId_S2);
+				accountings.add(debitResourceS2Accounting);
 
 				// Create credit resource entry  (S2)
-				Accounting creditS2ResourceAccounting = new Accounting();
-				creditS2ResourceAccounting.setAccountId(salaryAccount.getId());
-				creditS2ResourceAccounting.setLineDate(accountingDate);
-				debitS2ResourceAccounting.setLineName(accountingLabel + "(" + academicPeriodS2 + ")");
-				creditS2ResourceAccounting.setLineCredit(activity.getCostS1());
-				debitS2ResourceAccounting.setLineJournalId(journalId_S2);
-				debitS2ResourceAccounting.setLinePeriodId(periodId_S2);
-				accountings.add(creditS2ResourceAccounting);
+				Accounting creditResourceS2Accounting = new Accounting();
+				creditResourceS2Accounting.setAccountId(salaryAccount.getId());
+				creditResourceS2Accounting.setLineDate(accountingDate);
+				creditResourceS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
+				creditResourceS2Accounting.setLineCredit(activity.getCostS2());
+				creditResourceS2Accounting.setLineJournalId(journalId_S2);
+				creditResourceS2Accounting.setLinePeriodId(periodId_S2);
+				accountings.add(creditResourceS2Accounting);
 
 				accountingSequence++;
 
@@ -232,36 +232,36 @@ public class CragsiLoader {
 				if (projectAccount != null) {
 					
 					// Create debit project entry (S1)
-					Accounting debitS1ProjectAccounting = new Accounting();
-					debitS1ProjectAccounting.setId(accountingSequence);
-					debitS1ProjectAccounting.setDate(accountingDate);
-					debitS1ProjectAccounting.setJournalId(journalId_S1);
-					debitS1ProjectAccounting.setName(StringUtils.toString(accountingSequence));
-					debitS1ProjectAccounting.setPeriodId(periodId_S1);
-					debitS1ProjectAccounting.setAccountId(projectAccount.getId());
-					debitS1ProjectAccounting.setLineDate(accountingDate);
-					debitS1ProjectAccounting.setLineName(accountingLabel + "(" + academicPeriodS1 + ")");
-					debitS1ProjectAccounting.setLineDebit(activity.getCostS1());
-					debitS1ProjectAccounting.setLineJournalId(journalId_S1);
-					debitS1ProjectAccounting.setLinePeriodId(periodId_S1);
-					accountings.add(debitS1ProjectAccounting);
+					Accounting debitProjectS1Accounting = new Accounting();
+					debitProjectS1Accounting.setId(accountingSequence);
+					debitProjectS1Accounting.setDate(accountingDate);
+					debitProjectS1Accounting.setJournalId(journalId_S1);
+					debitProjectS1Accounting.setName(StringUtils.toString(accountingSequence));
+					debitProjectS1Accounting.setPeriodId(periodId_S1);
+					debitProjectS1Accounting.setAccountId(projectAccount.getId());
+					debitProjectS1Accounting.setLineDate(accountingDate);
+					debitProjectS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
+					debitProjectS1Accounting.setLineDebit(activity.getCostS1());
+					debitProjectS1Accounting.setLineJournalId(journalId_S1);
+					debitProjectS1Accounting.setLinePeriodId(periodId_S1);
+					accountings.add(debitProjectS1Accounting);
 						
 					accountingSequence++;
 
 					// Create debit project entry (S2)
-					Accounting debitS2ProjectAccounting = new Accounting();
-					debitS2ProjectAccounting.setId(accountingSequence);
-					debitS2ProjectAccounting.setDate(accountingDate);
-					debitS2ProjectAccounting.setJournalId(journalId_S2);
-					debitS2ProjectAccounting.setName(StringUtils.toString(accountingSequence));
-					debitS2ProjectAccounting.setPeriodId(periodId_S2);
-					debitS2ProjectAccounting.setAccountId(projectAccount.getId());
-					debitS2ProjectAccounting.setLineDate(accountingDate);
-					debitS2ProjectAccounting.setLineName(accountingLabel + "(" + academicPeriodS2 + ")");
-					debitS2ProjectAccounting.setLineDebit(activity.getCostS1());
-					debitS2ProjectAccounting.setLineJournalId(journalId_S2);
-					debitS2ProjectAccounting.setLinePeriodId(periodId_S2);
-					accountings.add(debitS2ProjectAccounting);
+					Accounting debitProjectS2Accounting = new Accounting();
+					debitProjectS2Accounting.setId(accountingSequence);
+					debitProjectS2Accounting.setDate(accountingDate);
+					debitProjectS2Accounting.setJournalId(journalId_S2);
+					debitProjectS2Accounting.setName(StringUtils.toString(accountingSequence));
+					debitProjectS2Accounting.setPeriodId(periodId_S2);
+					debitProjectS2Accounting.setAccountId(projectAccount.getId());
+					debitProjectS2Accounting.setLineDate(accountingDate);
+					debitProjectS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
+					debitProjectS2Accounting.setLineDebit(activity.getCostS2());
+					debitProjectS2Accounting.setLineJournalId(journalId_S2);
+					debitProjectS2Accounting.setLinePeriodId(periodId_S2);
+					accountings.add(debitProjectS2Accounting);
 						
 					accountingSequence++;
 				}
@@ -269,36 +269,36 @@ public class CragsiLoader {
 				else {
 					
 					// Create debit socle project entry (S1)
-					Accounting debitS1SocleAccounting = new Accounting();
-					debitS1SocleAccounting.setId(accountingSequence);
-					debitS1SocleAccounting.setDate(accountingDate);
-					debitS1SocleAccounting.setJournalId(journalId_S1);
-					debitS1SocleAccounting.setName(StringUtils.toString(accountingSequence));
-					debitS1SocleAccounting.setPeriodId(periodId_S1);
-					debitS1SocleAccounting.setAccountId(socleAccount.getId());
-					debitS1SocleAccounting.setLineDate(accountingDate);
-					debitS1SocleAccounting.setLineName(accountingLabel + "(" + academicPeriodS1 + ")");
-					debitS1SocleAccounting.setLineDebit(activity.getCostS1());
-					debitS1SocleAccounting.setLineJournalId(journalId_S1);
-					debitS1SocleAccounting.setLinePeriodId(periodId_S1);
-					accountings.add(debitS1SocleAccounting);
+					Accounting debitSocleS1Accounting = new Accounting();
+					debitSocleS1Accounting.setId(accountingSequence);
+					debitSocleS1Accounting.setDate(accountingDate);
+					debitSocleS1Accounting.setJournalId(journalId_S1);
+					debitSocleS1Accounting.setName(StringUtils.toString(accountingSequence));
+					debitSocleS1Accounting.setPeriodId(periodId_S1);
+					debitSocleS1Accounting.setAccountId(socleAccount.getId());
+					debitSocleS1Accounting.setLineDate(accountingDate);
+					debitSocleS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
+					debitSocleS1Accounting.setLineDebit(activity.getCostS1());
+					debitSocleS1Accounting.setLineJournalId(journalId_S1);
+					debitSocleS1Accounting.setLinePeriodId(periodId_S1);
+					accountings.add(debitSocleS1Accounting);
 						
 					accountingSequence++;
 
 					// Create debit socle project entry (S2)
-					Accounting debitS2SocleAccounting = new Accounting();
-					debitS2SocleAccounting.setId(accountingSequence);
-					debitS2SocleAccounting.setDate(accountingDate);
-					debitS2SocleAccounting.setJournalId(journalId_S2);
-					debitS2SocleAccounting.setName(StringUtils.toString(accountingSequence));
-					debitS2SocleAccounting.setPeriodId(periodId_S2);
-					debitS2SocleAccounting.setAccountId(socleAccount.getId());
-					debitS2SocleAccounting.setLineDate(accountingDate);
-					debitS2SocleAccounting.setLineName(accountingLabel + "(" + academicPeriodS2 + ")");
-					debitS2SocleAccounting.setLineDebit(activity.getCostS1());
-					debitS2SocleAccounting.setLineJournalId(journalId_S2);
-					debitS2SocleAccounting.setLinePeriodId(periodId_S2);
-					accountings.add(debitS2SocleAccounting);
+					Accounting debitSocleS2Accounting = new Accounting();
+					debitSocleS2Accounting.setId(accountingSequence);
+					debitSocleS2Accounting.setDate(accountingDate);
+					debitSocleS2Accounting.setJournalId(journalId_S2);
+					debitSocleS2Accounting.setName(StringUtils.toString(accountingSequence));
+					debitSocleS2Accounting.setPeriodId(periodId_S2);
+					debitSocleS2Accounting.setAccountId(socleAccount.getId());
+					debitSocleS2Accounting.setLineDate(accountingDate);
+					debitSocleS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
+					debitSocleS2Accounting.setLineDebit(activity.getCostS2());
+					debitSocleS2Accounting.setLineJournalId(journalId_S2);
+					debitSocleS2Accounting.setLinePeriodId(periodId_S2);
+					accountings.add(debitSocleS2Accounting);
 						
 					accountingSequence++;
 				}
