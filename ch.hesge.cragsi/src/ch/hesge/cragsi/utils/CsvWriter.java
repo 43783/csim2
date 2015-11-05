@@ -279,12 +279,12 @@ public class CsvWriter {
 			content = content.trim();
 		}
 
-		if (!textQualify && userSettings.UseTextQualifier && (content.indexOf(userSettings.TextQualifier) > -1 || content.indexOf(userSettings.Delimiter) > -1 || (!useCustomRecordDelimiter && (content.indexOf(Letters.LF) > -1 || content.indexOf(Letters.CR) > -1)) || (useCustomRecordDelimiter && content.indexOf(userSettings.RecordDelimiter) > -1) || (firstColumn && content.length() > 0 && content.charAt(0) == userSettings.Comment) ||
-		// check for empty first column, which if on its own line must
-		// be qualified or the line will be skipped
-				(firstColumn && content.length() == 0))) {
-			textQualify = true;
-		}
+//		if (!textQualify && userSettings.UseTextQualifier && (content.indexOf(userSettings.TextQualifier) > -1 || content.indexOf(userSettings.Delimiter) > -1 || (!useCustomRecordDelimiter && (content.indexOf(Letters.LF) > -1 || content.indexOf(Letters.CR) > -1)) || (useCustomRecordDelimiter && content.indexOf(userSettings.RecordDelimiter) > -1) || (firstColumn && content.length() > 0 && content.charAt(0) == userSettings.Comment) ||
+//		// check for empty first column, which if on its own line must
+//		// be qualified or the line will be skipped
+//				(firstColumn && content.length() == 0))) {
+//			textQualify = true;
+//		}
 
 		if (userSettings.UseTextQualifier && !textQualify && content.length() > 0 && preserveSpaces) {
 			char firstLetter = content.charAt(0);

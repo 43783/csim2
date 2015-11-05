@@ -4,6 +4,8 @@
  */
 package ch.hesge.cragsi.model;
 
+import java.util.Date;
+
 /**
  * Represents a domain object.
  * 
@@ -16,9 +18,9 @@ public class Project {
 
 	// Private attributes
 	private String code; // N° HESSO (SAGEX)
-	private String date; // Date
-	private String startDate; // Date de début
-	private String endDate; // Date de fin
+	private Date date; // Date
+	private Date startDate; // Date de début
+	private Date endDate; // Date de fin
 	private String description; // Libellé
 	private String status; // Statut
 
@@ -26,14 +28,6 @@ public class Project {
 	 * Default constructor
 	 */
 	public Project() {
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	public String getCode() {
@@ -44,19 +38,27 @@ public class Project {
 		this.code = code;
 	}
 
-	public String getStartDate() {
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 

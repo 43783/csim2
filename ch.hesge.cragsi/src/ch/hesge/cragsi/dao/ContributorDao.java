@@ -8,6 +8,7 @@ import java.util.List;
 import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Contributor;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to manage DAO access for Account.
@@ -37,7 +38,7 @@ public class ContributorDao {
 			
 			String date = reader.get(0);
 			String hessoId = reader.get(1);
-			String keyId = reader.get(2);
+			String id = reader.get(2);
 			String gestpacId = reader.get(3);
 			String lastname = reader.get(4);
 			String firstname = reader.get(5);
@@ -46,8 +47,8 @@ public class ContributorDao {
 
 			Contributor contributor = new Contributor();
 			
-			contributor.setKeyId(keyId);
-			contributor.setDate(date);
+			contributor.setId(id);
+			contributor.setDate(StringUtils.fromString(date));
 			contributor.setHessoId(hessoId);
 			contributor.setGestpacId(gestpacId);
 			contributor.setLastname(lastname);

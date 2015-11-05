@@ -47,7 +47,7 @@ public class AccountingDao {
 		
 		// Write one record by accounting
 		for (Accounting accounting : accountings) {
-			csvOutput.write(StringUtils.toString(accounting.getKeyId()));
+			csvOutput.write(StringUtils.toString(accounting.getId()));
 			csvOutput.write(StringUtils.toString(accounting.getDate()));
 			csvOutput.write(accounting.getJournalId());
 			csvOutput.write(accounting.getName());

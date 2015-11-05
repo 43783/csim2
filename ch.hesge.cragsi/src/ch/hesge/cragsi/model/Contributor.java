@@ -4,6 +4,8 @@
  */
 package ch.hesge.cragsi.model;
 
+import java.util.Date;
+
 
 /**
  * Represents a domain object.
@@ -16,8 +18,8 @@ package ch.hesge.cragsi.model;
 public class Contributor {
 
 	// Private attributes
-	private String keyId; // IdCollaborateur
-	private String date; // Date
+	private String id; // IdCollaborateur
+	private Date date; // Date
 	private String hessoId; // N° HESSO
 	private String gestpacId; // idGestpac
 	private String firstname; // Prénom
@@ -31,19 +33,19 @@ public class Contributor {
 	public Contributor() {
 	}
 
-	public String getKeyId() {
-		return keyId;
+	public String getId() {
+		return id;
 	}
 
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -95,7 +97,4 @@ public class Contributor {
 		this.rate = rate;
 	}
 
-	public String toString() {
-		return "type: Contributor, keyId: " + keyId + ", date: " + date + ", hessoId: " + hessoId + ", gestpacId: " + gestpacId + ", firstname: " + firstname + ", lastname: " + lastname + ", classe: " + classe + ", rate: " + rate;
-	}
 }

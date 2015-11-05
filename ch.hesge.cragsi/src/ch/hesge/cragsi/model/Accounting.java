@@ -17,7 +17,7 @@ import java.util.Date;
 public class Accounting {
 
 	// Private attributes
-	private int keyId; // id	
+	private int id; // id	
 	private Date date; // date
 	private String journalId; // journal_id/id
 	private String name; // name
@@ -36,12 +36,12 @@ public class Accounting {
 	public Accounting() {
 	}
 
-	public int getKeyId() {
-		return keyId;
+	public int getId() {
+		return id;
 	}
 
-	public void setKeyId(int keyId) {
-		this.keyId = keyId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getDate() {
@@ -131,5 +131,4 @@ public class Accounting {
 	public void setLinePeriodId(String linePeriodId) {
 		this.linePeriodId = linePeriodId;
 	}
-
 }

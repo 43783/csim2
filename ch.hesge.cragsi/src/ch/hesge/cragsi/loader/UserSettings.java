@@ -26,9 +26,8 @@ public class UserSettings extends Properties {
 			uniqueInstance = new UserSettings();
 
 			// Load properties from cragsi.conf
-			FileReader reader;
 			try {
-				reader = new FileReader("conf/craigsi.conf");
+				FileReader reader = new FileReader("conf/craigsi.conf");
 				uniqueInstance.load(reader);
 			}
 			catch (FileNotFoundException e) {

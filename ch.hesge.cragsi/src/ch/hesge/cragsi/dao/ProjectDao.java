@@ -8,6 +8,7 @@ import java.util.List;
 import ch.hesge.cragsi.loader.UserSettings;
 import ch.hesge.cragsi.model.Project;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to manage DAO access for Project.
@@ -44,10 +45,10 @@ public class ProjectDao {
 
 			Project project = new Project();
 
-			project.setDate(date);
+			project.setDate(StringUtils.fromString(date));
 			project.setCode(code);
-			project.setStartDate(startDate);
-			project.setEndDate(endDate);
+			project.setStartDate(StringUtils.fromString(startDate));
+			project.setEndDate(StringUtils.fromString(endDate));
 			project.setDescription(description);
 			project.setStatus(status);
 
