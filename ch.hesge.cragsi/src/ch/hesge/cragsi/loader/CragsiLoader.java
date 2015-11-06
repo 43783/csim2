@@ -23,8 +23,14 @@ import ch.hesge.cragsi.utils.StringUtils;
 public class CragsiLoader {
 
 	// Private attributes
-	private int accountingSequence;
-	private Date accountingDate;
+	private Calendar calendar;
+	private Date firstSemesterStart;
+	private Date firstSemesterEnd;
+	private Date secondSemesterStart;
+	private Date secondSemesterEnd;
+
+	private String academicPeriodS1;
+	private String academicPeriodS2;
 	private String journalId_S1;
 	private String journalId_S2;
 	private String periodId_S1;
@@ -40,13 +46,58 @@ public class CragsiLoader {
 	 */
 	public CragsiLoader() {
 
-		accountingSequence = 1;
 		accountings = new ArrayList<>();
-		accountingDate = Calendar.getInstance().getTime();
-		journalId_S1   = UserSettings.getInstance().getProperty("journalId_S1");
-		journalId_S2   = UserSettings.getInstance().getProperty("journalId_S2");
-		periodId_S1    = UserSettings.getInstance().getProperty("periodId_S1");
-		periodId_S2    = UserSettings.getInstance().getProperty("periodId_S2");
+		
+		academicPeriodS1 = UserSettings.getInstance().getProperty("academicPeriod_S1");
+		academicPeriodS2 = UserSettings.getInstance().getProperty("academicPeriod_S2");
+		journalId_S1     = UserSettings.getInstance().getProperty("journalId_S1");
+		journalId_S2     = UserSettings.getInstance().getProperty("journalId_S2");
+		periodId_S1      = UserSettings.getInstance().getProperty("periodId_S1");
+		periodId_S2      = UserSettings.getInstance().getProperty("periodId_S2");
+
+		calendar = Calendar.getInstance();
+
+		// Calculate start of first semester
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS1));
+		calendar.set(Calendar.MONTH, 8);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		firstSemesterStart = new Date(calendar.getTime().getTime());
+		
+		// Calculate start of second semester
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS1));
+		calendar.set(Calendar.MONTH, 11);
+		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		firstSemesterEnd = new Date(calendar.getTime().getTime());
+
+		// Calculate start of second semester
+		calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS2));
+		calendar.set(Calendar.MONTH, 0);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		secondSemesterStart = new Date(calendar.getTime().getTime());
+
+		// Calculate end of second semester
+		calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS2));
+		calendar.set(Calendar.MONTH, 7);
+		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		secondSemesterEnd = new Date(calendar.getTime().getTime());
 
 		try {
 			accounts = AccountDao.findAll();
@@ -87,30 +138,59 @@ public class CragsiLoader {
 	 */
 	private void generateFDCAccountings() throws IOException {
 
+		int accountingSequence = 1;
+		
 		for (Activity activity : ActivityDao.findAll()) {
 
 			if (!priceMap.containsKey(activity.getContractType())) {
 				System.out.println("==> missing contract '" + activity.getContractType() + "' !");
 			}
 			else {
+				
+				// Retrieve activity price
+				Price activityPrice = priceMap.get(activity.getContractType());
+
+				if (activityPrice == null) {
+					System.out.println("==> missing price for code '" + activity.getContractType() + "' !");
+					continue;
+				}
 
 				// Retrieve salary account
-				String salaryCode = UserSettings.getInstance().getProperty("salaryAccountCode");
+				String salaryCode = UserSettings.getInstance().getProperty("salaryAccount");
 				Account salaryAccount = AccountDao.findByCode(salaryCode, accounts);
 
+				if (salaryAccount == null) {
+					System.out.println("==> missing salaries account with code '" + salaryCode + "' !");
+					continue;
+				}
+
 				// Retrieve socle account
-				String socleCode = UserSettings.getInstance().getProperty("socleAccountCode");
+				String socleCode = UserSettings.getInstance().getProperty("socleAccount");
 				Account socleAccount = AccountDao.findByCode(socleCode, accounts);
 
-				// Retrieve collaborator account
-				Account resourceAccount = AccountDao.findByName(activity.getLastname(), accounts);
+				if (socleAccount == null) {
+					System.out.println("==> missing socle account with code '" + socleCode + "' !");
+					continue;
+				}
 
-				// Retrieve project account
+				// Retrieve projects account
+				String projectsCode = UserSettings.getInstance().getProperty("projectsAccount");
+				Account projectsAccount = AccountDao.findByCode(projectsCode, accounts);
+
+				// Retrieve collaborator account
+				Account collaboratorAccount = AccountDao.findByName(activity.getLastname(), accounts);
+
+				if (collaboratorAccount == null) {
+					System.out.println("==> missing collaborator account for '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
+					continue;
+				}
+
+				// Retrieve FDC project account
 				Account projectAccount = null;
 				String projectNumber = StringUtils.toNumber(activity.getProjectNumber());
 				if (!StringUtils.isEmtpy(projectNumber)) {
 
-					// Retrieve project
+					// Retrieve project from its number
 					Project project = ProjectDao.findByCode(projectNumber, projects);
 
 					// Check if project exists
@@ -119,188 +199,112 @@ public class CragsiLoader {
 						continue;
 					}
 					else {
+
+						Date currentDate = Calendar.getInstance().getTime();
 						
 						// Check if project is not closed
-						if (accountingDate.after(project.getStartDate()) && accountingDate.before(project.getEndDate())) {
-							
+						if (currentDate.equals(project.getStartDate()) || (currentDate.after(project.getStartDate()) && currentDate.before(project.getEndDate())) || currentDate.equals(project.getEndDate())) {
+
 							String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
 							projectAccount = AccountDao.findByCode(accountSuffix + projectNumber, accounts);
 
-							// Check if account associated to project exists
+							// Check if an account is associated to project
 							if (projectAccount == null) {
-								System.out.println("==> missing account for project with code '" + projectNumber + "' !");
+								System.out.println("==> missing project account with code '" + projectNumber + "' !");
 								continue;
 							}
 						}
+						else {
+							System.out.println("==> project with code '" + projectNumber + "' is already closed !");
+							continue;
+						}
 					}
 				}
+
+				// Calculate accounting date for first semester
+				Date accountingDateS1 = firstSemesterStart;
+				if (activity.getStartContract().before(firstSemesterStart)) {
+					System.out.println("==> invalid contract start date for collaborator '" + activity.getLastname() + " !");
+					continue;
+				}
+				else if (activity.getStartContract().after(firstSemesterStart)) {
+					accountingDateS1 = activity.getStartContract();
+				}
 				
-				// Retrieve activity price
-				Price activityPrice = priceMap.get(activity.getContractType());
+				// Calculate accounting date for second semester
+				Date accountingDateS2 = secondSemesterStart;				
+				if (activity.getEndContract().after(secondSemesterEnd)) {
+					System.out.println("==> invalid contract end date for collaborator '" + activity.getLastname() + " !");
+					continue;
+				}
+				else if (activity.getStartContract().after(secondSemesterStart)) {
+					accountingDateS2 = activity.getStartContract();
+				}
 				
-				// Catch invalid cases
-				if (resourceAccount == null) {
-					System.out.println("==> missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
-					continue;
-				}
-				else if (salaryAccount == null) {
-					System.out.println("==> missing account for salaries with code '" + salaryCode + "' !");
-					continue;
-				}
-				else if (socleAccount == null) {
-					System.out.println("==> missing account for socle with code '" + socleCode + "' !");
-					continue;
-				}
-				else if (activityPrice == null) {
-					System.out.println("==> missing price for code '" + activity.getContractType() + "' !");
-					continue;
-				}
-					
 				// Calculate activity costs
 				activity.setCostS1(activity.getTotalS1() * activityPrice.getPrice());
 				activity.setCostS2(activity.getTotalS2() * activityPrice.getPrice());
-				
+
 				// Adjust activityLabel with project number
 				String activityLabel = activity.getDetail();
 				if (!StringUtils.isEmtpy(projectNumber) && !activityLabel.contains(projectNumber)) {
 					activityLabel = projectNumber + "-" + activityLabel;
 				}
-				
-				// Calculate accounting label
-				String academicPeriodS1 = UserSettings.getInstance().getProperty("academicPeriod_S1");
-				String academicPeriodS2 = UserSettings.getInstance().getProperty("academicPeriod_S2");
-				String accountingLabel = resourceAccount.getCode() + "-" + resourceAccount.getName() + "-" + activityLabel; 
-				
-				// Format label nicely
-				accountingLabel = accountingLabel.replace("-", " - ");
-				
-				// Create debit resource entry (S1)
-				Accounting debitResourceS1Accounting = new Accounting();
-				debitResourceS1Accounting.setId(accountingSequence);
-				debitResourceS1Accounting.setDate(accountingDate);
-				debitResourceS1Accounting.setJournalId(journalId_S1);
-				debitResourceS1Accounting.setName(StringUtils.toString(accountingSequence));
-				debitResourceS1Accounting.setPeriodId(periodId_S1);
-				debitResourceS1Accounting.setAccountId(resourceAccount.getId());
-				debitResourceS1Accounting.setLineDate(accountingDate);
-				debitResourceS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
-				debitResourceS1Accounting.setLineDebit(activity.getCostS1());
-				debitResourceS1Accounting.setLineJournalId(journalId_S1);
-				debitResourceS1Accounting.setLinePeriodId(periodId_S1);
-				accountings.add(debitResourceS1Accounting);
 
-				// Create credit resource entry  (S1)
-				Accounting creditResourceS1Accounting = new Accounting();
-				creditResourceS1Accounting.setAccountId(salaryAccount.getId());
-				creditResourceS1Accounting.setLineDate(accountingDate);
-				creditResourceS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
-				creditResourceS1Accounting.setLineCredit(activity.getCostS1());
-				debitResourceS1Accounting.setLineJournalId(journalId_S1);
-				debitResourceS1Accounting.setLinePeriodId(periodId_S1);
-				accountings.add(creditResourceS1Accounting);
+				// Calculate accounting labels
+				String accountingLabel = (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + activityLabel).replace("-", " - ");
+				String accountingLabelS1 = accountingLabel + " (" + academicPeriodS1 + ")";
+				String accountingLabelS2 = accountingLabel + " (" + academicPeriodS2 + ")";
 
-				accountingSequence++;
-
-				// Create debit resource entry (S2)
-				Accounting debitResourceS2Accounting = new Accounting();
-				debitResourceS2Accounting.setId(accountingSequence);
-				debitResourceS2Accounting.setDate(accountingDate);
-				debitResourceS2Accounting.setJournalId(journalId_S2);
-				debitResourceS2Accounting.setName(StringUtils.toString(accountingSequence));
-				debitResourceS2Accounting.setPeriodId(periodId_S2);
-				debitResourceS2Accounting.setAccountId(resourceAccount.getId());
-				debitResourceS2Accounting.setLineDate(accountingDate);
-				debitResourceS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
-				debitResourceS2Accounting.setLineDebit(activity.getCostS2());
-				debitResourceS2Accounting.setLineJournalId(journalId_S2);
-				debitResourceS2Accounting.setLinePeriodId(periodId_S2);
-				accountings.add(debitResourceS2Accounting);
-
-				// Create credit resource entry  (S2)
-				Accounting creditResourceS2Accounting = new Accounting();
-				creditResourceS2Accounting.setAccountId(salaryAccount.getId());
-				creditResourceS2Accounting.setLineDate(accountingDate);
-				creditResourceS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
-				creditResourceS2Accounting.setLineCredit(activity.getCostS2());
-				creditResourceS2Accounting.setLineJournalId(journalId_S2);
-				creditResourceS2Accounting.setLinePeriodId(periodId_S2);
-				accountings.add(creditResourceS2Accounting);
-
-				accountingSequence++;
-
-				// Activity is associated to a project
-				if (projectAccount != null) {
+				// ==> Generate accounting for first semester, if accounting date is within range
+				if (activity.getCostS1() != 0 && !accountingDateS1.before(firstSemesterStart) && !accountingDateS1.after(firstSemesterEnd)) {
 					
-					// Create debit project entry (S1)
-					Accounting debitProjectS1Accounting = new Accounting();
-					debitProjectS1Accounting.setId(accountingSequence);
-					debitProjectS1Accounting.setDate(accountingDate);
-					debitProjectS1Accounting.setJournalId(journalId_S1);
-					debitProjectS1Accounting.setName(StringUtils.toString(accountingSequence));
-					debitProjectS1Accounting.setPeriodId(periodId_S1);
-					debitProjectS1Accounting.setAccountId(projectAccount.getId());
-					debitProjectS1Accounting.setLineDate(accountingDate);
-					debitProjectS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
-					debitProjectS1Accounting.setLineDebit(activity.getCostS1());
-					debitProjectS1Accounting.setLineJournalId(journalId_S1);
-					debitProjectS1Accounting.setLinePeriodId(periodId_S1);
-					accountings.add(debitProjectS1Accounting);
-						
+					// Collaborator accountings
+					accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, collaboratorAccount, accountingLabelS1, activity.getCostS1()));
+					accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, salaryAccount, accountingLabelS1, activity.getCostS1()));
 					accountingSequence++;
 
-					// Create debit project entry (S2)
-					Accounting debitProjectS2Accounting = new Accounting();
-					debitProjectS2Accounting.setId(accountingSequence);
-					debitProjectS2Accounting.setDate(accountingDate);
-					debitProjectS2Accounting.setJournalId(journalId_S2);
-					debitProjectS2Accounting.setName(StringUtils.toString(accountingSequence));
-					debitProjectS2Accounting.setPeriodId(periodId_S2);
-					debitProjectS2Accounting.setAccountId(projectAccount.getId());
-					debitProjectS2Accounting.setLineDate(accountingDate);
-					debitProjectS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
-					debitProjectS2Accounting.setLineDebit(activity.getCostS2());
-					debitProjectS2Accounting.setLineJournalId(journalId_S2);
-					debitProjectS2Accounting.setLinePeriodId(periodId_S2);
-					accountings.add(debitProjectS2Accounting);
-						
-					accountingSequence++;
+					// Check if activity is associated to a project
+					if (projectAccount != null) {
+
+						// Project accountings
+						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectAccount, accountingLabelS1, activity.getCostS1()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectsAccount, accountingLabelS1, activity.getCostS1()));
+						accountingSequence++;
+					}
+					else {
+
+						// Socle accountings
+						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, socleAccount, accountingLabelS1, activity.getCostS1()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectsAccount, accountingLabelS1, activity.getCostS1()));
+						accountingSequence++;
+					}
 				}
-				// Activity is associated to the HES socle
-				else {
+				
+
+				// ==> Generate accounting for second semester (S2)
+				if (activity.getCostS2() != 0 && !accountingDateS2.before(secondSemesterStart) && !accountingDateS2.after(secondSemesterEnd)) {
 					
-					// Create debit socle project entry (S1)
-					Accounting debitSocleS1Accounting = new Accounting();
-					debitSocleS1Accounting.setId(accountingSequence);
-					debitSocleS1Accounting.setDate(accountingDate);
-					debitSocleS1Accounting.setJournalId(journalId_S1);
-					debitSocleS1Accounting.setName(StringUtils.toString(accountingSequence));
-					debitSocleS1Accounting.setPeriodId(periodId_S1);
-					debitSocleS1Accounting.setAccountId(socleAccount.getId());
-					debitSocleS1Accounting.setLineDate(accountingDate);
-					debitSocleS1Accounting.setLineName(accountingLabel + " (" + academicPeriodS1 + ")");
-					debitSocleS1Accounting.setLineDebit(activity.getCostS1());
-					debitSocleS1Accounting.setLineJournalId(journalId_S1);
-					debitSocleS1Accounting.setLinePeriodId(periodId_S1);
-					accountings.add(debitSocleS1Accounting);
-						
+					// Collaborator accountings
+					accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, salaryAccount, accountingLabelS2, activity.getCostS2()));
 					accountingSequence++;
 
-					// Create debit socle project entry (S2)
-					Accounting debitSocleS2Accounting = new Accounting();
-					debitSocleS2Accounting.setId(accountingSequence);
-					debitSocleS2Accounting.setDate(accountingDate);
-					debitSocleS2Accounting.setJournalId(journalId_S2);
-					debitSocleS2Accounting.setName(StringUtils.toString(accountingSequence));
-					debitSocleS2Accounting.setPeriodId(periodId_S2);
-					debitSocleS2Accounting.setAccountId(socleAccount.getId());
-					debitSocleS2Accounting.setLineDate(accountingDate);
-					debitSocleS2Accounting.setLineName(accountingLabel + " (" + academicPeriodS2 + ")");
-					debitSocleS2Accounting.setLineDebit(activity.getCostS2());
-					debitSocleS2Accounting.setLineJournalId(journalId_S2);
-					debitSocleS2Accounting.setLinePeriodId(periodId_S2);
-					accountings.add(debitSocleS2Accounting);
-						
-					accountingSequence++;
+					// Check if activity is associated to a project
+					if (projectAccount != null) {
+
+						// Project accountings
+						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectAccount, accountingLabelS2, activity.getCostS2()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectsAccount, accountingLabelS2, activity.getCostS2()));
+						accountingSequence++;
+					}
+					else {
+
+						// Socle accountings
+						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, socleAccount, accountingLabelS2, activity.getCostS2()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectsAccount, accountingLabelS2, activity.getCostS2()));
+						accountingSequence++;
+					}
 				}
 			}
 		}

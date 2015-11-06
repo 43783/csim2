@@ -4,6 +4,8 @@
  */
 package ch.hesge.cragsi.model;
 
+import java.util.Date;
+
 /**
  * Represents a domain object.
  * 
@@ -19,6 +21,8 @@ public class Activity {
 	private String lastname; // Nom
 	private String firstname; // Prénom
 	private String contractType; // Type Contrat
+	private Date startContract; // Debut contrat
+	private Date endContract; // Fin contrat
 	private String function; // Fonction
 	private int studentCount; // Nbr etud.
 	private double hours; // Heures
@@ -72,6 +76,22 @@ public class Activity {
 
 	public void setContractType(String contractType) {
 		this.contractType = contractType;
+	}
+
+	public Date getStartContract() {
+		return startContract;
+	}
+
+	public void setStartContract(Date startContract) {
+		this.startContract = startContract;
+	}
+
+	public Date getEndContract() {
+		return endContract;
+	}
+
+	public void setEndContract(Date endContract) {
+		this.endContract = endContract;
 	}
 
 	public String getFunction() {

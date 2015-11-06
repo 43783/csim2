@@ -45,10 +45,10 @@ public class ProjectDao {
 
 			Project project = new Project();
 
-			project.setDate(StringUtils.fromString(date));
+			project.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
 			project.setCode(code);
-			project.setStartDate(StringUtils.fromString(startDate));
-			project.setEndDate(StringUtils.fromString(endDate));
+			project.setStartDate(StringUtils.toDate(startDate, "yyyy-MM-dd"));
+			project.setEndDate(StringUtils.toDate(endDate, "yyyy-MM-dd"));
 			project.setDescription(description);
 			project.setStatus(status);
 

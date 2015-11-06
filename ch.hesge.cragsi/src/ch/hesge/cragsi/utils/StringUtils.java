@@ -65,9 +65,10 @@ public class StringUtils {
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
 
-	public static Date fromString(String value) {
+	public static Date toDate(String value, String format) {
 		try {
-			return new SimpleDateFormat("yyyy-MM-dd").parse(value);
+			// date format: "yyyy.MM.dd"
+			return new SimpleDateFormat(format).parse(value);
 		}
 		catch (ParseException e) {
 			// Ignore exception

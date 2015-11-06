@@ -28,7 +28,7 @@ public class FundingDao {
 	public static List<Funding> findAll() throws IOException {
 
 		List<Funding> fundingList = new ArrayList<>();
-		String fundingPath = UserSettings.getInstance().getProperty("fundingPath");
+		String fundingPath = UserSettings.getInstance().getProperty("financialPath");
 
 		CsvReader reader = new CsvReader(fundingPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
@@ -44,7 +44,7 @@ public class FundingDao {
 			Funding funding = new Funding();
 			
 			funding.setId(hessoId);
-			funding.setDate(StringUtils.fromString(date));
+			funding.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
 			funding.setHessoId(hessoId);
 			funding.setName(name);
 			funding.setAmount(amount);

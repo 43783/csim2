@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesge.cragsi.loader.UserSettings;
-import ch.hesge.cragsi.model.Contributor;
+import ch.hesge.cragsi.model.Collaborator;
 import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.StringUtils;
 
@@ -18,17 +18,17 @@ import ch.hesge.cragsi.utils.StringUtils;
  * @author Eric Harth
  */
 
-public class ContributorDao {
+public class CollaboratorDao {
 
 	/**
 	 * Retrieve all contributors contained in file
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<Contributor> findAll() throws IOException {
+	public static List<Collaborator> findAll() throws IOException {
 
-		List<Contributor> contributorList = new ArrayList<>();
-		String contributorPath = UserSettings.getInstance().getProperty("contributorPath");
+		List<Collaborator> contributorList = new ArrayList<>();
+		String contributorPath = UserSettings.getInstance().getProperty("collaboratorPath");
 
 		CsvReader reader = new CsvReader(contributorPath, ';', Charset.forName("UTF8"));
 		reader.setSkipEmptyRecords(true);
@@ -45,10 +45,10 @@ public class ContributorDao {
 			String classe = reader.get(6);
 			String rate = reader.get(7);
 
-			Contributor contributor = new Contributor();
+			Collaborator contributor = new Collaborator();
 			
 			contributor.setId(id);
-			contributor.setDate(StringUtils.fromString(date));
+			contributor.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
 			contributor.setHessoId(hessoId);
 			contributor.setGestpacId(gestpacId);
 			contributor.setLastname(lastname);

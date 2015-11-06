@@ -43,8 +43,11 @@ public class ActivityDao {
 
 			for (Activity activity : activityMap.get(activityKey)) {
 
+				// Activity time should always contains activity extract from detail
 				Activity activityTime = activityTimeMap.get(activityKey);
 
+				activity.setStartContract(activityTime.getStartContract());
+				activity.setEndContract(activityTime.getEndContract());
 				activity.setTotalS1(activityTime.getTotalS1());
 				activity.setTotalS2(activityTime.getTotalS2());
 
@@ -160,6 +163,8 @@ public class ActivityDao {
 			String lastname = reader.get(1);
 			String firstname = reader.get(2);
 			String pillarGE = reader.get(10);
+			String startContract = reader.get(14);
+			String endContract = reader.get(15);
 			String totalS1 = reader.get(18);
 			String totalS2 = reader.get(20);
 
@@ -170,6 +175,8 @@ public class ActivityDao {
 
 				activity.setLastname(lastname);
 				activity.setFirstname(firstname);
+				activity.setStartContract(StringUtils.toDate(startContract, "dd.MM.yyyy"));
+				activity.setEndContract(StringUtils.toDate(endContract, "dd.MM.yyyy"));
 				activity.setTotalS1(StringUtils.toDouble(totalS1));
 				activity.setTotalS2(StringUtils.toDouble(totalS2));
 

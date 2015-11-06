@@ -15,7 +15,7 @@ import java.util.Date;
  * @author Eric Harth
  */
 
-public class Contributor {
+public class Collaborator {
 
 	// Private attributes
 	private String id; // IdCollaborateur
@@ -30,7 +30,7 @@ public class Contributor {
 	/**
 	 * Default constructor
 	 */
-	public Contributor() {
+	public Collaborator() {
 	}
 
 	public String getId() {
