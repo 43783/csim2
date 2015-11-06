@@ -26,8 +26,9 @@ public class UserSettings extends Properties {
 			uniqueInstance = new UserSettings();
 
 			// Load properties from cragsi.conf
+			FileReader reader = null;
 			try {
-				FileReader reader = new FileReader("conf/craigsi.conf");
+				reader = new FileReader("conf/craigsi.conf");
 				uniqueInstance.load(reader);
 			}
 			catch (FileNotFoundException e) {
@@ -35,6 +36,16 @@ public class UserSettings extends Properties {
 			}
 			catch (IOException e) {
 				System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+			}
+			finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 
