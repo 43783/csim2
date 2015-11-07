@@ -1,9 +1,7 @@
 package ch.hesge.cragsi.loader;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,16 +31,16 @@ public class CragsiLoader {
 	// Private attributes
 	private int accountingSequence;
 
-	private String journalId_S1;
-	private String journalId_S2;
-	private String periodId_S1;
-	private String periodId_S2;
+	private String firstSemesterJournalId;
+	private String secondSemesterjournalId;
+	private String firstSemesterPeriodId;
+	private String secondSemesterPeriodId;
 
 	private String accountSuffix;
 	private Account socleAccount;
-	private Account salaryAccount;	
+	private Account salaryAccount;
 	private Account allProjectsAccount;
-	
+
 	private List<Account> accounts;
 	private List<Project> projects;
 	private Map<String, Price> priceMap;
@@ -54,111 +52,74 @@ public class CragsiLoader {
 	public CragsiLoader() {
 	}
 
-	public void init() {
+	/**
+	 * Initialize the loader.
+	 * 
+	 * @throws IOException
+	 */
+	public void init() throws IOException {
 
-		accountings.clear();
 		accountingSequence = 1;
 		accountings = new ArrayList<>();
 
-		journalId_S1 = UserSettings.getInstance().getProperty("journalId_S1");
-		journalId_S2 = UserSettings.getInstance().getProperty("journalId_S2");
-		periodId_S1  = UserSettings.getInstance().getProperty("periodId_S1");
-		periodId_S2  = UserSettings.getInstance().getProperty("periodId_S2");
+		// Retrieve properties from config file
+		accountSuffix           = CragsiLogic.getProperty("projectAccountSuffix");
+		firstSemesterJournalId  = CragsiLogic.getProperty("journalId_S1");
+		firstSemesterPeriodId   = CragsiLogic.getProperty("periodId_S1");
+		secondSemesterjournalId = CragsiLogic.getProperty("journalId_S2");
+		secondSemesterPeriodId  = CragsiLogic.getProperty("periodId_S2");
 
-		try {
+		// Load common files
+		accounts = AccountDao.findAll();
+		projects = ProjectDao.findAll();
+		priceMap = PriceDao.findMapByLibelle();
 
-			accounts = AccountDao.findAll();
-			projects = ProjectDao.findAll();
-			priceMap = PriceDao.findMapByLibelle();
-
-			// Retrieve the all-project-code property
-			String allProjectsCode = UserSettings.getInstance().getProperty("projectsAccount");
-
-			if (allProjectsCode == null) {
-				throw new IllegalArgumentException("==> missing property 'projectsAccount' in configuration file !");
-			}
-
-			// Retrieve the projects account
-			allProjectsAccount = AccountDao.findByCode(allProjectsCode, accounts);
-
-			if (allProjectsAccount == null) {
-				throw new IllegalArgumentException("==> missing projects account with code '" + allProjectsCode + "' !");
-			}
-
-			// Retrieve suffix of all projects in accounting list
-			accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-
-			if (accountSuffix == null) {
-				throw new IllegalArgumentException("==> missing property 'projectAccountSuffix' in configuration file !");
-			}
-
-			// Retrieve socle account code
-			String socleCode = UserSettings.getInstance().getProperty("socleAccount");
-
-			if (socleCode == null) {
-				throw new IllegalArgumentException("==> missing property 'socleAccount' in configuration file !");
-			}
-
-			// Retrieve the socle account
-			socleAccount = AccountDao.findByCode(socleCode, accounts);
-
-			if (socleAccount == null) {
-				throw new IllegalArgumentException("==> missing socle account with code '" + socleCode + "' !");
-			}
-			
-			// Retrieve salaries account code
-			String salaryCode = UserSettings.getInstance().getProperty("salaryAccount");
-
-			if (salaryCode == null) {
-				throw new IllegalArgumentException("==> missing property 'salaryAccount' in configuration file !");
-			}
-
-			// Retrieve the salaries account
-			salaryAccount = AccountDao.findByCode(salaryCode, accounts);
-
-			if (salaryAccount == null) {
-				throw new IllegalArgumentException("==> missing salaries account with code '" + salaryCode + "' !");
-			}
-		}
-		catch (FileNotFoundException e) {
-			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
-		}
-		catch (IOException e) {
-			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+		// Retrieve the projects account
+		String allProjectsCode = CragsiLogic.getProperty("projectsAccount");
+		allProjectsAccount = AccountDao.findByCode(allProjectsCode, accounts);
+		if (allProjectsAccount == null) {
+			throw new IllegalArgumentException("==> missing projects account with code '" + allProjectsCode + "' !");
 		}
 
-	}
-
-	public void start() {
-
-		try {
-
-			// Generate FDC accountings
-			generateFDCAccountings();
-
-			// Generate AGF accountings
-			//generateAFGAccountings();
-
-			// Generate funding accountings
-			generateFundingAccountings();
-
-			// Generate partner accountings
-			generatePartnerAccountings();
-
-			// Finally save accountings
-			AccountingDao.saveAll(accountings);
-
+		// Retrieve the socle account
+		String socleCode = CragsiLogic.getProperty("socleAccount");
+		socleAccount = AccountDao.findByCode(socleCode, accounts);
+		if (socleAccount == null) {
+			throw new IllegalArgumentException("==> missing socle account with code '" + socleCode + "' !");
 		}
-		catch (FileNotFoundException e) {
-			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
-		}
-		catch (IOException e) {
-			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+
+		// Retrieve the salaries account
+		String salaryCode = CragsiLogic.getProperty("salaryAccount");
+		salaryAccount = AccountDao.findByCode(salaryCode, accounts);
+		if (salaryAccount == null) {
+			throw new IllegalArgumentException("==> missing salaries account with code '" + salaryCode + "' !");
 		}
 	}
 
 	/**
-	 * 
+	 * Start loading all files and genered all accountings.
+	 * @throws IOException
+	 */
+	public void start() throws IOException {
+
+		// Generate FDC accountings
+		generateFDCAccountings();
+
+		// Generate AGF accountings
+		generateAGFAccountings();
+
+		// Generate funding accountings
+		generateFundingAccountings();
+
+		// Generate partner accountings
+		generatePartnerAccountings();
+
+		// Finally save accountings
+		AccountingDao.saveAll(accountings);
+	}
+
+	/**
+	 * Generate activities accountings
 	 */
 	private void generateFDCAccountings() throws IOException {
 
@@ -166,152 +127,90 @@ public class CragsiLoader {
 
 		for (Activity activity : ActivityDao.findAll()) {
 
-			if (!priceMap.containsKey(activity.getContractType())) {
-				System.out.println("==> missing contract '" + activity.getContractType() + "' !");
-			}
-			else {
-
-				// Retrieve the activity price
-				Price activityPrice = priceMap.get(activity.getContractType());
-
-				if (activityPrice == null) {
-					System.out.println("==> missing price for code '" + activity.getContractType() + "' !");
-					continue;
-				}
-
+			Price activityPrice = CragsiLogic.getActivityPrice(activity, priceMap);
+			
+			if (activity != null) {
+				
 				// Retrieve the collaborator account
-				Account collaboratorAccount = AccountDao.findByName(activity.getLastname(), accounts);
+				Account collaboratorAccount = CragsiLogic.getCollaboratorAccount(activity, accounts);
 
-				if (collaboratorAccount == null) {
-					System.out.println("==> missing collaborator account for '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
-					continue;
-				}
+				// Retrieve the project account
+				Account projectAccount = CragsiLogic.getProjectAccount(activity, projects, accounts);
 
-				// Retrieve FDC project account
-				Account projectAccount = null;
-				String projectNumber = StringUtils.toNumber(activity.getProjectNumber());
-				if (!StringUtils.isEmtpy(projectNumber)) {
+				if (collaboratorAccount != null && projectAccount != null) {
+					
+					// Retrieve accounting dates
+					Date firstSemesterAccountingDate = CragsiLogic.getFirstSemesterAccountingDate(activity);
+					Date secondSemesterAccountingDate = CragsiLogic.getSecondSemesterAccountingDate(activity);					
 
-					// Retrieve project from its number
-					Project project = ProjectDao.findByCode(projectNumber, projects);
+					// Calculate activity costs
+					activity.setCostS1(activity.getTotalS1() * activityPrice.getPrice());
+					activity.setCostS2(activity.getTotalS2() * activityPrice.getPrice());
 
-					// Check if project exists
-					if (project == null) {
-						System.out.println("==> missing project with code '" + projectNumber + "' !");
-						continue;
+					// Adjust activityLabel with project number
+					String activityLabel = activity.getDetail();
+					if (!StringUtils.isEmtpy(activity.getProjectNumber()) && !activityLabel.contains(activity.getProjectNumber())) {
+						activityLabel = activity.getProjectNumber() + "-" + activityLabel;
 					}
-					else {
 
-						Date currentDate = Calendar.getInstance().getTime();
+					// Calculate accounting labels
+					String accountingLabel = (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + activityLabel).replace("-", " - ");
+					String academicPeriodYearS1 = UserSettings.getInstance().getProperty("academicPeriod_S1");
+					String academicPeriodYearS2 = UserSettings.getInstance().getProperty("academicPeriod_S2");
+					String accountingLabelS1 = accountingLabel + " (" + academicPeriodYearS1 + ")";
+					String accountingLabelS2 = accountingLabel + " (" + academicPeriodYearS2 + ")";
+					
+					// ==> Generate accounting for first semester, if accounting date is within range
+					Date firstSemesterStartDate = DateFactory.getFirstSemesterStartDate();
+					Date firstSemesterEndDate = DateFactory.getFirstSemesterEndDate();
+					if (activity.getCostS1() != 0 && !firstSemesterAccountingDate.before(firstSemesterStartDate) && !firstSemesterAccountingDate.after(firstSemesterEndDate)) {
 
-						// Check if project is not closed
-						if (currentDate.equals(project.getStartDate()) || (currentDate.after(project.getStartDate()) && currentDate.before(project.getEndDate())) || currentDate.equals(project.getEndDate())) {
+						// Collaborator accountings
+						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, collaboratorAccount, accountingLabelS1, activity.getCostS1()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, salaryAccount, accountingLabelS1, activity.getCostS1()));
+						accountingSequence++;
 
-							String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-							projectAccount = AccountDao.findByCode(accountSuffix + projectNumber, accounts);
+						// Check if activity is associated to a project
+						if (projectAccount != null) {
 
-							// Check if an account for the project exists
-							if (projectAccount == null) {
-								System.out.println("==> missing project account with code '" + projectNumber + "' !");
-								continue;
-							}
+							// Project accountings
+							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, projectAccount, accountingLabelS1, activity.getCostS1()));
+							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
+							accountingSequence++;
 						}
 						else {
-							System.out.println("==> project with code '" + projectNumber + "' is already closed !");
-							continue;
+							// Socle accountings
+							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, socleAccount, accountingLabelS1, activity.getCostS1()));
+							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
+							accountingSequence++;
 						}
 					}
-				}
 
-				// Calculate accounting date for first semester
-				Date firstSemesterStartDate = DateFactory.getFirstSemesterStartDate();
-				Date firstSemesterEndDate = DateFactory.getFirstSemesterEndDate();
-				Date accountingDateS1 = firstSemesterStartDate;
-				if (activity.getStartContract().before(firstSemesterStartDate)) {
-					System.out.println("==> invalid contract start date for collaborator '" + activity.getLastname() + " !");
-					continue;
-				}
-				else if (activity.getStartContract().after(firstSemesterStartDate)) {
-					accountingDateS1 = activity.getStartContract();
-				}
+					// ==> Generate accounting for second semester (S2)
+					Date secondSemesterStartDate = DateFactory.getFirstSemesterStartDate();
+					Date secondSemesterEndDate = DateFactory.getFirstSemesterEndDate();
+					if (activity.getCostS2() != 0 && !secondSemesterAccountingDate.before(secondSemesterStartDate) && !secondSemesterAccountingDate.after(secondSemesterEndDate)) {
 
-				// Calculate accounting date for second semester
-				Date secondSemesterStartDate = DateFactory.getSecondSemesterStartDate();
-				Date secondSemesterEndDate = DateFactory.getSecondSemesterEndDate();
-				Date accountingDateS2 = secondSemesterStartDate;
-				if (activity.getEndContract().after(secondSemesterEndDate)) {
-					System.out.println("==> invalid contract end date for collaborator '" + activity.getLastname() + " !");
-					continue;
-				}
-				else if (activity.getStartContract().after(secondSemesterStartDate)) {
-					accountingDateS2 = activity.getStartContract();
-				}
-
-				// Calculate activity costs
-				activity.setCostS1(activity.getTotalS1() * activityPrice.getPrice());
-				activity.setCostS2(activity.getTotalS2() * activityPrice.getPrice());
-
-				// Adjust activityLabel with project number
-				String activityLabel = activity.getDetail();
-				if (!StringUtils.isEmtpy(projectNumber) && !activityLabel.contains(projectNumber)) {
-					activityLabel = projectNumber + "-" + activityLabel;
-				}
-
-				// Calculate accounting labels
-				String accountingLabel = (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + activityLabel).replace("-", " - ");
-				String academicPeriodYearS1 = UserSettings.getInstance().getProperty("academicPeriod_S1");
-				String academicPeriodYearS2 = UserSettings.getInstance().getProperty("academicPeriod_S2");
-				String accountingLabelS1 = accountingLabel + " (" + academicPeriodYearS1 + ")";
-				String accountingLabelS2 = accountingLabel + " (" + academicPeriodYearS2 + ")";
-
-				// ==> Generate accounting for first semester, if accounting date is within range
-				if (activity.getCostS1() != 0 && !accountingDateS1.before(firstSemesterStartDate) && !accountingDateS1.after(firstSemesterEndDate)) {
-
-					// Collaborator accountings
-					accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, collaboratorAccount, accountingLabelS1, activity.getCostS1()));
-					accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, salaryAccount, accountingLabelS1, activity.getCostS1()));
-					accountingSequence++;
-
-					// Check if activity is associated to a project
-					if (projectAccount != null) {
-
-						// Project accountings
-						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectAccount, accountingLabelS1, activity.getCostS1()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
+						// Collaborator accountings
+						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, salaryAccount, accountingLabelS2, activity.getCostS2()));
 						accountingSequence++;
+
+						// Check if activity is associated to a project
+						if (projectAccount != null) {
+							// Project accountings
+							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, projectAccount, accountingLabelS2, activity.getCostS2()));
+							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
+							accountingSequence++;
+						}
+						else {
+							// Socle accountings
+							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, socleAccount, accountingLabelS2, activity.getCostS2()));
+							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
+							accountingSequence++;
+						}
 					}
-					else {
-
-						// Socle accountings
-						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, socleAccount, accountingLabelS1, activity.getCostS1()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
-						accountingSequence++;
-					}
-				}
-
-				// ==> Generate accounting for second semester (S2)
-				if (activity.getCostS2() != 0 && !accountingDateS2.before(secondSemesterStartDate) && !accountingDateS2.after(secondSemesterEndDate)) {
-
-					// Collaborator accountings
-					accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
-					accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, salaryAccount, accountingLabelS2, activity.getCostS2()));
-					accountingSequence++;
-
-					// Check if activity is associated to a project
-					if (projectAccount != null) {
-
-						// Project accountings
-						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectAccount, accountingLabelS2, activity.getCostS2()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
-						accountingSequence++;
-					}
-					else {
-
-						// Socle accountings
-						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, socleAccount, accountingLabelS2, activity.getCostS2()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
-						accountingSequence++;
-					}
+					
 				}
 			}
 		}
@@ -321,6 +220,7 @@ public class CragsiLoader {
 	}
 
 	/**
+	 * Generate financial accountings.
 	 * 
 	 * @throws IOException
 	 */
@@ -330,18 +230,13 @@ public class CragsiLoader {
 
 		for (AGFLine afgLine : AGFLineDao.findAll()) {
 
-			Account projectAccount = AccountDao.findByCode(accountSuffix + afgLine.getProjectNumber(), accounts);
+			Account projectAccount = CragsiLogic.getProjectAccount(afgLine, accounts);
 
-			// Check if an account for the project exists
-			if (projectAccount == null) {
-				System.out.println("==> missing project account with code '" + afgLine.getProjectNumber() + "' !");
-				continue;
+			if (projectAccount != null) {
+				accountings.add(AccountingFactory.createDebitEntry(accountingSequence, afgLine.getDate(), firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
+				accountings.add(AccountingFactory.createCreditEntry(accountingSequence, afgLine.getDate(), firstSemesterJournalId, firstSemesterPeriodId, projectAccount, afgLine.getName(), afgLine.getAmount()));
+				accountingSequence++;
 			}
-
-			// Generate AGF accountings
-			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, afgLine.getDate(), journalId_S1, periodId_S1, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
-			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, afgLine.getDate(), journalId_S1, periodId_S1, projectAccount, afgLine.getName(), afgLine.getAmount()));
-			accountingSequence++;
 		}
 
 		System.out.println("AGF generation done.");
@@ -349,6 +244,7 @@ public class CragsiLoader {
 	}
 
 	/**
+	 * Generation funding accounting.
 	 * 
 	 * @throws IOException
 	 */
@@ -358,24 +254,20 @@ public class CragsiLoader {
 
 		for (Funding funding : FundingDao.findAll()) {
 
-			Account projectAccount = AccountDao.findByCode(accountSuffix + funding.getProjectNumber(), accounts);
+			Account projectAccount = CragsiLogic.getProjectAccount(funding, accounts);
 
-			// Check if an account for the project exists
-			if (projectAccount == null) {
-				System.out.println("==> missing project account with code '" + funding.getProjectNumber() + "' !");
-				continue;
+			if (projectAccount != null) {
+				accountings.add(AccountingFactory.createDebitEntry(accountingSequence, funding.getDate(), firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, funding.getName(), funding.getAmount()));
+				accountings.add(AccountingFactory.createCreditEntry(accountingSequence, funding.getDate(), firstSemesterJournalId, firstSemesterPeriodId, projectAccount, funding.getName(), funding.getAmount()));
+				accountingSequence++;
 			}
-
-			// Generate funding accountings
-			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, funding.getDate(), journalId_S1, periodId_S1, allProjectsAccount, funding.getName(), funding.getAmount()));
-			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, funding.getDate(), journalId_S1, periodId_S1, projectAccount, funding.getName(), funding.getAmount()));
-			accountingSequence++;
 		}
 
 		System.out.println("FINANCIAL generation done.");
 	}
 
 	/**
+	 * Generating partner accountings.
 	 * 
 	 * @throws IOException
 	 */
@@ -385,18 +277,13 @@ public class CragsiLoader {
 
 		for (Partner partner : PartnerDao.findAll()) {
 
-			Account projectAccount = AccountDao.findByCode(accountSuffix + partner.getProjectNumber(), accounts);
+			Account projectAccount = CragsiLogic.getProjectAccount(partner, accounts);
 
-			// Check if an account for the project exists
-			if (projectAccount == null) {
-				System.out.println("==> missing project account with code '" + partner.getProjectNumber() + "' !");
-				continue;
+			if (projectAccount != null) {
+				accountings.add(AccountingFactory.createDebitEntry(accountingSequence, partner.getDate(), firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, partner.getName(), partner.getAmount()));
+				accountings.add(AccountingFactory.createCreditEntry(accountingSequence, partner.getDate(), firstSemesterJournalId, firstSemesterPeriodId, projectAccount, partner.getName(), partner.getAmount()));
+				accountingSequence++;
 			}
-
-			// generate project accountings
-			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, partner.getDate(), journalId_S1, periodId_S1, allProjectsAccount, partner.getName(), partner.getAmount()));
-			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, partner.getDate(), journalId_S1, periodId_S1, projectAccount, partner.getName(), partner.getAmount()));
-			accountingSequence++;
 		}
 
 		System.out.println("SUBCONTRACTOR generation done.");
@@ -440,9 +327,13 @@ public class CragsiLoader {
 	/**
 	 * Main entry point
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
-		new CragsiLoader().start();
+	public static void main(String[] args) throws IOException {
+
+		CragsiLoader loader = new CragsiLoader();
+		loader.init();
+		loader.start();
 	}
 
 }

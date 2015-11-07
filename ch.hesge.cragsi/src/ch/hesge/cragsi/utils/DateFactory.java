@@ -1,30 +1,9 @@
 package ch.hesge.cragsi.utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-import ch.hesge.cragsi.dao.AGFLineDao;
-import ch.hesge.cragsi.dao.AccountDao;
-import ch.hesge.cragsi.dao.AccountingDao;
-import ch.hesge.cragsi.dao.ActivityDao;
-import ch.hesge.cragsi.dao.FundingDao;
-import ch.hesge.cragsi.dao.PartnerDao;
-import ch.hesge.cragsi.dao.PriceDao;
-import ch.hesge.cragsi.dao.ProjectDao;
 import ch.hesge.cragsi.loader.UserSettings;
-import ch.hesge.cragsi.model.AGFLine;
-import ch.hesge.cragsi.model.Account;
-import ch.hesge.cragsi.model.Accounting;
-import ch.hesge.cragsi.model.Activity;
-import ch.hesge.cragsi.model.Funding;
-import ch.hesge.cragsi.model.Partner;
-import ch.hesge.cragsi.model.Price;
-import ch.hesge.cragsi.model.Project;
 
 public class DateFactory {
 
