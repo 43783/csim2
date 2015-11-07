@@ -64,7 +64,14 @@ public class CragsiLogic {
 	 * @return
 	 */
 	public static Account getCollaboratorAccount(Activity activity, List<Account> accounts) {
-		return AccountDao.findByName(activity.getLastname(), accounts);
+
+		Account collaboratorAccount = AccountDao.findByName(activity.getLastname(), accounts);
+		
+		if (collaboratorAccount == null) {
+			System.out.println("==> missing collaborator account for '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
+		}
+		
+		return collaboratorAccount;
 	}
 	
 	/**
@@ -77,13 +84,12 @@ public class CragsiLogic {
 	public static Account getProjectAccount(Activity activity, List<Project> projects, List<Account> accounts) {
 		
 		// Retrieve the collaborator account
-		Account collaboratorAccount = AccountDao.findByName(activity.getLastname(), accounts);
+		Account collaboratorAccount = getCollaboratorAccount(activity, accounts);
 
 		if (collaboratorAccount == null) {
-			System.out.println("==> missing collaborator account for '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
 			return null;
 		}
-
+		
 		// Retrieve FDC project account
 		Account projectAccount = null;
 		String projectNumber = StringUtils.toNumber(activity.getProjectNumber());

@@ -36,7 +36,6 @@ public class CragsiLoader {
 	private String firstSemesterPeriodId;
 	private String secondSemesterPeriodId;
 
-	private String accountSuffix;
 	private Account socleAccount;
 	private Account salaryAccount;
 	private Account allProjectsAccount;
@@ -63,7 +62,6 @@ public class CragsiLoader {
 		accountings = new ArrayList<>();
 
 		// Retrieve properties from config file
-		accountSuffix           = CragsiLogic.getProperty("projectAccountSuffix");
 		firstSemesterJournalId  = CragsiLogic.getProperty("journalId_S1");
 		firstSemesterPeriodId   = CragsiLogic.getProperty("periodId_S1");
 		secondSemesterjournalId = CragsiLogic.getProperty("journalId_S2");
@@ -172,15 +170,7 @@ public class CragsiLoader {
 
 						// Check if activity is associated to a project
 						if (projectAccount != null) {
-
-							// Project accountings
 							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, projectAccount, accountingLabelS1, activity.getCostS1()));
-							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
-							accountingSequence++;
-						}
-						else {
-							// Socle accountings
-							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, socleAccount, accountingLabelS1, activity.getCostS1()));
 							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, firstSemesterAccountingDate, firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
 							accountingSequence++;
 						}
@@ -198,19 +188,11 @@ public class CragsiLoader {
 
 						// Check if activity is associated to a project
 						if (projectAccount != null) {
-							// Project accountings
 							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, projectAccount, accountingLabelS2, activity.getCostS2()));
 							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
 							accountingSequence++;
 						}
-						else {
-							// Socle accountings
-							accountings.add(AccountingFactory.createDebitEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, socleAccount, accountingLabelS2, activity.getCostS2()));
-							accountings.add(AccountingFactory.createCreditEntry(accountingSequence, secondSemesterAccountingDate, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
-							accountingSequence++;
-						}
 					}
-					
 				}
 			}
 		}
