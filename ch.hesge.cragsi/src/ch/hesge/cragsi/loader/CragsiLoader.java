@@ -38,6 +38,11 @@ public class CragsiLoader {
 	private String periodId_S1;
 	private String periodId_S2;
 
+	private String accountSuffix;
+	private Account socleAccount;
+	private Account salaryAccount;	
+	private Account allProjectsAccount;
+	
 	private List<Account> accounts;
 	private List<Project> projects;
 	private Map<String, Price> priceMap;
@@ -57,14 +62,63 @@ public class CragsiLoader {
 
 		journalId_S1 = UserSettings.getInstance().getProperty("journalId_S1");
 		journalId_S2 = UserSettings.getInstance().getProperty("journalId_S2");
-		periodId_S1 = UserSettings.getInstance().getProperty("periodId_S1");
-		periodId_S2 = UserSettings.getInstance().getProperty("periodId_S2");
+		periodId_S1  = UserSettings.getInstance().getProperty("periodId_S1");
+		periodId_S2  = UserSettings.getInstance().getProperty("periodId_S2");
 
 		try {
 
 			accounts = AccountDao.findAll();
 			projects = ProjectDao.findAll();
 			priceMap = PriceDao.findMapByLibelle();
+
+			// Retrieve the all-project-code property
+			String allProjectsCode = UserSettings.getInstance().getProperty("projectsAccount");
+
+			if (allProjectsCode == null) {
+				throw new IllegalArgumentException("==> missing property 'projectsAccount' in configuration file !");
+			}
+
+			// Retrieve the projects account
+			allProjectsAccount = AccountDao.findByCode(allProjectsCode, accounts);
+
+			if (allProjectsAccount == null) {
+				throw new IllegalArgumentException("==> missing projects account with code '" + allProjectsCode + "' !");
+			}
+
+			// Retrieve suffix of all projects in accounting list
+			accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
+
+			if (accountSuffix == null) {
+				throw new IllegalArgumentException("==> missing property 'projectAccountSuffix' in configuration file !");
+			}
+
+			// Retrieve socle account code
+			String socleCode = UserSettings.getInstance().getProperty("socleAccount");
+
+			if (socleCode == null) {
+				throw new IllegalArgumentException("==> missing property 'socleAccount' in configuration file !");
+			}
+
+			// Retrieve the socle account
+			socleAccount = AccountDao.findByCode(socleCode, accounts);
+
+			if (socleAccount == null) {
+				throw new IllegalArgumentException("==> missing socle account with code '" + socleCode + "' !");
+			}
+			
+			// Retrieve salaries account code
+			String salaryCode = UserSettings.getInstance().getProperty("salaryAccount");
+
+			if (salaryCode == null) {
+				throw new IllegalArgumentException("==> missing property 'salaryAccount' in configuration file !");
+			}
+
+			// Retrieve the salaries account
+			salaryAccount = AccountDao.findByCode(salaryCode, accounts);
+
+			if (salaryAccount == null) {
+				throw new IllegalArgumentException("==> missing salaries account with code '" + salaryCode + "' !");
+			}
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
@@ -122,33 +176,6 @@ public class CragsiLoader {
 
 				if (activityPrice == null) {
 					System.out.println("==> missing price for code '" + activity.getContractType() + "' !");
-					continue;
-				}
-
-				// Retrieve the salaries account
-				String salaryCode = UserSettings.getInstance().getProperty("salaryAccount");
-				Account salaryAccount = AccountDao.findByCode(salaryCode, accounts);
-
-				if (salaryAccount == null) {
-					System.out.println("==> missing salaries account with code '" + salaryCode + "' !");
-					continue;
-				}
-
-				// Retrieve the socle account
-				String socleCode = UserSettings.getInstance().getProperty("socleAccount");
-				Account socleAccount = AccountDao.findByCode(socleCode, accounts);
-
-				if (socleAccount == null) {
-					System.out.println("==> missing socle account with code '" + socleCode + "' !");
-					continue;
-				}
-
-				// Retrieve the projects account
-				String projectsCode = UserSettings.getInstance().getProperty("projectsAccount");
-				Account projectsAccount = AccountDao.findByCode(projectsCode, accounts);
-
-				if (projectsAccount == null) {
-					System.out.println("==> missing projects account with code '" + projectsCode + "' !");
 					continue;
 				}
 
@@ -250,14 +277,14 @@ public class CragsiLoader {
 
 						// Project accountings
 						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectAccount, accountingLabelS1, activity.getCostS1()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectsAccount, accountingLabelS1, activity.getCostS1()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
 						accountingSequence++;
 					}
 					else {
 
 						// Socle accountings
 						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, socleAccount, accountingLabelS1, activity.getCostS1()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, projectsAccount, accountingLabelS1, activity.getCostS1()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
 						accountingSequence++;
 					}
 				}
@@ -275,14 +302,14 @@ public class CragsiLoader {
 
 						// Project accountings
 						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectAccount, accountingLabelS2, activity.getCostS2()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectsAccount, accountingLabelS2, activity.getCostS2()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
 						accountingSequence++;
 					}
 					else {
 
 						// Socle accountings
 						accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, socleAccount, accountingLabelS2, activity.getCostS2()));
-						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, projectsAccount, accountingLabelS2, activity.getCostS2()));
+						accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
 						accountingSequence++;
 					}
 				}
@@ -297,26 +324,9 @@ public class CragsiLoader {
 	 * 
 	 * @throws IOException
 	 */
-	private void generateAFGAccountings() throws IOException {
+	private void generateAGFAccountings() throws IOException {
 
 		System.out.println("Generating AGF accounting...");
-
-		// Retrieve the projects account
-		String projectsCode = UserSettings.getInstance().getProperty("projectsAccount");
-		Account projectsAccount = AccountDao.findByCode(projectsCode, accounts);
-
-		if (projectsAccount == null) {
-			System.out.println("==> missing projects account with code '" + projectsCode + "' !");
-			return;
-		}
-
-		// Retrieve suffix of all projects in accounting list
-		String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-
-		if (accountSuffix == null) {
-			System.out.println("==> missing property 'projectAccountSuffix' in configuration file !");
-			return;
-		}
 
 		for (AGFLine afgLine : AGFLineDao.findAll()) {
 
@@ -329,7 +339,7 @@ public class CragsiLoader {
 			}
 
 			// Generate AGF accountings
-			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, afgLine.getDate(), journalId_S1, periodId_S1, projectsAccount, afgLine.getName(), afgLine.getAmount()));
+			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, afgLine.getDate(), journalId_S1, periodId_S1, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
 			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, afgLine.getDate(), journalId_S1, periodId_S1, projectAccount, afgLine.getName(), afgLine.getAmount()));
 			accountingSequence++;
 		}
@@ -346,23 +356,6 @@ public class CragsiLoader {
 
 		System.out.println("Generating FINANCIAL accounting...");
 
-		// Retrieve the projects account
-		String projectsCode = UserSettings.getInstance().getProperty("projectsAccount");
-		Account projectsAccount = AccountDao.findByCode(projectsCode, accounts);
-
-		if (projectsAccount == null) {
-			System.out.println("==> missing projects account with code '" + projectsCode + "' !");
-			return;
-		}
-
-		// Retrieve suffix of all projects in accounting list
-		String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-
-		if (accountSuffix == null) {
-			System.out.println("==> missing property 'projectAccountSuffix' in configuration file !");
-			return;
-		}
-
 		for (Funding funding : FundingDao.findAll()) {
 
 			Account projectAccount = AccountDao.findByCode(accountSuffix + funding.getProjectNumber(), accounts);
@@ -374,7 +367,7 @@ public class CragsiLoader {
 			}
 
 			// Generate funding accountings
-			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, funding.getDate(), journalId_S1, periodId_S1, projectsAccount, funding.getName(), funding.getAmount()));
+			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, funding.getDate(), journalId_S1, periodId_S1, allProjectsAccount, funding.getName(), funding.getAmount()));
 			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, funding.getDate(), journalId_S1, periodId_S1, projectAccount, funding.getName(), funding.getAmount()));
 			accountingSequence++;
 		}
@@ -390,23 +383,6 @@ public class CragsiLoader {
 
 		System.out.println("Generating SUBCONTRACTOR accounting...");
 
-		// Retrieve the projects account
-		String projectsCode = UserSettings.getInstance().getProperty("projectsAccount");
-		Account projectsAccount = AccountDao.findByCode(projectsCode, accounts);
-
-		if (projectsAccount == null) {
-			System.out.println("==> missing projects account with code '" + projectsCode + "' !");
-			return;
-		}
-
-		// Retrieve suffix of all projects in accounting list
-		String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-
-		if (accountSuffix == null) {
-			System.out.println("==> missing property 'projectAccountSuffix' in configuration file !");
-			return;
-		}
-
 		for (Partner partner : PartnerDao.findAll()) {
 
 			Account projectAccount = AccountDao.findByCode(accountSuffix + partner.getProjectNumber(), accounts);
@@ -418,7 +394,7 @@ public class CragsiLoader {
 			}
 
 			// generate project accountings
-			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, partner.getDate(), journalId_S1, periodId_S1, projectsAccount, partner.getName(), partner.getAmount()));
+			accountings.add(AccountingFactory.createDebitEntry(accountingSequence, partner.getDate(), journalId_S1, periodId_S1, allProjectsAccount, partner.getName(), partner.getAmount()));
 			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, partner.getDate(), journalId_S1, periodId_S1, projectAccount, partner.getName(), partner.getAmount()));
 			accountingSequence++;
 		}
