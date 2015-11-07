@@ -24,21 +24,15 @@ import ch.hesge.cragsi.model.Funding;
 import ch.hesge.cragsi.model.Partner;
 import ch.hesge.cragsi.model.Price;
 import ch.hesge.cragsi.model.Project;
+import ch.hesge.cragsi.utils.AccountingFactory;
+import ch.hesge.cragsi.utils.DateFactory;
 import ch.hesge.cragsi.utils.StringUtils;
 
 public class CragsiLoader {
 
 	// Private attributes
 	private int accountingSequence;
-	
-	private Calendar calendar;
-	private Date firstSemesterStart;
-	private Date firstSemesterEnd;
-	private Date secondSemesterStart;
-	private Date secondSemesterEnd;
 
-	private String academicPeriodS1;
-	private String academicPeriodS2;
 	private String journalId_S1;
 	private String journalId_S2;
 	private String periodId_S1;
@@ -53,63 +47,21 @@ public class CragsiLoader {
 	 * Default constructor
 	 */
 	public CragsiLoader() {
+	}
 
+	public void init() {
+
+		accountings.clear();
 		accountingSequence = 1;
-
 		accountings = new ArrayList<>();
-		
-		academicPeriodS1 = UserSettings.getInstance().getProperty("academicPeriod_S1");
-		academicPeriodS2 = UserSettings.getInstance().getProperty("academicPeriod_S2");
-		journalId_S1     = UserSettings.getInstance().getProperty("journalId_S1");
-		journalId_S2     = UserSettings.getInstance().getProperty("journalId_S2");
-		periodId_S1      = UserSettings.getInstance().getProperty("periodId_S1");
-		periodId_S2      = UserSettings.getInstance().getProperty("periodId_S2");
 
-		calendar = Calendar.getInstance();
-
-		// Calculate start of first semester
-		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS1));
-		calendar.set(Calendar.MONTH, 8);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		firstSemesterStart = new Date(calendar.getTime().getTime());
-		
-		// Calculate start of second semester
-		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS1));
-		calendar.set(Calendar.MONTH, 11);
-		calendar.set(Calendar.DAY_OF_MONTH, 31);
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
-		calendar.set(Calendar.MILLISECOND, 999);
-		firstSemesterEnd = new Date(calendar.getTime().getTime());
-
-		// Calculate start of second semester
-		calendar = Calendar.getInstance();
-		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS2));
-		calendar.set(Calendar.MONTH, 0);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		secondSemesterStart = new Date(calendar.getTime().getTime());
-
-		// Calculate end of second semester
-		calendar = Calendar.getInstance();
-		calendar.set(Calendar.YEAR, StringUtils.toInteger(academicPeriodS2));
-		calendar.set(Calendar.MONTH, 7);
-		calendar.set(Calendar.DAY_OF_MONTH, 31);
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
-		calendar.set(Calendar.MILLISECOND, 999);
-		secondSemesterEnd = new Date(calendar.getTime().getTime());
+		journalId_S1 = UserSettings.getInstance().getProperty("journalId_S1");
+		journalId_S2 = UserSettings.getInstance().getProperty("journalId_S2");
+		periodId_S1 = UserSettings.getInstance().getProperty("periodId_S1");
+		periodId_S2 = UserSettings.getInstance().getProperty("periodId_S2");
 
 		try {
+
 			accounts = AccountDao.findAll();
 			projects = ProjectDao.findAll();
 			priceMap = PriceDao.findMapByLibelle();
@@ -120,11 +72,10 @@ public class CragsiLoader {
 		catch (IOException e) {
 			System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
 		}
+
 	}
 
 	public void start() {
-
-		accountings.clear();
 
 		try {
 
@@ -165,7 +116,7 @@ public class CragsiLoader {
 				System.out.println("==> missing contract '" + activity.getContractType() + "' !");
 			}
 			else {
-				
+
 				// Retrieve the activity price
 				Price activityPrice = priceMap.get(activity.getContractType());
 
@@ -200,7 +151,7 @@ public class CragsiLoader {
 					System.out.println("==> missing projects account with code '" + projectsCode + "' !");
 					continue;
 				}
-				
+
 				// Retrieve the collaborator account
 				Account collaboratorAccount = AccountDao.findByName(activity.getLastname(), accounts);
 
@@ -225,7 +176,7 @@ public class CragsiLoader {
 					else {
 
 						Date currentDate = Calendar.getInstance().getTime();
-						
+
 						// Check if project is not closed
 						if (currentDate.equals(project.getStartDate()) || (currentDate.after(project.getStartDate()) && currentDate.before(project.getEndDate())) || currentDate.equals(project.getEndDate())) {
 
@@ -246,25 +197,29 @@ public class CragsiLoader {
 				}
 
 				// Calculate accounting date for first semester
-				Date accountingDateS1 = firstSemesterStart;
-				if (activity.getStartContract().before(firstSemesterStart)) {
+				Date firstSemesterStartDate = DateFactory.getFirstSemesterStartDate();
+				Date firstSemesterEndDate = DateFactory.getFirstSemesterEndDate();
+				Date accountingDateS1 = firstSemesterStartDate;
+				if (activity.getStartContract().before(firstSemesterStartDate)) {
 					System.out.println("==> invalid contract start date for collaborator '" + activity.getLastname() + " !");
 					continue;
 				}
-				else if (activity.getStartContract().after(firstSemesterStart)) {
+				else if (activity.getStartContract().after(firstSemesterStartDate)) {
 					accountingDateS1 = activity.getStartContract();
 				}
-				
+
 				// Calculate accounting date for second semester
-				Date accountingDateS2 = secondSemesterStart;				
-				if (activity.getEndContract().after(secondSemesterEnd)) {
+				Date secondSemesterStartDate = DateFactory.getSecondSemesterStartDate();
+				Date secondSemesterEndDate = DateFactory.getSecondSemesterEndDate();
+				Date accountingDateS2 = secondSemesterStartDate;
+				if (activity.getEndContract().after(secondSemesterEndDate)) {
 					System.out.println("==> invalid contract end date for collaborator '" + activity.getLastname() + " !");
 					continue;
 				}
-				else if (activity.getStartContract().after(secondSemesterStart)) {
+				else if (activity.getStartContract().after(secondSemesterStartDate)) {
 					accountingDateS2 = activity.getStartContract();
 				}
-				
+
 				// Calculate activity costs
 				activity.setCostS1(activity.getTotalS1() * activityPrice.getPrice());
 				activity.setCostS2(activity.getTotalS2() * activityPrice.getPrice());
@@ -277,12 +232,14 @@ public class CragsiLoader {
 
 				// Calculate accounting labels
 				String accountingLabel = (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + activityLabel).replace("-", " - ");
-				String accountingLabelS1 = accountingLabel + " (" + academicPeriodS1 + ")";
-				String accountingLabelS2 = accountingLabel + " (" + academicPeriodS2 + ")";
+				String academicPeriodYearS1 = UserSettings.getInstance().getProperty("academicPeriod_S1");
+				String academicPeriodYearS2 = UserSettings.getInstance().getProperty("academicPeriod_S2");
+				String accountingLabelS1 = accountingLabel + " (" + academicPeriodYearS1 + ")";
+				String accountingLabelS2 = accountingLabel + " (" + academicPeriodYearS2 + ")";
 
 				// ==> Generate accounting for first semester, if accounting date is within range
-				if (activity.getCostS1() != 0 && !accountingDateS1.before(firstSemesterStart) && !accountingDateS1.after(firstSemesterEnd)) {
-					
+				if (activity.getCostS1() != 0 && !accountingDateS1.before(firstSemesterStartDate) && !accountingDateS1.after(firstSemesterEndDate)) {
+
 					// Collaborator accountings
 					accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, collaboratorAccount, accountingLabelS1, activity.getCostS1()));
 					accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS1, journalId_S1, periodId_S1, salaryAccount, accountingLabelS1, activity.getCostS1()));
@@ -304,11 +261,10 @@ public class CragsiLoader {
 						accountingSequence++;
 					}
 				}
-				
 
 				// ==> Generate accounting for second semester (S2)
-				if (activity.getCostS2() != 0 && !accountingDateS2.before(secondSemesterStart) && !accountingDateS2.after(secondSemesterEnd)) {
-					
+				if (activity.getCostS2() != 0 && !accountingDateS2.before(secondSemesterStartDate) && !accountingDateS2.after(secondSemesterEndDate)) {
+
 					// Collaborator accountings
 					accountings.add(AccountingFactory.createDebitEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
 					accountings.add(AccountingFactory.createCreditEntry(accountingSequence, accountingDateS2, journalId_S2, periodId_S2, salaryAccount, accountingLabelS2, activity.getCostS2()));
@@ -332,9 +288,9 @@ public class CragsiLoader {
 				}
 			}
 		}
-		
+
 		System.out.println("FDC generation done.");
-		
+
 	}
 
 	/**
@@ -342,7 +298,7 @@ public class CragsiLoader {
 	 * @throws IOException
 	 */
 	private void generateAFGAccountings() throws IOException {
-		
+
 		System.out.println("Generating AGF accounting...");
 
 		// Retrieve the projects account
@@ -353,19 +309,19 @@ public class CragsiLoader {
 			System.out.println("==> missing projects account with code '" + projectsCode + "' !");
 			return;
 		}
-		
+
 		// Retrieve suffix of all projects in accounting list
 		String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-		
+
 		if (accountSuffix == null) {
 			System.out.println("==> missing property 'projectAccountSuffix' in configuration file !");
 			return;
 		}
-		
+
 		for (AGFLine afgLine : AGFLineDao.findAll()) {
-			
+
 			Account projectAccount = AccountDao.findByCode(accountSuffix + afgLine.getProjectNumber(), accounts);
-			
+
 			// Check if an account for the project exists
 			if (projectAccount == null) {
 				System.out.println("==> missing project account with code '" + afgLine.getProjectNumber() + "' !");
@@ -377,9 +333,9 @@ public class CragsiLoader {
 			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, afgLine.getDate(), journalId_S1, periodId_S1, projectAccount, afgLine.getName(), afgLine.getAmount()));
 			accountingSequence++;
 		}
-		
+
 		System.out.println("AGF generation done.");
-		
+
 	}
 
 	/**
@@ -387,7 +343,7 @@ public class CragsiLoader {
 	 * @throws IOException
 	 */
 	private void generateFundingAccountings() throws IOException {
-		
+
 		System.out.println("Generating FINANCIAL accounting...");
 
 		// Retrieve the projects account
@@ -398,19 +354,19 @@ public class CragsiLoader {
 			System.out.println("==> missing projects account with code '" + projectsCode + "' !");
 			return;
 		}
-		
+
 		// Retrieve suffix of all projects in accounting list
 		String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-		
+
 		if (accountSuffix == null) {
 			System.out.println("==> missing property 'projectAccountSuffix' in configuration file !");
 			return;
 		}
-		
+
 		for (Funding funding : FundingDao.findAll()) {
-			
+
 			Account projectAccount = AccountDao.findByCode(accountSuffix + funding.getProjectNumber(), accounts);
-			
+
 			// Check if an account for the project exists
 			if (projectAccount == null) {
 				System.out.println("==> missing project account with code '" + funding.getProjectNumber() + "' !");
@@ -422,16 +378,16 @@ public class CragsiLoader {
 			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, funding.getDate(), journalId_S1, periodId_S1, projectAccount, funding.getName(), funding.getAmount()));
 			accountingSequence++;
 		}
-		
+
 		System.out.println("FINANCIAL generation done.");
 	}
-	
+
 	/**
 	 * 
 	 * @throws IOException
 	 */
 	private void generatePartnerAccountings() throws IOException {
-		
+
 		System.out.println("Generating SUBCONTRACTOR accounting...");
 
 		// Retrieve the projects account
@@ -442,19 +398,19 @@ public class CragsiLoader {
 			System.out.println("==> missing projects account with code '" + projectsCode + "' !");
 			return;
 		}
-		
+
 		// Retrieve suffix of all projects in accounting list
 		String accountSuffix = UserSettings.getInstance().getProperty("projectAccountSuffix");
-		
+
 		if (accountSuffix == null) {
 			System.out.println("==> missing property 'projectAccountSuffix' in configuration file !");
 			return;
 		}
-		
+
 		for (Partner partner : PartnerDao.findAll()) {
-			
+
 			Account projectAccount = AccountDao.findByCode(accountSuffix + partner.getProjectNumber(), accounts);
-			
+
 			// Check if an account for the project exists
 			if (projectAccount == null) {
 				System.out.println("==> missing project account with code '" + partner.getProjectNumber() + "' !");
@@ -466,7 +422,7 @@ public class CragsiLoader {
 			accountings.add(AccountingFactory.createCreditEntry(accountingSequence, partner.getDate(), journalId_S1, periodId_S1, projectAccount, partner.getName(), partner.getAmount()));
 			accountingSequence++;
 		}
-		
+
 		System.out.println("SUBCONTRACTOR generation done.");
 	}
 

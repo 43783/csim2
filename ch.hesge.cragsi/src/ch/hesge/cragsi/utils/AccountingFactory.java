@@ -1,10 +1,9 @@
-package ch.hesge.cragsi.loader;
+package ch.hesge.cragsi.utils;
 
 import java.util.Date;
 
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.model.Accounting;
-import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to create accounting entries.
