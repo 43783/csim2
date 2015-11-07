@@ -11,55 +11,66 @@ import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
- * Class responsible to manage DAO access for Account.
+ * Class responsible to manage physical access to underlying
+ * files and to load them in memory.
  * 
- * Copyright HEG Geneva 2014, Switzerland
+ * Copyright HEG Geneva 2015, Switzerland
  * 
  * @author Eric Harth
  */
-
 public class CollaboratorDao {
 
 	/**
-	 * Retrieve all contributors contained in file
-	 * @return
+	 * Retrieve all contributors contained in file.
+	 * 
+	 * @return a list of Collaborator
 	 * @throws IOException
 	 */
 	public static List<Collaborator> findAll() throws IOException {
 
+		CsvReader reader = null;
 		List<Collaborator> contributorList = new ArrayList<>();
 		String contributorPath = UserSettings.getInstance().getProperty("collaboratorPath");
 
-		CsvReader reader = new CsvReader(contributorPath, ';', Charset.forName("UTF8"));
-		reader.setSkipEmptyRecords(true);
-		reader.readHeaders();
-
-		while (reader.readRecord()) {
+		try {
 			
-			String date = reader.get(0);
-			String hessoId = reader.get(1);
-			String id = reader.get(2);
-			String gestpacId = reader.get(3);
-			String lastname = reader.get(4);
-			String firstname = reader.get(5);
-			String classe = reader.get(6);
-			String rate = reader.get(7);
+			// Open file to load
+			reader = new CsvReader(contributorPath, ';', Charset.forName("UTF8"));
+			reader.setSkipEmptyRecords(true);
+			reader.readHeaders();
 
-			Collaborator contributor = new Collaborator();
-			
-			contributor.setId(id);
-			contributor.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
-			contributor.setHessoId(hessoId);
-			contributor.setGestpacId(gestpacId);
-			contributor.setLastname(lastname);
-			contributor.setFirstname(firstname);
-			contributor.setClasse(classe);
-			contributor.setRate(rate);
+			// Start parsing collaborators
+			while (reader.readRecord()) {
+				
+				// Retrieve field values
+				String date      = reader.get(0);
+				String hessoId   = reader.get(1);
+				String id        = reader.get(2);
+				String gestpacId = reader.get(3);
+				String lastname  = reader.get(4);
+				String firstname = reader.get(5);
+				String classe    = reader.get(6);
+				String rate      = reader.get(7);
 
-			contributorList.add(contributor);
+				// Create and initialize an new instance
+				Collaborator contributor = new Collaborator();
+				
+				contributor.setId(id);
+				contributor.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
+				contributor.setHessoId(hessoId);
+				contributor.setGestpacId(gestpacId);
+				contributor.setLastname(lastname);
+				contributor.setFirstname(firstname);
+				contributor.setClasse(classe);
+				contributor.setRate(rate);
+
+				contributorList.add(contributor);
+			}
 		}
-
-		reader.close();
+		finally {
+			if (reader != null) 
+				reader.close();
+		}
 		
 		return contributorList;
 	}

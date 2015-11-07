@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesge.cragsi.loader.UserSettings;
-import ch.hesge.cragsi.model.Funding;
+import ch.hesge.cragsi.model.Partner;
 import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.StringUtils;
 
@@ -18,19 +18,19 @@ import ch.hesge.cragsi.utils.StringUtils;
  * 
  * @author Eric Harth
  */
-public class FundingDao {
+public class PartnerDao {
 
 	/**
-	 * Retrieve all fundings (or financials) contained in file.
+	 * Retrieve all partners (or sub-contractor) contained in file.
 	 * 
-	 * @return a list of Funding
+	 * @return a list of Partner
 	 * @throws IOException
 	 */
-	public static List<Funding> findAll() throws IOException {
+	public static List<Partner> findAll() throws IOException {
 
 		CsvReader reader = null;
-		List<Funding> fundingList = new ArrayList<>();
-		String fundingPath = UserSettings.getInstance().getProperty("financialPath");
+		List<Partner> partnerList = new ArrayList<>();
+		String fundingPath = UserSettings.getInstance().getProperty("partnerPath");
 
 		try {
 
@@ -39,31 +39,33 @@ public class FundingDao {
 			reader.setSkipEmptyRecords(true);
 			reader.readHeaders();
 
-			// Start parsing fundings
+			// Start parsing partners
 			while (reader.readRecord()) {
-				
+
 				// Retrieve field values
 				String date          = reader.get(0);
 				String projectNumber = reader.get(1);
 				String name          = reader.get(2);
-				String amount        = reader.get(3);
+				String title         = reader.get(3);
+				String amount        = reader.get(4);
 
 				// Create and initialize an new instance
-				Funding funding = new Funding();
-				
-				funding.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
-				funding.setProjectNumber(projectNumber);
-				funding.setName(name);
-				funding.setAmount(StringUtils.toDouble(amount));
+				Partner partner = new Partner();
 
-				fundingList.add(funding);
+				partner.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
+				partner.setProjectNumber(projectNumber);
+				partner.setName(name);
+				partner.setTitle(title);
+				partner.setAmount(StringUtils.toDouble(amount));
+
+				partnerList.add(partner);
 			}
 		}
 		finally {
-			if (reader != null) 
+			if (reader != null)
 				reader.close();
 		}
-		
-		return fundingList;
+
+		return partnerList;
 	}
 }

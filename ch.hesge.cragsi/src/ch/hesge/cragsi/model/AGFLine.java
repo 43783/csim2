@@ -14,18 +14,18 @@ import java.util.Date;
  * @author Eric Harth
  */
 
-public class Funding {
+public class AGFLine {
 
 	// Private attributes
-	private Date date; // Date
+	private Date date; // date
 	private String projectNumber; // N° HESSO
-	private String name; // Nom du partenaires
+	private String name; // Libellé
 	private double amount; // Montant
 
 	/**
 	 * Default constructor
 	 */
-	public Funding() {
+	public AGFLine() {
 	}
 
 	public Date getDate() {
@@ -59,4 +59,5 @@ public class Funding {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
+
 }

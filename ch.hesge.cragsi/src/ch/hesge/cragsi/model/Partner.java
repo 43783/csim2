@@ -14,18 +14,19 @@ import java.util.Date;
  * @author Eric Harth
  */
 
-public class Funding {
+public class Partner {
 
 	// Private attributes
 	private Date date; // Date
 	private String projectNumber; // N° HESSO
-	private String name; // Nom du partenaires
+	private String name; // Nom du prestataire
+	private String title; // Libellé
 	private double amount; // Montant
 
 	/**
 	 * Default constructor
 	 */
-	public Funding() {
+	public Partner() {
 	}
 
 	public Date getDate() {
@@ -50,6 +51,14 @@ public class Funding {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public double getAmount() {

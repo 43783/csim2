@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.model.AGFLine;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to manage physical access to underlying
@@ -17,45 +19,45 @@ import ch.hesge.cragsi.utils.CsvReader;
  * 
  * @author Eric Harth
  */
-public class AccountDao {
+public class AGFLineDao {
 
 	/**
-	 * Retrieve all accounts contained in file.
+	 * Retrieve all AGF lines contained in file.
 	 * 
-	 * @return a list of Account
+	 * @return a list of AGFLine
 	 * @throws IOException
 	 */
-	public static List<Account> findAll() throws IOException {
+	public static List<AGFLine> findAll() throws IOException {
 
 		CsvReader reader = null;
-		List<Account> accountList = new ArrayList<>();
-		String accountPath = UserSettings.getInstance().getProperty("accountPath");
+		List<AGFLine> agfLines = new ArrayList<>();
+		String agfPath = UserSettings.getInstance().getProperty("agfPath");
 
 		try {
-			
+
 			// Open file to load
-			reader = new CsvReader(accountPath, ';', Charset.forName("UTF8"));
+			reader = new CsvReader(agfPath, ';', Charset.forName("UTF8"));
 			reader.setSkipEmptyRecords(true);
 			reader.readHeaders();
 
-			// Start parsing accounts
+			// Start parsing lines
 			while (reader.readRecord()) {
 
 				// Retrieve field values
-				String id   = reader.get(0);
-				String code = reader.get(1);
-				String name = reader.get(2);
-				String type = reader.get(3);
+				String date    = reader.get(0);
+				String project = reader.get(1);
+				String name    = reader.get(2);
+				String amount  = reader.get(3);
 
 				// Create and initialize an new instance
-				Account account = new Account();
+				AGFLine line = new AGFLine();
 
-				account.setId(id);
-				account.setCode(code);
-				account.setName(name);
-				account.setType(type);
+				line.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
+				line.setProjectNumber(project);
+				line.setName(name);
+				line.setAmount(StringUtils.toDouble(amount));
 
-				accountList.add(account);
+				agfLines.add(line);
 			}
 		}
 		finally {
@@ -63,16 +65,13 @@ public class AccountDao {
 				reader.close();
 		}
 
-		return accountList;
+		return agfLines;
 	}
-	
+
 	/**
-	 * Retrieve a single account based on its name.
-	 * If an account match partially the name (that is it contains part of the name), it is returned.
 	 * 
-	 * @param name the account name to find
-	 * @param accounts the list of account to use while scanning name
-	 * @return an Account or null
+	 * @return
+	 * @throws IOException
 	 */
 	public static Account findByName(String name, List<Account> accounts) {
 
@@ -85,14 +84,11 @@ public class AccountDao {
 
 		return null;
 	}
-	
+
 	/**
-	 * Retrieve a single account based on its code.
-	 * If an account match exactly the code, it is returned.
 	 * 
-	 * @param code the account code to find
-	 * @param accounts the list of account to use while scanning name
-	 * @return an Account or null
+	 * @return
+	 * @throws IOException
 	 */
 	public static Account findByCode(String code, List<Account> accounts) {
 

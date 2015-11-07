@@ -12,38 +12,57 @@ import ch.hesge.cragsi.model.Price;
 import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.StringUtils;
 
+/**
+ * Class responsible to manage physical access to underlying
+ * files and to load them in memory.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * 
+ * @author Eric Harth
+ */
 public class PriceDao {
 
 	/**
-	 * Retrieve all prices contained in file
-	 * @return
+	 * Retrieve all prices contained in file.
+	 * 
+	 * @return a list of Price
 	 * @throws IOException
 	 */
 	public static List<Price> findAll() throws IOException {
 
+		CsvReader reader = null;
 		List<Price> priceList = new ArrayList<>();
 		String pricePath = UserSettings.getInstance().getProperty("pricePath");
 
-		CsvReader reader = new CsvReader(pricePath, ';', Charset.forName("UTF8"));
-		reader.setSkipEmptyRecords(true);
-		reader.readHeaders();
+		try {
 
-		while (reader.readRecord()) {
+			// Open file to load
+			reader = new CsvReader(pricePath, ';', Charset.forName("UTF8"));
+			reader.setSkipEmptyRecords(true);
+			reader.readHeaders();
 
-			String category = reader.get(0);
-			String libelle = reader.get(1);
-			String price = reader.get(2);
+			// Start parsing prices
+			while (reader.readRecord()) {
 
-			Price priceObject = new Price();
+				// Retrieve field values
+				String category = reader.get(0);
+				String libelle  = reader.get(1);
+				String price    = reader.get(2);
 
-			priceObject.setCategory(category);
-			priceObject.setLibelle(libelle);
-			priceObject.setPrice(StringUtils.toDouble(price));
+				// Create and initialize an new instance
+				Price priceObject = new Price();
 
-			priceList.add(priceObject);
+				priceObject.setCategory(category);
+				priceObject.setLibelle(libelle);
+				priceObject.setPrice(StringUtils.toDouble(price));
+
+				priceList.add(priceObject);
+			}
 		}
-
-		reader.close();
+		finally {
+			if (reader != null) 
+				reader.close();
+		}
 
 		return priceList;
 	}
