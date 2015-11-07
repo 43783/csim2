@@ -1,8 +1,8 @@
-Date;N° HESSO;Nom du partenaire;Montant
-2013-07-13;14160;GE - Ecole d'ingénieurs de Genève;7160.00
-2009-02-02;15517;GE - Ecole d'ingénieurs de Genève;13500.00
+Date;NÂ° HESSO;Nom du partenaire;Montant
+2013-07-13;14160;GE - Ecole d'ingÃ©nieurs de GenÃ¨ve;7160.00
+2009-02-02;15517;GE - Ecole d'ingÃ©nieurs de GenÃ¨ve;13500.00
 2009-07-20;17891;EIG - IMEC;10575.00
-2010-11-23;17412;GE - Haute école d'arts appliqués;9828.00
+2010-11-23;17412;GE - Haute Ã©cole d'arts appliquÃ©s;9828.00
 2009-11-19;19602;EIG - IBIO;3150.00
 2013-10-22;18933;EIG - INES;12000.00
 2015-02-19;18455;hepia inPACT;18000.00
@@ -12,13 +12,13 @@ Date;N° HESSO;Nom du partenaire;Montant
 2008-10-31;18283;539,Informatique de gestion;1680.00
 2009-07-20;18738;EIG - INIS;5133.00
 2010-06-28;19172;EIG - INIS;1500.00
-2011-01-25;18410;GE - Ecole d'ingénieurs de Genève ;6000.00
+2011-01-25;18410;GE - Ecole d'ingÃ©nieurs de GenÃ¨ve ;6000.00
 2008-10-30;17995;EIG - IBIO;7560.00
 2011-12-16;17984;EIG - IBIO;9600.00
 2007-11-16;18403;549,Information et documentation;892.50
 2007-11-16;18403;549,Information et documentation;1785.00
 2014-05-08;18866;EIG - DIR;36900.00
-2010-11-23;18837;GE - Haute école d'arts appliqués;23263.00
+2010-11-23;18837;GE - Haute Ã©cole d'arts appliquÃ©s;23263.00
 2008-11-20;19555;539,Informatique de gestion;3187.50
 2008-11-20;19555;539,Informatique de gestion;6375.00
 2012-11-05;19197;EIG - IMEC;8000.00
@@ -29,14 +29,14 @@ Date;N° HESSO;Nom du partenaire;Montant
 2009-04-20;19378;EIG - INIT;4006.00
 2013-10-22;20258;EIG - INES;5400.00
 2014-11-20;20307;EIG - INES;17225.00
-2014-06-17;20461;HEAD, 629,Architecture d'intérieur;4495.00
+2014-06-17;20461;HEAD, 629,Architecture d'intÃ©rieur;4495.00
 2010-01-08;21039;549,Information et documentation;1785.00
 2010-01-08;21039;549,Information et documentation;892.50
-2013-04-30;20663;Santé;17703.00
+2013-04-30;20663;SantÃ©;17703.00
 2014-05-05;19677;EIG - INIS;2490.00
 2009-04-01;20450;539,Informatique de gestion;2982.00
 2009-04-01;20450;539,Informatique de gestion;5964.00
-2012-05-08;21856;Santé;22262.00
+2012-05-08;21856;SantÃ©;22262.00
 2011-08-18;19868;EIG - INIT;21900.00
 2011-11-10;20049;EIG - IMEC;4100.00
 2012-06-25;20274;EIL - Institut Terre Nature Paysage;6000.00

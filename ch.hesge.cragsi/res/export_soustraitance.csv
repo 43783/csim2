@@ -1,11 +1,11 @@
-Date;N° HESSO;Nom du prestataire;Libellé;Montant
+Date;NÂ° HESSO;Nom du prestataire;LibellÃ©;Montant
 2006-04-27;11259;DAEL, SPBR;Chef de section;10800.00
 2006-04-27;11259;DAEL, SPBR;Directeur;1280.00
 2006-04-27;11259;DAEL, SPBR;Directeur;2560.00
-2005-12-08;11260;prestataire à définir;contrat de mandat sport;12000.00
-2005-12-08;11260;CCSO Genève;contrat de mandat sport;12000.00
-2005-12-08;11260;prestataire à définir;;24000.00
-2005-12-08;11260;CCSO Genève;;24000.00
+2005-12-08;11260;prestataire Ã  dÃ©finir;contrat de mandat sport;12000.00
+2005-12-08;11260;CCSO GenÃ¨ve;contrat de mandat sport;12000.00
+2005-12-08;11260;prestataire Ã  dÃ©finir;;24000.00
+2005-12-08;11260;CCSO GenÃ¨ve;;24000.00
 2004-01-09;11829;Dr Jan PAWLOWSKI;Consultant UNIGE;9000.00
 2004-01-09;11829;Dr Robert PECK;Consultant UNIGE;9000.00
 2004-01-09;11829;Dr Jan PAWLOWSKI;Consultant UNIGE;9000.00
@@ -17,104 +17,104 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2006-11-10;11869;Consultant senior Beryl SA;junior;3600.00
 2006-11-10;11869;Consultant senior Beryl SA;junior;14400.00
 2006-11-10;11869;Consultant senior Beryl SA;senior;9000.00
-2006-10-30;11905;Crédit Suisse;;816.00
+2006-10-30;11905;CrÃ©dit Suisse;;816.00
 2006-10-30;11905;HSW Luzern;;816.00
-2006-10-30;11905;Université de Savoie;;816.00
-2006-10-30;11905;Crédit Suisse;prestation non-facturée;816.00
-2006-10-30;11905;HSW Luzern;prestation non-facturée;816.00
-2006-10-30;11905;Université de Savoie;prestation non-facturée;816.00
-2006-10-30;11905;Crédit Suisse;prestation non-facturée;3700.00
-2006-10-30;11905;HSW Luzern;prestation non-facturée;3700.00
-2006-10-30;11905;Université de Savoie;prestation non-facturée;3700.00
-2006-10-30;11905;Crédit Suisse;;4080.00
+2006-10-30;11905;UniversitÃ© de Savoie;;816.00
+2006-10-30;11905;CrÃ©dit Suisse;prestation non-facturÃ©e;816.00
+2006-10-30;11905;HSW Luzern;prestation non-facturÃ©e;816.00
+2006-10-30;11905;UniversitÃ© de Savoie;prestation non-facturÃ©e;816.00
+2006-10-30;11905;CrÃ©dit Suisse;prestation non-facturÃ©e;3700.00
+2006-10-30;11905;HSW Luzern;prestation non-facturÃ©e;3700.00
+2006-10-30;11905;UniversitÃ© de Savoie;prestation non-facturÃ©e;3700.00
+2006-10-30;11905;CrÃ©dit Suisse;;4080.00
 2006-10-30;11905;HSW Luzern;;4080.00
-2006-10-30;11905;Université de Savoie;;4080.00
-2006-10-30;11905;Crédit Suisse;prestation non-facturée;7344.00
-2006-10-30;11905;HSW Luzern;prestation non-facturée;7344.00
-2006-10-30;11905;Université de Savoie;prestation non-facturée;7344.00
+2006-10-30;11905;UniversitÃ© de Savoie;;4080.00
+2006-10-30;11905;CrÃ©dit Suisse;prestation non-facturÃ©e;7344.00
+2006-10-30;11905;HSW Luzern;prestation non-facturÃ©e;7344.00
+2006-10-30;11905;UniversitÃ© de Savoie;prestation non-facturÃ©e;7344.00
 2003-10-23;11931;Dr. expert du domaine;;5737.00
 2003-10-23;11931;Dr. expert du domaine;;3234.00
 2007-05-23;11980;Expert;;4000.00
 2007-05-23;11980;Formateurs manager;;4000.00
-2007-05-23;11980;Comité scientif. CEMC - comité applica. CEMC;;4000.00
+2007-05-23;11980;ComitÃ© scientif. CEMC - comitÃ© applica. CEMC;;4000.00
 2007-05-23;11980;Expert;;7500.00
 2007-05-23;11980;Formateurs manager;;7500.00
-2007-05-23;11980;Comité scientif. CEMC - comité applica. CEMC;;7500.00
+2007-05-23;11980;ComitÃ© scientif. CEMC - comitÃ© applica. CEMC;;7500.00
 2007-05-23;11980;Expert;;6000.00
 2007-05-23;11980;Formateurs manager;;6000.00
-2007-05-23;11980;Comité scientif. CEMC - comité applica. CEMC;;6000.00
+2007-05-23;11980;ComitÃ© scientif. CEMC - comitÃ© applica. CEMC;;6000.00
 2006-11-07;12044;Patrick ROTH;;11600.00
 2005-10-24;12223;Wipf AG;Analyses;5000.00
 2005-10-24;12223;ULLIT SA;Analyses;5000.00
-2005-10-24;12223;Université de Genève, section physique;Analyses;5000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Analyses;5000.00
 2005-10-24;12223;APVV GmbH;Analyses;5000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Analyses;5000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Analyses;5000.00
 2005-10-24;12223;Kaltbrunner AG;Analyses;5000.00
-2005-10-24;12223;Université d'Oxford;Analyses;5000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Analyses;5000.00
 2005-10-24;12223;INCOAT GmbH;Analyses;5000.00
 2005-10-24;12223;Wipf AG;Traitement;5000.00
 2005-10-24;12223;ULLIT SA;Traitement;5000.00
-2005-10-24;12223;Université de Genève, section physique;Traitement;5000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Traitement;5000.00
 2005-10-24;12223;APVV GmbH;Traitement;5000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Traitement;5000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Traitement;5000.00
 2005-10-24;12223;Kaltbrunner AG;Traitement;5000.00
-2005-10-24;12223;Université d'Oxford;Traitement;5000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Traitement;5000.00
 2005-10-24;12223;INCOAT GmbH;Traitement;5000.00
 2005-10-24;12223;Wipf AG;Traitement;5000.00
 2005-10-24;12223;ULLIT SA;Traitement;5000.00
-2005-10-24;12223;Université de Genève, section physique;Traitement;5000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Traitement;5000.00
 2005-10-24;12223;APVV GmbH;Traitement;5000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Traitement;5000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Traitement;5000.00
 2005-10-24;12223;Kaltbrunner AG;Traitement;5000.00
-2005-10-24;12223;Université d'Oxford;Traitement;5000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Traitement;5000.00
 2005-10-24;12223;INCOAT GmbH;Traitement;5000.00
 2005-10-24;12223;Wipf AG;Expertises;60000.00
 2005-10-24;12223;ULLIT SA;Expertises;60000.00
-2005-10-24;12223;Université de Genève, section physique;Expertises;60000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Expertises;60000.00
 2005-10-24;12223;APVV GmbH;Expertises;60000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Expertises;60000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Expertises;60000.00
 2005-10-24;12223;Kaltbrunner AG;Expertises;60000.00
-2005-10-24;12223;Université d'Oxford;Expertises;60000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Expertises;60000.00
 2005-10-24;12223;INCOAT GmbH;Expertises;60000.00
 2005-10-24;12223;Wipf AG;Expertises;5000.00
 2005-10-24;12223;ULLIT SA;Expertises;5000.00
-2005-10-24;12223;Université de Genève, section physique;Expertises;5000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Expertises;5000.00
 2005-10-24;12223;APVV GmbH;Expertises;5000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Expertises;5000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Expertises;5000.00
 2005-10-24;12223;Kaltbrunner AG;Expertises;5000.00
-2005-10-24;12223;Université d'Oxford;Expertises;5000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Expertises;5000.00
 2005-10-24;12223;INCOAT GmbH;Expertises;5000.00
 2005-10-24;12223;Wipf AG;Expertises;10000.00
 2005-10-24;12223;ULLIT SA;Expertises;10000.00
-2005-10-24;12223;Université de Genève, section physique;Expertises;10000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Expertises;10000.00
 2005-10-24;12223;APVV GmbH;Expertises;10000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Expertises;10000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Expertises;10000.00
 2005-10-24;12223;Kaltbrunner AG;Expertises;10000.00
-2005-10-24;12223;Université d'Oxford;Expertises;10000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Expertises;10000.00
 2005-10-24;12223;INCOAT GmbH;Expertises;10000.00
 2005-10-24;12223;Wipf AG;Analyses;10000.00
 2005-10-24;12223;ULLIT SA;Analyses;10000.00
-2005-10-24;12223;Université de Genève, section physique;Analyses;10000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Analyses;10000.00
 2005-10-24;12223;APVV GmbH;Analyses;10000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Analyses;10000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Analyses;10000.00
 2005-10-24;12223;Kaltbrunner AG;Analyses;10000.00
-2005-10-24;12223;Université d'Oxford;Analyses;10000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Analyses;10000.00
 2005-10-24;12223;INCOAT GmbH;Analyses;10000.00
 2005-10-24;12223;Wipf AG;Expertises;5000.00
 2005-10-24;12223;ULLIT SA;Expertises;5000.00
-2005-10-24;12223;Université de Genève, section physique;Expertises;5000.00
+2005-10-24;12223;UniversitÃ© de GenÃ¨ve, section physique;Expertises;5000.00
 2005-10-24;12223;APVV GmbH;Expertises;5000.00
-2005-10-24;12223;Ecole d'ingénieurs de Neuchâtel;Expertises;5000.00
+2005-10-24;12223;Ecole d'ingÃ©nieurs de NeuchÃ¢tel;Expertises;5000.00
 2005-10-24;12223;Kaltbrunner AG;Expertises;5000.00
-2005-10-24;12223;Université d'Oxford;Expertises;5000.00
+2005-10-24;12223;UniversitÃ© d'Oxford;Expertises;5000.00
 2005-10-24;12223;INCOAT GmbH;Expertises;5000.00
 2005-12-05;12402;STARK John;;15750.00
 2005-12-05;12402;STARK John;;17850.00
 2007-08-23;12422;Haas Patrick;PHA avant engagement eig;18000.00
 2005-03-21;12715;Proform;;1579.00
-2005-03-17;12716;Université de Genève - CUEPE;;2500.00
+2005-03-17;12716;UniversitÃ© de GenÃ¨ve - CUEPE;;2500.00
 2005-03-17;12716;EIVD;;2500.00
-2005-03-17;12716;Université de Genève - CUEPE;;4000.00
+2005-03-17;12716;UniversitÃ© de GenÃ¨ve - CUEPE;;4000.00
 2005-03-17;12716;EIVD;;4000.00
 2007-02-27;12723;LUTZ;Honoraires;16000.00
 2007-02-27;12723;LUTZ;Honoraires;16000.00
@@ -129,7 +129,7 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2008-08-25;13024;AMBROSETTI;partenaire externe;8400.00
 2008-08-25;13024;Chambres de commerce;partenaire externe;16800.00
 2008-08-25;13024;AMBROSETTI;partenaire externe;16800.00
-2008-08-25;13024;Hôtel Victoria;;3000.00
+2008-08-25;13024;HÃ´tel Victoria;;3000.00
 2004-04-20;13030;Dr Robert PECK;Consultant UNIGE;9000.00
 2004-04-20;13030;Dr Jan PAWLOWSKI;Consultant UNIGE;9000.00
 2004-04-20;13030;Dr Robert PECK;Consultant UNIGE;9000.00
@@ -141,11 +141,11 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2006-11-07;13572;CIREN (Paris 8);;25000.00
 2006-11-07;13572;intervenants externes;;25000.00
 2007-02-15;13575;SESA;Sacha Faoro;40000.00
-2007-02-15;13575;Association Truite-Léman (ATL);Sacha Faoro;40000.00
+2007-02-15;13575;Association Truite-LÃ©man (ATL);Sacha Faoro;40000.00
 2007-02-15;13575;SESA;;50400.00
-2007-02-15;13575;Association Truite-Léman (ATL);;50400.00
+2007-02-15;13575;Association Truite-LÃ©man (ATL);;50400.00
 2007-02-15;13678;Swiss Federal Institute WSL;;5500.00
-2007-02-15;13683;Université de Genève - BIVEG;M. Broughton;5525.00
+2007-02-15;13683;UniversitÃ© de GenÃ¨ve - BIVEG;M. Broughton;5525.00
 2004-11-15;13718;ANTENNA;;20150.00
 2004-11-15;13718;CM-CELFA;;20150.00
 2004-11-15;13718;ANTENNA;Membranes;5000.00
@@ -154,111 +154,111 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2004-11-15;13718;CM-CELFA;;9500.00
 2004-11-15;13718;ANTENNA;Cellule;2500.00
 2004-11-15;13718;CM-CELFA;Cellule;2500.00
-2006-03-03;13721;Membres du CS du CCSI;Inclu la CE et le secrétariat HEVs + activités RNC 2003 ;90800.00
-2008-11-19;13722;Membres du CS du CCSI;Inclu la commission économique et certaines activités du centre : MICRONORA, MECATRONALPS ainsi que les activités RNC 2004;98300.00
+2006-03-03;13721;Membres du CS du CCSI;Inclu la CE et le secrÃ©tariat HEVs + activitÃ©s RNC 2003 ;90800.00
+2008-11-19;13722;Membres du CS du CCSI;Inclu la commission Ã©conomique et certaines activitÃ©s du centre : MICRONORA, MECATRONALPS ainsi que les activitÃ©s RNC 2004;98300.00
 2005-03-21;13937;Dr M.Martin;facture UNIGE;1291.00
 2005-03-16;13995;Cohen Gilles;;3000.00
 2005-03-16;13995;EIVD - Institut TCOM;;3000.00
 2005-03-16;13995;Cohen Gilles;Prestation S. Ventura - EIVD;5000.00
 2005-03-16;13995;EIVD - Institut TCOM;Prestation S. Ventura - EIVD;5000.00
 2007-11-08;14084;HUG;;5500.00
-2006-10-26;14128;Université de Lausanne;partenaire externe ISSP;9000.00
-2004-09-24;14196;CCSO Genève;expert externe pour validation;6000.00
-2007-08-09;14201;Office fédéral de l'environnement des forêts et du paysage;Prof. Philippe Thalmann;20000.00
+2006-10-26;14128;UniversitÃ© de Lausanne;partenaire externe ISSP;9000.00
+2004-09-24;14196;CCSO GenÃ¨ve;expert externe pour validation;6000.00
+2007-08-09;14201;Office fÃ©dÃ©ral de l'environnement des forÃªts et du paysage;Prof. Philippe Thalmann;20000.00
 2007-08-09;14201;DIAE, ScanE;Prof. Philippe Thalmann;20000.00
 2007-08-09;14201;EPFL, REME;Prof. Philippe Thalmann;20000.00
-2007-08-09;14201;Office fédéral de l'environnement des forêts et du paysage;M. Olivier Ouzilou;6000.00
+2007-08-09;14201;Office fÃ©dÃ©ral de l'environnement des forÃªts et du paysage;M. Olivier Ouzilou;6000.00
 2007-08-09;14201;DIAE, ScanE;M. Olivier Ouzilou;6000.00
 2007-08-09;14201;EPFL, REME;M. Olivier Ouzilou;6000.00
-2007-08-09;14201;Office fédéral de l'environnement des forêts et du paysage;Mme Andrea Burkhardt;5000.00
+2007-08-09;14201;Office fÃ©dÃ©ral de l'environnement des forÃªts et du paysage;Mme Andrea Burkhardt;5000.00
 2007-08-09;14201;DIAE, ScanE;Mme Andrea Burkhardt;5000.00
 2007-08-09;14201;EPFL, REME;Mme Andrea Burkhardt;5000.00
-2008-02-26;14470;Haute Ecole de Gestion - Genève;;4860.00
-2007-02-15;14615;Hôpitaux Universitaires de Genève;;10000.00
+2008-02-26;14470;Haute Ecole de Gestion - GenÃ¨ve;;4860.00
+2007-02-15;14615;HÃ´pitaux Universitaires de GenÃ¨ve;;10000.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;3500.00
-2006-11-07;14828;créateur de mode 1;;3500.00
-2006-11-07;14828;créateur de mode 3;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 1;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 3;;3500.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;3500.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;3500.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;3500.00
-2006-11-07;14828;créateur de mode 2;;3500.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;3500.00
-2006-11-07;14828;créateur de mode 4;;3500.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;3500.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 2;;3500.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 4;;3500.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;1500.00
-2006-11-07;14828;créateur de mode 1;;1500.00
-2006-11-07;14828;créateur de mode 3;;1500.00
+2006-11-07;14828;crÃ©ateur de mode 1;;1500.00
+2006-11-07;14828;crÃ©ateur de mode 3;;1500.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;1500.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;1500.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;1500.00
-2006-11-07;14828;créateur de mode 2;;1500.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;1500.00
-2006-11-07;14828;créateur de mode 4;;1500.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;1500.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;1500.00
+2006-11-07;14828;crÃ©ateur de mode 2;;1500.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;1500.00
+2006-11-07;14828;crÃ©ateur de mode 4;;1500.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;1000.00
-2006-11-07;14828;créateur de mode 1;;1000.00
-2006-11-07;14828;créateur de mode 3;;1000.00
+2006-11-07;14828;crÃ©ateur de mode 1;;1000.00
+2006-11-07;14828;crÃ©ateur de mode 3;;1000.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;1000.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;1000.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;1000.00
-2006-11-07;14828;créateur de mode 2;;1000.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;1000.00
-2006-11-07;14828;créateur de mode 4;;1000.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;1000.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;1000.00
+2006-11-07;14828;crÃ©ateur de mode 2;;1000.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;1000.00
+2006-11-07;14828;crÃ©ateur de mode 4;;1000.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;300.00
-2006-11-07;14828;créateur de mode 1;;300.00
-2006-11-07;14828;créateur de mode 3;;300.00
+2006-11-07;14828;crÃ©ateur de mode 1;;300.00
+2006-11-07;14828;crÃ©ateur de mode 3;;300.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;300.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;300.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;300.00
-2006-11-07;14828;créateur de mode 2;;300.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;300.00
-2006-11-07;14828;créateur de mode 4;;300.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;300.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;300.00
+2006-11-07;14828;crÃ©ateur de mode 2;;300.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;300.00
+2006-11-07;14828;crÃ©ateur de mode 4;;300.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;3500.00
-2006-11-07;14828;créateur de mode 1;;3500.00
-2006-11-07;14828;créateur de mode 3;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 1;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 3;;3500.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;3500.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;3500.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;3500.00
-2006-11-07;14828;créateur de mode 2;;3500.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;3500.00
-2006-11-07;14828;créateur de mode 4;;3500.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;3500.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 2;;3500.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;3500.00
+2006-11-07;14828;crÃ©ateur de mode 4;;3500.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;800.00
-2006-11-07;14828;créateur de mode 1;;800.00
-2006-11-07;14828;créateur de mode 3;;800.00
+2006-11-07;14828;crÃ©ateur de mode 1;;800.00
+2006-11-07;14828;crÃ©ateur de mode 3;;800.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;800.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;800.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;800.00
-2006-11-07;14828;créateur de mode 2;;800.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;800.00
-2006-11-07;14828;créateur de mode 4;;800.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;800.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;800.00
+2006-11-07;14828;crÃ©ateur de mode 2;;800.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;800.00
+2006-11-07;14828;crÃ©ateur de mode 4;;800.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;500.00
-2006-11-07;14828;créateur de mode 1;;500.00
-2006-11-07;14828;créateur de mode 3;;500.00
+2006-11-07;14828;crÃ©ateur de mode 1;;500.00
+2006-11-07;14828;crÃ©ateur de mode 3;;500.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;500.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;500.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;500.00
-2006-11-07;14828;créateur de mode 2;;500.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;500.00
-2006-11-07;14828;créateur de mode 4;;500.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;500.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;500.00
+2006-11-07;14828;crÃ©ateur de mode 2;;500.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;500.00
+2006-11-07;14828;crÃ©ateur de mode 4;;500.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;1400.00
-2006-11-07;14828;créateur de mode 1;;1400.00
-2006-11-07;14828;créateur de mode 3;;1400.00
+2006-11-07;14828;crÃ©ateur de mode 1;;1400.00
+2006-11-07;14828;crÃ©ateur de mode 3;;1400.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;1400.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;1400.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;1400.00
-2006-11-07;14828;créateur de mode 2;;1400.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;1400.00
-2006-11-07;14828;créateur de mode 4;;1400.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;1400.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;1400.00
+2006-11-07;14828;crÃ©ateur de mode 2;;1400.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;1400.00
+2006-11-07;14828;crÃ©ateur de mode 4;;1400.00
 2006-11-07;14828;Perron Francine, La Cambre, Bruxelles;;2500.00
-2006-11-07;14828;créateur de mode 1;;2500.00
-2006-11-07;14828;créateur de mode 3;;2500.00
+2006-11-07;14828;crÃ©ateur de mode 1;;2500.00
+2006-11-07;14828;crÃ©ateur de mode 3;;2500.00
 2006-11-07;14828;Prof. Mestelan Patrick, EPFL, Lausanne;;2500.00
-2006-11-07;14828;Prof. Alain Findeli, Université de Montréal;;2500.00
-2006-11-07;14828;Prof. Gloria Bianchino, Université de Parme;;2500.00
-2006-11-07;14828;créateur de mode 2;;2500.00
-2006-11-07;14828;Olivier Assouly, Institut Français de la Mode;;2500.00
-2006-11-07;14828;créateur de mode 4;;2500.00
+2006-11-07;14828;Prof. Alain Findeli, UniversitÃ© de MontrÃ©al;;2500.00
+2006-11-07;14828;Prof. Gloria Bianchino, UniversitÃ© de Parme;;2500.00
+2006-11-07;14828;crÃ©ateur de mode 2;;2500.00
+2006-11-07;14828;Olivier Assouly, Institut FranÃ§ais de la Mode;;2500.00
+2006-11-07;14828;crÃ©ateur de mode 4;;2500.00
 2006-05-18;15018;intervenants externes;;39000.00
-2007-12-21;15045;CCSO Genève;chef de projet + assistant de recherche HES;18000.00
-2009-01-22;15097;CSEM;Contrat reçu;24000.00
+2007-12-21;15045;CCSO GenÃ¨ve;chef de projet + assistant de recherche HES;18000.00
+2009-01-22;15097;CSEM;Contrat reÃ§u;24000.00
 2008-12-17;15326;Equada - La Chaux de Fonds;;22000.00
 2008-12-17;15326;Equada - La Chaux de Fonds;;11500.00
 2006-07-25;15384;CAGNON;;113088.00
@@ -268,42 +268,42 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2006-07-25;15384;CAGNON;;29000.00
 2006-07-25;15384;KAOS;;29000.00
 2009-01-23;15399;Fondation des Grangettes;;2200.00
-2009-01-23;15399;prestataire à définir;;2200.00
+2009-01-23;15399;prestataire Ã  dÃ©finir;;2200.00
 2009-01-23;15399;GEG;;2200.00
 2009-01-23;15399;Natura;;2200.00
 2009-01-23;15399;Fondation des Grangettes;;14015.00
-2009-01-23;15399;prestataire à définir;;14015.00
+2009-01-23;15399;prestataire Ã  dÃ©finir;;14015.00
 2009-01-23;15399;GEG;;14015.00
 2009-01-23;15399;Natura;;14015.00
 2009-01-23;15399;Fondation des Grangettes;;4740.00
-2009-01-23;15399;prestataire à définir;;4740.00
+2009-01-23;15399;prestataire Ã  dÃ©finir;;4740.00
 2009-01-23;15399;GEG;;4740.00
 2009-01-23;15399;Natura;;4740.00
 2009-01-23;15399;Fondation des Grangettes;;2200.00
-2009-01-23;15399;prestataire à définir;;2200.00
+2009-01-23;15399;prestataire Ã  dÃ©finir;;2200.00
 2009-01-23;15399;GEG;;2200.00
 2009-01-23;15399;Natura;;2200.00
 2009-01-23;15399;Fondation des Grangettes;;18955.00
-2009-01-23;15399;prestataire à définir;;18955.00
+2009-01-23;15399;prestataire Ã  dÃ©finir;;18955.00
 2009-01-23;15399;GEG;;18955.00
 2009-01-23;15399;Natura;;18955.00
 2009-01-23;15399;Fondation des Grangettes;organisme juridique;1680.00
-2009-01-23;15399;prestataire à définir;organisme juridique;1680.00
+2009-01-23;15399;prestataire Ã  dÃ©finir;organisme juridique;1680.00
 2009-01-23;15399;GEG;organisme juridique;1680.00
 2009-01-23;15399;Natura;organisme juridique;1680.00
 2009-04-08;15498;Corinne Bourgery;CITARE;25000.00
-2007-02-15;15567;INRA, Dijon;Labo de bio-énergétique;25000.00
-2007-02-15;15567;Université de Genève;Labo de bio-énergétique;25000.00
-2007-02-15;15567;EPL - Lullier;Labo de bio-énergétique;25000.00
-2007-02-15;15567;INRA, Dijon;Matériel et Location;8250.00
-2007-02-15;15567;Université de Genève;Matériel et Location;8250.00
-2007-02-15;15567;EPL - Lullier;Matériel et Location;8250.00
+2007-02-15;15567;INRA, Dijon;Labo de bio-Ã©nergÃ©tique;25000.00
+2007-02-15;15567;UniversitÃ© de GenÃ¨ve;Labo de bio-Ã©nergÃ©tique;25000.00
+2007-02-15;15567;EPL - Lullier;Labo de bio-Ã©nergÃ©tique;25000.00
+2007-02-15;15567;INRA, Dijon;MatÃ©riel et Location;8250.00
+2007-02-15;15567;UniversitÃ© de GenÃ¨ve;MatÃ©riel et Location;8250.00
+2007-02-15;15567;EPL - Lullier;MatÃ©riel et Location;8250.00
 2007-02-15;15567;INRA, Dijon;Prestations;24000.00
-2007-02-15;15567;Université de Genève;Prestations;24000.00
+2007-02-15;15567;UniversitÃ© de GenÃ¨ve;Prestations;24000.00
 2007-02-15;15567;EPL - Lullier;Prestations;24000.00
-2007-02-15;15567;INRA, Dijon;Section fruitière;48288.00
-2007-02-15;15567;Université de Genève;Section fruitière;48288.00
-2007-02-15;15567;EPL - Lullier;Section fruitière;48288.00
+2007-02-15;15567;INRA, Dijon;Section fruitiÃ¨re;48288.00
+2007-02-15;15567;UniversitÃ© de GenÃ¨ve;Section fruitiÃ¨re;48288.00
+2007-02-15;15567;EPL - Lullier;Section fruitiÃ¨re;48288.00
 2010-02-04;15572;Dr Robert PECK;Consultant;5000.00
 2010-02-04;15572;Dr Jan PAWLOWSKI;Consultant;5000.00
 2010-02-04;15572;Dr Robert PECK;Consultant;5000.00
@@ -312,104 +312,104 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2013-05-27;15727;Experts;experts ponctuels;8950.00
 2013-05-27;15727;Equiterre;Idheap;19040.00
 2013-05-27;15727;Experts;Idheap;19040.00
-2013-05-27;15727;Equiterre;aspect sociaux, éthique;8400.00
-2013-05-27;15727;Experts;aspect sociaux, éthique;8400.00
-2013-05-27;15727;Institut TNP;Francine Pellaud, 80 heures, pédagogie, enseignement;8400.00
-2013-05-27;15727;Guido Styger;Francine Pellaud, 80 heures, pédagogie, enseignement;8400.00
-2013-05-27;15727;Université de Genève - LDES;Francine Pellaud, 80 heures, pédagogie, enseignement;8400.00
+2013-05-27;15727;Equiterre;aspect sociaux, Ã©thique;8400.00
+2013-05-27;15727;Experts;aspect sociaux, Ã©thique;8400.00
+2013-05-27;15727;Institut TNP;Francine Pellaud, 80 heures, pÃ©dagogie, enseignement;8400.00
+2013-05-27;15727;Guido Styger;Francine Pellaud, 80 heures, pÃ©dagogie, enseignement;8400.00
+2013-05-27;15727;UniversitÃ© de GenÃ¨ve - LDES;Francine Pellaud, 80 heures, pÃ©dagogie, enseignement;8400.00
 2013-05-27;15727;Institut TNP;140 heures;14700.00
 2013-05-27;15727;Guido Styger;140 heures;14700.00
-2013-05-27;15727;Université de Genève - LDES;140 heures;14700.00
+2013-05-27;15727;UniversitÃ© de GenÃ¨ve - LDES;140 heures;14700.00
 2013-05-27;15727;Institut TNP;80 heures;8400.00
 2013-05-27;15727;Guido Styger;80 heures;8400.00
-2013-05-27;15727;Université de Genève - LDES;80 heures;8400.00
-2009-06-23;15954;Université de Genève;Marco SALVI;25882.00
+2013-05-27;15727;UniversitÃ© de GenÃ¨ve - LDES;80 heures;8400.00
+2009-06-23;15954;UniversitÃ© de GenÃ¨ve;Marco SALVI;25882.00
 2007-02-15;16069;HUG;utilisation de la station de lecture Agilent;27200.00
 2009-04-22;16286;CRIT INTERIM;Personnel;5000.00
-2008-01-11;16352;CCSO;Comédiens;4000.00
-2008-01-11;16352;intervenants externes;Comédiens;4000.00
+2008-01-11;16352;CCSO;ComÃ©diens;4000.00
+2008-01-11;16352;intervenants externes;ComÃ©diens;4000.00
 2008-01-11;16352;CCSO;Laurent Brouyere;6000.00
 2008-01-11;16352;intervenants externes;Laurent Brouyere;6000.00
-2008-01-11;16352;CCSO;Développeurs e-learning;20000.00
-2008-01-11;16352;intervenants externes;Développeurs e-learning;20000.00
-2007-02-21;16716;RÜTTIMANN Markus;;32000.00
+2008-01-11;16352;CCSO;DÃ©veloppeurs e-learning;20000.00
+2008-01-11;16352;intervenants externes;DÃ©veloppeurs e-learning;20000.00
+2007-02-21;16716;RÃœTTIMANN Markus;;32000.00
 2010-11-23;17397;Boissier;;28665.00
 2010-11-23;17397;Boissier;;9450.00
 2010-09-27;17407;Alphalyse Europe;;5000.00
 2010-09-27;17407;BIOVITIS SA;;5000.00
-2010-09-27;17407;Alphalyse Europe;séquençage MALDI TOF de peptides;3000.00
-2010-09-27;17407;BIOVITIS SA;séquençage MALDI TOF de peptides;3000.00
-2009-01-15;17544;Vuadens Joël;Réalisation Mandat;12260.00
-2010-11-24;17702;CREM;base de données;2000.00
-2010-11-24;17702;Société suisse de l'industrie du gaz et de l'eau SSIGE;base de données;2000.00
-2010-11-24;17702;CREM;expertise non facturée M. Storelli;4000.00
-2010-11-24;17702;Société suisse de l'industrie du gaz et de l'eau SSIGE;expertise non facturée M. Storelli;4000.00
-2011-12-16;17965;Warwick University;Consultance + déplacements;23000.00
+2010-09-27;17407;Alphalyse Europe;sÃ©quenÃ§age MALDI TOF de peptides;3000.00
+2010-09-27;17407;BIOVITIS SA;sÃ©quenÃ§age MALDI TOF de peptides;3000.00
+2009-01-15;17544;Vuadens JoÃ«l;RÃ©alisation Mandat;12260.00
+2010-11-24;17702;CREM;base de donnÃ©es;2000.00
+2010-11-24;17702;SociÃ©tÃ© suisse de l'industrie du gaz et de l'eau SSIGE;base de donnÃ©es;2000.00
+2010-11-24;17702;CREM;expertise non facturÃ©e M. Storelli;4000.00
+2010-11-24;17702;SociÃ©tÃ© suisse de l'industrie du gaz et de l'eau SSIGE;expertise non facturÃ©e M. Storelli;4000.00
+2011-12-16;17965;Warwick University;Consultance + dÃ©placements;23000.00
 2007-09-10;18671;DIGESTO;Pr Michel ARAGNO;5000.00
-2007-09-10;18671;Université de Neuchâtel;Pr Michel ARAGNO;5000.00
+2007-09-10;18671;UniversitÃ© de NeuchÃ¢tel;Pr Michel ARAGNO;5000.00
 2007-09-10;18671;DIGESTO;DIGESTO;14000.00
-2007-09-10;18671;Université de Neuchâtel;DIGESTO;14000.00
+2007-09-10;18671;UniversitÃ© de NeuchÃ¢tel;DIGESTO;14000.00
 2013-07-02;18683;Swiss Federal Research Institute WSL;expertise AG;4200.00
 2013-07-02;18683;UNIL-Sorge ;expertise AG;4200.00
 2013-07-02;18683;Swiss Federal Research Institute WSL;expertise climat;15295.00
 2013-07-02;18683;UNIL-Sorge ;expertise climat;15295.00
-2010-05-25;18736;Biotec;Participation à la recherche, Michel Sartori;9290.00
-2010-05-25;18736;Aquabug;Participation à la recherche, Michel Sartori;9290.00
-2010-05-25;18736;Musée de Zoologie de Lausanne;Participation à la recherche, Michel Sartori;9290.00
-2010-06-23;18796;RICHEMONT INTERNATIONAL SA;Richemont International SA - en espèces personnel;9000.00
-2010-01-26;18977;Tamo Bernard;réalisation du mandat;10000.00
-2011-08-18;19089;Stagiaires HEPIA, Filière GN;Analyses de stress;1600.00
-2011-08-18;19089;Institut für Wildbiologie und Jagdwirtschaft ;Analyses de stress;1600.00
-2011-08-18;19089;Stagiaires HEPIA, Filière GN;Jacques Olivier Chappuis (stag. 1);10000.00
-2011-08-18;19089;Institut für Wildbiologie und Jagdwirtschaft ;Jacques Olivier Chappuis (stag. 1);10000.00
-2011-08-18;19089;Stagiaires HEPIA, Filière GN;Pierrick Burri (Stag. 2);11000.00
-2011-08-18;19089;Institut für Wildbiologie und Jagdwirtschaft ;Pierrick Burri (Stag. 2);11000.00
-2011-08-18;19089;Stagiaires HEPIA, Filière GN;Stagiaires Bénévoles;3000.00
-2011-08-18;19089;Institut für Wildbiologie und Jagdwirtschaft ;Stagiaires Bénévoles;3000.00
+2010-05-25;18736;Biotec;Participation Ã  la recherche, Michel Sartori;9290.00
+2010-05-25;18736;Aquabug;Participation Ã  la recherche, Michel Sartori;9290.00
+2010-05-25;18736;MusÃ©e de Zoologie de Lausanne;Participation Ã  la recherche, Michel Sartori;9290.00
+2010-06-23;18796;RICHEMONT INTERNATIONAL SA;Richemont International SA - en espÃ¨ces personnel;9000.00
+2010-01-26;18977;Tamo Bernard;rÃ©alisation du mandat;10000.00
+2011-08-18;19089;Stagiaires HEPIA, FiliÃ¨re GN;Analyses de stress;1600.00
+2011-08-18;19089;Institut fÃ¼r Wildbiologie und Jagdwirtschaft ;Analyses de stress;1600.00
+2011-08-18;19089;Stagiaires HEPIA, FiliÃ¨re GN;Jacques Olivier Chappuis (stag. 1);10000.00
+2011-08-18;19089;Institut fÃ¼r Wildbiologie und Jagdwirtschaft ;Jacques Olivier Chappuis (stag. 1);10000.00
+2011-08-18;19089;Stagiaires HEPIA, FiliÃ¨re GN;Pierrick Burri (Stag. 2);11000.00
+2011-08-18;19089;Institut fÃ¼r Wildbiologie und Jagdwirtschaft ;Pierrick Burri (Stag. 2);11000.00
+2011-08-18;19089;Stagiaires HEPIA, FiliÃ¨re GN;Stagiaires BÃ©nÃ©voles;3000.00
+2011-08-18;19089;Institut fÃ¼r Wildbiologie und Jagdwirtschaft ;Stagiaires BÃ©nÃ©voles;3000.00
 2009-01-15;19178;Huber AG;location pavillon suisse;6200.00
 2008-11-26;19211;CRIT INTERIM;Sous-traitance Personnel;15000.00
-2010-09-20;19741;Pôle-Relais Mares et Mouillères de France;;10248.00
+2010-09-20;19741;PÃ´le-Relais Mares et MouillÃ¨res de France;;10248.00
 2010-09-20;19741;Liverpool John Moores University;;10248.00
-2010-09-20;19741;Université Paul Sabatier de Toulouse;;10248.00
+2010-09-20;19741;UniversitÃ© Paul Sabatier de Toulouse;;10248.00
 2010-09-20;19741;Tour du Valat;;10248.00
-2010-09-20;19741;Groupe à trouver;;10248.00
+2010-09-20;19741;Groupe Ã  trouver;;10248.00
 2010-09-20;19741;Pond Conservation;;10248.00
-2010-09-20;19741;Pôle-Relais Mares et Mouillères de France;;31353.00
+2010-09-20;19741;PÃ´le-Relais Mares et MouillÃ¨res de France;;31353.00
 2010-09-20;19741;Liverpool John Moores University;;31353.00
-2010-09-20;19741;Université Paul Sabatier de Toulouse;;31353.00
+2010-09-20;19741;UniversitÃ© Paul Sabatier de Toulouse;;31353.00
 2010-09-20;19741;Tour du Valat;;31353.00
-2010-09-20;19741;Groupe à trouver;;31353.00
+2010-09-20;19741;Groupe Ã  trouver;;31353.00
 2010-09-20;19741;Pond Conservation;;31353.00
-2010-09-20;19741;Pôle-Relais Mares et Mouillères de France;;10248.00
+2010-09-20;19741;PÃ´le-Relais Mares et MouillÃ¨res de France;;10248.00
 2010-09-20;19741;Liverpool John Moores University;;10248.00
-2010-09-20;19741;Université Paul Sabatier de Toulouse;;10248.00
+2010-09-20;19741;UniversitÃ© Paul Sabatier de Toulouse;;10248.00
 2010-09-20;19741;Tour du Valat;;10248.00
-2010-09-20;19741;Groupe à trouver;;10248.00
+2010-09-20;19741;Groupe Ã  trouver;;10248.00
 2010-09-20;19741;Pond Conservation;;10248.00
-2010-09-20;19741;Pôle-Relais Mares et Mouillères de France;;117612.00
+2010-09-20;19741;PÃ´le-Relais Mares et MouillÃ¨res de France;;117612.00
 2010-09-20;19741;Liverpool John Moores University;;117612.00
-2010-09-20;19741;Université Paul Sabatier de Toulouse;;117612.00
+2010-09-20;19741;UniversitÃ© Paul Sabatier de Toulouse;;117612.00
 2010-09-20;19741;Tour du Valat;;117612.00
-2010-09-20;19741;Groupe à trouver;;117612.00
+2010-09-20;19741;Groupe Ã  trouver;;117612.00
 2010-09-20;19741;Pond Conservation;;117612.00
-2010-09-20;19741;Pôle-Relais Mares et Mouillères de France;;28522.00
+2010-09-20;19741;PÃ´le-Relais Mares et MouillÃ¨res de France;;28522.00
 2010-09-20;19741;Liverpool John Moores University;;28522.00
-2010-09-20;19741;Université Paul Sabatier de Toulouse;;28522.00
+2010-09-20;19741;UniversitÃ© Paul Sabatier de Toulouse;;28522.00
 2010-09-20;19741;Tour du Valat;;28522.00
-2010-09-20;19741;Groupe à trouver;;28522.00
+2010-09-20;19741;Groupe Ã  trouver;;28522.00
 2010-09-20;19741;Pond Conservation;;28522.00
-2010-09-20;19741;Pôle-Relais Mares et Mouillères de France;;9352.00
+2010-09-20;19741;PÃ´le-Relais Mares et MouillÃ¨res de France;;9352.00
 2010-09-20;19741;Liverpool John Moores University;;9352.00
-2010-09-20;19741;Université Paul Sabatier de Toulouse;;9352.00
+2010-09-20;19741;UniversitÃ© Paul Sabatier de Toulouse;;9352.00
 2010-09-20;19741;Tour du Valat;;9352.00
-2010-09-20;19741;Groupe à trouver;;9352.00
+2010-09-20;19741;Groupe Ã  trouver;;9352.00
 2010-09-20;19741;Pond Conservation;;9352.00
-2013-01-08;19937;TAWIRI;Synthèse et centralisation des données;1000.00
-2013-01-08;19937;COSTECH;Synthèse et centralisation des données;1000.00
-2013-01-08;19937;Sokoine University of Agriculture - SUA;Synthèse et centralisation des données;1000.00
-2013-01-08;19937;TAWIRI;Participation colloque (déplacement, hébergement, ;5000.00
-2013-01-08;19937;COSTECH;Participation colloque (déplacement, hébergement, ;5000.00
-2013-01-08;19937;Sokoine University of Agriculture - SUA;Participation colloque (déplacement, hébergement, ;5000.00
+2013-01-08;19937;TAWIRI;SynthÃ¨se et centralisation des donnÃ©es;1000.00
+2013-01-08;19937;COSTECH;SynthÃ¨se et centralisation des donnÃ©es;1000.00
+2013-01-08;19937;Sokoine University of Agriculture - SUA;SynthÃ¨se et centralisation des donnÃ©es;1000.00
+2013-01-08;19937;TAWIRI;Participation colloque (dÃ©placement, hÃ©bergement, ;5000.00
+2013-01-08;19937;COSTECH;Participation colloque (dÃ©placement, hÃ©bergement, ;5000.00
+2013-01-08;19937;Sokoine University of Agriculture - SUA;Participation colloque (dÃ©placement, hÃ©bergement, ;5000.00
 2013-01-08;19937;TAWIRI;Taxes de recherche;1950.00
 2013-01-08;19937;COSTECH;Taxes de recherche;1950.00
 2013-01-08;19937;Sokoine University of Agriculture - SUA;Taxes de recherche;1950.00
@@ -419,39 +419,39 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2013-01-08;19937;TAWIRI;Encadrement stagiaires;1950.00
 2013-01-08;19937;COSTECH;Encadrement stagiaires;1950.00
 2013-01-08;19937;Sokoine University of Agriculture - SUA;Encadrement stagiaires;1950.00
-2013-01-08;19937;TAWIRI;Participation colloque (déplacement, hébergement, ;5000.00
-2013-01-08;19937;COSTECH;Participation colloque (déplacement, hébergement, ;5000.00
-2013-01-08;19937;Sokoine University of Agriculture - SUA;Participation colloque (déplacement, hébergement, ;5000.00
-2013-01-08;19937;TAWIRI;Synthèse et centralisation des données;1000.00
-2013-01-08;19937;COSTECH;Synthèse et centralisation des données;1000.00
-2013-01-08;19937;Sokoine University of Agriculture - SUA;Synthèse et centralisation des données;1000.00
+2013-01-08;19937;TAWIRI;Participation colloque (dÃ©placement, hÃ©bergement, ;5000.00
+2013-01-08;19937;COSTECH;Participation colloque (dÃ©placement, hÃ©bergement, ;5000.00
+2013-01-08;19937;Sokoine University of Agriculture - SUA;Participation colloque (dÃ©placement, hÃ©bergement, ;5000.00
+2013-01-08;19937;TAWIRI;SynthÃ¨se et centralisation des donnÃ©es;1000.00
+2013-01-08;19937;COSTECH;SynthÃ¨se et centralisation des donnÃ©es;1000.00
+2013-01-08;19937;Sokoine University of Agriculture - SUA;SynthÃ¨se et centralisation des donnÃ©es;1000.00
 2013-01-08;19937;TAWIRI;Taxes de recherche;4800.00
 2013-01-08;19937;COSTECH;Taxes de recherche;4800.00
 2013-01-08;19937;Sokoine University of Agriculture - SUA;Taxes de recherche;4800.00
-2011-12-12;20034;Université de Savoie;Frais du Professeur C. Roche de l'Uni de Savoie;28875.00
-2009-04-08;20137;Bernard TAMO;Identité graphique du laboratoire;1000.00
-2009-04-08;20137;PRATIGRAPHIE;Identité graphique du laboratoire;1000.00
-2009-04-08;20137;Bernard TAMO;Identité graphique du laboratoire;1800.00
-2009-04-08;20137;PRATIGRAPHIE;Identité graphique du laboratoire;1800.00
+2011-12-12;20034;UniversitÃ© de Savoie;Frais du Professeur C. Roche de l'Uni de Savoie;28875.00
+2009-04-08;20137;Bernard TAMO;IdentitÃ© graphique du laboratoire;1000.00
+2009-04-08;20137;PRATIGRAPHIE;IdentitÃ© graphique du laboratoire;1000.00
+2009-04-08;20137;Bernard TAMO;IdentitÃ© graphique du laboratoire;1800.00
+2009-04-08;20137;PRATIGRAPHIE;IdentitÃ© graphique du laboratoire;1800.00
 2009-04-08;20137;Bernard TAMO;Impression plaquette;1700.00
 2009-04-08;20137;PRATIGRAPHIE;Impression plaquette;1700.00
-2011-03-21;20259;GE-Haute Ecole de travail social Genève;Frais d'édition;5000.00
-2009-10-27;20306;Conférenciers JDP;Conférences, déplacements;20000.00
-2009-10-27;20306;Conférenciers JDP;Repas avec conférenciers;4700.00
-2009-10-27;20306;Conférenciers JDP;Frais de reproduction, logiciel;1300.00
-2009-05-27;20711;intervenants externes;Intervention Véronique Merckx complément de mandat;5400.00
-2009-05-27;20711;intervenants externes;Intervention Véronique Merckx (mandat PC familles);13500.00
-2011-02-02;20780;Nimesis;110 jours à 74.- M. Guillaume Baudoin, en nature;65120.00
-2011-02-02;20780;Nimesis;80.46 jours à 148.- M. Alain Chevaux, en nature;95265.00
-2011-02-02;20780;Nimesis;110 jours à 74.- Mme Jasmin Omerovic, en nature;65120.00
+2011-03-21;20259;GE-Haute Ecole de travail social GenÃ¨ve;Frais d'Ã©dition;5000.00
+2009-10-27;20306;ConfÃ©renciers JDP;ConfÃ©rences, dÃ©placements;20000.00
+2009-10-27;20306;ConfÃ©renciers JDP;Repas avec confÃ©renciers;4700.00
+2009-10-27;20306;ConfÃ©renciers JDP;Frais de reproduction, logiciel;1300.00
+2009-05-27;20711;intervenants externes;Intervention VÃ©ronique Merckx complÃ©ment de mandat;5400.00
+2009-05-27;20711;intervenants externes;Intervention VÃ©ronique Merckx (mandat PC familles);13500.00
+2011-02-02;20780;Nimesis;110 jours Ã  74.- M. Guillaume Baudoin, en nature;65120.00
+2011-02-02;20780;Nimesis;80.46 jours Ã  148.- M. Alain Chevaux, en nature;95265.00
+2011-02-02;20780;Nimesis;110 jours Ã  74.- Mme Jasmin Omerovic, en nature;65120.00
 2009-12-18;20898;Teleos;Mise en place collection;21840.00
 2009-12-18;20898;INRA;Mise en place collection;21840.00
 2009-12-18;20898;EAWAG;Mise en place collection;21840.00
 2009-12-18;20898;Museum de Bern;Mise en place collection;21840.00
-2009-12-18;20898;Teleos;Opérations de terrain;10955.00
-2009-12-18;20898;INRA;Opérations de terrain;10955.00
-2009-12-18;20898;EAWAG;Opérations de terrain;10955.00
-2009-12-18;20898;Museum de Bern;Opérations de terrain;10955.00
+2009-12-18;20898;Teleos;OpÃ©rations de terrain;10955.00
+2009-12-18;20898;INRA;OpÃ©rations de terrain;10955.00
+2009-12-18;20898;EAWAG;OpÃ©rations de terrain;10955.00
+2009-12-18;20898;Museum de Bern;OpÃ©rations de terrain;10955.00
 2009-12-18;20898;Teleos;Expert;4830.00
 2009-12-18;20898;INRA;Expert;4830.00
 2009-12-18;20898;EAWAG;Expert;4830.00
@@ -460,24 +460,24 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2009-12-18;20898;INRA;Hydroacoustique;22003.00
 2009-12-18;20898;EAWAG;Hydroacoustique;22003.00
 2009-12-18;20898;Museum de Bern;Hydroacoustique;22003.00
-2009-01-07;20954;intervenants externes;Indémnités journalières pour scientifiques invités;10040.00
+2009-01-07;20954;intervenants externes;IndÃ©mnitÃ©s journaliÃ¨res pour scientifiques invitÃ©s;10040.00
 2008-11-27;21052;SZTAKI Hungarian Academy of Sciences;participation en nature 490 heures;51450.00
-2008-11-27;21052;Haute école suisse d'agronomie HESA;participation en nature 490 heures;51450.00
+2008-11-27;21052;Haute Ã©cole suisse d'agronomie HESA;participation en nature 490 heures;51450.00
 2008-11-27;21052;FairTill SA;participation en nature 490 heures;51450.00
 2008-11-27;21052;SZTAKI Hungarian Academy of Sciences;participation en nature 80 heures;8400.00
-2008-11-27;21052;Haute école suisse d'agronomie HESA;participation en nature 80 heures;8400.00
+2008-11-27;21052;Haute Ã©cole suisse d'agronomie HESA;participation en nature 80 heures;8400.00
 2008-11-27;21052;FairTill SA;participation en nature 80 heures;8400.00
 2008-11-27;21052;SZTAKI Hungarian Academy of Sciences;prestations en nature 20 heures;2100.00
-2008-11-27;21052;Haute école suisse d'agronomie HESA;prestations en nature 20 heures;2100.00
+2008-11-27;21052;Haute Ã©cole suisse d'agronomie HESA;prestations en nature 20 heures;2100.00
 2008-11-27;21052;FairTill SA;prestations en nature 20 heures;2100.00
-2014-12-18;21149;Université de Genève;calibration et codes informatiques;8000.00
+2014-12-18;21149;UniversitÃ© de GenÃ¨ve;calibration et codes informatiques;8000.00
 2010-03-01;21246;T-LINK MANAGEMENT AG / LTD ;Location pavillon suisse;12000.00
-2008-11-13;21496;intervenants externes;Forfait à la facture pour Dorian Wyer;5500.00
-2008-11-13;21496;intervenants externes;M. Stephan Holländer, facture de PROTAMO AG;2000.00
-2008-11-13;21496;549,Information et documentation;Forfait à la facture pour Dorian Wyer;5500.00
-2012-07-09;21591;Association Truite-Léman;Campagnes de mesures;8200.00
-2012-08-21;21632;WebDMS;test d'utilisabilité;10385.00
-2012-08-21;21632;HTW Chur;test d'utilisabilité;10385.00
+2008-11-13;21496;intervenants externes;Forfait Ã  la facture pour Dorian Wyer;5500.00
+2008-11-13;21496;intervenants externes;M. Stephan HollÃ¤nder, facture de PROTAMO AG;2000.00
+2008-11-13;21496;549,Information et documentation;Forfait Ã  la facture pour Dorian Wyer;5500.00
+2012-07-09;21591;Association Truite-LÃ©man;Campagnes de mesures;8200.00
+2012-08-21;21632;WebDMS;test d'utilisabilitÃ©;10385.00
+2012-08-21;21632;HTW Chur;test d'utilisabilitÃ©;10385.00
 2012-08-21;21632;WebDMS;facture du 01.10.2010;4356.00
 2012-08-21;21632;HTW Chur;facture du 01.10.2010;4356.00
 2012-08-21;21632;WebDMS;factures 2011;30997.00
@@ -487,110 +487,110 @@ Date;N° HESSO;Nom du prestataire;Libellé;Montant
 2012-08-21;21632;WebDMS;facture du 30.08.2010;7326.00
 2012-08-21;21632;HTW Chur;facture du 30.08.2010;7326.00
 2010-03-01;21742;EIL - Institut Terre Nature Paysage;Mandat des SIG;4500.00
-2010-01-07;22305;Novae, CEPL;Norbert Müller;1650.00
-2010-01-07;22305;Intervenants colloque;Norbert Müller;1650.00
+2010-01-07;22305;Novae, CEPL;Norbert MÃ¼ller;1650.00
+2010-01-07;22305;Intervenants colloque;Norbert MÃ¼ller;1650.00
 2010-01-07;22305;Novae, CEPL;Repas et pauses colloque;2750.00
 2010-01-07;22305;Intervenants colloque;Repas et pauses colloque;2750.00
 2010-01-07;22305;Novae, CEPL;Martin Camenisch;1600.00
 2010-01-07;22305;Intervenants colloque;Martin Camenisch;1600.00
-2012-04-19;22470;Université de Genève;David Neto, Uni-GE - LEA, 100h*110.-;11000.00
-2012-04-19;22470;Université de Genève;Sylvain Weber, Uni-GE, 217h*60.-;13000.00
-2010-04-23;23448;Développement informatique;Réalisation d'un prototype;15000.00
-2010-02-02;23467;Intervenants académiques;L.Cornaglia facture à la compta fin 2009;2400.00
-2009-06-03;23751;Haute école suisse d'agronomie HESA;Assistant, 400 heures;24000.00
-2009-06-03;23751;Haute école suisse d'agronomie HESA;Dominique Guenat, Professeur, 240 heures;26400.00
+2012-04-19;22470;UniversitÃ© de GenÃ¨ve;David Neto, Uni-GE - LEA, 100h*110.-;11000.00
+2012-04-19;22470;UniversitÃ© de GenÃ¨ve;Sylvain Weber, Uni-GE, 217h*60.-;13000.00
+2010-04-23;23448;DÃ©veloppement informatique;RÃ©alisation d'un prototype;15000.00
+2010-02-02;23467;Intervenants acadÃ©miques;L.Cornaglia facture Ã  la compta fin 2009;2400.00
+2009-06-03;23751;Haute Ã©cole suisse d'agronomie HESA;Assistant, 400 heures;24000.00
+2009-06-03;23751;Haute Ã©cole suisse d'agronomie HESA;Dominique Guenat, Professeur, 240 heures;26400.00
 2011-12-06;23753;Julien Daulte;Sous Traitance;35000.00
-2011-12-06;23753;Valérie Hoffmeyer;Sous Traitance;35000.00
+2011-12-06;23753;ValÃ©rie Hoffmeyer;Sous Traitance;35000.00
 2011-12-06;23753;Julien Daulte;Conseil;1000.00
-2011-12-06;23753;Valérie Hoffmeyer;Conseil;1000.00
-2011-04-04;23814;Conférenciers JDP;Frais de reproduction, logiciel;1300.00
-2011-04-04;23814;Conférenciers JDP;Conférences, déplacements;20000.00
-2011-04-04;23814;Conférenciers JDP;Repas avec conférenciers;4700.00
-2012-02-06;24037;Artionet SA;630 h à 127.- M.Frédéric Baetscher en nature;80010.00
-2012-02-06;24037;Creapole SA ;630 h à 127.- M.Frédéric Baetscher en nature;80010.00
-2012-02-06;24037;FiMM;630 h à 127.- M.Frédéric Baetscher en nature;80010.00
-2012-02-06;24037;Artionet SA;contribution cash pr déplacements congrès et Jura;1800.00
-2012-02-06;24037;Creapole SA ;contribution cash pr déplacements congrès et Jura;1800.00
-2012-02-06;24037;FiMM;contribution cash pr déplacements congrès et Jura;1800.00
-2012-02-06;24037;Artionet SA;710h à 105.- M.Yannick Guerdat en nature;74550.00
-2012-02-06;24037;Creapole SA ;710h à 105.- M.Yannick Guerdat en nature;74550.00
-2012-02-06;24037;FiMM;710h à 105.- M.Yannick Guerdat en nature;74550.00
-2012-02-06;24037;Artionet SA;110 h à 105.- M.Bertrand Crevoisier en nature;11550.00
-2012-02-06;24037;Creapole SA ;110 h à 105.- M.Bertrand Crevoisier en nature;11550.00
-2012-02-06;24037;FiMM;110 h à 105.- M.Bertrand Crevoisier en nature;11550.00
+2011-12-06;23753;ValÃ©rie Hoffmeyer;Conseil;1000.00
+2011-04-04;23814;ConfÃ©renciers JDP;Frais de reproduction, logiciel;1300.00
+2011-04-04;23814;ConfÃ©renciers JDP;ConfÃ©rences, dÃ©placements;20000.00
+2011-04-04;23814;ConfÃ©renciers JDP;Repas avec confÃ©renciers;4700.00
+2012-02-06;24037;Artionet SA;630 h Ã  127.- M.FrÃ©dÃ©ric Baetscher en nature;80010.00
+2012-02-06;24037;Creapole SA ;630 h Ã  127.- M.FrÃ©dÃ©ric Baetscher en nature;80010.00
+2012-02-06;24037;FiMM;630 h Ã  127.- M.FrÃ©dÃ©ric Baetscher en nature;80010.00
+2012-02-06;24037;Artionet SA;contribution cash pr dÃ©placements congrÃ¨s et Jura;1800.00
+2012-02-06;24037;Creapole SA ;contribution cash pr dÃ©placements congrÃ¨s et Jura;1800.00
+2012-02-06;24037;FiMM;contribution cash pr dÃ©placements congrÃ¨s et Jura;1800.00
+2012-02-06;24037;Artionet SA;710h Ã  105.- M.Yannick Guerdat en nature;74550.00
+2012-02-06;24037;Creapole SA ;710h Ã  105.- M.Yannick Guerdat en nature;74550.00
+2012-02-06;24037;FiMM;710h Ã  105.- M.Yannick Guerdat en nature;74550.00
+2012-02-06;24037;Artionet SA;110 h Ã  105.- M.Bertrand Crevoisier en nature;11550.00
+2012-02-06;24037;Creapole SA ;110 h Ã  105.- M.Bertrand Crevoisier en nature;11550.00
+2012-02-06;24037;FiMM;110 h Ã  105.- M.Bertrand Crevoisier en nature;11550.00
 2014-08-21;24536;Natura;Participation phase 2;1920.00
 2014-08-21;24536;Natura;Participation phase 1;12000.00
-2014-02-28;25282;Bondolfi Théo;Théo Bondolfi a fait 30 h en déc 09 (taux 148.-);4000.00
-2010-09-24;25578;Agridea;Mise à disposition données;2750.00
-2010-09-24;25578;Agroscope;Mise à disposition données;2750.00
+2014-02-28;25282;Bondolfi ThÃ©o;ThÃ©o Bondolfi a fait 30 h en dÃ©c 09 (taux 148.-);4000.00
+2010-09-24;25578;Agridea;Mise Ã  disposition donnÃ©es;2750.00
+2010-09-24;25578;Agroscope;Mise Ã  disposition donnÃ©es;2750.00
 2010-09-24;25578;Agridea;Etude botanique;23650.00
 2010-09-24;25578;Agroscope;Etude botanique;23650.00
 2010-12-14;25892;intervenants externes;Laurent Cornaglia, facturation via Maneco SA;1500.00
 2015-07-24;26261;Biotec;sous-traitance;7274.00
-2011-05-24;27005;intervenants externes;Benoît Genecand et d'autres à confirmer;2000.00
+2011-05-24;27005;intervenants externes;BenoÃ®t Genecand et d'autres Ã  confirmer;2000.00
 2014-02-28;28359;Etudiants;Etudiants 4 groupes de 2 personnes;1200.00
-2014-02-28;28359;Etudiants;Etudiante de thèse sur la théâtralisation;600.00
-2011-11-15;28765;Etudiants;Marco Barber, étudiant au MscBA, H non facturées;.00
-2015-10-30;28830;Experts à définir;frais d'expertises / coopération externes;21000.00
-2015-10-30;28830;Experts à définir;intervenants externes (200h*125.-);25000.00
-2012-05-14;29007;Université de Genève;16h * 160.-;2560.00
+2014-02-28;28359;Etudiants;Etudiante de thÃ¨se sur la thÃ©Ã¢tralisation;600.00
+2011-11-15;28765;Etudiants;Marco Barber, Ã©tudiant au MscBA, H non facturÃ©es;.00
+2015-10-30;28830;Experts Ã  dÃ©finir;frais d'expertises / coopÃ©ration externes;21000.00
+2015-10-30;28830;Experts Ã  dÃ©finir;intervenants externes (200h*125.-);25000.00
+2012-05-14;29007;UniversitÃ© de GenÃ¨ve;16h * 160.-;2560.00
 2014-12-18;29747;HUG;J. Gasser, HUG sur facture;196215.00
 2014-11-07;29872;iumsp;eval trav administr;8828.00
-2014-11-07;29872;EMS Genève;eval trav administr;8828.00
+2014-11-07;29872;EMS GenÃ¨ve;eval trav administr;8828.00
 2014-11-07;29872;iumsp;consult scientifique CEPIC;8000.00
-2014-11-07;29872;EMS Genève;consult scientifique CEPIC;8000.00
+2014-11-07;29872;EMS GenÃ¨ve;consult scientifique CEPIC;8000.00
 2014-11-07;29872;iumsp;prestations infirmieres 5 EMS GE;20916.00
-2014-11-07;29872;EMS Genève;prestations infirmieres 5 EMS GE;20916.00
+2014-11-07;29872;EMS GenÃ¨ve;prestations infirmieres 5 EMS GE;20916.00
 2015-10-30;30338;Soutraitance interne vers 40807;Financement pour assistant projet 40807 neXtpresso;6952.00
-2013-09-27;30579;Université de Bâle;Mandat;15000.00
+2013-09-27;30579;UniversitÃ© de BÃ¢le;Mandat;15000.00
 2013-09-27;30579;iumsp;Mandat;15000.00
-2013-09-27;30579;Université de Bâle;Mandat;15000.00
+2013-09-27;30579;UniversitÃ© de BÃ¢le;Mandat;15000.00
 2013-09-27;30579;iumsp;Mandat;15000.00
 2014-11-07;31644;Artanim;financt cti via heds;71120.00
 2014-11-07;31644;HUG;financt cti via heds;71120.00
 2014-11-07;31644;Artanim;financt cti via heds;24640.00
 2014-11-07;31644;HUG;financt cti via heds;24640.00
-2014-11-07;31644;Artanim;Déplact, matériel, locaux;22600.00
-2014-11-07;31644;HUG;Déplact, matériel, locaux;22600.00
+2014-11-07;31644;Artanim;DÃ©plact, matÃ©riel, locaux;22600.00
+2014-11-07;31644;HUG;DÃ©plact, matÃ©riel, locaux;22600.00
 2014-11-07;31644;Artanim;financt cti via heds;7990.00
 2014-11-07;31644;HUG;financt cti via heds;7990.00
 2012-12-13;32096;WebDMS;Fabio Ricci (180h*60.-);10800.00
-2012-09-04;32265;For-ge Sàrl;sous-traité;14000.00
-2015-01-26;32436;étudiant;Etienne Müller (150h * 24.30) - contrat I;5760.00
-2015-01-26;32436;étudiant;Kiril Ilyev (312h * 24.30) - contrat II;12600.00
-2015-01-26;32436;étudiant;Kiril Ilyev (solde) - contrat oral;18040.00
-2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);Ingénieur Assistant (940h*20.-);18800.00
-2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);Ingénieur Assistant (100h*30.-);3000.00
-2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);Frais de déplacement;16400.00
+2012-09-04;32265;For-ge SÃ rl;sous-traitÃ©;14000.00
+2015-01-26;32436;Ã©tudiant;Etienne MÃ¼ller (150h * 24.30) - contrat I;5760.00
+2015-01-26;32436;Ã©tudiant;Kiril Ilyev (312h * 24.30) - contrat II;12600.00
+2015-01-26;32436;Ã©tudiant;Kiril Ilyev (solde) - contrat oral;18040.00
+2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);IngÃ©nieur Assistant (940h*20.-);18800.00
+2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);IngÃ©nieur Assistant (100h*30.-);3000.00
+2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);Frais de dÃ©placement;16400.00
 2014-11-05;32967;Indian Institute of Technology Kanpur (IITK);Venkata Tadinada Prabhakar (professeur 380h*40);15200.00
-2014-01-06;33469;partenaires privés;10 heures à 160.-;1600.00
-2014-10-29;34069;Romanian Institute;Salaire, Matériel, déplacement;153934.00
+2014-01-06;33469;partenaires privÃ©s;10 heures Ã  160.-;1600.00
+2014-10-29;34069;Romanian Institute;Salaire, MatÃ©riel, dÃ©placement;153934.00
 2015-03-23;34367;Infoclio;Enrico Natale (160h);17600.00
-2015-05-11;34748;Reflex Sàrl;;32400.00
-2015-01-27;35167;WebDMS;WEBDMS (F. Ricci) prévu 54'000;75463.55
+2015-05-11;34748;Reflex SÃ rl;;32400.00
+2015-01-27;35167;WebDMS;WEBDMS (F. Ricci) prÃ©vu 54'000;75463.55
 2014-01-27;35302;Sous-traitance interne;Financement pour assistant projet 39038 Infonet IV;20759.00
-2015-09-24;36720;Alambic ;Benoît Dubuis (prestation en nature)	;12320.00
-2015-09-24;36720;Eclosion SA;Benoît Dubuis (prestation en nature)	;12320.00
+2015-09-24;36720;Alambic ;BenoÃ®t Dubuis (prestation en nature)	;12320.00
+2015-09-24;36720;Eclosion SA;BenoÃ®t Dubuis (prestation en nature)	;12320.00
 2015-09-24;36720;Alambic ;Nicolas Colson (prestation en nature);25600.00
 2015-09-24;36720;Eclosion SA;Nicolas Colson (prestation en nature);25600.00
-2013-11-12;36773;Université de Bâle;Chef de projet partie alémanique;111569.00
-2013-11-12;36773;André Jeannin;Chef de projet partie alémanique;111569.00
-2013-11-12;36773;Université de Bâle;Chef projet indépendant;81648.00
-2013-11-12;36773;André Jeannin;Chef projet indépendant;81648.00
-2013-11-18;37892;intervenants externes;16'000 euros (taux 1.23) - sous traité jusqu^à 30%;19680.00
+2013-11-12;36773;UniversitÃ© de BÃ¢le;Chef de projet partie alÃ©manique;111569.00
+2013-11-12;36773;AndrÃ© Jeannin;Chef de projet partie alÃ©manique;111569.00
+2013-11-12;36773;UniversitÃ© de BÃ¢le;Chef projet indÃ©pendant;81648.00
+2013-11-12;36773;AndrÃ© Jeannin;Chef projet indÃ©pendant;81648.00
+2013-11-18;37892;intervenants externes;16'000 euros (taux 1.23) - sous traitÃ© jusqu^Ã  30%;19680.00
 2015-04-23;38681;WebDMS;sous traitance;13800.00
-2014-03-11;39266;Hôpitaux universitaires de Genève;Olivier KARAM, médecin;19800.00
-2014-03-11;39266;Barde & Cie SA;Olivier KARAM, médecin;19800.00
-2014-03-11;39266;Hôpitaux universitaires de Genève;Antoine BARDE, consultant indépendant;19800.00
-2014-03-11;39266;Barde & Cie SA;Antoine BARDE, consultant indépendant;19800.00
-2015-04-23;39401;Bibliothèque de Genève;financement;11000.00
-2014-08-21;39920;For-ge Sàrl;30h à 160.-;4800.00
-2014-08-28;40897;Fédération Genevoise des Métiers du Bâtiment;Prestation en nature;10500.00
+2014-03-11;39266;HÃ´pitaux universitaires de GenÃ¨ve;Olivier KARAM, mÃ©decin;19800.00
+2014-03-11;39266;Barde & Cie SA;Olivier KARAM, mÃ©decin;19800.00
+2014-03-11;39266;HÃ´pitaux universitaires de GenÃ¨ve;Antoine BARDE, consultant indÃ©pendant;19800.00
+2014-03-11;39266;Barde & Cie SA;Antoine BARDE, consultant indÃ©pendant;19800.00
+2015-04-23;39401;BibliothÃ¨que de GenÃ¨ve;financement;11000.00
+2014-08-21;39920;For-ge SÃ rl;30h Ã  160.-;4800.00
+2014-08-28;40897;FÃ©dÃ©ration Genevoise des MÃ©tiers du BÃ¢timent;Prestation en nature;10500.00
 2014-08-28;40897;Centre Patronal;Prestation en nature;10500.00
-2014-08-28;40897;Fédération Genevoise des Métiers du Bâtiment;Prestation en nature;10500.00
+2014-08-28;40897;FÃ©dÃ©ration Genevoise des MÃ©tiers du BÃ¢timent;Prestation en nature;10500.00
 2014-08-28;40897;Centre Patronal;Prestation en nature;10500.00
 2015-01-14;42275;Genilem;Prestation en nature personnel;20000.00
 2015-01-06;42431;Ynternet.org;Olivier LeDeuff / 110h;12100.00
-2015-01-06;42431;Université Bordeaux Montaigne;Olivier LeDeuff / 110h;12100.00
-2015-01-06;42431;Ynternet.org;Théo Bondolfi / 70h;7700.00
-2015-01-06;42431;Université Bordeaux Montaigne;Théo Bondolfi / 70h;7700.00
+2015-01-06;42431;UniversitÃ© Bordeaux Montaigne;Olivier LeDeuff / 110h;12100.00
+2015-01-06;42431;Ynternet.org;ThÃ©o Bondolfi / 70h;7700.00
+2015-01-06;42431;UniversitÃ© Bordeaux Montaigne;ThÃ©o Bondolfi / 70h;7700.00
