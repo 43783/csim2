@@ -37,11 +37,11 @@ import ch.hesge.cragsi.utils.PropertyUtils;
 public class CragsiLoader {
 
 	// Private attributes
-	private int accountingSequence;
+	private int sequenceId;
 
-	private String firstSemesterJournalId;
+	private String journalIdS1;
 	private String secondSemesterjournalId;
-	private String firstSemesterPeriodId;
+	private String periodIdS1;
 	private String secondSemesterPeriodId;
 
 	private Account salaryAccount;
@@ -70,12 +70,12 @@ public class CragsiLoader {
 	 */
 	public void init() throws IOException, ConfigurationException {
 		
-		accountingSequence = 1;
+		sequenceId = 1;
 		accountings = new ArrayList<>();
 
 		// Retrieve global properties from config file
-		firstSemesterJournalId  = PropertyUtils.getProperty("journalId_S1");
-		firstSemesterPeriodId   = PropertyUtils.getProperty("periodId_S1");
+		journalIdS1  = PropertyUtils.getProperty("journalId_S1");
+		periodIdS1   = PropertyUtils.getProperty("periodId_S1");
 		secondSemesterjournalId = PropertyUtils.getProperty("journalId_S2");
 		secondSemesterPeriodId  = PropertyUtils.getProperty("periodId_S2");
 
@@ -107,17 +107,33 @@ public class CragsiLoader {
 	 */
 	public void start() throws IOException, ConfigurationException {
 
-		// Generate FDC accountings
-		generateFDCAccountings();
+		try {
+			generateFDCAccountings();
+		}
+		catch(Exception e) {
+			LOGGER.error(e);
+		}
 
-		// Generate AGF accountings
-		//generateAGFAccountings();
+		try {
+			generateAGFAccountings();
+		}
+		catch(Exception e) {
+			LOGGER.error(e);
+		}
 
-		// Generate funding accountings
-		generateFinancialAccountings();
+		try {
+			generateFinancialAccountings();
+		}
+		catch(Exception e) {
+			LOGGER.error(e);
+		}
 
-		// Generate partner accountings
-		generatePartnerAccountings();
+		try {
+			generatePartnerAccountings();
+		}
+		catch(Exception e) {
+			LOGGER.error(e);
+		}
 
 		// Finally save accountings
 		AccountingDao.saveAll(accountings);
@@ -146,8 +162,8 @@ public class CragsiLoader {
 				Date endDateS1   = CragsiLogic.getFirstSemesterEndDate();
 				
 				// Retrieve second semester dates
-				Date startDateS2 = CragsiLogic.getFirstSemesterStartDate();
-				Date endDateS2   = CragsiLogic.getFirstSemesterEndDate();
+				Date startDateS2 = CragsiLogic.getSecondSemesterStartDate();
+				Date endDateS2   = CragsiLogic.getSecondSemesterEndDate();
 
 				// Retrieve the collaborator account
 				Account collaboratorAccount = CragsiLogic.getCollaboratorAccount(activity, accounts);
@@ -165,32 +181,32 @@ public class CragsiLoader {
 				String accountingLabelS1 = activityLabel + " (" + PropertyUtils.getProperty("academicYear_S1") + ")";
 				String accountingLabelS2 = activityLabel + " (" + PropertyUtils.getProperty("academicYear_S2") + ")";
 				
-				// Generate first semester accountings, but only if the activity has an amount and is within the semester date range
-				if (activity.getCostS1() != 0 && !accountingDateS1.before(startDateS1) && !accountingDateS1.after(endDateS1)) {
+				// Generate first semester accountings, but only if the activity has enough amount and is within the semester date range
+				if (activity.getCostS1() > 0 && !accountingDateS1.before(startDateS1) && !accountingDateS1.after(endDateS1)) {
 
 					// Collaborator accountings
-					accountings.add(CragsiLogic.createDebitEntry(accountingSequence, accountingDateS1, firstSemesterJournalId, firstSemesterPeriodId, collaboratorAccount, accountingLabelS1, activity.getCostS1()));
-					accountings.add(CragsiLogic.createCreditEntry(accountingSequence, accountingDateS1, firstSemesterJournalId, firstSemesterPeriodId, salaryAccount, accountingLabelS1, activity.getCostS1()));
-					accountingSequence++;
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, collaboratorAccount, accountingLabelS1, activity.getCostS1()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, salaryAccount, accountingLabelS1, activity.getCostS1()));
+					sequenceId++;
 
 					// Project accounting
-					accountings.add(CragsiLogic.createDebitEntry(accountingSequence, accountingDateS1, firstSemesterJournalId, firstSemesterPeriodId, projectAccount, accountingLabelS1, activity.getCostS1()));
-					accountings.add(CragsiLogic.createCreditEntry(accountingSequence, accountingDateS1, firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
-					accountingSequence++;
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, projectAccount, accountingLabelS1, activity.getCostS1()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, allProjectsAccount, accountingLabelS1, activity.getCostS1()));
+					sequenceId++;
 				}
 
-				// Generate second semester accountings, but only if the activity has an amount and is within the semester date range
-				if (activity.getCostS2() != 0 && !accountingDateS2.before(startDateS2) && !accountingDateS2.after(endDateS2)) {
+				// Generate second semester accountings, but only if the activity has enough amount and is within the semester date range
+				if (activity.getCostS2() > 0 && !accountingDateS2.before(startDateS2) && !accountingDateS2.after(endDateS2)) {
 
 					// Collaborator accountings
-					accountings.add(CragsiLogic.createDebitEntry(accountingSequence, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
-					accountings.add(CragsiLogic.createCreditEntry(accountingSequence, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, salaryAccount, accountingLabelS2, activity.getCostS2()));
-					accountingSequence++;
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, salaryAccount, accountingLabelS2, activity.getCostS2()));
+					sequenceId++;
 
 					// Project accounting
-					accountings.add(CragsiLogic.createDebitEntry(accountingSequence, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, projectAccount, accountingLabelS2, activity.getCostS2()));
-					accountings.add(CragsiLogic.createCreditEntry(accountingSequence, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
-					accountingSequence++;
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, projectAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
+					sequenceId++;
 				}
 			}
 			catch(Exception e) {
@@ -215,9 +231,9 @@ public class CragsiLoader {
 			
 			try {				
 				Account projectAccount = CragsiLogic.getProjectAccount(afgLine, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(accountingSequence, afgLine.getDate(), firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(accountingSequence, afgLine.getDate(), firstSemesterJournalId, firstSemesterPeriodId, projectAccount, afgLine.getName(), afgLine.getAmount()));
-				accountingSequence++;
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, afgLine.getName(), afgLine.getAmount()));
+				sequenceId++;
 			}
 			catch(Exception e) {
 				LOGGER.error(e);
@@ -241,9 +257,9 @@ public class CragsiLoader {
 
 			try {
 				Account projectAccount = CragsiLogic.getProjectAccount(financial, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(accountingSequence, financial.getDate(), firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, financial.getName(), financial.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(accountingSequence, financial.getDate(), firstSemesterJournalId, firstSemesterPeriodId, projectAccount, financial.getName(), financial.getAmount()));
-				accountingSequence++;
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, allProjectsAccount, financial.getName(), financial.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, projectAccount, financial.getName(), financial.getAmount()));
+				sequenceId++;
 			}
 			catch(Exception e) {
 				LOGGER.error(e);
@@ -267,9 +283,9 @@ public class CragsiLoader {
 
 			try {
 				Account projectAccount = CragsiLogic.getProjectAccount(partner, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(accountingSequence, partner.getDate(), firstSemesterJournalId, firstSemesterPeriodId, allProjectsAccount, partner.getName(), partner.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(accountingSequence, partner.getDate(), firstSemesterJournalId, firstSemesterPeriodId, projectAccount, partner.getName(), partner.getAmount()));
-				accountingSequence++;
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, allProjectsAccount, partner.getName(), partner.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, projectAccount, partner.getName(), partner.getAmount()));
+				sequenceId++;
 			}
 			catch(Exception e) {
 				LOGGER.error(e);

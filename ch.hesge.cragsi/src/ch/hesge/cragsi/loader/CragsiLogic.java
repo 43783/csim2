@@ -124,7 +124,7 @@ public class CragsiLogic {
 		Price activityPrice = null;
 
 		if (!priceMap.containsKey(activity.getContractType())) {
-			throw new IntegrityException("missing price for contract '" + activity.getContractType() + "' !");
+			throw new IntegrityException("missing price for contract '" + activity.getContractType() + "'");
 		}
 		else {
 			activityPrice = priceMap.get(activity.getContractType());
@@ -166,7 +166,7 @@ public class CragsiLogic {
 		Account collaboratorAccount = getAccountByName(activity.getLastname(), accounts);
 
 		if (collaboratorAccount == null) {
-			throw new IntegrityException("missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
+			throw new IntegrityException("missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "'");
 		}
 
 		return collaboratorAccount;
@@ -196,7 +196,7 @@ public class CragsiLogic {
 			projectAccount = CragsiLogic.getAccountByCode(socleCode, accounts);
 			
 			if (projectAccount == null) {
-				throw new ConfigurationException("missing account with socle code '" + socleCode + "' !");
+				throw new ConfigurationException("missing account with socle code '" + socleCode + "'");
 			}
 		}
 		else {
@@ -206,7 +206,7 @@ public class CragsiLogic {
 
 			// Check if project exists
 			if (project == null) {
-				throw new IntegrityException("missing project with code '" + projectNumber + "' !");
+				throw new IntegrityException("missing project with code '" + projectNumber + "'");
 			}
 			else {
 
@@ -216,16 +216,20 @@ public class CragsiLogic {
 				// Now, check if project is not closed
 				if (currentDate.equals(project.getStartDate()) || (currentDate.after(project.getStartDate()) && currentDate.before(project.getEndDate())) || currentDate.equals(project.getEndDate())) {
 
+					// Retrieve full project number
 					String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-					projectAccount = getAccountByCode(accountSuffix + projectNumber, accounts);
+					String fullProjectNumber = accountSuffix + projectNumber;
+					
+					// Retrieve account associated to the project
+					projectAccount = getAccountByCode(fullProjectNumber, accounts);
 
 					// Check if an account for the project exists
 					if (projectAccount == null) {
-						throw new IntegrityException("missing account with project code '" + projectNumber + "' !");
+						throw new IntegrityException("missing account with project code '" + fullProjectNumber + "'");
 					}
 				}
 				else {
-					throw new IntegrityException("missing project with code '" + projectNumber + "' is already closed !");
+					throw new IntegrityException("project with code '" + projectNumber + "' is already closed");
 				}
 			}
 		}
@@ -244,12 +248,16 @@ public class CragsiLogic {
 	 */
 	public static Account getProjectAccount(AGFLine agfLine, List<Account> accounts) throws ConfigurationException, IntegrityException {
 
+		// Retrieve full project number
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-		Account projectAccount = getAccountByCode(accountSuffix + agfLine.getProjectNumber(), accounts);
+		String fullProjectNumber = accountSuffix + agfLine.getProjectNumber();
+		
+		// Retrieve account associated to the project
+		Account projectAccount = getAccountByCode(fullProjectNumber, accounts);
 
 		// Check if an account for the project exists
 		if (projectAccount == null) {
-			throw new IntegrityException("missing account with project code '" + agfLine.getProjectNumber() + "' !");
+			throw new IntegrityException("missing account with project code '" + fullProjectNumber + "'");
 		}
 
 		return projectAccount;
@@ -266,12 +274,16 @@ public class CragsiLogic {
 	 */
 	public static Account getProjectAccount(Financial funding, List<Account> accounts) throws ConfigurationException, IntegrityException {
 
+		// Retrieve full project number
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-		Account projectAccount = getAccountByCode(accountSuffix + funding.getProjectNumber(), accounts);
+		String fullProjectNumber = accountSuffix + funding.getProjectNumber();
+		
+		// Retrieve account associated to the project
+		Account projectAccount = getAccountByCode(fullProjectNumber, accounts);
 
 		// Check if an account for the project exists
 		if (projectAccount == null) {
-			throw new IntegrityException("missing account with project code '" + funding.getProjectNumber() + "' !");
+			throw new IntegrityException("missing account with project code '" + fullProjectNumber + "'");
 		}
 
 		return projectAccount;
@@ -288,12 +300,16 @@ public class CragsiLogic {
 	 */
 	public static Account getProjectAccount(Partner partner, List<Account> accounts) throws ConfigurationException, IntegrityException {
 
+		// Retrieve full project number
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-		Account projectAccount = getAccountByCode(accountSuffix + partner.getProjectNumber(), accounts);
+		String fullProjectNumber = accountSuffix + partner.getProjectNumber();
+		
+		// Retrieve account associated to the project
+		Account projectAccount = getAccountByCode(fullProjectNumber, accounts);
 
 		// Check if an account for the project exists
 		if (projectAccount == null) {
-			throw new IntegrityException("missing account with project code '" + partner.getProjectNumber() + "' !");
+			throw new IntegrityException("missing account with project code '" + fullProjectNumber + "'");
 		}
 
 		return projectAccount;
@@ -402,7 +418,7 @@ public class CragsiLogic {
 
 		// If activity starts before the begin of semester, it's an error
 		if (activity.getStartContract().before(firstSemesterStartDate)) {
-			throw new IntegrityException("invalid contract start date for collaborator '" + activity.getLastname() + " !");
+			throw new IntegrityException("invalid contract start date for collaborator '" + activity.getLastname() + "'");
 		}
 		
 		// If activity starts after the begin of semester, adjust it
@@ -433,7 +449,7 @@ public class CragsiLogic {
 
 		// If activity ends after the end of semester, it's an error
 		if (activity.getEndContract().after(secondSemesterEndDate)) {
-			throw new IntegrityException("invalid contract end date for collaborator '" + activity.getLastname() + " !");
+			throw new IntegrityException("invalid contract end date for collaborator '" + activity.getLastname() + "'");
 		}
 		
 		// If activity starts after the begin of semester, adjust it
