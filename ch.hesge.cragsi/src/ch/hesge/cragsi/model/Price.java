@@ -8,10 +8,8 @@ package ch.hesge.cragsi.model;
  * Represents a domain object.
  * 
  * Copyright HEG Geneva 2015, Switzerland
- * 
  * @author Eric Harth
  */
-
 public class Price {
 
 	// Private attributes

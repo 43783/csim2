@@ -15,7 +15,6 @@ import ch.hesge.cragsi.utils.PropertyUtils;
  * files and to load them in memory.
  * 
  * Copyright HEG Geneva 2015, Switzerland
- * 
  * @author Eric Harth
  */
 public class AccountDao {

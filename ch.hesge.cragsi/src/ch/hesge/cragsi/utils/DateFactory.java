@@ -5,6 +5,12 @@ import java.util.Date;
 
 import ch.hesge.cragsi.exceptions.ConfigurationException;
 
+/**
+ * Class responsible to manage business dates.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 public class DateFactory {
 
 	/**

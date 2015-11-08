@@ -8,10 +8,10 @@ import java.util.Properties;
 import ch.hesge.cragsi.exceptions.ConfigurationException;
 
 /**
- * Class responsible to manage DAO access for Account.
+ * Class responsible to centralized properties
+ * contained in configuration file.
  * 
- * Copyright HEG Geneva 2014, Switzerland
- * 
+ * Copyright HEG Geneva 2015, Switzerland
  * @author Eric Harth
  */
 

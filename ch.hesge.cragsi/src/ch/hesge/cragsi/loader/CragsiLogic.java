@@ -21,6 +21,13 @@ import ch.hesge.cragsi.utils.DateFactory;
 import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
+/**
+ * Class responsible to implement business logic
+ * use throughout the application.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 public class CragsiLogic {
 
 	/**

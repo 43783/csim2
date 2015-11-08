@@ -1,5 +1,12 @@
 package ch.hesge.cragsi.exceptions;
 
+/**
+ * Exception raised when a integrity problem appears while
+ * processing information (like an account is referenced, but doesn't exist).
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 @SuppressWarnings("serial")
 public class IntegrityException extends Exception {
 

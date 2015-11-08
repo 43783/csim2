@@ -3,6 +3,12 @@ package ch.hesge.cragsi.utils;
 import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.loader.UserSettings;
 
+/**
+ * Class responsible to manage properties from configuration file.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 public class PropertyUtils {
 
 	/**

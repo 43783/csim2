@@ -1,5 +1,11 @@
 package ch.hesge.cragsi.exceptions;
 
+/**
+ * Exception raised while loading configuration file.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 @SuppressWarnings("serial")
 public class ConfigurationException extends Exception {
 

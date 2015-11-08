@@ -27,6 +27,13 @@ import ch.hesge.cragsi.utils.DateFactory;
 import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
+/**
+ * Main class used to load CRAGSI data from
+ * files and generate ODOO accounting file.
+ *  
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 public class CragsiLoader {
 
 	// Private attributes

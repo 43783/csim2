@@ -6,13 +6,11 @@ import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.model.Accounting;
 
 /**
- * Class responsible to create accounting entries.
+ * Class responsible to manage accounting entries.
  * 
- * Copyright HEG Geneva 2014, Switzerland
- * 
+ * Copyright HEG Geneva 2015, Switzerland
  * @author Eric Harth
  */
-
 public class AccountingFactory {
 
 	public static Accounting createDebitEntry(int sequenceId, Date date, String journalId, String periodId, Account account, String label, double value) {

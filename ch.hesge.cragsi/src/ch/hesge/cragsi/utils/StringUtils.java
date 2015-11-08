@@ -31,6 +31,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Class responsible to manage string conversion.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
  */
 public class StringUtils {
 

@@ -13,6 +13,13 @@ import ch.hesge.cragsi.utils.CsvWriter;
 import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
+/**
+ * Class responsible to manage physical access to underlying
+ * files and to load them in memory.
+ * 
+ * Copyright HEG Geneva 2015, Switzerland
+ * @author Eric Harth
+ */
 public class AccountingDao {
 
 	/**
@@ -47,7 +54,7 @@ public class AccountingDao {
 		csvOutput.write("line_id/period_id/id");
 		csvOutput.endRecord();			
 		
-		// Write one record by accounting
+		// Write one record by one
 		for (Accounting accounting : accountings) {
 			csvOutput.write(StringUtils.toString(accounting.getId()));
 			csvOutput.write(StringUtils.toString(accounting.getDate()));
