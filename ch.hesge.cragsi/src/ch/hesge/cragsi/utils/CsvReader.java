@@ -36,6 +36,7 @@ import java.util.HashMap;
 /**
  * A stream based parser for parsing delimited text data from a file or a
  * stream.
+ * http://www.csvreader.com/java_csv_samples.php
  */
 public class CsvReader {
 	private Reader inputStream = null;

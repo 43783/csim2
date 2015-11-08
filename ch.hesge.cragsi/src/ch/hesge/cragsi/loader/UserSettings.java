@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import ch.hesge.cragsi.exceptions.ConfigurationException;
+
 /**
  * Class responsible to manage DAO access for Account.
  * 
@@ -19,7 +21,7 @@ public class UserSettings extends Properties {
 	// Singleton access
 	private static UserSettings uniqueInstance;
 
-	public static synchronized UserSettings getInstance() {
+	public static synchronized UserSettings getInstance() throws ConfigurationException {
 
 		if (uniqueInstance == null) {
 
@@ -32,10 +34,10 @@ public class UserSettings extends Properties {
 				uniqueInstance.load(reader);
 			}
 			catch (FileNotFoundException e) {
-				System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+				throw new ConfigurationException("Unable to find file craigsi.conf");
 			}
 			catch (IOException e) {
-				System.out.println("CragsiLoader: an unexpected error has occured: " + e.toString());
+				throw new ConfigurationException("Error while loading file: " + e.toString());
 			}
 			finally {
 				if (reader != null) {

@@ -30,6 +30,7 @@ import java.nio.charset.Charset;
 
 /**
  * A stream based writer for writing delimited text data to a file or a stream.
+ * http://www.csvreader.com/java_csv_samples.php
  */
 public class CsvWriter {
 	private Writer outputStream = null;

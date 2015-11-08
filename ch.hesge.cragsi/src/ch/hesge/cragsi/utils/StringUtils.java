@@ -20,6 +20,9 @@
  */
 package ch.hesge.cragsi.utils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +33,24 @@ import java.util.regex.Pattern;
 /**
  */
 public class StringUtils {
+
+	/**
+	 * Convert a Throwable into its string representation. Basically, the
+	 * throwable is converted with its stack-trace into a single string
+	 * representation.
+	 * 
+	 * @param aThrowable
+	 *            the Throwable to convert
+	 * @return a String
+	 */
+	public static String toString(Throwable aThrowable) {
+
+		Writer result = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(result);
+		aThrowable.printStackTrace(printWriter);
+
+		return result.toString();
+	}
 
 	public static boolean isEmtpy(String value) {
 		return value == null || value.trim().length() == 0;

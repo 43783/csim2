@@ -3,13 +3,12 @@ package ch.hesge.cragsi.dao;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Price;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -27,12 +26,13 @@ public class PriceDao {
 	 * 
 	 * @return a list of Price
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Price> findAll() throws IOException {
+	public static List<Price> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Price> priceList = new ArrayList<>();
-		String pricePath = UserSettings.getInstance().getProperty("pricePath");
+		String pricePath = PropertyUtils.getProperty("pricePath");
 
 		try {
 
@@ -65,25 +65,6 @@ public class PriceDao {
 		}
 
 		return priceList;
-	}
-
-	/**
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public static Map<String, Price> findMapByLibelle() throws IOException {
-
-		Map<String, Price> priceMap = new HashMap<>();
-
-		for (Price price : findAll()) {
-
-			if (!priceMap.containsKey(price.getLibelle())) {
-				priceMap.put(price.getLibelle(), price);
-			}
-		}
-
-		return priceMap;
 	}
 
 }

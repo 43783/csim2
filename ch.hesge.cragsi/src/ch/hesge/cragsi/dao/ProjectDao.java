@@ -5,9 +5,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Project;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -25,12 +26,13 @@ public class ProjectDao {
 	 * 
 	 * @return a list of Project
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Project> findAll() throws IOException {
+	public static List<Project> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Project> projectList = new ArrayList<>();
-		String projectPath = UserSettings.getInstance().getProperty("projectPath");
+		String projectPath = PropertyUtils.getProperty("projectPath");
 
 		try {
 
@@ -69,26 +71,6 @@ public class ProjectDao {
 		}
 
 		return projectList;
-	}
-
-	/**
-	 * Retrieve a single project based on its code.
-	 * If an project match exactly the code, it is returned.
-	 * 
-	 * @param code the project code name to find
-	 * @param projects the list of project to use while scanning code
-	 * @return a Project or null
-	 */
-	public static Project findByCode(String code, List<Project> projects) {
-
-		for (Project project : projects) {
-
-			if (project.getCode().toLowerCase().equals(code.toLowerCase())) {
-				return project;
-			}
-		}
-
-		return null;
 	}
 
 }

@@ -5,9 +5,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Collaborator;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -25,12 +26,13 @@ public class CollaboratorDao {
 	 * 
 	 * @return a list of Collaborator
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Collaborator> findAll() throws IOException {
+	public static List<Collaborator> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Collaborator> contributorList = new ArrayList<>();
-		String contributorPath = UserSettings.getInstance().getProperty("collaboratorPath");
+		String contributorPath = PropertyUtils.getProperty("collaboratorPath");
 
 		try {
 			

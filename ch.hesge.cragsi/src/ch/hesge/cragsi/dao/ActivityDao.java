@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Activity;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -23,12 +24,13 @@ import ch.hesge.cragsi.utils.StringUtils;
 public class ActivityDao {
 
 	/**
-	 * Retrieve all activities contained in file (only C1, C2 pillar).
+	 * Retrieve all activities from (only C1, C2 pillar).
 	 * 
 	 * @return a list of Activity
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Activity> findAll() throws IOException {
+	public static List<Activity> findAll() throws IOException, ConfigurationException {
 
 		List<Activity> activityList = new ArrayList<>();
 
@@ -74,12 +76,13 @@ public class ActivityDao {
 	 * 
 	 * @return a map of detailed activities classified by their key
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	private static Map<String, List<Activity>> loadActivityDetailMap() throws IOException {
+	private static Map<String, List<Activity>> loadActivityDetailMap() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		Map<String, List<Activity>> activityMap = new HashMap<>();
-		String activityDetailPath = UserSettings.getInstance().getProperty("activityDetailPath");
+		String activityDetailPath = PropertyUtils.getProperty("activityDetailPath");
 
 		try {
 
@@ -164,12 +167,13 @@ public class ActivityDao {
 	 * 
 	 * @return a map of activities classified by their key
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	private static Map<String, Activity> loadActivityTimeMap() throws IOException {
+	private static Map<String, Activity> loadActivityTimeMap() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		Map<String, Activity> activityMap = new HashMap<>();
-		String activityDetailPath = UserSettings.getInstance().getProperty("activityPath");
+		String activityDetailPath = PropertyUtils.getProperty("activityPath");
 
 		try {
 			

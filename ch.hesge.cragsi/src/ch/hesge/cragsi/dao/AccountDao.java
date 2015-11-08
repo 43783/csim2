@@ -5,9 +5,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 
 /**
  * Class responsible to manage physical access to underlying
@@ -20,16 +21,17 @@ import ch.hesge.cragsi.utils.CsvReader;
 public class AccountDao {
 
 	/**
-	 * Retrieve all accounts contained in file.
+	 * Retrieve all accounts from file.
 	 * 
 	 * @return a list of Account
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Account> findAll() throws IOException {
+	public static List<Account> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Account> accountList = new ArrayList<>();
-		String accountPath = UserSettings.getInstance().getProperty("accountPath");
+		String accountPath = PropertyUtils.getProperty("accountPath");
 
 		try {
 			
@@ -66,43 +68,4 @@ public class AccountDao {
 		return accountList;
 	}
 	
-	/**
-	 * Retrieve a single account based on its name.
-	 * If an account match partially the name (that is it contains part of the name), it is returned.
-	 * 
-	 * @param name the account name to find
-	 * @param accounts the list of account to use while scanning name
-	 * @return an Account or null
-	 */
-	public static Account findByName(String name, List<Account> accounts) {
-
-		for (Account account : accounts) {
-
-			if (account.getName().toLowerCase().contains(name.toLowerCase())) {
-				return account;
-			}
-		}
-
-		return null;
-	}
-	
-	/**
-	 * Retrieve a single account based on its code.
-	 * If an account match exactly the code, it is returned.
-	 * 
-	 * @param code the account code to find
-	 * @param accounts the list of account to use while scanning name
-	 * @return an Account or null
-	 */
-	public static Account findByCode(String code, List<Account> accounts) {
-
-		for (Account account : accounts) {
-
-			if (account.getCode().toLowerCase().equals(code.toLowerCase())) {
-				return account;
-			}
-		}
-
-		return null;
-	}
 }

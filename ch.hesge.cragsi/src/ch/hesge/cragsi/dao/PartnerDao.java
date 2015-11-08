@@ -5,9 +5,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Partner;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -25,12 +26,13 @@ public class PartnerDao {
 	 * 
 	 * @return a list of Partner
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Partner> findAll() throws IOException {
+	public static List<Partner> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Partner> partnerList = new ArrayList<>();
-		String fundingPath = UserSettings.getInstance().getProperty("partnerPath");
+		String fundingPath = PropertyUtils.getProperty("partnerPath");
 
 		try {
 

@@ -7,21 +7,23 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.utils.CsvWriter;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 public class AccountingDao {
 
 	/**
-	 * Retrieve all accountings contained in file
-	 * @return
+	 * Save all accountings to file.
+	 * 
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static void saveAll(List<Accounting> accountings) throws IOException {
+	public static void saveAll(List<Accounting> accountings) throws IOException, ConfigurationException {
 		
-		String accountingPath = UserSettings.getInstance().getProperty("accountingPath");
+		String accountingPath = PropertyUtils.getProperty("accountingPath");
 
 		// Delete old file, if present
 		if (new File(accountingPath).exists()) {

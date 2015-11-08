@@ -5,9 +5,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Funding;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -25,12 +26,13 @@ public class FundingDao {
 	 * 
 	 * @return a list of Funding
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<Funding> findAll() throws IOException {
+	public static List<Funding> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Funding> fundingList = new ArrayList<>();
-		String fundingPath = UserSettings.getInstance().getProperty("financialPath");
+		String fundingPath = PropertyUtils.getProperty("financialPath");
 
 		try {
 

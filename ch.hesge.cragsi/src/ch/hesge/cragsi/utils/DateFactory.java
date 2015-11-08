@@ -3,18 +3,20 @@ package ch.hesge.cragsi.utils;
 import java.util.Calendar;
 import java.util.Date;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 
 public class DateFactory {
 
 	/**
+	 * Retrieve the first semester start date.
 	 * 
-	 * @return
+	 * @return the start date
+	 * @throws ConfigurationException 
 	 */
-	public static Date getFirstSemesterStartDate() {
+	public static Date getFirstSemesterStartDate() throws ConfigurationException {
 
 		Calendar calendar = Calendar.getInstance();
-		String periodYear = UserSettings.getInstance().getProperty("academicPeriod_S1");
+		String periodYear = PropertyUtils.getProperty("academicPeriod_S1");
 		
 		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
 		calendar.set(Calendar.MONTH, 8);
@@ -28,13 +30,15 @@ public class DateFactory {
 	}
 
 	/**
+	 * Retrieve the first semester end date.
 	 * 
-	 * @return
+	 * @return the end date
+	 * @throws ConfigurationException 
 	 */
-	public static Date getFirstSemesterEndDate() {
+	public static Date getFirstSemesterEndDate() throws ConfigurationException {
 
 		Calendar calendar = Calendar.getInstance();
-		String periodYear = UserSettings.getInstance().getProperty("academicPeriod_S1");
+		String periodYear = PropertyUtils.getProperty("academicPeriod_S1");
 		
 		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
 		calendar.set(Calendar.MONTH, 11);
@@ -48,13 +52,15 @@ public class DateFactory {
 	}
 	
 	/**
+	 * Retrieve the second semester start date.
 	 * 
-	 * @return
+	 * @return the start date
+	 * @throws ConfigurationException 
 	 */
-	public static Date getSecondSemesterStartDate() {
+	public static Date getSecondSemesterStartDate() throws ConfigurationException {
 		
 		Calendar calendar = Calendar.getInstance();
-		String periodYear = UserSettings.getInstance().getProperty("academicPeriod_S2");
+		String periodYear = PropertyUtils.getProperty("academicPeriod_S2");
 		
 		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
 		calendar.set(Calendar.MONTH, 0);
@@ -69,13 +75,15 @@ public class DateFactory {
 	}
 	
 	/**
+	 * Retrieve the second semester end date.
 	 * 
-	 * @return
+	 * @return the end date
+	 * @throws ConfigurationException 
 	 */
-	public static Date getSecondSemesterEndDate() {
+	public static Date getSecondSemesterEndDate() throws ConfigurationException {
 		
 		Calendar calendar = Calendar.getInstance();
-		String periodYear = UserSettings.getInstance().getProperty("academicPeriod_S2");
+		String periodYear = PropertyUtils.getProperty("academicPeriod_S2");
 		
 		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
 		calendar.set(Calendar.MONTH, 7);

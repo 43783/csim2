@@ -5,10 +5,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hesge.cragsi.loader.UserSettings;
+import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.AGFLine;
-import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.utils.CsvReader;
+import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
 /**
@@ -26,12 +26,13 @@ public class AGFLineDao {
 	 * 
 	 * @return a list of AGFLine
 	 * @throws IOException
+	 * @throws ConfigurationException 
 	 */
-	public static List<AGFLine> findAll() throws IOException {
+	public static List<AGFLine> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<AGFLine> agfLines = new ArrayList<>();
-		String agfPath = UserSettings.getInstance().getProperty("agfPath");
+		String agfPath = PropertyUtils.getProperty("agfPath");
 
 		try {
 
@@ -68,37 +69,4 @@ public class AGFLineDao {
 		return agfLines;
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public static Account findByName(String name, List<Account> accounts) {
-
-		for (Account account : accounts) {
-
-			if (account.getName().toLowerCase().contains(name.toLowerCase())) {
-				return account;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public static Account findByCode(String code, List<Account> accounts) {
-
-		for (Account account : accounts) {
-
-			if (account.getCode().toLowerCase().equals(code.toLowerCase())) {
-				return account;
-			}
-		}
-
-		return null;
-	}
 }
