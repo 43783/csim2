@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesge.cragsi.exceptions.ConfigurationException;
-import ch.hesge.cragsi.model.Funding;
+import ch.hesge.cragsi.model.Financial;
 import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
@@ -18,7 +18,7 @@ import ch.hesge.cragsi.utils.StringUtils;
  * Copyright HEG Geneva 2015, Switzerland
  * @author Eric Harth
  */
-public class FundingDao {
+public class FinancialDao {
 
 	/**
 	 * Retrieve all fundings (or financials) contained in file.
@@ -27,10 +27,10 @@ public class FundingDao {
 	 * @throws IOException
 	 * @throws ConfigurationException 
 	 */
-	public static List<Funding> findAll() throws IOException, ConfigurationException {
+	public static List<Financial> findAll() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
-		List<Funding> fundingList = new ArrayList<>();
+		List<Financial> fundingList = new ArrayList<>();
 		String fundingPath = PropertyUtils.getProperty("financialPath");
 
 		try {
@@ -50,7 +50,7 @@ public class FundingDao {
 				String amount        = reader.get(3);
 
 				// Create and initialize an new instance
-				Funding funding = new Funding();
+				Financial funding = new Financial();
 				
 				funding.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
 				funding.setProjectNumber(projectNumber);

@@ -24,7 +24,7 @@ public class PropertyUtils {
 		String propertyValue = UserSettings.getInstance().getProperty(name);
 
 		if (propertyValue == null) {
-			throw new ConfigurationException("==> missing property '" + name + "' in configuration file !");
+			throw new ConfigurationException("missing property '" + name + "' in configuration file");
 		}
 
 		return propertyValue;

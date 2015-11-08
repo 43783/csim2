@@ -3,613 +3,325 @@ id;date;journal_id/id;name;period_id/id;line_id/account_id/id;line_id/date;line_
 ;;;;;__export__.account_account_134;2015-09-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2015);;3600.00;__export__.account_journal_5;__export__.account_period_10
 2;2015-09-01;__export__.account_journal_5;2;__export__.account_period_10;36797;2015-09-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2015);3600.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2015);;3600.00;__export__.account_journal_5;__export__.account_period_10
-3;2016-01-01;__export__.account_journal_5;3;;__export__.account_account_204;2016-01-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2016);7200.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2016);;7200.00;__export__.account_journal_5;
-4;2016-01-01;__export__.account_journal_5;4;;36797;2016-01-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2016);7200.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17663013 - D. Maradan - 36797 - Réalisation Projet CTI H1N1 (2016);;7200.00;__export__.account_journal_5;
-5;2015-09-01;__export__.account_journal_5;5;__export__.account_period_10;__export__.account_account_204;2015-09-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2015);3600.00;;__export__.account_journal_5;__export__.account_period_10
+3;2015-09-01;__export__.account_journal_5;3;__export__.account_period_10;__export__.account_account_204;2015-09-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2015);3600.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2015);;3600.00;__export__.account_journal_5;__export__.account_period_10
-6;2015-09-01;__export__.account_journal_5;6;__export__.account_period_10;33239;2015-09-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2015);3600.00;;__export__.account_journal_5;__export__.account_period_10
+4;2015-09-01;__export__.account_journal_5;4;__export__.account_period_10;33239;2015-09-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2015);3600.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2015);;3600.00;__export__.account_journal_5;__export__.account_period_10
-7;2016-01-01;__export__.account_journal_5;7;;__export__.account_account_204;2016-01-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2016);7200.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2016);;7200.00;__export__.account_journal_5;
-8;2016-01-01;__export__.account_journal_5;8;;33239;2016-01-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2016);7200.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17663013 - D. Maradan - 33239 - Réalisation Projet FNS PRN 66 (2016);;7200.00;__export__.account_journal_5;
-9;2015-09-01;__export__.account_journal_5;9;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+5;2015-09-01;__export__.account_journal_5;5;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-10;2015-09-01;__export__.account_journal_5;10;__export__.account_period_10;40948;2015-09-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+6;2015-09-01;__export__.account_journal_5;6;__export__.account_period_10;40948;2015-09-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-11;2016-01-01;__export__.account_journal_5;11;;__export__.account_account_211;2016-01-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2016);;8799.60;__export__.account_journal_5;
-12;2016-01-01;__export__.account_journal_5;12;;40948;2016-01-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18503508 - J. Ramirez Taroncher - 40948  -  Réalisation Projet Lives (2016);;8799.60;__export__.account_journal_5;
-13;2015-09-01;__export__.account_journal_5;13;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+7;2015-09-01;__export__.account_journal_5;7;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-14;2015-09-01;__export__.account_journal_5;14;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+8;2015-09-01;__export__.account_journal_5;8;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-15;2016-01-01;__export__.account_journal_5;15;;__export__.account_account_211;2016-01-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2016);;8799.60;__export__.account_journal_5;
-16;2016-01-01;__export__.account_journal_5;16;;45566;2016-01-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18503508 - J. Ramirez Taroncher - Dépôt new projet fondat° privée Qualifm insert°Jeu (2016);;8799.60;__export__.account_journal_5;
-17;2015-09-01;__export__.account_journal_5;17;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+9;2015-09-01;__export__.account_journal_5;9;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-18;2015-09-01;__export__.account_journal_5;18;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+10;2015-09-01;__export__.account_journal_5;10;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-19;2016-01-01;__export__.account_journal_5;19;;__export__.account_account_211;2016-01-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2016);;8799.60;__export__.account_journal_5;
-20;2016-01-01;__export__.account_journal_5;20;;45566;2016-01-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18503508 - J. Ramirez Taroncher - Comité de rédaction de conférences et de journaux (2016);;8799.60;__export__.account_journal_5;
-21;2015-09-01;__export__.account_journal_5;21;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+11;2015-09-01;__export__.account_journal_5;11;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-22;2015-09-01;__export__.account_journal_5;22;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+12;2015-09-01;__export__.account_journal_5;12;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-23;2016-01-01;__export__.account_journal_5;23;;__export__.account_account_211;2016-01-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2016);;8799.60;__export__.account_journal_5;
-24;2016-01-01;__export__.account_journal_5;24;;45566;2016-01-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18503508 - J. Ramirez Taroncher - Réalisation de mandat Ville de GE et canton de GE (2016);;8799.60;__export__.account_journal_5;
-25;2015-09-01;__export__.account_journal_5;25;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+13;2015-09-01;__export__.account_journal_5;13;__export__.account_period_10;__export__.account_account_211;2015-09-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-26;2015-09-01;__export__.account_journal_5;26;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
+14;2015-09-01;__export__.account_journal_5;14;__export__.account_period_10;45566;2015-09-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2015);4400.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2015);;4400.40;__export__.account_journal_5;__export__.account_period_10
-27;2016-01-01;__export__.account_journal_5;27;;__export__.account_account_211;2016-01-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2016);;8799.60;__export__.account_journal_5;
-28;2016-01-01;__export__.account_journal_5;28;;45566;2016-01-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2016);8799.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18503508 - J. Ramirez Taroncher - Socle Recherche HEG (2016);;8799.60;__export__.account_journal_5;
-29;2015-09-01;__export__.account_journal_5;29;__export__.account_period_10;__export__.account_account_183;2015-09-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+15;2015-09-01;__export__.account_journal_5;15;__export__.account_period_10;__export__.account_account_183;2015-09-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-30;2015-09-01;__export__.account_journal_5;30;__export__.account_period_10;45566;2015-09-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+16;2015-09-01;__export__.account_journal_5;16;__export__.account_period_10;45566;2015-09-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-31;2016-01-01;__export__.account_journal_5;31;;__export__.account_account_183;2016-01-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2016);;8000.40;__export__.account_journal_5;
-32;2016-01-01;__export__.account_journal_5;32;;45566;2016-01-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_13128458 - P. Daehne - Réserve  -  -  CTI ou autre projet à fond de tiers (2016);;8000.40;__export__.account_journal_5;
-33;2015-09-01;__export__.account_journal_5;33;__export__.account_period_10;__export__.account_account_183;2015-09-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+17;2015-09-01;__export__.account_journal_5;17;__export__.account_period_10;__export__.account_account_183;2015-09-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-34;2015-09-01;__export__.account_journal_5;34;__export__.account_period_10;45566;2015-09-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+18;2015-09-01;__export__.account_journal_5;18;__export__.account_period_10;45566;2015-09-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-35;2016-01-01;__export__.account_journal_5;35;;__export__.account_account_183;2016-01-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2016);;8000.40;__export__.account_journal_5;
-36;2016-01-01;__export__.account_journal_5;36;;45566;2016-01-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_13128458 - P. Daehne - Mandat pass vac facture mai 2014 (2016);;8000.40;__export__.account_journal_5;
-37;2015-09-01;__export__.account_journal_5;37;__export__.account_period_10;__export__.account_account_218;2015-09-01;50_18445737 - A. Starkov - Math Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
+19;2015-09-01;__export__.account_journal_5;19;__export__.account_period_10;__export__.account_account_218;2015-09-01;50_18445737 - A. Starkov - Math Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18445737 - A. Starkov - Math Passerelle EHG (2015);;3519.60;__export__.account_journal_5;__export__.account_period_10
-38;2015-09-01;__export__.account_journal_5;38;__export__.account_period_10;45566;2015-09-01;50_18445737 - A. Starkov - Math Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
+20;2015-09-01;__export__.account_journal_5;20;__export__.account_period_10;45566;2015-09-01;50_18445737 - A. Starkov - Math Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18445737 - A. Starkov - Math Passerelle EHG (2015);;3519.60;__export__.account_journal_5;__export__.account_period_10
-39;2016-01-01;__export__.account_journal_5;39;;__export__.account_account_218;2016-01-01;50_18445737 - A. Starkov - Math Passerelle EHG (2016);7040.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18445737 - A. Starkov - Math Passerelle EHG (2016);;7040.40;__export__.account_journal_5;
-40;2016-01-01;__export__.account_journal_5;40;;45566;2016-01-01;50_18445737 - A. Starkov - Math Passerelle EHG (2016);7040.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18445737 - A. Starkov - Math Passerelle EHG (2016);;7040.40;__export__.account_journal_5;
-41;2015-09-01;__export__.account_journal_5;41;__export__.account_period_10;__export__.account_account_220;2015-09-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2015);2800.20;;__export__.account_journal_5;__export__.account_period_10
+21;2015-09-01;__export__.account_journal_5;21;__export__.account_period_10;__export__.account_account_220;2015-09-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2015);2800.20;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2015);;2800.20;__export__.account_journal_5;__export__.account_period_10
-42;2015-09-01;__export__.account_journal_5;42;__export__.account_period_10;36341;2015-09-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2015);2800.20;;__export__.account_journal_5;__export__.account_period_10
+22;2015-09-01;__export__.account_journal_5;22;__export__.account_period_10;36341;2015-09-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2015);2800.20;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2015);;2800.20;__export__.account_journal_5;__export__.account_period_10
-43;2016-01-01;__export__.account_journal_5;43;;__export__.account_account_220;2016-01-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2016);5599.80;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2016);;5599.80;__export__.account_journal_5;
-44;2016-01-01;__export__.account_journal_5;44;;36341;2016-01-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2016);5599.80;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40033674 - S. Wieland - 36341 - Développement projet CTI SICS (2016);;5599.80;__export__.account_journal_5;
-45;2015-09-01;__export__.account_journal_5;45;__export__.account_period_10;__export__.account_account_175;2015-09-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2015);11250.00;;__export__.account_journal_5;__export__.account_period_10
+23;2015-09-01;__export__.account_journal_5;23;__export__.account_period_10;__export__.account_account_175;2015-09-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2015);11250.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2015);;11250.00;__export__.account_journal_5;__export__.account_period_10
-46;2015-09-01;__export__.account_journal_5;46;__export__.account_period_10;33239;2015-09-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2015);11250.00;;__export__.account_journal_5;__export__.account_period_10
+24;2015-09-01;__export__.account_journal_5;24;__export__.account_period_10;33239;2015-09-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2015);11250.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2015);;11250.00;__export__.account_journal_5;__export__.account_period_10
-47;2016-01-01;__export__.account_journal_5;47;;__export__.account_account_175;2016-01-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2016);22500.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2016);;22500.00;__export__.account_journal_5;
-48;2016-01-01;__export__.account_journal_5;48;;33239;2016-01-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2016);22500.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40016856 - N. Borzykowski - 33239  -  Projet FNS Bois (2016);;22500.00;__export__.account_journal_5;
-49;2015-09-01;__export__.account_journal_5;49;__export__.account_period_10;__export__.account_account_205;2015-09-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2015);25200.00;;__export__.account_journal_5;__export__.account_period_10
+25;2015-09-01;__export__.account_journal_5;25;__export__.account_period_10;__export__.account_account_205;2015-09-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2015);25200.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2015);;25200.00;__export__.account_journal_5;__export__.account_period_10
-50;2015-09-01;__export__.account_journal_5;50;__export__.account_period_10;37216;2015-09-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2015);25200.00;;__export__.account_journal_5;__export__.account_period_10
+26;2015-09-01;__export__.account_journal_5;26;__export__.account_period_10;37216;2015-09-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2015);25200.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2015);;25200.00;__export__.account_journal_5;__export__.account_period_10
-51;2016-01-01;__export__.account_journal_5;51;;__export__.account_account_205;2016-01-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2016);25200.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2016);;25200.00;__export__.account_journal_5;
-52;2016-01-01;__export__.account_journal_5;52;;37216;2016-01-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2016);25200.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40018910 - I. Markov - 37216 - Réalisation CTI Ecological Waste Management (2016);;25200.00;__export__.account_journal_5;
-53;2015-09-01;__export__.account_journal_5;53;__export__.account_period_10;__export__.account_account_209;2015-09-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
+27;2015-09-01;__export__.account_journal_5;27;__export__.account_period_10;__export__.account_account_209;2015-09-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2015);;9259.80;__export__.account_journal_5;__export__.account_period_10
-54;2015-09-01;__export__.account_journal_5;54;__export__.account_period_10;45566;2015-09-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
+28;2015-09-01;__export__.account_journal_5;28;__export__.account_period_10;45566;2015-09-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2015);;9259.80;__export__.account_journal_5;__export__.account_period_10
-55;2016-01-01;__export__.account_journal_5;55;;__export__.account_account_209;2016-01-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2016);18520.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2016);;18520.20;__export__.account_journal_5;
-56;2016-01-01;__export__.account_journal_5;56;;45566;2016-01-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2016);18520.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40020033 - V. Pignon - N° Sagex a compléter – WeCan.fund (2016);;18520.20;__export__.account_journal_5;
-57;2015-09-01;__export__.account_journal_5;57;__export__.account_period_10;__export__.account_account_209;2015-09-01;50_40020033 - V. Pignon - Dépôt CTI (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
+29;2015-09-01;__export__.account_journal_5;29;__export__.account_period_10;__export__.account_account_209;2015-09-01;50_40020033 - V. Pignon - Dépôt CTI (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40020033 - V. Pignon - Dépôt CTI (2015);;9259.80;__export__.account_journal_5;__export__.account_period_10
-58;2015-09-01;__export__.account_journal_5;58;__export__.account_period_10;45566;2015-09-01;50_40020033 - V. Pignon - Dépôt CTI (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
+30;2015-09-01;__export__.account_journal_5;30;__export__.account_period_10;45566;2015-09-01;50_40020033 - V. Pignon - Dépôt CTI (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40020033 - V. Pignon - Dépôt CTI (2015);;9259.80;__export__.account_journal_5;__export__.account_period_10
-59;2016-01-01;__export__.account_journal_5;59;;__export__.account_account_209;2016-01-01;50_40020033 - V. Pignon - Dépôt CTI (2016);18520.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40020033 - V. Pignon - Dépôt CTI (2016);;18520.20;__export__.account_journal_5;
-60;2016-01-01;__export__.account_journal_5;60;;45566;2016-01-01;50_40020033 - V. Pignon - Dépôt CTI (2016);18520.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40020033 - V. Pignon - Dépôt CTI (2016);;18520.20;__export__.account_journal_5;
-61;2015-09-01;__export__.account_journal_5;61;__export__.account_period_10;__export__.account_account_209;2015-09-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
+31;2015-09-01;__export__.account_journal_5;31;__export__.account_period_10;__export__.account_account_209;2015-09-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2015);;9259.80;__export__.account_journal_5;__export__.account_period_10
-62;2015-09-01;__export__.account_journal_5;62;__export__.account_period_10;45566;2015-09-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
+32;2015-09-01;__export__.account_journal_5;32;__export__.account_period_10;45566;2015-09-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2015);9259.80;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2015);;9259.80;__export__.account_journal_5;__export__.account_period_10
-63;2016-01-01;__export__.account_journal_5;63;;__export__.account_account_209;2016-01-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2016);18520.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2016);;18520.20;__export__.account_journal_5;
-64;2016-01-01;__export__.account_journal_5;64;;45566;2016-01-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2016);18520.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40020033 - V. Pignon - Mandat Kalaidos Univ Applied Sces (14/15 - 15/16) (2016);;18520.20;__export__.account_journal_5;
-65;2015-09-01;__export__.account_journal_5;65;__export__.account_period_10;__export__.account_account_185;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+33;2015-09-01;__export__.account_journal_5;33;__export__.account_period_10;__export__.account_account_185;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-66;2015-09-01;__export__.account_journal_5;66;__export__.account_period_10;45566;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+34;2015-09-01;__export__.account_journal_5;34;__export__.account_period_10;45566;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-67;2016-01-01;__export__.account_journal_5;67;;__export__.account_account_185;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2016);;32000.40;__export__.account_journal_5;
-68;2016-01-01;__export__.account_journal_5;68;;45566;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – nouveau professeur (2016);;32000.40;__export__.account_journal_5;
-69;2015-09-01;__export__.account_journal_5;69;__export__.account_period_10;__export__.account_account_185;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+35;2015-09-01;__export__.account_journal_5;35;__export__.account_period_10;__export__.account_account_185;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-70;2015-09-01;__export__.account_journal_5;70;__export__.account_period_10;45566;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+36;2015-09-01;__export__.account_journal_5;36;__export__.account_period_10;45566;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-71;2016-01-01;__export__.account_journal_5;71;;__export__.account_account_185;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2016);;32000.40;__export__.account_journal_5;
-72;2016-01-01;__export__.account_journal_5;72;;45566;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40101372 - N. Depetris Chauvin - Forfait – prospection de mandat (2016);;32000.40;__export__.account_journal_5;
-73;2015-09-01;__export__.account_journal_5;73;__export__.account_period_10;__export__.account_account_217;2015-09-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+37;2015-09-01;__export__.account_journal_5;37;__export__.account_period_10;__export__.account_account_217;2015-09-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-74;2015-09-01;__export__.account_journal_5;74;__export__.account_period_10;45566;2015-09-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+38;2015-09-01;__export__.account_journal_5;38;__export__.account_period_10;45566;2015-09-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-75;2016-01-01;__export__.account_journal_5;75;;__export__.account_account_217;2016-01-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2016);;3200.40;__export__.account_journal_5;
-76;2016-01-01;__export__.account_journal_5;76;;45566;2016-01-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40016528 - A. Seydoux - CISCO  -  Administration/Académie (2016);;3200.40;__export__.account_journal_5;
-77;2015-09-01;__export__.account_journal_5;77;__export__.account_period_10;__export__.account_account_176;2015-09-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
+39;2015-09-01;__export__.account_journal_5;39;__export__.account_period_10;__export__.account_account_176;2015-09-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2015);;6399.60;__export__.account_journal_5;__export__.account_period_10
-78;2015-09-01;__export__.account_journal_5;78;__export__.account_period_10;36797;2015-09-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
+40;2015-09-01;__export__.account_journal_5;40;__export__.account_period_10;36797;2015-09-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2015);;6399.60;__export__.account_journal_5;__export__.account_period_10
-79;2016-01-01;__export__.account_journal_5;79;;__export__.account_account_176;2016-01-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2016);12800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2016);;12800.40;__export__.account_journal_5;
-80;2016-01-01;__export__.account_journal_5;80;;36797;2016-01-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2016);12800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12245930 - N. Brender - 36797  -  Développement projet FNS H1N1 (2016);;12800.40;__export__.account_journal_5;
-81;2015-09-01;__export__.account_journal_5;81;__export__.account_period_10;__export__.account_account_176;2015-09-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
+41;2015-09-01;__export__.account_journal_5;41;__export__.account_period_10;__export__.account_account_176;2015-09-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2015);;6399.60;__export__.account_journal_5;__export__.account_period_10
-82;2015-09-01;__export__.account_journal_5;82;__export__.account_period_10;45566;2015-09-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
+42;2015-09-01;__export__.account_journal_5;42;__export__.account_period_10;45566;2015-09-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2015);;6399.60;__export__.account_journal_5;__export__.account_period_10
-83;2016-01-01;__export__.account_journal_5;83;;__export__.account_account_176;2016-01-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2016);12800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2016);;12800.40;__export__.account_journal_5;
-84;2016-01-01;__export__.account_journal_5;84;;45566;2016-01-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2016);12800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12245930 - N. Brender - Dépôt   -  RCSO (2016);;12800.40;__export__.account_journal_5;
-85;2015-09-01;__export__.account_journal_5;85;__export__.account_period_10;__export__.account_account_176;2015-09-01;50_12245930 - N. Brender - Ecriture d'articles (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
+43;2015-09-01;__export__.account_journal_5;43;__export__.account_period_10;__export__.account_account_176;2015-09-01;50_12245930 - N. Brender - Ecriture d'articles (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12245930 - N. Brender - Ecriture d'articles (2015);;6399.60;__export__.account_journal_5;__export__.account_period_10
-86;2015-09-01;__export__.account_journal_5;86;__export__.account_period_10;45566;2015-09-01;50_12245930 - N. Brender - Ecriture d'articles (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
+44;2015-09-01;__export__.account_journal_5;44;__export__.account_period_10;45566;2015-09-01;50_12245930 - N. Brender - Ecriture d'articles (2015);6399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12245930 - N. Brender - Ecriture d'articles (2015);;6399.60;__export__.account_journal_5;__export__.account_period_10
-87;2016-01-01;__export__.account_journal_5;87;;__export__.account_account_176;2016-01-01;50_12245930 - N. Brender - Ecriture d'articles (2016);12800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12245930 - N. Brender - Ecriture d'articles (2016);;12800.40;__export__.account_journal_5;
-88;2016-01-01;__export__.account_journal_5;88;;45566;2016-01-01;50_12245930 - N. Brender - Ecriture d'articles (2016);12800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12245930 - N. Brender - Ecriture d'articles (2016);;12800.40;__export__.account_journal_5;
-89;2015-09-01;__export__.account_journal_5;89;__export__.account_period_10;__export__.account_account_184;2015-09-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2015);19599.60;;__export__.account_journal_5;__export__.account_period_10
+45;2015-09-01;__export__.account_journal_5;45;__export__.account_period_10;__export__.account_account_184;2015-09-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2015);19599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2015);;19599.60;__export__.account_journal_5;__export__.account_period_10
-90;2015-09-01;__export__.account_journal_5;90;__export__.account_period_10;45566;2015-09-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2015);19599.60;;__export__.account_journal_5;__export__.account_period_10
+46;2015-09-01;__export__.account_journal_5;46;__export__.account_period_10;45566;2015-09-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2015);19599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2015);;19599.60;__export__.account_journal_5;__export__.account_period_10
-91;2016-01-01;__export__.account_journal_5;91;;__export__.account_account_184;2016-01-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2016);39200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2016);;39200.40;__export__.account_journal_5;
-92;2016-01-01;__export__.account_journal_5;92;;45566;2016-01-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2016);39200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_13187802 - A. De Banoff - ESIG : Poste 6h/22*1800 (2016);;39200.40;__export__.account_journal_5;
-93;2015-09-01;__export__.account_journal_5;93;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+47;2015-09-01;__export__.account_journal_5;47;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-94;2015-09-01;__export__.account_journal_5;94;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+48;2015-09-01;__export__.account_journal_5;48;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-95;2016-01-01;__export__.account_journal_5;95;;__export__.account_account_188;2016-01-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2016);;1599.60;__export__.account_journal_5;
-96;2016-01-01;__export__.account_journal_5;96;;45566;2016-01-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12396718 - P. Dugerdil - Participation comités scientifiques de conférence (2016);;1599.60;__export__.account_journal_5;
-97;2015-09-01;__export__.account_journal_5;97;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Responsable CRAG (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+49;2015-09-01;__export__.account_journal_5;49;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Responsable CRAG (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12396718 - P. Dugerdil - Responsable CRAG (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-98;2015-09-01;__export__.account_journal_5;98;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Responsable CRAG (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+50;2015-09-01;__export__.account_journal_5;50;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Responsable CRAG (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12396718 - P. Dugerdil - Responsable CRAG (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-99;2016-01-01;__export__.account_journal_5;99;;__export__.account_account_188;2016-01-01;50_12396718 - P. Dugerdil - Responsable CRAG (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12396718 - P. Dugerdil - Responsable CRAG (2016);;1599.60;__export__.account_journal_5;
-100;2016-01-01;__export__.account_journal_5;100;;45566;2016-01-01;50_12396718 - P. Dugerdil - Responsable CRAG (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12396718 - P. Dugerdil - Responsable CRAG (2016);;1599.60;__export__.account_journal_5;
-101;2015-09-01;__export__.account_journal_5;101;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Publications (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+51;2015-09-01;__export__.account_journal_5;51;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Publications (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12396718 - P. Dugerdil - Publications (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-102;2015-09-01;__export__.account_journal_5;102;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Publications (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+52;2015-09-01;__export__.account_journal_5;52;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Publications (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12396718 - P. Dugerdil - Publications (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-103;2016-01-01;__export__.account_journal_5;103;;__export__.account_account_188;2016-01-01;50_12396718 - P. Dugerdil - Publications (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12396718 - P. Dugerdil - Publications (2016);;1599.60;__export__.account_journal_5;
-104;2016-01-01;__export__.account_journal_5;104;;45566;2016-01-01;50_12396718 - P. Dugerdil - Publications (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12396718 - P. Dugerdil - Publications (2016);;1599.60;__export__.account_journal_5;
-105;2015-09-01;__export__.account_journal_5;105;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+53;2015-09-01;__export__.account_journal_5;53;__export__.account_period_10;__export__.account_account_188;2015-09-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-106;2015-09-01;__export__.account_journal_5;106;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
+54;2015-09-01;__export__.account_journal_5;54;__export__.account_period_10;45566;2015-09-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2015);800.40;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2015);;800.40;__export__.account_journal_5;__export__.account_period_10
-107;2016-01-01;__export__.account_journal_5;107;;__export__.account_account_188;2016-01-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2016);;1599.60;__export__.account_journal_5;
-108;2016-01-01;__export__.account_journal_5;108;;45566;2016-01-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2016);1599.60;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12396718 - P. Dugerdil - Réserve projet RCSO (2016);;1599.60;__export__.account_journal_5;
-109;2015-09-01;__export__.account_journal_5;109;__export__.account_period_10;__export__.account_account_181;2015-09-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
+55;2015-09-01;__export__.account_journal_5;55;__export__.account_period_10;__export__.account_account_181;2015-09-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2015);;879.60;__export__.account_journal_5;__export__.account_period_10
-110;2015-09-01;__export__.account_journal_5;110;__export__.account_period_10;45566;2015-09-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
+56;2015-09-01;__export__.account_journal_5;56;__export__.account_period_10;45566;2015-09-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2015);;879.60;__export__.account_journal_5;__export__.account_period_10
-111;2016-01-01;__export__.account_journal_5;111;;__export__.account_account_181;2016-01-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2016);1760.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2016);;1760.40;__export__.account_journal_5;
-112;2016-01-01;__export__.account_journal_5;112;;45566;2016-01-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2016);1760.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_13959929 - L. Cornaglia - Mineure Créagir Cours (2016);;1760.40;__export__.account_journal_5;
-113;2015-09-01;__export__.account_journal_5;113;__export__.account_period_10;__export__.account_account_181;2015-09-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
+57;2015-09-01;__export__.account_journal_5;57;__export__.account_period_10;__export__.account_account_181;2015-09-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2015);;879.60;__export__.account_journal_5;__export__.account_period_10
-114;2015-09-01;__export__.account_journal_5;114;__export__.account_period_10;45566;2015-09-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
+58;2015-09-01;__export__.account_journal_5;58;__export__.account_period_10;45566;2015-09-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2015);879.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2015);;879.60;__export__.account_journal_5;__export__.account_period_10
-115;2016-01-01;__export__.account_journal_5;115;;__export__.account_account_181;2016-01-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2016);1760.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2016);;1760.40;__export__.account_journal_5;
-116;2016-01-01;__export__.account_journal_5;116;;45566;2016-01-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2016);1760.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_13959929 - L. Cornaglia - Coordination Mineure Créagir (2016);;1760.40;__export__.account_journal_5;
-117;2015-09-01;__export__.account_journal_5;117;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Développement CTI réserve (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+59;2015-09-01;__export__.account_journal_5;59;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Développement CTI réserve (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40003932 - S. Emad - Développement CTI réserve (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-118;2015-09-01;__export__.account_journal_5;118;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Développement CTI réserve (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+60;2015-09-01;__export__.account_journal_5;60;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Développement CTI réserve (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40003932 - S. Emad - Développement CTI réserve (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-119;2016-01-01;__export__.account_journal_5;119;;__export__.account_account_189;2016-01-01;50_40003932 - S. Emad - Développement CTI réserve (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40003932 - S. Emad - Développement CTI réserve (2016);;8000.40;__export__.account_journal_5;
-120;2016-01-01;__export__.account_journal_5;120;;45566;2016-01-01;50_40003932 - S. Emad - Développement CTI réserve (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40003932 - S. Emad - Développement CTI réserve (2016);;8000.40;__export__.account_journal_5;
-121;2015-09-01;__export__.account_journal_5;121;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+61;2015-09-01;__export__.account_journal_5;61;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-122;2015-09-01;__export__.account_journal_5;122;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+62;2015-09-01;__export__.account_journal_5;62;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-123;2016-01-01;__export__.account_journal_5;123;;__export__.account_account_189;2016-01-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2016);;8000.40;__export__.account_journal_5;
-124;2016-01-01;__export__.account_journal_5;124;;45566;2016-01-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40003932 - S. Emad - Dépôt projet (CTI + RCSO) (2016);;8000.40;__export__.account_journal_5;
-125;2015-09-01;__export__.account_journal_5;125;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Ecriture d'articles (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+63;2015-09-01;__export__.account_journal_5;63;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Ecriture d'articles (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40003932 - S. Emad - Ecriture d'articles (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-126;2015-09-01;__export__.account_journal_5;126;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Ecriture d'articles (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+64;2015-09-01;__export__.account_journal_5;64;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Ecriture d'articles (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40003932 - S. Emad - Ecriture d'articles (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-127;2016-01-01;__export__.account_journal_5;127;;__export__.account_account_189;2016-01-01;50_40003932 - S. Emad - Ecriture d'articles (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40003932 - S. Emad - Ecriture d'articles (2016);;8000.40;__export__.account_journal_5;
-128;2016-01-01;__export__.account_journal_5;128;;45566;2016-01-01;50_40003932 - S. Emad - Ecriture d'articles (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40003932 - S. Emad - Ecriture d'articles (2016);;8000.40;__export__.account_journal_5;
-129;2015-09-01;__export__.account_journal_5;129;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+65;2015-09-01;__export__.account_journal_5;65;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-130;2015-09-01;__export__.account_journal_5;130;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+66;2015-09-01;__export__.account_journal_5;66;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-131;2016-01-01;__export__.account_journal_5;131;;__export__.account_account_189;2016-01-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2016);;8000.40;__export__.account_journal_5;
-132;2016-01-01;__export__.account_journal_5;132;;45566;2016-01-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40003932 - S. Emad - Participation au comité conférence Marketing Educa (2016);;8000.40;__export__.account_journal_5;
-133;2015-09-01;__export__.account_journal_5;133;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+67;2015-09-01;__export__.account_journal_5;67;__export__.account_period_10;__export__.account_account_189;2015-09-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-134;2015-09-01;__export__.account_journal_5;134;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
+68;2015-09-01;__export__.account_journal_5;68;__export__.account_period_10;45566;2015-09-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2015);3999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2015);;3999.60;__export__.account_journal_5;__export__.account_period_10
-135;2016-01-01;__export__.account_journal_5;135;;__export__.account_account_189;2016-01-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2016);;8000.40;__export__.account_journal_5;
-136;2016-01-01;__export__.account_journal_5;136;;45566;2016-01-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2016);8000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40003932 - S. Emad - Réalisation mandats dt VdNyon - Ifage (régul 14 - 15) (2016);;8000.40;__export__.account_journal_5;
-137;2015-09-01;__export__.account_journal_5;137;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+69;2015-09-01;__export__.account_journal_5;69;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-138;2015-09-01;__export__.account_journal_5;138;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+70;2015-09-01;__export__.account_journal_5;70;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-139;2016-01-01;__export__.account_journal_5;139;;__export__.account_account_173;2016-01-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2016);;3200.40;__export__.account_journal_5;
-140;2016-01-01;__export__.account_journal_5;140;;45566;2016-01-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18183007 - D. Billard - Dépôt  -  RCSO (2016);;3200.40;__export__.account_journal_5;
-141;2015-09-01;__export__.account_journal_5;141;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+71;2015-09-01;__export__.account_journal_5;71;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-142;2015-09-01;__export__.account_journal_5;142;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+72;2015-09-01;__export__.account_journal_5;72;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-143;2016-01-01;__export__.account_journal_5;143;;__export__.account_account_173;2016-01-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2016);;3200.40;__export__.account_journal_5;
-144;2016-01-01;__export__.account_journal_5;144;;45566;2016-01-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18183007 - D. Billard - Reserve  -  dépôt RCSO (2016);;3200.40;__export__.account_journal_5;
-145;2015-09-01;__export__.account_journal_5;145;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+73;2015-09-01;__export__.account_journal_5;73;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-146;2015-09-01;__export__.account_journal_5;146;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+74;2015-09-01;__export__.account_journal_5;74;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-147;2016-01-01;__export__.account_journal_5;147;;__export__.account_account_173;2016-01-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2016);;3200.40;__export__.account_journal_5;
-148;2016-01-01;__export__.account_journal_5;148;;45566;2016-01-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18183007 - D. Billard - Dépôt  -  Fonds de tiers sur l’informatique forensi (2016);;3200.40;__export__.account_journal_5;
-149;2015-09-01;__export__.account_journal_5;149;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+75;2015-09-01;__export__.account_journal_5;75;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-150;2015-09-01;__export__.account_journal_5;150;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+76;2015-09-01;__export__.account_journal_5;76;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-151;2016-01-01;__export__.account_journal_5;151;;__export__.account_account_173;2016-01-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2016);;3200.40;__export__.account_journal_5;
-152;2016-01-01;__export__.account_journal_5;152;;45566;2016-01-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18183007 - D. Billard - Divers  -  collaboration avec Stokholm (2016);;3200.40;__export__.account_journal_5;
-153;2015-09-01;__export__.account_journal_5;153;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Mandats divers juridictions (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+77;2015-09-01;__export__.account_journal_5;77;__export__.account_period_10;__export__.account_account_173;2015-09-01;50_18183007 - D. Billard - Mandats divers juridictions (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_18183007 - D. Billard - Mandats divers juridictions (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-154;2015-09-01;__export__.account_journal_5;154;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Mandats divers juridictions (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+78;2015-09-01;__export__.account_journal_5;78;__export__.account_period_10;45566;2015-09-01;50_18183007 - D. Billard - Mandats divers juridictions (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_18183007 - D. Billard - Mandats divers juridictions (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-155;2016-01-01;__export__.account_journal_5;155;;__export__.account_account_173;2016-01-01;50_18183007 - D. Billard - Mandats divers juridictions (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_18183007 - D. Billard - Mandats divers juridictions (2016);;3200.40;__export__.account_journal_5;
-156;2016-01-01;__export__.account_journal_5;156;;45566;2016-01-01;50_18183007 - D. Billard - Mandats divers juridictions (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_18183007 - D. Billard - Mandats divers juridictions (2016);;3200.40;__export__.account_journal_5;
-157;2015-09-01;__export__.account_journal_5;157;__export__.account_period_10;__export__.account_account_174;2015-09-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2015);24300.00;;__export__.account_journal_5;__export__.account_period_10
+79;2015-09-01;__export__.account_journal_5;79;__export__.account_period_10;__export__.account_account_174;2015-09-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2015);24300.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2015);;24300.00;__export__.account_journal_5;__export__.account_period_10
-158;2015-09-01;__export__.account_journal_5;158;__export__.account_period_10;42769;2015-09-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2015);24300.00;;__export__.account_journal_5;__export__.account_period_10
+80;2015-09-01;__export__.account_journal_5;80;__export__.account_period_10;42769;2015-09-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2015);24300.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2015);;24300.00;__export__.account_journal_5;__export__.account_period_10
-159;2016-01-01;__export__.account_journal_5;159;;__export__.account_account_174;2016-01-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2016);12150.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2016);;12150.00;__export__.account_journal_5;
-160;2016-01-01;__export__.account_journal_5;160;;42769;2016-01-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2016);12150.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40102089 - L. Blonde - 42769  -  H 2020 Projet RAWFIE (2016);;12150.00;__export__.account_journal_5;
-161;2015-09-01;__export__.account_journal_5;161;__export__.account_period_10;__export__.account_account_215;2015-09-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+81;2015-09-01;__export__.account_journal_5;81;__export__.account_period_10;__export__.account_account_215;2015-09-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-162;2015-09-01;__export__.account_journal_5;162;__export__.account_period_10;45566;2015-09-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+82;2015-09-01;__export__.account_journal_5;82;__export__.account_period_10;45566;2015-09-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-163;2016-01-01;__export__.account_journal_5;163;;__export__.account_account_215;2016-01-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2016);;9600.00;__export__.account_journal_5;
-164;2016-01-01;__export__.account_journal_5;164;;45566;2016-01-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_19036954 - C. Schaerer - Réalisat° mandat La construct° un indice Gd Geneve (2016);;9600.00;__export__.account_journal_5;
-165;2015-09-01;__export__.account_journal_5;165;__export__.account_period_10;__export__.account_account_215;2015-09-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+83;2015-09-01;__export__.account_journal_5;83;__export__.account_period_10;__export__.account_account_215;2015-09-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-166;2015-09-01;__export__.account_journal_5;166;__export__.account_period_10;45566;2015-09-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+84;2015-09-01;__export__.account_journal_5;84;__export__.account_period_10;45566;2015-09-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-167;2016-01-01;__export__.account_journal_5;167;;__export__.account_account_215;2016-01-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2016);;9600.00;__export__.account_journal_5;
-168;2016-01-01;__export__.account_journal_5;168;;45566;2016-01-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_19036954 - C. Schaerer - Réalisat° «màj rapport durabilité» Ville Carouge (2016);;9600.00;__export__.account_journal_5;
-169;2015-09-01;__export__.account_journal_5;169;__export__.account_period_10;__export__.account_account_201;2015-09-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2015);400.20;;__export__.account_journal_5;__export__.account_period_10
+85;2015-09-01;__export__.account_journal_5;85;__export__.account_period_10;__export__.account_account_201;2015-09-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2015);400.20;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2015);;400.20;__export__.account_journal_5;__export__.account_period_10
-170;2015-09-01;__export__.account_journal_5;170;__export__.account_period_10;45566;2015-09-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2015);400.20;;__export__.account_journal_5;__export__.account_period_10
+86;2015-09-01;__export__.account_journal_5;86;__export__.account_period_10;45566;2015-09-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2015);400.20;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2015);;400.20;__export__.account_journal_5;__export__.account_period_10
-171;2016-01-01;__export__.account_journal_5;171;;__export__.account_account_201;2016-01-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2016);799.80;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2016);;799.80;__export__.account_journal_5;
-172;2016-01-01;__export__.account_journal_5;172;;45566;2016-01-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2016);799.80;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40100926 - L. Le Mével - Dépôt CTI Création de groupes d'apprenants (2016);;799.80;__export__.account_journal_5;
-173;2015-09-01;__export__.account_journal_5;173;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+87;2015-09-01;__export__.account_journal_5;87;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-174;2015-09-01;__export__.account_journal_5;174;__export__.account_period_10;42769;2015-09-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+88;2015-09-01;__export__.account_journal_5;88;__export__.account_period_10;42769;2015-09-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-175;2016-01-01;__export__.account_journal_5;175;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2016);;9600.00;__export__.account_journal_5;
-176;2016-01-01;__export__.account_journal_5;176;;42769;2016-01-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - 42769 - Dépot (C)  -  44543 H2020, RAWFIE (2016);;9600.00;__export__.account_journal_5;
-177;2015-09-01;__export__.account_journal_5;177;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+89;2015-09-01;__export__.account_journal_5;89;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-178;2015-09-01;__export__.account_journal_5;178;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+90;2015-09-01;__export__.account_journal_5;90;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-179;2016-01-01;__export__.account_journal_5;179;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2016);;9600.00;__export__.account_journal_5;
-180;2016-01-01;__export__.account_journal_5;180;;45566;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47926, OFSPO (2016);;9600.00;__export__.account_journal_5;
-181;2015-09-01;__export__.account_journal_5;181;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+91;2015-09-01;__export__.account_journal_5;91;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-182;2015-09-01;__export__.account_journal_5;182;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+92;2015-09-01;__export__.account_journal_5;92;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-183;2016-01-01;__export__.account_journal_5;183;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2016);;9600.00;__export__.account_journal_5;
-184;2016-01-01;__export__.account_journal_5;184;;45566;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47927, H2020, DIVINE (2016);;9600.00;__export__.account_journal_5;
-185;2015-09-01;__export__.account_journal_5;185;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+93;2015-09-01;__export__.account_journal_5;93;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-186;2015-09-01;__export__.account_journal_5;186;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+94;2015-09-01;__export__.account_journal_5;94;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-187;2016-01-01;__export__.account_journal_5;187;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2016);;9600.00;__export__.account_journal_5;
-188;2016-01-01;__export__.account_journal_5;188;;45566;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47928, H2020, YPSILON (2016);;9600.00;__export__.account_journal_5;
-189;2015-09-01;__export__.account_journal_5;189;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+95;2015-09-01;__export__.account_journal_5;95;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-190;2015-09-01;__export__.account_journal_5;190;__export__.account_period_10;33248;2015-09-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+96;2015-09-01;__export__.account_journal_5;96;__export__.account_period_10;33248;2015-09-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-191;2016-01-01;__export__.account_journal_5;191;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2016);;9600.00;__export__.account_journal_5;
-192;2016-01-01;__export__.account_journal_5;192;;33248;2016-01-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - 33248 - Procter - Gamble (2016);;9600.00;__export__.account_journal_5;
-193;2015-09-01;__export__.account_journal_5;193;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+97;2015-09-01;__export__.account_journal_5;97;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-194;2015-09-01;__export__.account_journal_5;194;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+98;2015-09-01;__export__.account_journal_5;98;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-195;2016-01-01;__export__.account_journal_5;195;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2016);;9600.00;__export__.account_journal_5;
-196;2016-01-01;__export__.account_journal_5;196;;45566;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Dépot (C) – 47929, H2020, ODRACO (2016);;9600.00;__export__.account_journal_5;
-197;2015-09-01;__export__.account_journal_5;197;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+99;2015-09-01;__export__.account_journal_5;99;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-198;2015-09-01;__export__.account_journal_5;198;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+100;2015-09-01;__export__.account_journal_5;100;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-199;2016-01-01;__export__.account_journal_5;199;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2016);;9600.00;__export__.account_journal_5;
-200;2016-01-01;__export__.account_journal_5;200;;45566;2016-01-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Dépot (C)  -  47930, FNS, Mobile crowsourcing (2016);;9600.00;__export__.account_journal_5;
-201;2015-09-01;__export__.account_journal_5;201;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Comité – conférences (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+101;2015-09-01;__export__.account_journal_5;101;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Comité – conférences (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Comité – conférences (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-202;2015-09-01;__export__.account_journal_5;202;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Comité – conférences (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+102;2015-09-01;__export__.account_journal_5;102;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Comité – conférences (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Comité – conférences (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-203;2016-01-01;__export__.account_journal_5;203;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Comité – conférences (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Comité – conférences (2016);;9600.00;__export__.account_journal_5;
-204;2016-01-01;__export__.account_journal_5;204;;45566;2016-01-01;50_17326785 - A. Kalousis - Comité – conférences (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Comité – conférences (2016);;9600.00;__export__.account_journal_5;
-205;2015-09-01;__export__.account_journal_5;205;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Publication (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+103;2015-09-01;__export__.account_journal_5;103;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - Publication (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - Publication (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-206;2015-09-01;__export__.account_journal_5;206;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Publication (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+104;2015-09-01;__export__.account_journal_5;104;__export__.account_period_10;45566;2015-09-01;50_17326785 - A. Kalousis - Publication (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - Publication (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-207;2016-01-01;__export__.account_journal_5;207;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - Publication (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - Publication (2016);;9600.00;__export__.account_journal_5;
-208;2016-01-01;__export__.account_journal_5;208;;45566;2016-01-01;50_17326785 - A. Kalousis - Publication (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - Publication (2016);;9600.00;__export__.account_journal_5;
-209;2015-09-01;__export__.account_journal_5;209;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+105;2015-09-01;__export__.account_journal_5;105;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-210;2015-09-01;__export__.account_journal_5;210;__export__.account_period_10;41139;2015-09-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+106;2015-09-01;__export__.account_journal_5;106;__export__.account_period_10;41139;2015-09-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-211;2016-01-01;__export__.account_journal_5;211;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2016);;9600.00;__export__.account_journal_5;
-212;2016-01-01;__export__.account_journal_5;212;;41139;2016-01-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - 41139 – FNS, SCOPES (2016);;9600.00;__export__.account_journal_5;
-213;2015-09-01;__export__.account_journal_5;213;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+107;2015-09-01;__export__.account_journal_5;107;__export__.account_period_10;__export__.account_account_199;2015-09-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-214;2015-09-01;__export__.account_journal_5;214;__export__.account_period_10;39023;2015-09-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+108;2015-09-01;__export__.account_journal_5;108;__export__.account_period_10;39023;2015-09-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-215;2016-01-01;__export__.account_journal_5;215;;__export__.account_account_199;2016-01-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2016);;9600.00;__export__.account_journal_5;
-216;2016-01-01;__export__.account_journal_5;216;;39023;2016-01-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_17326785 - A. Kalousis - 39023 – FNS, Data Driven (2016);;9600.00;__export__.account_journal_5;
-217;2015-09-01;__export__.account_journal_5;217;__export__.account_period_10;__export__.account_account_200;2015-09-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2015);10399.80;;__export__.account_journal_5;__export__.account_period_10
-;;;;;__export__.account_account_134;2015-09-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2015);;10399.80;__export__.account_journal_5;__export__.account_period_10
-218;2015-09-01;__export__.account_journal_5;218;__export__.account_period_10;45566;2015-09-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2015);10399.80;;__export__.account_journal_5;__export__.account_period_10
-;;;;;__export__.account_account_117;2015-09-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2015);;10399.80;__export__.account_journal_5;__export__.account_period_10
-219;2016-01-01;__export__.account_journal_5;219;;__export__.account_account_200;2016-01-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2016);20800.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2016);;20800.20;__export__.account_journal_5;
-220;2016-01-01;__export__.account_journal_5;220;;45566;2016-01-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2016);20800.20;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40018864 - J. Latina - 40998  -  Projets LIVES + 28830 - Leading House (2016);;20800.20;__export__.account_journal_5;
-221;2015-09-01;__export__.account_journal_5;221;__export__.account_period_10;__export__.account_account_206;2015-09-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2015);399.60;;__export__.account_journal_5;__export__.account_period_10
+109;2015-09-01;__export__.account_journal_5;109;__export__.account_period_10;__export__.account_account_200;2015-09-01;50_40018864 - J. Latina - 40998  -  28830 - 40998  -  Projets LIVES + 28830 - Leading House (2015);10399.80;;__export__.account_journal_5;__export__.account_period_10
+;;;;;__export__.account_account_134;2015-09-01;50_40018864 - J. Latina - 40998  -  28830 - 40998  -  Projets LIVES + 28830 - Leading House (2015);;10399.80;__export__.account_journal_5;__export__.account_period_10
+110;2015-09-01;__export__.account_journal_5;110;__export__.account_period_10;45566;2015-09-01;50_40018864 - J. Latina - 40998  -  28830 - 40998  -  Projets LIVES + 28830 - Leading House (2015);10399.80;;__export__.account_journal_5;__export__.account_period_10
+;;;;;__export__.account_account_117;2015-09-01;50_40018864 - J. Latina - 40998  -  28830 - 40998  -  Projets LIVES + 28830 - Leading House (2015);;10399.80;__export__.account_journal_5;__export__.account_period_10
+111;2015-09-01;__export__.account_journal_5;111;__export__.account_period_10;__export__.account_account_206;2015-09-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2015);399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2015);;399.60;__export__.account_journal_5;__export__.account_period_10
-222;2015-09-01;__export__.account_journal_5;222;__export__.account_period_10;45566;2015-09-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2015);399.60;;__export__.account_journal_5;__export__.account_period_10
+112;2015-09-01;__export__.account_journal_5;112;__export__.account_period_10;45566;2015-09-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2015);399.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2015);;399.60;__export__.account_journal_5;__export__.account_period_10
-223;2016-01-01;__export__.account_journal_5;223;;__export__.account_account_206;2016-01-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2016);800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2016);;800.40;__export__.account_journal_5;
-224;2016-01-01;__export__.account_journal_5;224;;45566;2016-01-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2016);800.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_15663970 - P. Merlier - Formation diagnostic organisationel pour RH EGE (2016);;800.40;__export__.account_journal_5;
-225;2015-09-01;__export__.account_journal_5;225;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+113;2015-09-01;__export__.account_journal_5;113;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-226;2015-09-01;__export__.account_journal_5;226;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+114;2015-09-01;__export__.account_journal_5;114;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-227;2016-01-01;__export__.account_journal_5;227;;__export__.account_account_180;2016-01-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2016);;32000.40;__export__.account_journal_5;
-228;2016-01-01;__export__.account_journal_5;228;;45566;2016-01-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40100227 - N. Cheikhrouhou - Dépôts & développement projets (forfait new prof) (2016);;32000.40;__export__.account_journal_5;
-229;2015-09-01;__export__.account_journal_5;229;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+115;2015-09-01;__export__.account_journal_5;115;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-230;2015-09-01;__export__.account_journal_5;230;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+116;2015-09-01;__export__.account_journal_5;116;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-231;2016-01-01;__export__.account_journal_5;231;;__export__.account_account_180;2016-01-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2016);;32000.40;__export__.account_journal_5;
-232;2016-01-01;__export__.account_journal_5;232;;45566;2016-01-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40100227 - N. Cheikhrouhou - Comités  -  Journaux et conférences (2016);;32000.40;__export__.account_journal_5;
-233;2015-09-01;__export__.account_journal_5;233;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Publication (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+117;2015-09-01;__export__.account_journal_5;117;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Publication (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40100227 - N. Cheikhrouhou - Publication (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-234;2015-09-01;__export__.account_journal_5;234;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Publication (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+118;2015-09-01;__export__.account_journal_5;118;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Publication (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40100227 - N. Cheikhrouhou - Publication (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-235;2016-01-01;__export__.account_journal_5;235;;__export__.account_account_180;2016-01-01;50_40100227 - N. Cheikhrouhou - Publication (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40100227 - N. Cheikhrouhou - Publication (2016);;32000.40;__export__.account_journal_5;
-236;2016-01-01;__export__.account_journal_5;236;;45566;2016-01-01;50_40100227 - N. Cheikhrouhou - Publication (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40100227 - N. Cheikhrouhou - Publication (2016);;32000.40;__export__.account_journal_5;
-237;2015-09-01;__export__.account_journal_5;237;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+119;2015-09-01;__export__.account_journal_5;119;__export__.account_period_10;__export__.account_account_180;2015-09-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-238;2015-09-01;__export__.account_journal_5;238;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
+120;2015-09-01;__export__.account_journal_5;120;__export__.account_period_10;45566;2015-09-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2015);15999.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2015);;15999.60;__export__.account_journal_5;__export__.account_period_10
-239;2016-01-01;__export__.account_journal_5;239;;__export__.account_account_180;2016-01-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2016);;32000.40;__export__.account_journal_5;
-240;2016-01-01;__export__.account_journal_5;240;;45566;2016-01-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2016);32000.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40100227 - N. Cheikhrouhou - Prospection de mandats (forfait) (2016);;32000.40;__export__.account_journal_5;
-241;2015-09-01;__export__.account_journal_5;241;__export__.account_period_10;__export__.account_account_212;2015-09-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
+121;2015-09-01;__export__.account_journal_5;121;__export__.account_period_10;__export__.account_account_212;2015-09-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2015);;3519.60;__export__.account_journal_5;__export__.account_period_10
-242;2015-09-01;__export__.account_journal_5;242;__export__.account_period_10;45566;2015-09-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
+122;2015-09-01;__export__.account_journal_5;122;__export__.account_period_10;45566;2015-09-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2015);3519.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2015);;3519.60;__export__.account_journal_5;__export__.account_period_10
-243;2016-01-01;__export__.account_journal_5;243;;__export__.account_account_212;2016-01-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2016);7040.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2016);;7040.40;__export__.account_journal_5;
-244;2016-01-01;__export__.account_journal_5;244;;45566;2016-01-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2016);7040.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40029774 - J. Reboulleau - Cours de Statistiques Passerelle EHG (2016);;7040.40;__export__.account_journal_5;
-245;2015-09-01;__export__.account_journal_5;245;__export__.account_period_10;__export__.account_account_178;2015-09-01;50_40016025 - A. Caboussat - Dépot projet (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+123;2015-09-01;__export__.account_journal_5;123;__export__.account_period_10;__export__.account_account_178;2015-09-01;50_40016025 - A. Caboussat - Dépot projet (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_40016025 - A. Caboussat - Dépot projet (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-246;2015-09-01;__export__.account_journal_5;246;__export__.account_period_10;45566;2015-09-01;50_40016025 - A. Caboussat - Dépot projet (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
+124;2015-09-01;__export__.account_journal_5;124;__export__.account_period_10;45566;2015-09-01;50_40016025 - A. Caboussat - Dépot projet (2015);4800.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_40016025 - A. Caboussat - Dépot projet (2015);;4800.00;__export__.account_journal_5;__export__.account_period_10
-247;2016-01-01;__export__.account_journal_5;247;;__export__.account_account_178;2016-01-01;50_40016025 - A. Caboussat - Dépot projet (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40016025 - A. Caboussat - Dépot projet (2016);;9600.00;__export__.account_journal_5;
-248;2016-01-01;__export__.account_journal_5;248;;45566;2016-01-01;50_40016025 - A. Caboussat - Dépot projet (2016);9600.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40016025 - A. Caboussat - Dépot projet (2016);;9600.00;__export__.account_journal_5;
-249;2015-09-01;__export__.account_journal_5;249;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+125;2015-09-01;__export__.account_journal_5;125;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-250;2015-09-01;__export__.account_journal_5;250;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+126;2015-09-01;__export__.account_journal_5;126;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-251;2016-01-01;__export__.account_journal_5;251;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2016);;3200.40;__export__.account_journal_5;
-252;2016-01-01;__export__.account_journal_5;252;;45566;2016-01-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - Dépôt CTI Création de groupes d'apprenants (2016);;3200.40;__export__.account_journal_5;
-253;2015-09-01;__export__.account_journal_5;253;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+127;2015-09-01;__export__.account_journal_5;127;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-254;2015-09-01;__export__.account_journal_5;254;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+128;2015-09-01;__export__.account_journal_5;128;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-255;2016-01-01;__export__.account_journal_5;255;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2016);;3200.40;__export__.account_journal_5;
-256;2016-01-01;__export__.account_journal_5;256;;45566;2016-01-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - Formation courte SIG N°43776 (2016);;3200.40;__export__.account_journal_5;
-257;2015-09-01;__export__.account_journal_5;257;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - OCAS2 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+129;2015-09-01;__export__.account_journal_5;129;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - OCAS2 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - OCAS2 (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-258;2015-09-01;__export__.account_journal_5;258;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - OCAS2 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+130;2015-09-01;__export__.account_journal_5;130;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - OCAS2 (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - OCAS2 (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-259;2016-01-01;__export__.account_journal_5;259;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - OCAS2 (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - OCAS2 (2016);;3200.40;__export__.account_journal_5;
-260;2016-01-01;__export__.account_journal_5;260;;45566;2016-01-01;50_12448459 - N. Junod - OCAS2 (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - OCAS2 (2016);;3200.40;__export__.account_journal_5;
-261;2015-09-01;__export__.account_journal_5;261;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+131;2015-09-01;__export__.account_journal_5;131;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-262;2015-09-01;__export__.account_journal_5;262;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+132;2015-09-01;__export__.account_journal_5;132;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-263;2016-01-01;__export__.account_journal_5;263;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2016);;3200.40;__export__.account_journal_5;
-264;2016-01-01;__export__.account_journal_5;264;;45566;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS (2016);;3200.40;__export__.account_journal_5;
-265;2015-09-01;__export__.account_journal_5;265;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Itescia (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+133;2015-09-01;__export__.account_journal_5;133;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Itescia (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - Itescia (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-266;2015-09-01;__export__.account_journal_5;266;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Itescia (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+134;2015-09-01;__export__.account_journal_5;134;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Itescia (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - Itescia (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-267;2016-01-01;__export__.account_journal_5;267;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - Itescia (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - Itescia (2016);;3200.40;__export__.account_journal_5;
-268;2016-01-01;__export__.account_journal_5;268;;45566;2016-01-01;50_12448459 - N. Junod - Itescia (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - Itescia (2016);;3200.40;__export__.account_journal_5;
-269;2015-09-01;__export__.account_journal_5;269;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Prospection de mandats (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+135;2015-09-01;__export__.account_journal_5;135;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - Prospection de mandats (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - Prospection de mandats (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-270;2015-09-01;__export__.account_journal_5;270;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Prospection de mandats (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+136;2015-09-01;__export__.account_journal_5;136;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - Prospection de mandats (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - Prospection de mandats (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-271;2016-01-01;__export__.account_journal_5;271;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - Prospection de mandats (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - Prospection de mandats (2016);;3200.40;__export__.account_journal_5;
-272;2016-01-01;__export__.account_journal_5;272;;45566;2016-01-01;50_12448459 - N. Junod - Prospection de mandats (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - Prospection de mandats (2016);;3200.40;__export__.account_journal_5;
-273;2015-09-01;__export__.account_journal_5;273;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+137;2015-09-01;__export__.account_journal_5;137;__export__.account_period_10;__export__.account_account_198;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-274;2015-09-01;__export__.account_journal_5;274;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
+138;2015-09-01;__export__.account_journal_5;138;__export__.account_period_10;45566;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2015);1599.60;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2015);;1599.60;__export__.account_journal_5;__export__.account_period_10
-275;2016-01-01;__export__.account_journal_5;275;;__export__.account_account_198;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2016);;3200.40;__export__.account_journal_5;
-276;2016-01-01;__export__.account_journal_5;276;;45566;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2016);3200.40;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_12448459 - N. Junod - MAS HES - SO DSIS & DAS GDIS HETS Evaluation (2016);;3200.40;__export__.account_journal_5;
-277;2015-09-01;__export__.account_journal_5;277;__export__.account_period_10;__export__.account_account_194;2015-09-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
+139;2015-09-01;__export__.account_journal_5;139;__export__.account_period_10;__export__.account_account_194;2015-09-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2015);;9000.00;__export__.account_journal_5;__export__.account_period_10
-278;2015-09-01;__export__.account_journal_5;278;__export__.account_period_10;45566;2015-09-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
+140;2015-09-01;__export__.account_journal_5;140;__export__.account_period_10;45566;2015-09-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2015);;9000.00;__export__.account_journal_5;__export__.account_period_10
-279;2016-01-01;__export__.account_journal_5;279;;__export__.account_account_194;2016-01-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2016);18000.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2016);;18000.00;__export__.account_journal_5;
-280;2016-01-01;__export__.account_journal_5;280;;45566;2016-01-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2016);18000.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_14692616 - M. Gorin - Expert métier ressources docum.HES - SO (2016);;18000.00;__export__.account_journal_5;
-281;2015-09-01;__export__.account_journal_5;281;__export__.account_period_10;__export__.account_account_194;2015-09-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
+141;2015-09-01;__export__.account_journal_5;141;__export__.account_period_10;__export__.account_account_194;2015-09-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_134;2015-09-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2015);;9000.00;__export__.account_journal_5;__export__.account_period_10
-282;2015-09-01;__export__.account_journal_5;282;__export__.account_period_10;45566;2015-09-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
+142;2015-09-01;__export__.account_journal_5;142;__export__.account_period_10;45566;2015-09-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2015);9000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;__export__.account_account_117;2015-09-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2015);;9000.00;__export__.account_journal_5;__export__.account_period_10
-283;2016-01-01;__export__.account_journal_5;283;;__export__.account_account_194;2016-01-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2016);18000.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2016);;18000.00;__export__.account_journal_5;
-284;2016-01-01;__export__.account_journal_5;284;;45566;2016-01-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2016);18000.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_14692616 - M. Gorin - Encadrement MSCI (12h/ élève)  - > 6 élèves (2016);;18000.00;__export__.account_journal_5;
-285;2015-09-01;__export__.account_journal_5;285;__export__.account_period_10;__export__.account_account_208;2015-09-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2015);22500.00;;__export__.account_journal_5;__export__.account_period_10
-;;;;;__export__.account_account_134;2015-09-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2015);;22500.00;__export__.account_journal_5;__export__.account_period_10
-286;2015-09-01;__export__.account_journal_5;286;__export__.account_period_10;45566;2015-09-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2015);22500.00;;__export__.account_journal_5;__export__.account_period_10
-;;;;;__export__.account_account_117;2015-09-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2015);;22500.00;__export__.account_journal_5;__export__.account_period_10
-287;2016-01-01;__export__.account_journal_5;287;;__export__.account_account_208;2016-01-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2016);45000.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_134;2016-01-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2016);;45000.00;__export__.account_journal_5;
-288;2016-01-01;__export__.account_journal_5;288;;45566;2016-01-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2016);45000.00;;__export__.account_journal_5;
-;;;;;__export__.account_account_117;2016-01-01;50_40025244 - H. Pasquini - Descomps - 36797  -  Projet FNS H1N1 Pandemic (2016);;45000.00;__export__.account_journal_5;
-289;2015-08-28;__export__.account_journal_5;289;__export__.account_period_10;__export__.account_account_117;2015-08-28;hepia inSTI;5500.00;;__export__.account_journal_5;__export__.account_period_10
+143;2015-09-01;__export__.account_journal_5;143;__export__.account_period_10;__export__.account_account_208;2015-09-01;50_40025244 - H. Pasquini - Descomps - N°36797 - 36797  -  Projet FNS H1N1 Pandemic (2015);22500.00;;__export__.account_journal_5;__export__.account_period_10
+;;;;;__export__.account_account_134;2015-09-01;50_40025244 - H. Pasquini - Descomps - N°36797 - 36797  -  Projet FNS H1N1 Pandemic (2015);;22500.00;__export__.account_journal_5;__export__.account_period_10
+144;2015-09-01;__export__.account_journal_5;144;__export__.account_period_10;45566;2015-09-01;50_40025244 - H. Pasquini - Descomps - N°36797 - 36797  -  Projet FNS H1N1 Pandemic (2015);22500.00;;__export__.account_journal_5;__export__.account_period_10
+;;;;;__export__.account_account_117;2015-09-01;50_40025244 - H. Pasquini - Descomps - N°36797 - 36797  -  Projet FNS H1N1 Pandemic (2015);;22500.00;__export__.account_journal_5;__export__.account_period_10
+145;2015-08-28;__export__.account_journal_5;145;__export__.account_period_10;__export__.account_account_117;2015-08-28;hepia inSTI;5500.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;40951;2015-08-28;hepia inSTI;;5500.00;__export__.account_journal_5;__export__.account_period_10
-290;2014-10-16;__export__.account_journal_5;290;__export__.account_period_10;__export__.account_account_117;2014-10-16;hepia inSTI;3000.00;;__export__.account_journal_5;__export__.account_period_10
+146;2014-10-16;__export__.account_journal_5;146;__export__.account_period_10;__export__.account_account_117;2014-10-16;hepia inSTI;3000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;39784;2014-10-16;hepia inSTI;;3000.00;__export__.account_journal_5;__export__.account_period_10
-291;2014-10-11;__export__.account_journal_5;291;__export__.account_period_10;__export__.account_account_117;2014-10-11;hepia inPACT;25000.00;;__export__.account_journal_5;__export__.account_period_10
+147;2014-10-11;__export__.account_journal_5;147;__export__.account_period_10;__export__.account_account_117;2014-10-11;hepia inPACT;25000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;40249;2014-10-11;hepia inPACT;;25000.00;__export__.account_journal_5;__export__.account_period_10
-292;2015-03-24;__export__.account_journal_5;292;__export__.account_period_10;__export__.account_account_117;2015-03-24;hepia inTNE;2000.00;;__export__.account_journal_5;__export__.account_period_10
+148;2015-03-24;__export__.account_journal_5;148;__export__.account_period_10;__export__.account_account_117;2015-03-24;hepia inTNE;2000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;40192;2015-03-24;hepia inTNE;;2000.00;__export__.account_journal_5;__export__.account_period_10
-293;2014-08-21;__export__.account_journal_5;293;__export__.account_period_10;__export__.account_account_117;2014-08-21;Natura;1920.00;;__export__.account_journal_5;__export__.account_period_10
+149;2014-08-21;__export__.account_journal_5;149;__export__.account_period_10;__export__.account_account_117;2014-08-21;Natura;1920.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;24536;2014-08-21;Natura;;1920.00;__export__.account_journal_5;__export__.account_period_10
-294;2014-08-21;__export__.account_journal_5;294;__export__.account_period_10;__export__.account_account_117;2014-08-21;Natura;12000.00;;__export__.account_journal_5;__export__.account_period_10
+150;2014-08-21;__export__.account_journal_5;150;__export__.account_period_10;__export__.account_account_117;2014-08-21;Natura;12000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;24536;2014-08-21;Natura;;12000.00;__export__.account_journal_5;__export__.account_period_10
-295;2015-10-30;__export__.account_journal_5;295;__export__.account_period_10;__export__.account_account_117;2015-10-30;Soutraitance interne vers 40807;6952.00;;__export__.account_journal_5;__export__.account_period_10
+151;2015-10-30;__export__.account_journal_5;151;__export__.account_period_10;__export__.account_account_117;2015-10-30;Soutraitance interne vers 40807;6952.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;30338;2015-10-30;Soutraitance interne vers 40807;;6952.00;__export__.account_journal_5;__export__.account_period_10
-296;2014-10-29;__export__.account_journal_5;296;__export__.account_period_10;__export__.account_account_117;2014-10-29;Romanian Institute;153934.00;;__export__.account_journal_5;__export__.account_period_10
+152;2014-10-29;__export__.account_journal_5;152;__export__.account_period_10;__export__.account_account_117;2014-10-29;Romanian Institute;153934.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;34069;2014-10-29;Romanian Institute;;153934.00;__export__.account_journal_5;__export__.account_period_10
-297;2013-11-12;__export__.account_journal_5;297;__export__.account_period_10;__export__.account_account_117;2013-11-12;Université de Bâle;111569.00;;__export__.account_journal_5;__export__.account_period_10
+153;2013-11-12;__export__.account_journal_5;153;__export__.account_period_10;__export__.account_account_117;2013-11-12;Université de Bâle;111569.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;36773;2013-11-12;Université de Bâle;;111569.00;__export__.account_journal_5;__export__.account_period_10
-298;2013-11-12;__export__.account_journal_5;298;__export__.account_period_10;__export__.account_account_117;2013-11-12;André Jeannin;111569.00;;__export__.account_journal_5;__export__.account_period_10
+154;2013-11-12;__export__.account_journal_5;154;__export__.account_period_10;__export__.account_account_117;2013-11-12;André Jeannin;111569.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;36773;2013-11-12;André Jeannin;;111569.00;__export__.account_journal_5;__export__.account_period_10
-299;2013-11-12;__export__.account_journal_5;299;__export__.account_period_10;__export__.account_account_117;2013-11-12;Université de Bâle;81648.00;;__export__.account_journal_5;__export__.account_period_10
+155;2013-11-12;__export__.account_journal_5;155;__export__.account_period_10;__export__.account_account_117;2013-11-12;Université de Bâle;81648.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;36773;2013-11-12;Université de Bâle;;81648.00;__export__.account_journal_5;__export__.account_period_10
-300;2013-11-12;__export__.account_journal_5;300;__export__.account_period_10;__export__.account_account_117;2013-11-12;André Jeannin;81648.00;;__export__.account_journal_5;__export__.account_period_10
+156;2013-11-12;__export__.account_journal_5;156;__export__.account_period_10;__export__.account_account_117;2013-11-12;André Jeannin;81648.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;36773;2013-11-12;André Jeannin;;81648.00;__export__.account_journal_5;__export__.account_period_10
-301;2013-11-18;__export__.account_journal_5;301;__export__.account_period_10;__export__.account_account_117;2013-11-18;intervenants externes;19680.00;;__export__.account_journal_5;__export__.account_period_10
+157;2013-11-18;__export__.account_journal_5;157;__export__.account_period_10;__export__.account_account_117;2013-11-18;intervenants externes;19680.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;37892;2013-11-18;intervenants externes;;19680.00;__export__.account_journal_5;__export__.account_period_10
-302;2015-04-23;__export__.account_journal_5;302;__export__.account_period_10;__export__.account_account_117;2015-04-23;Bibliothèque de Genève;11000.00;;__export__.account_journal_5;__export__.account_period_10
+158;2015-04-23;__export__.account_journal_5;158;__export__.account_period_10;__export__.account_account_117;2015-04-23;Bibliothèque de Genève;11000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;39401;2015-04-23;Bibliothèque de Genève;;11000.00;__export__.account_journal_5;__export__.account_period_10
-303;2015-01-14;__export__.account_journal_5;303;__export__.account_period_10;__export__.account_account_117;2015-01-14;Genilem;20000.00;;__export__.account_journal_5;__export__.account_period_10
+159;2015-01-14;__export__.account_journal_5;159;__export__.account_period_10;__export__.account_account_117;2015-01-14;Genilem;20000.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;42275;2015-01-14;Genilem;;20000.00;__export__.account_journal_5;__export__.account_period_10
-304;2015-01-06;__export__.account_journal_5;304;__export__.account_period_10;__export__.account_account_117;2015-01-06;Ynternet.org;12100.00;;__export__.account_journal_5;__export__.account_period_10
+160;2015-01-06;__export__.account_journal_5;160;__export__.account_period_10;__export__.account_account_117;2015-01-06;Ynternet.org;12100.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;42431;2015-01-06;Ynternet.org;;12100.00;__export__.account_journal_5;__export__.account_period_10
-305;2015-01-06;__export__.account_journal_5;305;__export__.account_period_10;__export__.account_account_117;2015-01-06;Université Bordeaux Montaigne;12100.00;;__export__.account_journal_5;__export__.account_period_10
+161;2015-01-06;__export__.account_journal_5;161;__export__.account_period_10;__export__.account_account_117;2015-01-06;Université Bordeaux Montaigne;12100.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;42431;2015-01-06;Université Bordeaux Montaigne;;12100.00;__export__.account_journal_5;__export__.account_period_10
-306;2015-01-06;__export__.account_journal_5;306;__export__.account_period_10;__export__.account_account_117;2015-01-06;Ynternet.org;7700.00;;__export__.account_journal_5;__export__.account_period_10
+162;2015-01-06;__export__.account_journal_5;162;__export__.account_period_10;__export__.account_account_117;2015-01-06;Ynternet.org;7700.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;42431;2015-01-06;Ynternet.org;;7700.00;__export__.account_journal_5;__export__.account_period_10
-307;2015-01-06;__export__.account_journal_5;307;__export__.account_period_10;__export__.account_account_117;2015-01-06;Université Bordeaux Montaigne;7700.00;;__export__.account_journal_5;__export__.account_period_10
+163;2015-01-06;__export__.account_journal_5;163;__export__.account_period_10;__export__.account_account_117;2015-01-06;Université Bordeaux Montaigne;7700.00;;__export__.account_journal_5;__export__.account_period_10
 ;;;;;42431;2015-01-06;Université Bordeaux Montaigne;;7700.00;__export__.account_journal_5;__export__.account_period_10

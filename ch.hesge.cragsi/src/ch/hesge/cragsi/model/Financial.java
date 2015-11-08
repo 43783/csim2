@@ -12,7 +12,7 @@ import java.util.Date;
  * Copyright HEG Geneva 2015, Switzerland
  * @author Eric Harth
  */
-public class Funding {
+public class Financial {
 
 	// Private attributes
 	private Date date; // Date
@@ -23,7 +23,7 @@ public class Funding {
 	/**
 	 * Default constructor
 	 */
-	public Funding() {
+	public Financial() {
 	}
 
 	public Date getDate() {

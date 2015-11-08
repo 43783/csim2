@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="ch.hesge.csim2.ui.utils">
+
+	<Appenders>
+	
+		<File name="FILE" fileName="log/cragsi.log" immediateFlush="false" append="false">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        		 
+	    <Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+	    </Console>
+		
+	</Appenders>
+
+  <Loggers>
+  
+	<!-- 
+	 	Logging levels:
+	 	
+	 		- OFF 	(most specific, no logging)
+			- FATAL (most specific, little data)
+			- ERROR
+			- WARN
+			- INFO
+			- DEBUG
+			- TRACE (least specific, a lot of data)
+			- ALL 	(least specific, all
+	-->
+		  
+    <Root level="ALL">
+    
+    <!-- 
+      <AppenderRef ref="FILE" level="INFO" />
+      <AppenderRef ref="STDOUT" level="INFO" />
+      <AppenderRef ref="CONSOLE" level="INFO" />
+    -->
+
+      <AppenderRef ref="FILE" level="DEBUG" />
+      <AppenderRef ref="STDOUT" level="DEBUG" />
+      
+    </Root>
+    
+  </Loggers>
+  
+</Configuration>

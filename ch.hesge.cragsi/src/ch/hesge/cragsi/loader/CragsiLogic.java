@@ -12,12 +12,12 @@ import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.exceptions.IntegrityException;
 import ch.hesge.cragsi.model.AGFLine;
 import ch.hesge.cragsi.model.Account;
+import ch.hesge.cragsi.model.Accounting;
 import ch.hesge.cragsi.model.Activity;
-import ch.hesge.cragsi.model.Funding;
+import ch.hesge.cragsi.model.Financial;
 import ch.hesge.cragsi.model.Partner;
 import ch.hesge.cragsi.model.Price;
 import ch.hesge.cragsi.model.Project;
-import ch.hesge.cragsi.utils.DateFactory;
 import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
 
@@ -116,7 +116,7 @@ public class CragsiLogic {
 	 * 
 	 * @param activity
 	 *        an Activity
-	 * @return a Price or null
+	 * @return a Price
 	 * @throws IntegrityException 
 	 */
 	public static Price getActivityPrice(Activity activity, Map<String, Price> priceMap) throws IntegrityException {
@@ -124,7 +124,7 @@ public class CragsiLogic {
 		Price activityPrice = null;
 
 		if (!priceMap.containsKey(activity.getContractType())) {
-			throw new IntegrityException("==> missing price for contract '" + activity.getContractType() + "' !");
+			throw new IntegrityException("missing price for contract '" + activity.getContractType() + "' !");
 		}
 		else {
 			activityPrice = priceMap.get(activity.getContractType());
@@ -133,6 +133,25 @@ public class CragsiLogic {
 		return activityPrice;
 	}
 
+	/**
+	 * Retrieve the activity label and include, if required,
+	 * the project number associated to the activity.
+	 * 
+	 * @param activity
+	 * @return the activity label
+	 */
+	public static String getActivityLabel(Activity activity, Account collaboratorAccount) {
+		
+		String label = activity.getDetail();
+		
+		// Check if activity is associated to a project
+		if (!StringUtils.isEmtpy(activity.getProjectNumber()) && !label.contains(activity.getProjectNumber())) {
+			label = activity.getProjectNumber() + "-" + label;
+		}
+		
+		return (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + label).replace("-", " - ");
+	}
+	
 	/**
 	 * Retrieve the account associated to a collaborator.
 	 * 
@@ -147,7 +166,7 @@ public class CragsiLogic {
 		Account collaboratorAccount = getAccountByName(activity.getLastname(), accounts);
 
 		if (collaboratorAccount == null) {
-			throw new IntegrityException("==> missing collaborator account for '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
+			throw new IntegrityException("missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "' !");
 		}
 
 		return collaboratorAccount;
@@ -167,27 +186,34 @@ public class CragsiLogic {
 
 		Account projectAccount = null;
 
-		// Retrieve the collaborator account
-		Account collaboratorAccount = getCollaboratorAccount(activity, accounts);
-
 		// Retrieve activity project number
 		String projectNumber = StringUtils.toNumber(activity.getProjectNumber());
 		
+		// If not project, lookup for the socle account
 		if (StringUtils.isEmtpy(projectNumber)) {
-		if (!StringUtils.isEmtpy(projectNumber)) {
+			
+			String socleCode = PropertyUtils.getProperty("socleAccount");
+			projectAccount = CragsiLogic.getAccountByCode(socleCode, accounts);
+			
+			if (projectAccount == null) {
+				throw new ConfigurationException("missing account with socle code '" + socleCode + "' !");
+			}
+		}
+		else {
 
 			// Retrieve project from its number
 			Project project = getProjectByCode(projectNumber, projects);
 
 			// Check if project exists
 			if (project == null) {
-				throw new IllegalArgumentException("==> missing project with code '" + projectNumber + "' !");
+				throw new IntegrityException("missing project with code '" + projectNumber + "' !");
 			}
 			else {
 
+				// The project exists
 				Date currentDate = Calendar.getInstance().getTime();
 
-				// Check if project is not closed
+				// Now, check if project is not closed
 				if (currentDate.equals(project.getStartDate()) || (currentDate.after(project.getStartDate()) && currentDate.before(project.getEndDate())) || currentDate.equals(project.getEndDate())) {
 
 					String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
@@ -195,23 +221,13 @@ public class CragsiLogic {
 
 					// Check if an account for the project exists
 					if (projectAccount == null) {
-						throw new IntegrityException("==> missing project account with code '" + projectNumber + "' !");
+						throw new IntegrityException("missing account with project code '" + projectNumber + "' !");
 					}
 				}
 				else {
-					throw new IntegrityException("==> project with code '" + projectNumber + "' is already closed !");
+					throw new IntegrityException("missing project with code '" + projectNumber + "' is already closed !");
 				}
 			}
-
-			/*
-			// Retrieve the socle account
-			String socleCode = PropertyUtils.getProperty("socleAccount");
-			socleAccount = CragsiLogic.getAccountByCode(socleCode, accounts);
-			if (socleAccount == null) {
-				throw new ConfigurationException("==> missing socle account with code '" + socleCode + "' !");
-			}
-			*/
-			
 		}
 
 		return projectAccount;
@@ -233,7 +249,7 @@ public class CragsiLogic {
 
 		// Check if an account for the project exists
 		if (projectAccount == null) {
-			throw new IntegrityException("==> missing project account with code '" + agfLine.getProjectNumber() + "' !");
+			throw new IntegrityException("missing account with project code '" + agfLine.getProjectNumber() + "' !");
 		}
 
 		return projectAccount;
@@ -248,14 +264,14 @@ public class CragsiLogic {
 	 * @throws ConfigurationException 
 	 * @throws IntegrityException 
 	 */
-	public static Account getProjectAccount(Funding funding, List<Account> accounts) throws ConfigurationException, IntegrityException {
+	public static Account getProjectAccount(Financial funding, List<Account> accounts) throws ConfigurationException, IntegrityException {
 
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
 		Account projectAccount = getAccountByCode(accountSuffix + funding.getProjectNumber(), accounts);
 
 		// Check if an account for the project exists
 		if (projectAccount == null) {
-			throw new IntegrityException("==> missing project account with code '" + funding.getProjectNumber() + "' !");
+			throw new IntegrityException("missing account with project code '" + funding.getProjectNumber() + "' !");
 		}
 
 		return projectAccount;
@@ -277,14 +293,102 @@ public class CragsiLogic {
 
 		// Check if an account for the project exists
 		if (projectAccount == null) {
-			throw new IntegrityException("==> missing project account with code '" + partner.getProjectNumber() + "' !");
+			throw new IntegrityException("missing account with project code '" + partner.getProjectNumber() + "' !");
 		}
 
 		return projectAccount;
 	}
 
 	/**
-	 *  Retrieve the first semester accounting date.
+	 * Retrieve the first semester start date.
+	 * 
+	 * @return the start date
+	 * @throws ConfigurationException 
+	 */
+	public static Date getFirstSemesterStartDate() throws ConfigurationException {
+
+		Calendar calendar = Calendar.getInstance();
+		String periodYear = PropertyUtils.getProperty("academicYear_S1");
+		
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
+		calendar.set(Calendar.MONTH, 8);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+		return new Date(calendar.getTime().getTime());
+	}
+
+	/**
+	 * Retrieve the first semester end date.
+	 * 
+	 * @return the end date
+	 * @throws ConfigurationException 
+	 */
+	public static Date getFirstSemesterEndDate() throws ConfigurationException {
+
+		Calendar calendar = Calendar.getInstance();
+		String periodYear = PropertyUtils.getProperty("academicYear_S1");
+		
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
+		calendar.set(Calendar.MONTH, 11);
+		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		
+		return new Date(calendar.getTime().getTime());
+	}
+	
+	/**
+	 * Retrieve the second semester start date.
+	 * 
+	 * @return the start date
+	 * @throws ConfigurationException 
+	 */
+	public static Date getSecondSemesterStartDate() throws ConfigurationException {
+		
+		Calendar calendar = Calendar.getInstance();
+		String periodYear = PropertyUtils.getProperty("academicYear_S2");
+		
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
+		calendar.set(Calendar.MONTH, 0);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+		return new Date(calendar.getTime().getTime());		
+	}
+	
+	/**
+	 * Retrieve the second semester end date.
+	 * 
+	 * @return the end date
+	 * @throws ConfigurationException 
+	 */
+	public static Date getSecondSemesterEndDate() throws ConfigurationException {
+		
+		Calendar calendar = Calendar.getInstance();
+		String periodYear = PropertyUtils.getProperty("academicYear_S2");
+		
+		calendar.set(Calendar.YEAR, StringUtils.toInteger(periodYear));
+		calendar.set(Calendar.MONTH, 7);
+		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		
+		return new Date(calendar.getTime().getTime());		
+	}
+
+	/**
+	 * Retrieve the first semester accounting date.
 	 *  
 	 * @param activity
 	 * @return an accounting date
@@ -293,20 +397,25 @@ public class CragsiLogic {
 	 */
 	public static Date getFirstSemesterAccountingDate(Activity activity) throws ConfigurationException, IntegrityException  {
 
-		Date firstSemesterStartDate = DateFactory.getFirstSemesterStartDate();
-		Date firstSemesterEndDate   = DateFactory.getFirstSemesterEndDate();
+		Date accountingDate = null;
+		Date firstSemesterStartDate = getFirstSemesterStartDate();
 
-		Date date = firstSemesterStartDate;
-
-		// Calculate accounting date for first semester
+		// If activity starts before the begin of semester, it's an error
 		if (activity.getStartContract().before(firstSemesterStartDate)) {
-			throw new IntegrityException("==> invalid contract start date for collaborator '" + activity.getLastname() + " !");
+			throw new IntegrityException("invalid contract start date for collaborator '" + activity.getLastname() + " !");
 		}
+		
+		// If activity starts after the begin of semester, adjust it
 		else if (activity.getStartContract().after(firstSemesterStartDate)) {
-			date = activity.getStartContract();
+			accountingDate = activity.getStartContract();
+		}
+		
+		// Otherwise, the activity start at the beginning of the semester
+		else {
+			accountingDate = firstSemesterStartDate;
 		}
 
-		return date;
+		return accountingDate;
 	}
 
 	/**
@@ -318,19 +427,82 @@ public class CragsiLogic {
 	 */
 	public static Date getSecondSemesterAccountingDate(Activity activity) throws ConfigurationException, IntegrityException {
 
-		Date secondSemesterStartDate = DateFactory.getSecondSemesterStartDate();
-		Date secondSemesterEndDate   = DateFactory.getSecondSemesterEndDate();
+		Date date = null;
+		Date secondSemesterStartDate = getSecondSemesterStartDate();
+		Date secondSemesterEndDate = getSecondSemesterEndDate();
 
-		Date date = secondSemesterStartDate;
-
-		// Calculate accounting date for second semester
+		// If activity ends after the end of semester, it's an error
 		if (activity.getEndContract().after(secondSemesterEndDate)) {
-			throw new IntegrityException("==> invalid contract end date for collaborator '" + activity.getLastname() + " !");
+			throw new IntegrityException("invalid contract end date for collaborator '" + activity.getLastname() + " !");
 		}
+		
+		// If activity starts after the begin of semester, adjust it
 		else if (activity.getStartContract().after(secondSemesterStartDate)) {
 			date = activity.getStartContract();
 		}
 
+		// Otherwise, the activity start at the beginning of the semester
+		else {
+			date = secondSemesterStartDate;
+		}
+
 		return date;
+	}
+	
+	/**
+	 * Create a debit accounting entry.
+	 * 
+	 * @param sequenceId
+	 * @param date
+	 * @param journalId
+	 * @param periodId
+	 * @param account
+	 * @param label
+	 * @param value
+	 * @return
+	 */
+	public static Accounting createDebitEntry(int sequenceId, Date date, String journalId, String periodId, Account account, String label, double value) {
+
+		Accounting accounting = new Accounting();
+
+		accounting.setId(sequenceId);
+		accounting.setDate(date);
+		accounting.setJournalId(journalId);
+		accounting.setName(StringUtils.toString(sequenceId));
+		accounting.setPeriodId(periodId);
+		accounting.setAccountId(account.getId());
+		accounting.setLineDate(date);
+		accounting.setLineName(label);
+		accounting.setLineDebit(value);
+		accounting.setLineJournalId(journalId);
+		accounting.setLinePeriodId(periodId);
+
+		return accounting;
+	}
+
+	/**
+	 * Create a credit accounting entry.
+	 * 
+	 * @param sequenceId
+	 * @param date
+	 * @param journalId
+	 * @param periodId
+	 * @param account
+	 * @param label
+	 * @param value
+	 * @return
+	 */
+	public static Accounting createCreditEntry(int sequenceId, Date date, String journalId, String periodId, Account account, String label, double value) {
+
+		Accounting accounting = new Accounting();
+
+		accounting.setAccountId(account.getId());
+		accounting.setLineDate(date);
+		accounting.setLineName(label);
+		accounting.setLineCredit(value);
+		accounting.setLineJournalId(journalId);
+		accounting.setLinePeriodId(periodId);
+
+		return accounting;
 	}
 }

@@ -34,10 +34,10 @@ public class UserSettings extends Properties {
 				uniqueInstance.load(reader);
 			}
 			catch (FileNotFoundException e) {
-				throw new ConfigurationException("Unable to find file craigsi.conf");
+				throw new ConfigurationException("unable to find file craigsi.conf");
 			}
 			catch (IOException e) {
-				throw new ConfigurationException("Error while loading file: " + e.toString());
+				throw new ConfigurationException("error while loading configuration file: " + e.toString());
 			}
 			finally {
 				if (reader != null) {
