@@ -36,7 +36,7 @@
       <AppenderRef ref="CONSOLE" level="INFO" />
     -->
 
-      <AppenderRef ref="FILE" level="DEBUG" />
+      <AppenderRef ref="FILE" level="ERROR" />
       <AppenderRef ref="STDOUT" level="DEBUG" />
       
     </Root>

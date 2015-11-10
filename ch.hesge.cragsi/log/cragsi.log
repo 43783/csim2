@@ -1,722 +1,299 @@
-2015-11-08 21:41:28.058 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - Generating FDC accounting...
-2015-11-08 21:41:28.083 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Christophe-Alexandre Dunand' with contract 'Corps professoral'
-2015-11-08 21:41:28.085 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Christophe-Alexandre Dunand' with contract 'Corps professoral'
-2015-11-08 21:41:28.091 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: project with code '28830' is already closed
-2015-11-08 21:41:28.100 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: project with code '39477' is already closed
-2015-11-08 21:41:28.101 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.102 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.103 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.104 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.104 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.105 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.106 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
-2015-11-08 21:41:28.107 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Jason Emmanuel Ramapuram' with contract 'Assistant-e HES'
-2015-11-08 21:41:28.110 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Nicolas Montandon' with contract 'Corps professoral'
-2015-11-08 21:41:28.111 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Nicolas Montandon' with contract 'Corps professoral'
-2015-11-08 21:41:28.114 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: project with code '39477' is already closed
-2015-11-08 21:41:28.117 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
-2015-11-08 21:41:28.118 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
-2015-11-08 21:41:28.119 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
-2015-11-08 21:41:28.120 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
-2015-11-08 21:41:28.121 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
-2015-11-08 21:41:28.122 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
-2015-11-08 21:41:28.129 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
-2015-11-08 21:41:28.129 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
-2015-11-08 21:41:28.130 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
-2015-11-08 21:41:28.130 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
-2015-11-08 21:41:28.130 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
-2015-11-08 21:41:28.131 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Anaïs Mottaz' with contract 'Assistant-e de recherche HES'
-2015-11-08 21:41:28.132 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: project with code '39477' is already closed
-2015-11-08 21:41:28.134 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Giovanni Ferro Luzzi' with contract 'Corps professoral'
-2015-11-08 21:41:28.134 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Giovanni Ferro Luzzi' with contract 'Corps professoral'
-2015-11-08 21:41:28.135 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Emilie Pasche' with contract 'Assistant-e de recherche HES'
-2015-11-08 21:41:28.135 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Dina Vishnyakova' with contract 'Assistant-e de recherche HES'
-2015-11-08 21:41:28.136 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: project with code '40903' is already closed
-2015-11-08 21:41:28.136 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '35879'
-2015-11-08 21:41:28.144 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Nathalie Courtine' with contract 'Corps professoral'
-2015-11-08 21:41:28.145 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
-2015-11-08 21:41:28.145 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
-2015-11-08 21:41:28.145 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
-2015-11-08 21:41:28.146 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
-2015-11-08 21:41:28.146 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
-2015-11-08 21:41:28.152 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '44065'
-2015-11-08 21:41:28.153 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '48245'
-2015-11-08 21:41:28.155 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '34961'
-2015-11-08 21:41:28.156 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_49626'
-2015-11-08 21:41:28.157 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Maolaaisha Aminanmu' with contract 'Assistant-e HES'
-2015-11-08 21:41:28.158 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Maolaaisha Aminanmu' with contract 'Assistant-e HES'
-2015-11-08 21:41:28.161 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '43326'
-2015-11-08 21:41:28.162 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '40988'
-2015-11-08 21:41:28.163 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - FDC generation done.
-2015-11-08 21:41:28.164 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - Generating AGF accounting...
-2015-11-08 21:41:28.221 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - java.lang.NumberFormatException: For input string: "G102636006"
-2015-11-08 21:41:28.221 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - Generating financial accounting...
-2015-11-08 21:41:28.224 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14160'
-2015-11-08 21:41:28.224 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15517'
-2015-11-08 21:41:28.224 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17891'
-2015-11-08 21:41:28.225 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17412'
-2015-11-08 21:41:28.225 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19602'
-2015-11-08 21:41:28.225 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18933'
-2015-11-08 21:41:28.225 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18455'
-2015-11-08 21:41:28.225 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18443'
-2015-11-08 21:41:28.225 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20297'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18283'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18283'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18738'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19172'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18410'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17995'
-2015-11-08 21:41:28.226 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17984'
-2015-11-08 21:41:28.227 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18403'
-2015-11-08 21:41:28.227 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18403'
-2015-11-08 21:41:28.227 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18866'
-2015-11-08 21:41:28.227 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18837'
-2015-11-08 21:41:28.227 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19555'
-2015-11-08 21:41:28.227 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19555'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19197'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18821'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19305'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19305'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18867'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19378'
-2015-11-08 21:41:28.228 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20258'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20307'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20461'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21039'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21039'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20663'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19677'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20450'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20450'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21856'
-2015-11-08 21:41:28.229 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19868'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20049'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20274'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20862'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20862'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20744'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21705'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21175'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21175'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25112'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21452'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24005'
-2015-11-08 21:41:28.230 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21436'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21888'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21850'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23157'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22224'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22224'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22006'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23940'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23979'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23490'
-2015-11-08 21:41:28.231 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24064'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24269'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23897'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23888'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24079'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24079'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24724'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25861'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24851'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_26294'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25064'
-2015-11-08 21:41:28.232 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25064'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_26099'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_26099'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_37397'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_30566'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_35832'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_35932'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_35931'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40877'
-2015-11-08 21:41:28.233 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40252'
-2015-11-08 21:41:28.234 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_39480'
-2015-11-08 21:41:28.234 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40704'
-2015-11-08 21:41:28.234 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_41679'
-2015-11-08 21:41:28.234 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_49165'
-2015-11-08 21:41:28.234 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_49685'
-2015-11-08 21:41:28.234 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - Financial generation done.
-2015-11-08 21:41:28.234 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - Generating partner accounting...
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11259'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11259'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11259'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11260'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11260'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11260'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11260'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11829'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11829'
-2015-11-08 21:41:28.242 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11829'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11829'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11854'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11854'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11860'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11869'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11869'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11869'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11869'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.243 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.244 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11905'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11931'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11931'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.245 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_11980'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12044'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.246 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.247 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.248 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.249 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.250 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12223'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12402'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12402'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12422'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12715'
-2015-11-08 21:41:28.251 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12716'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12716'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12716'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12716'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12723'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12723'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12737'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12795'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12861'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12861'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12861'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12861'
-2015-11-08 21:41:28.252 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_12890'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13024'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13024'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13024'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13024'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13024'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13030'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13030'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13030'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13030'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13042'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13082'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13572'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13572'
-2015-11-08 21:41:28.253 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13572'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13572'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13575'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13575'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13575'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13575'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13678'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13683'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.254 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13718'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13721'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13722'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13937'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13995'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13995'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13995'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_13995'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14084'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14128'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14196'
-2015-11-08 21:41:28.255 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14201'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14470'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14615'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.256 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.257 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.258 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.259 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.260 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.261 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_14828'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15018'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15045'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15097'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15326'
-2015-11-08 21:41:28.262 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15326'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15384'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15384'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15384'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15384'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15384'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15384'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.263 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.264 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15399'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15498'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.265 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15567'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15572'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15572'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15572'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15572'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.266 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15727'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_15954'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16069'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16286'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16352'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16352'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16352'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16352'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16352'
-2015-11-08 21:41:28.267 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16352'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_16716'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17397'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17397'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17407'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17407'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17407'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17407'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17544'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17702'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17702'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17702'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17702'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_17965'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18671'
-2015-11-08 21:41:28.268 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18671'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18671'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18671'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18683'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18683'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18683'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18683'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18736'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18736'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18736'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18796'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_18977'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.269 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19089'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19178'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19211'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.270 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.271 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.272 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.283 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.284 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19741'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.285 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.286 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.286 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.286 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.288 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_19937'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20034'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20137'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20137'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20137'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20137'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20137'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20137'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20259'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20306'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20306'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20306'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20711'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20711'
-2015-11-08 21:41:28.289 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20780'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20780'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20780'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.290 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20898'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_20954'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.291 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21052'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21149'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21246'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21496'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21496'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21496'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21591'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.292 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21632'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_21742'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22305'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22305'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22305'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22305'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22305'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22305'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22470'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_22470'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23448'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23467'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23751'
-2015-11-08 21:41:28.293 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23751'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23753'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23753'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23753'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23753'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23814'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23814'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_23814'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.294 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.295 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_24037'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25282'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25578'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25578'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25578'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25578'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_25892'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_26261'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_27005'
-2015-11-08 21:41:28.297 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_28359'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_28359'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_28765'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_28830'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_28830'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29007'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29747'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29872'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29872'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29872'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29872'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29872'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_29872'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_30579'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_30579'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_30579'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_30579'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.298 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_31644'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32096'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32265'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32436'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32436'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32436'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32967'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32967'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32967'
-2015-11-08 21:41:28.299 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_32967'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_33469'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_34367'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_34748'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_35167'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_35302'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_36720'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_36720'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_36720'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_36720'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_38681'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_39266'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_39266'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_39266'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_39266'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_39920'
-2015-11-08 21:41:28.300 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40897'
-2015-11-08 21:41:28.301 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40897'
-2015-11-08 21:41:28.301 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40897'
-2015-11-08 21:41:28.301 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_40897'
-2015-11-08 21:41:28.301 [main] INFO  ch.hesge.cragsi.loader.CragsiLoader - Partner generation done.
+2015-11-09 20:05:04.017 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Christophe-Alexandre Dunand' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.025 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Christophe-Alexandre Dunand' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.032 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: project with code '28830' is already closed
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:232) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.039 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: project with code '39477' is already closed
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:232) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.039 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.040 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.041 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.042 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.042 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.043 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.043 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Sacha Varone' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.044 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Jason Emmanuel Ramapuram' with contract 'Assistant-e HES'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.045 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Nicolas Montandon' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.046 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Nicolas Montandon' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.047 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: project with code '39477' is already closed
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:232) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.049 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.050 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.051 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.053 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.053 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.054 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Catherine Equey Balzli' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.058 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.059 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.059 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.060 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.060 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Thomas Gauthier' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.061 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Anaïs Mottaz' with contract 'Assistant-e de recherche HES'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.063 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: project with code '39477' is already closed
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:232) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.065 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Giovanni Ferro Luzzi' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.065 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Giovanni Ferro Luzzi' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.066 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Emilie Pasche' with contract 'Assistant-e de recherche HES'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.067 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Dina Vishnyakova' with contract 'Assistant-e de recherche HES'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.068 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: project with code '40903' is already closed
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:232) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.069 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '35879'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:209) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.081 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Nathalie Courtine' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.085 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.085 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.086 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.086 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.087 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Francesco Moresino' with contract 'Corps professoral'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.094 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '44065'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:209) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.095 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '48245'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:209) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.097 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '34961'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:209) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.099 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account with project code '34_49626'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:228) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.101 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Maolaaisha Aminanmu' with contract 'Assistant-e HES'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.102 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing account for collaborator 'Maolaaisha Aminanmu' with contract 'Assistant-e HES'
+	at ch.hesge.cragsi.loader.CragsiLogic.getCollaboratorAccount(CragsiLogic.java:169) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:147) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.106 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '43326'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:209) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.107 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
+ch.hesge.cragsi.exceptions.IntegrityException: missing project with code '40988'
+	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:209) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:150) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:111) [bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]
+2015-11-09 20:05:04.175 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - Unexpected error
+java.lang.NumberFormatException: For input string: "G102636006"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[?:1.8.0_45]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[?:1.8.0_45]
+	at java.lang.Double.parseDouble(Unknown Source) ~[?:1.8.0_45]
+	at java.lang.Double.valueOf(Unknown Source) ~[?:1.8.0_45]
+	at ch.hesge.cragsi.utils.StringUtils.toDouble(StringUtils.java:72) ~[bin/:?]
+	at ch.hesge.cragsi.dao.AGFLineDao.findAll(AGFLineDao.java:58) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.generateAGFAccountings(CragsiLoader.java:208) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:112) ~[bin/:?]
+	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:287) [bin/:?]

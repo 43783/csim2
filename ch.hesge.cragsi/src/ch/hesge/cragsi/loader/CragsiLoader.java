@@ -40,9 +40,9 @@ public class CragsiLoader {
 	private int sequenceId;
 
 	private String journalIdS1;
-	private String secondSemesterjournalId;
+	private String journalIdS2;
 	private String periodIdS1;
-	private String secondSemesterPeriodId;
+	private String periodIdS2;
 
 	private Account salaryAccount;
 	private Account allProjectsAccount;
@@ -52,7 +52,7 @@ public class CragsiLoader {
 	private Map<String, Price> priceMap;
 	private List<Accounting> accountings;
 
-	// Log4j init
+	// Set Log4j config file
 	static { System.setProperty("log4j.configurationFile", "conf/log4j2.xml"); }
 	private static Logger LOGGER = LogManager.getLogger(CragsiLoader.class);
 	
@@ -76,8 +76,8 @@ public class CragsiLoader {
 		// Retrieve global properties from config file
 		journalIdS1  = PropertyUtils.getProperty("journalId_S1");
 		periodIdS1   = PropertyUtils.getProperty("periodId_S1");
-		secondSemesterjournalId = PropertyUtils.getProperty("journalId_S2");
-		secondSemesterPeriodId  = PropertyUtils.getProperty("periodId_S2");
+		journalIdS2 = PropertyUtils.getProperty("journalId_S2");
+		periodIdS2  = PropertyUtils.getProperty("periodId_S2");
 
 		// Load common files
 		accounts = AccountDao.findAll();
@@ -107,33 +107,11 @@ public class CragsiLoader {
 	 */
 	public void start() throws IOException, ConfigurationException {
 
-		try {
-			generateFDCAccountings();
-		}
-		catch(Exception e) {
-			LOGGER.error(e);
-		}
-
-		try {
-			generateAGFAccountings();
-		}
-		catch(Exception e) {
-			LOGGER.error(e);
-		}
-
-		try {
-			generateFinancialAccountings();
-		}
-		catch(Exception e) {
-			LOGGER.error(e);
-		}
-
-		try {
-			generatePartnerAccountings();
-		}
-		catch(Exception e) {
-			LOGGER.error(e);
-		}
+		// Generate all accountings
+		generateFDCAccountings();
+		generateAGFAccountings();
+		generateFinancialAccountings();
+		generatePartnerAccountings();
 
 		// Finally save accountings
 		AccountingDao.saveAll(accountings);
@@ -199,22 +177,22 @@ public class CragsiLoader {
 				if (activity.getCostS2() > 0 && !accountingDateS2.before(startDateS2) && !accountingDateS2.after(endDateS2)) {
 
 					// Collaborator accountings
-					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
-					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, salaryAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, collaboratorAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, salaryAccount, accountingLabelS2, activity.getCostS2()));
 					sequenceId++;
 
 					// Project accounting
-					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, projectAccount, accountingLabelS2, activity.getCostS2()));
-					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, secondSemesterjournalId, secondSemesterPeriodId, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, projectAccount, accountingLabelS2, activity.getCostS2()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, allProjectsAccount, accountingLabelS2, activity.getCostS2()));
 					sequenceId++;
 				}
 			}
 			catch(Exception e) {
-				LOGGER.error(e);
+				LOGGER.error("FDC loading error", e);
 			}
 		}
 
-		LOGGER.info("FDC generation done.");
+		LOGGER.info("FDC generation completed.");
 	}
 
 	/**
@@ -236,11 +214,11 @@ public class CragsiLoader {
 				sequenceId++;
 			}
 			catch(Exception e) {
-				LOGGER.error(e);
+				LOGGER.error("AFG loading error", e);
 			}
 		}
 
-		LOGGER.info("AFG generation done.");
+		LOGGER.info("AFG generation completed.");
 	}
 
 	/**
@@ -262,11 +240,11 @@ public class CragsiLoader {
 				sequenceId++;
 			}
 			catch(Exception e) {
-				LOGGER.error(e);
+				LOGGER.error("Financial loading error", e);
 			}
 		}
 
-		LOGGER.info("Financial generation done.");
+		LOGGER.info("Financial generation completed.");
 	}
 
 	/**
@@ -288,11 +266,11 @@ public class CragsiLoader {
 				sequenceId++;
 			}
 			catch(Exception e) {
-				LOGGER.error(e);
+				LOGGER.error("Partner loading error", e);
 			}
 		}
 
-		LOGGER.info("Partner generation done.");
+		LOGGER.info("Partner generation completed.");
 	}
 
 	/**
@@ -309,7 +287,7 @@ public class CragsiLoader {
 			loader.start();
 		}
 		catch (Exception e) {
-			LOGGER.error("Loading error", e);
+			LOGGER.error("Unexpected error", e);
 		}		
 	}
 
