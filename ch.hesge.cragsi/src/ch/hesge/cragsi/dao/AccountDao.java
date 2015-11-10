@@ -35,7 +35,7 @@ public class AccountDao {
 		try {
 			
 			// Open file to load
-			reader = new CsvReader(accountPath, ';', Charset.forName("UTF8"));
+			reader = new CsvReader(accountPath, ',', Charset.forName("UTF8"));
 			reader.setSkipEmptyRecords(true);
 			reader.readHeaders();
 

@@ -29,8 +29,6 @@ public class Activity {
 	private double total; // Total
 	private double totalS1; // first semester total (computed)
 	private double totalS2; // second semester total (computed)
-	private double costS1; // first semester cost (computed)
-	private double costS2; // second semester cost (computed)
 	private String activity; // Activité
 	private String pillarGE; // Pilier GE
 	private String pillarHES; // Pilier HES
@@ -154,22 +152,6 @@ public class Activity {
 
 	public void setTotalS2(double totalS2) {
 		this.totalS2 = totalS2;
-	}
-
-	public double getCostS1() {
-		return costS1;
-	}
-
-	public void setCostS1(double costS1) {
-		this.costS1 = costS1;
-	}
-
-	public double getCostS2() {
-		return costS2;
-	}
-
-	public void setCostS2(double costS2) {
-		this.costS2 = costS2;
 	}
 
 	public String getActivity() {

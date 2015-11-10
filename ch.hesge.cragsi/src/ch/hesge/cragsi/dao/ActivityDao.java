@@ -66,7 +66,7 @@ public class ActivityDao {
 	 * @return the key that can be used in map
 	 */
 	private static String getActivityKey(Activity activity) {
-		return activity.getLastname() + "_" + activity.getFirstname();
+		return activity.getLastname() + "_" + activity.getFirstname() + "_" + activity.getTotal();
 	}
 
 	/**
@@ -194,6 +194,7 @@ public class ActivityDao {
 				// Retrieve field values
 				String lastname      = reader.get(1);
 				String firstname     = reader.get(2);
+				String total         = reader.get(8);
 				String pillarGE      = reader.get(10);
 				String startContract = reader.get(14);
 				String endContract   = reader.get(15);
@@ -209,6 +210,7 @@ public class ActivityDao {
 					activity.setFirstname(firstname);
 					activity.setStartContract(StringUtils.toDate(startContract, "dd.MM.yyyy"));
 					activity.setEndContract(StringUtils.toDate(endContract, "dd.MM.yyyy"));
+					activity.setTotal(StringUtils.toDouble(total));
 					activity.setTotalS1(StringUtils.toDouble(totalS1));
 					activity.setTotalS2(StringUtils.toDouble(totalS2));
 
