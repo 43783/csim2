@@ -149,10 +149,6 @@ public class CragsiLoader {
 				// Retrieve the project account
 				Account projectAccount = CragsiLogic.getProjectAccount(activity, projects, accounts);
 				
-				if (activity.getLastname().equalsIgnoreCase("dugerdil")) {
-					System.out.println("break");
-				}
-				
 				// Calculate activity costs
 				Price activityPrice = CragsiLogic.getActivityPrice(activity, priceMap);
 				double costS1 = activity.getTotalS1() * activityPrice.getPrice();

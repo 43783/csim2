@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="cragsi script builder" default="default">
+	
+    <!-- script properties -->
+
+	<property name="name" value="cragsi"/>
+    <property name="version" value="1.0.0"/>
+	<property name="author" value="Eric Harth"/>
+	<property name="base.dir" value="."/>
+	<property name="dist.dir" location="dist"/>
+    <property name="classpath" value="."/>
+    <property name="mainclass" value="ch.hesge.cragsi.loader.CragsiLoader"/>
+
+	<!-- initialization -->
+
+	<target name="init">
+		<tstamp />
+	   	<mkdir dir="${dist.dir}/bin" />
+	   	<mkdir dir="${dist.dir}/lib" />
+	   	<mkdir dir="${dist.dir}/conf" />
+	   	<mkdir dir="${dist.dir}/res/out" />
+	   	<mkdir dir="${dist.dir}/log" />
+	</target>	
+
+	<!-- cleaning -->
+	
+	<target name="clean">
+	   	<delete dir="${dist.dir}" />
+	</target>
+
+	<!-- copy configuration -->
+
+	<target name="copy-conf">		
+    	<copy todir="${dist.dir}/conf">
+			<fileset dir="conf" includes="**/*.*" />
+		</copy>		    	
+    </target>
+	
+	<!-- copy dependencies -->
+
+	<target name="copy-dependencies">		
+		<copy todir="${dist.dir}/lib" flatten="true">
+			<fileset dir="${basedir}/lib" includes="**/*.jar" excludes="**/*src*.jar"/>
+		</copy>		    	
+    </target>
+	
+	<!-- distribution -->
+	
+	<target name="dist" depends="copy-conf,copy-dependencies">
+        <jar destfile="${dist.dir}/bin/${name}-v${version}.jar">
+            <manifest>
+		        <attribute name="Implementation-Vendor" value="HEG, Geneva, Switzerland" />
+		        <attribute name="Implementation-Title" value="${name}" />
+		        <attribute name="Implementation-Version" value="${version}" />
+        		<attribute name="Built-By" value="${author}" />
+            	<attribute name="Main-class" value="${mainclass}" />
+                <attribute name="Class-Path" value="${classpath}"/>
+            </manifest>
+            <fileset dir="bin" includes="**/*.class"/>
+            <fileset dir="bin" includes="**/*png"/>
+        </jar>
+    </target>
+	
+	<!-- create script -->
+	
+    <target name="script">
+		<echo file="${dist.dir}/cragsi.cmd" append="false">
+		@echo off
+		java -classpath bin/*;lib/* ${mainclass}
+		</echo>    	
+    </target>
+
+	<!-- copy input/output files -->
+
+	<target name="files">		
+    	<copy todir="${dist.dir}/res">
+			<fileset dir="res" includes="**/*.*" />
+		</copy>		    	
+    </target>
+
+	<!-- default task -->
+	
+	<target name="default" depends="clean,init,dist,script,files" />
+
+</project>
