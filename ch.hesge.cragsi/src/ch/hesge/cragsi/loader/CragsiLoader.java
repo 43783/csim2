@@ -17,6 +17,7 @@ import ch.hesge.cragsi.dao.FinancialDao;
 import ch.hesge.cragsi.dao.PartnerDao;
 import ch.hesge.cragsi.dao.ProjectDao;
 import ch.hesge.cragsi.exceptions.ConfigurationException;
+import ch.hesge.cragsi.exceptions.IntegrityException;
 import ch.hesge.cragsi.model.AGFLine;
 import ch.hesge.cragsi.model.Account;
 import ch.hesge.cragsi.model.Accounting;
@@ -187,8 +188,11 @@ public class CragsiLoader {
 					sequenceId++;
 				}
 			}
-			catch(Exception e) {
-				LOGGER.error("FDC loading error", e);
+			catch(IntegrityException e1) {
+				LOGGER.error(e1.getMessage());
+			}
+			catch(Exception e2) {
+				LOGGER.error("FDC loading error", e2);
 			}
 		}
 
@@ -212,6 +216,9 @@ public class CragsiLoader {
 				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
 				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, afgLine.getName(), afgLine.getAmount()));
 				sequenceId++;
+			}
+			catch(IntegrityException e1) {
+				LOGGER.error(e1.getMessage());
 			}
 			catch(Exception e) {
 				LOGGER.error("AFG loading error", e);
@@ -239,6 +246,9 @@ public class CragsiLoader {
 				accountings.add(CragsiLogic.createCreditEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, projectAccount, financial.getName(), financial.getAmount()));
 				sequenceId++;
 			}
+			catch(IntegrityException e1) {
+				LOGGER.error(e1.getMessage());
+			}
 			catch(Exception e) {
 				LOGGER.error("Financial loading error", e);
 			}
@@ -264,6 +274,9 @@ public class CragsiLoader {
 				accountings.add(CragsiLogic.createDebitEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, allProjectsAccount, partner.getName(), partner.getAmount()));
 				accountings.add(CragsiLogic.createCreditEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, projectAccount, partner.getName(), partner.getAmount()));
 				sequenceId++;
+			}
+			catch(IntegrityException e1) {
+				LOGGER.error(e1.getMessage());
 			}
 			catch(Exception e) {
 				LOGGER.error("Partner loading error", e);
