@@ -1,6 +1,7 @@
 package ch.hesge.cragsi.loader;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,8 +69,9 @@ public class CragsiLoader {
 	 * 
 	 * @throws IOException
 	 * @throws ConfigurationException 
+	 * @throws SQLException 
 	 */
-	public void init() throws IOException, ConfigurationException {
+	public void init() throws IOException, ConfigurationException, SQLException {
 		
 		sequenceId = 1;
 		accountings = new ArrayList<>();
@@ -106,11 +108,11 @@ public class CragsiLoader {
 	 * @throws IOException
 	 * @throws ConfigurationException 
 	 */
-	public void start() throws IOException, ConfigurationException {
+	public void start() throws IOException, SQLException, ConfigurationException {
 
 		// Generate all accountings
 		generateFDCAccountings();
-//		generateAGFAccountings();
+		generateAGFAccountings();
 		generateFinancialAccountings();
 		generatePartnerAccountings();
 
@@ -212,7 +214,7 @@ public class CragsiLoader {
 	 * @throws IOException
 	 * @throws ConfigurationException 
 	 */
-	private void generateAGFAccountings() throws IOException, ConfigurationException {
+	private void generateAGFAccountings() throws SQLException, ConfigurationException {
 
 		LOGGER.info("Generating AGF accounting...");
 
@@ -220,8 +222,8 @@ public class CragsiLoader {
 			
 			try {				
 				Account projectAccount = CragsiLogic.getProjectAccount(afgLine, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, afgLine.getName(), afgLine.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, afgLine.getName(), afgLine.getAmount()));
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, afgLine.getLibelle(), afgLine.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, afgLine.getLibelle(), afgLine.getAmount()));
 				sequenceId++;
 			}
 			catch(IntegrityException e1) {
@@ -241,7 +243,7 @@ public class CragsiLoader {
 	 * @throws IOException
 	 * @throws ConfigurationException 
 	 */
-	private void generateFinancialAccountings() throws IOException, ConfigurationException {
+	private void generateFinancialAccountings() throws SQLException, ConfigurationException {
 
 		LOGGER.info("Generating financial accounting...");
 
@@ -249,8 +251,8 @@ public class CragsiLoader {
 
 			try {
 				Account projectAccount = CragsiLogic.getProjectAccount(financial, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, allProjectsAccount, financial.getName(), financial.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, projectAccount, financial.getName(), financial.getAmount()));
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, allProjectsAccount, financial.getLibelle(), financial.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, projectAccount, financial.getLibelle(), financial.getAmount()));
 				sequenceId++;
 			}
 			catch(IntegrityException e1) {
@@ -270,7 +272,7 @@ public class CragsiLoader {
 	 * @throws IOException
 	 * @throws ConfigurationException 
 	 */
-	private void generatePartnerAccountings() throws IOException, ConfigurationException {
+	private void generatePartnerAccountings() throws SQLException, ConfigurationException {
 
 		LOGGER.info("Generating partner accounting...");
 

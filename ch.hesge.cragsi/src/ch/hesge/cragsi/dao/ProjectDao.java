@@ -2,11 +2,15 @@ package ch.hesge.cragsi.dao;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.Project;
+import ch.hesge.cragsi.utils.ConnectionUtils;
 import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.PropertyUtils;
 import ch.hesge.cragsi.utils.StringUtils;
@@ -20,6 +24,45 @@ import ch.hesge.cragsi.utils.StringUtils;
  */
 public class ProjectDao {
 
+	// Private attributes
+	private static String SQLQUERY = "SELECT IDPROJECTHESSO, PROJECTENVSTARTDATE, PROJECTENVENDDATE, PROJECTTITLE FROM MV2_PROJECT WHERE IDSCHOOL=7";
+
+	/**
+	 * Retrieve all projects from database.
+	 * 
+	 * @return a list of Project
+	 * @throws SQLException
+	 * @throws ConfigurationException 
+	 */
+	public static List<Project> findAll() throws SQLException, ConfigurationException {
+		
+		List<Project> projectList = new ArrayList<>();
+		
+		// Execute the query
+		ResultSet result = ConnectionUtils.getConnection().createStatement().executeQuery(SQLQUERY);
+		
+		while (result.next()) {
+
+			// Retrieve field values
+			String code    = result.getString(1);
+			Date startDate = result.getDate(2);
+			Date endDate   = result.getDate(3);
+			String descr   = result.getString(4);
+
+			// Create and initialize an new instance
+			Project project = new Project();
+
+			project.setCode(code);
+			project.setStartDate(startDate);
+			project.setEndDate(endDate);
+			project.setDescription(descr);
+
+			projectList.add(project);		
+		}
+		
+		return projectList;
+	}
+	
 	/**
 	 * Retrieve all projects contained in file.
 	 * 
@@ -27,7 +70,7 @@ public class ProjectDao {
 	 * @throws IOException
 	 * @throws ConfigurationException 
 	 */
-	public static List<Project> findAll() throws IOException, ConfigurationException {
+	public static List<Project> findAllFromFile() throws IOException, ConfigurationException {
 
 		CsvReader reader = null;
 		List<Project> projectList = new ArrayList<>();
@@ -44,22 +87,18 @@ public class ProjectDao {
 			while (reader.readRecord()) {
 
 				// Retrieve field values
-				String date        = reader.get(0);
 				String code        = reader.get(1);
 				String startDate   = reader.get(2);
 				String endDate     = reader.get(3);
 				String description = reader.get(4);
-				String status      = reader.get(5);
 
 				// Create and initialize an new instance
 				Project project = new Project();
 
-				project.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
 				project.setCode(code);
 				project.setStartDate(StringUtils.toDate(startDate, "yyyy-MM-dd"));
 				project.setEndDate(StringUtils.toDate(endDate, "yyyy-MM-dd"));
 				project.setDescription(description);
-				project.setStatus(status);
 
 				projectList.add(project);
 			}

@@ -16,9 +16,9 @@ public class Partner {
 
 	// Private attributes
 	private Date date; // Date
-	private String projectNumber; // N° HESSO
+	private String projectCode; // N° HESSO
 	private String name; // Nom du prestataire
-	private String title; // Libellé
+	private String libelle; // Libellé
 	private double amount; // Montant
 
 	/**
@@ -35,12 +35,12 @@ public class Partner {
 		this.date = date;
 	}
 
-	public String getProjectNumber() {
-		return projectNumber;
+	public String getProjectCode() {
+		return projectCode;
 	}
 
-	public void setProjectNumber(String projectNumber) {
-		this.projectNumber = projectNumber;
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
 	}
 
 	public String getName() {
@@ -51,12 +51,12 @@ public class Partner {
 		this.name = name;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getLibelle() {
+		return libelle;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
 	}
 
 	public double getAmount() {

@@ -16,8 +16,8 @@ public class Financial {
 
 	// Private attributes
 	private Date date; // Date
-	private String projectNumber; // N° HESSO
-	private String name; // Nom du partenaires
+	private String projectCode; // N° HESSO
+	private String libelle; // Nom du partenaires
 	private double amount; // Montant
 
 	/**
@@ -34,20 +34,20 @@ public class Financial {
 		this.date = date;
 	}
 
-	public String getProjectNumber() {
-		return projectNumber;
+	public String getProjectCode() {
+		return projectCode;
 	}
 
-	public void setProjectNumber(String projectNumber) {
-		this.projectNumber = projectNumber;
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
 	}
 
-	public String getName() {
-		return name;
+	public String getLibelle() {
+		return libelle;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
 	}
 
 	public double getAmount() {

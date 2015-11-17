@@ -16,11 +16,9 @@ public class Project {
 
 	// Private attributes
 	private String code; // N° HESSO (SAGEX)
-	private Date date; // Date
 	private Date startDate; // Date de début
 	private Date endDate; // Date de fin
 	private String description; // Libellé
-	private String status; // Statut
 
 	/**
 	 * Default constructor
@@ -34,14 +32,6 @@ public class Project {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public Date getStartDate() {
@@ -66,13 +56,5 @@ public class Project {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 }

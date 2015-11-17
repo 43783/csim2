@@ -21,6 +21,12 @@ public class UserSettings extends Properties {
 	// Singleton access
 	private static UserSettings uniqueInstance;
 
+	/**
+	 * Retrieve unique UserSettings instance.
+	 * 
+	 * @return a UserSettings
+	 * @throws ConfigurationException
+	 */
 	public static synchronized UserSettings getInstance() throws ConfigurationException {
 
 		if (uniqueInstance == null) {

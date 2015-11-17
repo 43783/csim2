@@ -249,7 +249,7 @@ public class CragsiLogic {
 
 		// Retrieve full project number
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-		String fullProjectNumber = accountSuffix + agfLine.getProjectNumber();
+		String fullProjectNumber = accountSuffix + agfLine.getProjectCode();
 		
 		// Retrieve account associated to the project
 		Account projectAccount = getAccountByCode(fullProjectNumber, accounts);
@@ -275,7 +275,7 @@ public class CragsiLogic {
 
 		// Retrieve full project number
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-		String fullProjectNumber = accountSuffix + funding.getProjectNumber();
+		String fullProjectNumber = accountSuffix + funding.getProjectCode();
 		
 		// Retrieve account associated to the project
 		Account projectAccount = getAccountByCode(fullProjectNumber, accounts);
@@ -301,7 +301,7 @@ public class CragsiLogic {
 
 		// Retrieve full project number
 		String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-		String fullProjectNumber = accountSuffix + partner.getProjectNumber();
+		String fullProjectNumber = accountSuffix + partner.getProjectCode();
 		
 		// Retrieve account associated to the project
 		Account projectAccount = getAccountByCode(fullProjectNumber, accounts);

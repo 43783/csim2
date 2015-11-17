@@ -16,8 +16,8 @@ public class AGFLine {
 
 	// Private attributes
 	private Date date; // date
-	private String projectNumber; // N° HESSO
-	private String name; // Libellé
+	private String projectCode; // N° HESSO
+	private String libelle; // Libellé
 	private double amount; // Montant
 
 	/**
@@ -34,20 +34,20 @@ public class AGFLine {
 		this.date = date;
 	}
 
-	public String getProjectNumber() {
-		return projectNumber;
+	public String getProjectCode() {
+		return projectCode;
 	}
 
-	public void setProjectNumber(String projectNumber) {
-		this.projectNumber = projectNumber;
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
 	}
 
-	public String getName() {
-		return name;
+	public String getLibelle() {
+		return libelle;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
 	}
 
 	public double getAmount() {
@@ -57,5 +57,4 @@ public class AGFLine {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-
 }
