@@ -157,7 +157,6 @@ public class CragsiLogic {
 	 * 
 	 * @param activity
 	 * @param accounts
-	 * @param projects
 	 * @return an Account
 	 * @throws IntegrityException 
 	 */
@@ -382,6 +381,31 @@ public class CragsiLogic {
 	}
 	
 	/**
+	 * Retrieve the first semester year.
+	 * 
+	 * @param activities 
+	 * @return the semester year
+	 */
+	public static int getFirstSemesterYear(List<Activity> activities) {
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, 100);
+		
+		for (Activity activity : activities) {
+			
+			if (activity.getStartContract().before(calendar.getTime())) {
+				calendar.setTime(activity.getStartContract());
+			}
+			
+			if (activity.getEndContract().before(calendar.getTime())) {
+				calendar.setTime(activity.getEndContract());
+			}
+		}
+		
+		return calendar.get(Calendar.YEAR);
+	}
+	
+	/**
 	 * Retrieve the second semester end date.
 	 * 
 	 * @return the end date
@@ -403,6 +427,31 @@ public class CragsiLogic {
 		return new Date(calendar.getTime().getTime());		
 	}
 
+	/**
+	 * Retrieve the second semester year.
+	 * 
+	 * @param activities 
+	 * @return the semester year
+	 */
+	public static int getSecondSemesterYear(List<Activity> activities) {
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -100);
+		
+		for (Activity activity : activities) {
+			
+			if (activity.getStartContract().after(calendar.getTime())) {
+				calendar.setTime(activity.getStartContract());
+			}
+			
+			if (activity.getEndContract().after(calendar.getTime())) {
+				calendar.setTime(activity.getEndContract());
+			}
+		}
+		
+		return calendar.get(Calendar.YEAR);
+	}
+	
 	/**
 	 * Retrieve the first semester accounting date.
 	 *  

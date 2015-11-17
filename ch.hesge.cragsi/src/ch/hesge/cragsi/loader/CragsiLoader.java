@@ -128,7 +128,14 @@ public class CragsiLoader {
 
 		LOGGER.info("Generating FDC accounting...");
 
-		for (Activity activity : ActivityDao.findAll()) {
+		List<Activity> activities = ActivityDao.findAll();
+
+		// Retrieve academic years
+		int academicYearS1 = CragsiLogic.getFirstSemesterYear(activities);
+		int academicYearS2 = CragsiLogic.getSecondSemesterYear(activities);
+		
+		// Scan all activities
+		for (Activity activity : activities) {
 
 			try {
 				
@@ -157,8 +164,8 @@ public class CragsiLoader {
 				
 				// Calculate accounting labels
 				String activityLabel = CragsiLogic.getActivityLabel(activity, collaboratorAccount);
-				String accountingLabelS1 = activityLabel + " (" + PropertyUtils.getProperty("academicYear_S1") + ")";
-				String accountingLabelS2 = activityLabel + " (" + PropertyUtils.getProperty("academicYear_S2") + ")";
+				String accountingLabelS1 = activityLabel + " (" + academicYearS1 + ")";
+				String accountingLabelS2 = activityLabel + " (" + academicYearS2 + ")";
 				
 				// Generate first semester accountings, but only if the activity has enough amount and is within the semester date range
 				if (costS1 > 0 && !accountingDateS1.before(startDateS1) && !accountingDateS1.after(endDateS1)) {
