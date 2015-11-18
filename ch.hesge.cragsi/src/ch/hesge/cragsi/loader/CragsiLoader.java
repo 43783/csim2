@@ -75,7 +75,7 @@ public class CragsiLoader {
 		
 		sequenceId = 1;
 		accountings = new ArrayList<>();
-
+		
 		// Retrieve global properties from config file
 		journalIdS1  = PropertyUtils.getProperty("journalId_S1");
 		periodIdS1   = PropertyUtils.getProperty("periodId_S1");
@@ -129,12 +129,17 @@ public class CragsiLoader {
 	private void generateFDCAccountings() throws IOException, ConfigurationException {
 
 		LOGGER.info("Generating FDC accounting...");
-
+		
+		// Retrieve first/second semester years
 		List<Activity> activities = ActivityDao.findAll();
-
-		// Retrieve academic years
 		int academicYearS1 = CragsiLogic.getFirstSemesterYear(activities);
 		int academicYearS2 = CragsiLogic.getSecondSemesterYear(activities);
+
+		// Retrieve first/second semester dates
+		Date startS1 = CragsiLogic.getFirstSemesterStartDate(academicYearS1);
+		Date endS1   = CragsiLogic.getFirstSemesterEndDate(academicYearS1);
+		Date startS2 = CragsiLogic.getSecondSemesterStartDate(academicYearS2);
+		Date endS2   = CragsiLogic.getSecondSemesterEndDate(academicYearS2);
 		
 		// Scan all activities
 		for (Activity activity : activities) {
@@ -142,16 +147,8 @@ public class CragsiLoader {
 			try {
 				
 				// Retrieve accounting dates
-				Date accountingDateS1 = CragsiLogic.getFirstSemesterAccountingDate(activity);
-				Date accountingDateS2 = CragsiLogic.getSecondSemesterAccountingDate(activity);
-
-				// Retrieve first semester dates
-				Date startDateS1 = CragsiLogic.getFirstSemesterStartDate();
-				Date endDateS1   = CragsiLogic.getFirstSemesterEndDate();
-				
-				// Retrieve second semester dates
-				Date startDateS2 = CragsiLogic.getSecondSemesterStartDate();
-				Date endDateS2   = CragsiLogic.getSecondSemesterEndDate();
+				Date accountingDateS1 = CragsiLogic.getFirstSemesterAccountingDate(activity, academicYearS1);
+				Date accountingDateS2 = CragsiLogic.getSecondSemesterAccountingDate(activity, academicYearS2);
 
 				// Retrieve the collaborator account
 				Account collaboratorAccount = CragsiLogic.getCollaboratorAccount(activity, accounts);
@@ -170,7 +167,7 @@ public class CragsiLoader {
 				String accountingLabelS2 = activityLabel + " (" + academicYearS2 + ")";
 				
 				// Generate first semester accountings, but only if the activity has enough amount and is within the semester date range
-				if (costS1 > 0 && !accountingDateS1.before(startDateS1) && !accountingDateS1.after(endDateS1)) {
+				if (costS1 > 0 && !accountingDateS1.before(startS1) && !accountingDateS1.after(endS1)) {
 
 					// Collaborator accountings
 					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, collaboratorAccount, accountingLabelS1, costS1));
@@ -184,7 +181,7 @@ public class CragsiLoader {
 				}
 
 				// Generate second semester accountings, but only if the activity has enough amount and is within the semester date range
-				if (costS2 > 0 && !accountingDateS2.before(startDateS2) && !accountingDateS2.after(endDateS2)) {
+				if (costS2 > 0 && !accountingDateS2.before(startS2) && !accountingDateS2.after(endS2)) {
 
 					// Collaborator accountings
 					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, collaboratorAccount, accountingLabelS2, costS2));
