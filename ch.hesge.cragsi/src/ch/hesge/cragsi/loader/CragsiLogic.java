@@ -51,26 +51,6 @@ public class CragsiLogic {
 	}
 
 	/**
-	 * Retrieve a single account based on its name.
-	 * If an account match partially the name (that is it contains part of the name), it is returned.
-	 * 
-	 * @param name the account name to find
-	 * @param accounts the list of account to use while scanning name
-	 * @return an Account or null
-	 */
-	public static Account getAccountByName(String name, List<Account> accounts) {
-
-		for (Account account : accounts) {
-
-			if (account.getName().toLowerCase().contains(name.toLowerCase())) {
-				return account;
-			}
-		}
-
-		return null;
-	}
-	
-	/**
 	 * Retrieve a single account based on its code.
 	 * If an account match exactly the code, it is returned.
 	 * 
@@ -197,11 +177,21 @@ public class CragsiLogic {
 	 * @param accounts
 	 * @return an Account
 	 * @throws IntegrityException 
+	 * @throws  
 	 */
-	public static Account getCollaboratorAccount(Activity activity, List<Account> accounts) throws IntegrityException {
+	public static Account getCollaboratorAccount(Activity activity, List<Account> accounts) throws ConfigurationException, IntegrityException {
 
-		Account collaboratorAccount = getAccountByName(activity.getLastname(), accounts);
+		Account collaboratorAccount = null;
+		String accountSuffix = PropertyUtils.getProperty("collaboratorAccountSuffix");
+		
+		for (Account account : accounts) {
 
+			if (account.getName().toLowerCase().contains(activity.getLastname().toLowerCase()) && account.getCode().startsWith(accountSuffix)) {
+				collaboratorAccount = account;
+				break;
+			}
+		}
+		
 		if (collaboratorAccount == null) {
 			throw new IntegrityException("missing account for collaborator '" + activity.getFirstname() + " " + activity.getLastname() + "' with contract '" + activity.getContractType() + "'");
 		}
