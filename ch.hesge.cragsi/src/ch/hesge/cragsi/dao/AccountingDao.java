@@ -56,6 +56,7 @@ public class AccountingDao {
 		
 		// Write one record by one
 		for (Accounting accounting : accountings) {
+			
 			csvOutput.write(StringUtils.toString(accounting.getId()));
 			csvOutput.write(StringUtils.toString(accounting.getDate()));
 			csvOutput.write(accounting.getJournalId());

@@ -1,7 +1,6 @@
 package ch.hesge.cragsi.dao;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,9 +10,7 @@ import java.util.List;
 import ch.hesge.cragsi.exceptions.ConfigurationException;
 import ch.hesge.cragsi.model.AGFLine;
 import ch.hesge.cragsi.utils.ConnectionUtils;
-import ch.hesge.cragsi.utils.CsvReader;
 import ch.hesge.cragsi.utils.PropertyUtils;
-import ch.hesge.cragsi.utils.StringUtils;
 
 /**
  * Class responsible to manage physical access to underlying
@@ -24,9 +21,6 @@ import ch.hesge.cragsi.utils.StringUtils;
  */
 public class AGFLineDao {
 
-	// Private attributes
-	private static String SQLQUERY = "SELECT AGFDATE, IDPROJECTHESSO, AGF, AGFAMOUNT FROM MV2_AGF INNER JOIN MV2_PROJECT ON MV2_AGF.IDPROJECT = MV2_PROJECT.IDPROJECT WHERE IDSCHOOL=7";
-	
 	/**
 	 * Retrieve all AGF lines from database.
 	 * 
@@ -39,15 +33,16 @@ public class AGFLineDao {
 		List<AGFLine> agfLines = new ArrayList<>();
 
 		// Execute the query
-		ResultSet result = ConnectionUtils.getConnection().createStatement().executeQuery(SQLQUERY);
+		String query = PropertyUtils.getProperty("AFG_QUERY");
+		ResultSet result = ConnectionUtils.getConnection().createStatement().executeQuery(query);
 		
 		while (result.next()) {
 			
 			// Retrieve field values
-			Date date          = result.getDate(1);
-			String projectCode = result.getString(2);
-			String libelle     = result.getString(3);
-			double amount      = result.getDouble(4);
+			Date date          = result.getDate(1); // AGFDATE
+			String projectCode = result.getString(2); // IDPROJECTHESSO
+			String libelle     = result.getString(3); // AGF
+			double amount      = result.getDouble(4); // AGFAMOUNT
 			
 			// Create and initialize an new instance
 			AGFLine line = new AGFLine();
@@ -62,53 +57,4 @@ public class AGFLineDao {
 		
 		return agfLines;
 	}
-	
-	/**
-	 * Retrieve all AGF lines contained in file.
-	 * 
-	 * @return a list of AGFLine
-	 * @throws IOException
-	 * @throws ConfigurationException 
-	 */
-	public static List<AGFLine> findAllFromFile() throws IOException, ConfigurationException {
-
-		CsvReader reader = null;
-		List<AGFLine> agfLines = new ArrayList<>();
-		String agfPath = PropertyUtils.getProperty("agfPath");
-
-		try {
-
-			// Open file to load
-			reader = new CsvReader(agfPath, ';', Charset.forName("UTF8"));
-			reader.setSkipEmptyRecords(true);
-			reader.readHeaders();
-
-			// Start parsing lines
-			while (reader.readRecord()) {
-
-				// Retrieve field values
-				String date        = reader.get(0);
-				String projectCode = reader.get(1);
-				String libelle     = reader.get(2);
-				String amount      = reader.get(3);
-
-				// Create and initialize an new instance
-				AGFLine line = new AGFLine();
-
-				line.setDate(StringUtils.toDate(date, "yyyy-MM-dd"));
-				line.setProjectCode(projectCode);
-				line.setLibelle(libelle);
-				line.setAmount(StringUtils.toDouble(amount));
-
-				agfLines.add(line);
-			}
-		}
-		finally {
-			if (reader != null)
-				reader.close();
-		}
-
-		return agfLines;
-	}
-
 }
