@@ -33,7 +33,7 @@ public class AGFLineDao {
 		List<AGFLine> agfLines = new ArrayList<>();
 
 		// Execute the query
-		String query = PropertyUtils.getProperty("AFG_QUERY");
+		String query = PropertyUtils.getProperty("AGF_QUERY");
 		ResultSet result = ConnectionUtils.getConnection().createStatement().executeQuery(query);
 		
 		while (result.next()) {
