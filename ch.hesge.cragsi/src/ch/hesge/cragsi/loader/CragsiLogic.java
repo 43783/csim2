@@ -134,13 +134,15 @@ public class CragsiLogic {
 	}
 
 	/**
-	 * Retrieve the activity label and include, if required,
-	 * the project number associated to the activity.
+	 * Retrieve the label to use in accountings generation.
 	 * 
 	 * @param activity
+	 * @param collaboratorAccount
+	 * @param academicYearS1
+	 * @param academicYearS2
 	 * @return the activity label
 	 */
-	public static String getActivityLabel(Activity activity, Account collaboratorAccount) {
+	public static String getAccountingLabel(Activity activity, Account collaboratorAccount, int academicYearS1, int academicYearS2) {
 		
 		String label = activity.getDetail();
 		
@@ -149,9 +151,45 @@ public class CragsiLogic {
 			label = activity.getProjectNumber() + "-" + label;
 		}
 		
-		return (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + label).replace("-", " - ");
+		// Add collaborator references
+		label = (collaboratorAccount.getCode() + "-" + collaboratorAccount.getName() + "-" + label).replace("-", " - ");
+		
+		// Add academic years
+		label += String.format(" (FDC %04d-%04d)", academicYearS1, academicYearS2);
+		
+		return label;
 	}
 	
+	/**
+	 * Retrieve the label to use in accountings generation.
+	 * 
+	 * @param agfLine
+	 * @return an accounting label
+	 */
+	public static String getAccountingLabel(AGFLine agfLine) {
+		return agfLine.getLibelle() + " (AGP)";
+	}
+	
+	/**
+	 * Retrieve the label to use in accountings generation.
+	 * 
+	 * @param financial
+	 * @return an accounting label
+	 */
+	public static String getAccountingLabel(Financial financial) {
+		return financial.getLibelle() + " (AGP)";
+	}
+
+	/**
+	 * Retrieve the label to use in accountings generation.
+	 * 
+	 * @param partner
+	 * @return an accounting label
+	 */
+	public static String getAccountingLabel(Partner partner) {
+		return partner.getName() + " (AGP)";
+	}
+
 	/**
 	 * Retrieve the account associated to a collaborator.
 	 * 
@@ -212,23 +250,31 @@ public class CragsiLogic {
 				// The project exists
 				Date currentDate = Calendar.getInstance().getTime();
 
-				// Now, check if project is not closed
-				if (currentDate.equals(project.getStartDate()) || (currentDate.after(project.getStartDate()) && currentDate.before(project.getEndDate())) || currentDate.equals(project.getEndDate())) {
-
-					// Retrieve full project number
-					String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
-					String fullProjectNumber = accountSuffix + projectNumber;
-					
-					// Retrieve account associated to the project
-					projectAccount = getAccountByCode(fullProjectNumber, accounts);
-
-					// Check if an account for the project exists
-					if (projectAccount == null) {
-						throw new IntegrityException("missing account with project code '" + fullProjectNumber + "'");
-					}
+				// Check if project as a startdate
+				if (project.getStartDate() == null) {
+					throw new IntegrityException("project with code '" + projectNumber + "' has no start date");
 				}
-				else {
+				
+				// Check if project is not already started
+				if (currentDate.before(project.getStartDate())) {
+					throw new IntegrityException("project with code '" + projectNumber + "' is not yet started");
+				}
+
+				// Check if project is already closed
+				if (project.getEndDate() != null && currentDate.after(project.getEndDate())) {
 					throw new IntegrityException("project with code '" + projectNumber + "' is already closed");
+				}
+				
+				// Retrieve full project number
+				String accountSuffix = PropertyUtils.getProperty("projectAccountSuffix");
+				String fullProjectNumber = accountSuffix + projectNumber;
+				
+				// Retrieve account associated to the project
+				projectAccount = getAccountByCode(fullProjectNumber, accounts);
+
+				// Check if an account for the project exists
+				if (projectAccount == null) {
+					throw new IntegrityException("missing account with project code '" + fullProjectNumber + "'");
 				}
 			}
 		}
@@ -324,15 +370,11 @@ public class CragsiLogic {
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, 100);
-		
+
+		// Scan activities and retrieve the earliest date
 		for (Activity activity : activities) {
-			
 			if (activity.getStartContract().before(calendar.getTime())) {
 				calendar.setTime(activity.getStartContract());
-			}
-			
-			if (activity.getEndContract().before(calendar.getTime())) {
-				calendar.setTime(activity.getEndContract());
 			}
 		}
 		
@@ -350,12 +392,8 @@ public class CragsiLogic {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -100);
 		
+		// Scan activities and retrieve the latest date
 		for (Activity activity : activities) {
-			
-			if (activity.getStartContract().after(calendar.getTime())) {
-				calendar.setTime(activity.getStartContract());
-			}
-			
 			if (activity.getEndContract().after(calendar.getTime())) {
 				calendar.setTime(activity.getEndContract());
 			}
@@ -398,11 +436,17 @@ public class CragsiLogic {
 		calendar.set(Calendar.YEAR, academicYearS1);
 		calendar.set(Calendar.MONTH, 11);
 		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		/*
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		calendar.set(Calendar.MILLISECOND, 999);
-		
+		*/
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
 		return new Date(calendar.getTime().getTime());
 	}
 	
@@ -440,75 +484,80 @@ public class CragsiLogic {
 		calendar.set(Calendar.YEAR, academicYearS2);
 		calendar.set(Calendar.MONTH, 7);
 		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		/*
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		calendar.set(Calendar.MILLISECOND, 999);
+		*/
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 		
 		return new Date(calendar.getTime().getTime());		
 	}
 
 	/**
-	 * Retrieve the first semester accounting date.
+	 * Retrieve the first semester accounting date for a specific activity.
 	 *  
 	 * @param activity
-	 * @param academicYear
+	 * @param startDate
+	 * @param endDate
 	 * @return an accounting date
 	 * @throws IntegrityException
 	 */
-	public static Date getFirstSemesterAccountingDate(Activity activity, int academicYear) throws IntegrityException  {
+	public static Date getFirstSemesterAccountingDate(Activity activity, Date startDate, Date endDate) throws IntegrityException  {
 
 		Date accountingDate = null;
-		Date firstSemesterStartDate = getFirstSemesterStartDate(academicYear);
 
-		// If activity starts before the begin of semester, it's an error
-		if (activity.getStartContract().before(firstSemesterStartDate)) {
+		// If the activity starts before the begin of semester, it's an error
+		if (activity.getStartContract() == null || activity.getStartContract().before(startDate)) {
 			throw new IntegrityException("invalid contract start date for collaborator '" + activity.getLastname() + "'");
 		}
 		
-		// If activity starts after the begin of semester, adjust it
-		else if (activity.getStartContract().after(firstSemesterStartDate)) {
+		// If the activity starts after the begin of first semester, adjust the date
+		else if (activity.getStartContract().after(startDate)) {
 			accountingDate = activity.getStartContract();
 		}
 		
-		// Otherwise, the activity start at the beginning of the semester
+		// In all other cases, the activity start at the beginning of the semester
 		else {
-			accountingDate = firstSemesterStartDate;
+			accountingDate = startDate;
 		}
 
 		return accountingDate;
 	}
 
 	/**
-	 * Retrieve the second semester accounting date.
+	 * Retrieve the second semester accounting date for a specific activity.
 	 * 
 	 * @param activity
-	 * @param academicYear
+	 * @param startDate
+	 * @param endDate
 	 * @return an accounting date
 	 * @throws IntegrityException 
 	 */
-	public static Date getSecondSemesterAccountingDate(Activity activity, int academicYear) throws IntegrityException {
+	public static Date getSecondSemesterAccountingDate(Activity activity, Date startDate, Date endDate) throws IntegrityException {
 
-		Date date = null;
-		Date secondSemesterStartDate = getSecondSemesterStartDate(academicYear);
-		Date secondSemesterEndDate = getSecondSemesterEndDate(academicYear);
+		Date accountingDate = null;
 
-		// If activity ends after the end of semester, it's an error
-		if (activity.getEndContract().after(secondSemesterEndDate)) {
+		// If the activity ends after the end of semester, it's an error
+		if (activity.getEndContract() != null && activity.getEndContract().after(endDate)) {
 			throw new IntegrityException("invalid contract end date for collaborator '" + activity.getLastname() + "'");
 		}
 		
-		// If activity starts after the begin of semester, adjust it
-		else if (activity.getStartContract().after(secondSemesterStartDate)) {
-			date = activity.getStartContract();
+		// If the activity starts after the begin of semester, adjust the date
+		else if (activity.getStartContract().after(startDate)) {
+			accountingDate = activity.getStartContract();
 		}
 
-		// Otherwise, the activity start at the beginning of the semester
+		// In all other cases, the activity start at the beginning of the semester
 		else {
-			date = secondSemesterStartDate;
+			accountingDate = startDate;
 		}
 
-		return date;
+		return accountingDate;
 	}
 	
 	/**

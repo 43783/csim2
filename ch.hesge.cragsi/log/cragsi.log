@@ -1,45 +1,13 @@
-2015-11-19 10:35:48.207 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '26883' is already closed
-2015-11-19 10:35:48.209 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '46805' is already closed
-2015-11-19 10:35:48.224 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
-2015-11-19 10:35:54.953 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - FDC loading error
-java.lang.NullPointerException
-	at java.util.Date.getMillisOf(Unknown Source) ~[?:1.8.0_45]
-	at java.util.Date.after(Unknown Source) ~[?:1.8.0_45]
-	at ch.hesge.cragsi.loader.CragsiLogic.getProjectAccount(CragsiLogic.java:216) ~[bin/:?]
-	at ch.hesge.cragsi.loader.CragsiLoader.generateFDCAccountings(CragsiLoader.java:157) [bin/:?]
-	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:114) [bin/:?]
-	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:306) [bin/:?]
-2015-11-19 10:35:55.011 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40124' is already closed
-2015-11-19 10:35:55.013 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
-2015-11-19 10:35:55.035 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '28830' is already closed
-2015-11-19 10:35:55.037 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40903' is already closed
-2015-11-19 10:35:55.045 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
-2015-11-19 10:35:55.050 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '48245' is already closed
-2015-11-19 10:35:55.063 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40988' is already closed
-2015-11-19 10:35:55.066 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '44065' is already closed
-2015-11-19 10:35:55.070 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - missing account for collaborator 'Dina Vishnyakova' with contract 'Assistant-e de recherche HES'
-2015-11-19 10:35:57.122 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - Unexpected error
-net.ucanaccess.jdbc.UcanaccessSQLException: UCAExc:::3.0.2 Column not found: 5
-	at net.ucanaccess.jdbc.UcanaccessResultSet.getDouble(UcanaccessResultSet.java:391) ~[ucanaccess-3.0.2.jar:3.0.2]
-	at ch.hesge.cragsi.dao.PartnerDao.findAll(PartnerDao.java:45) ~[bin/:?]
-	at ch.hesge.cragsi.loader.CragsiLoader.generatePartnerAccountings(CragsiLoader.java:276) ~[bin/:?]
-	at ch.hesge.cragsi.loader.CragsiLoader.start(CragsiLoader.java:117) ~[bin/:?]
-	at ch.hesge.cragsi.loader.CragsiLoader.main(CragsiLoader.java:306) [bin/:?]
-Caused by: java.sql.SQLException: Column not found: 5
-	at org.hsqldb.jdbc.JDBCUtil.sqlException(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCUtil.sqlException(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCUtil.sqlException(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCResultSet.checkColumn(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCResultSet.getColumnInType(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCResultSet.getDouble(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at net.ucanaccess.jdbc.UcanaccessResultSet.getDouble(UcanaccessResultSet.java:389) ~[ucanaccess-3.0.2.jar:3.0.2]
-	... 4 more
-Caused by: org.hsqldb.HsqlException: Column not found: 5
-	at org.hsqldb.error.Error.error(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.error.Error.error(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCUtil.sqlException(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCResultSet.checkColumn(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCResultSet.getColumnInType(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at org.hsqldb.jdbc.JDBCResultSet.getDouble(Unknown Source) ~[hsqldb.jar:2.3.1]
-	at net.ucanaccess.jdbc.UcanaccessResultSet.getDouble(UcanaccessResultSet.java:389) ~[ucanaccess-3.0.2.jar:3.0.2]
-	... 4 more
+2015-11-19 14:41:00.973 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '26883' is already closed
+2015-11-19 14:41:00.975 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '46805' is not yet started
+2015-11-19 14:41:00.990 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
+2015-11-19 14:41:00.994 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '51723' has no start date
+2015-11-19 14:41:00.996 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40124' is already closed
+2015-11-19 14:41:00.997 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
+2015-11-19 14:41:01.083 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '28830' is already closed
+2015-11-19 14:41:01.086 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40903' is already closed
+2015-11-19 14:41:01.095 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
+2015-11-19 14:41:01.099 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '48245' is already closed
+2015-11-19 14:41:01.112 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40988' is already closed
+2015-11-19 14:41:01.115 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '44065' is already closed
+2015-11-19 14:41:01.119 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - missing account for collaborator 'Dina Vishnyakova' with contract 'Assistant-e de recherche HES'

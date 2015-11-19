@@ -136,10 +136,10 @@ public class CragsiLoader {
 		int academicYearS2 = CragsiLogic.getSecondSemesterYear(activities);
 
 		// Retrieve first/second semester dates
-		Date startS1 = CragsiLogic.getFirstSemesterStartDate(academicYearS1);
-		Date endS1   = CragsiLogic.getFirstSemesterEndDate(academicYearS1);
-		Date startS2 = CragsiLogic.getSecondSemesterStartDate(academicYearS2);
-		Date endS2   = CragsiLogic.getSecondSemesterEndDate(academicYearS2);
+		Date startDateS1 = CragsiLogic.getFirstSemesterStartDate(academicYearS1);
+		Date endDateS1   = CragsiLogic.getFirstSemesterEndDate(academicYearS1);
+		Date startDateS2 = CragsiLogic.getSecondSemesterStartDate(academicYearS2);
+		Date endDateS2   = CragsiLogic.getSecondSemesterEndDate(academicYearS2);
 		
 		// Scan all activities
 		for (Activity activity : activities) {
@@ -147,8 +147,8 @@ public class CragsiLoader {
 			try {
 				
 				// Retrieve accounting dates
-				Date accountingDateS1 = CragsiLogic.getFirstSemesterAccountingDate(activity, academicYearS1);
-				Date accountingDateS2 = CragsiLogic.getSecondSemesterAccountingDate(activity, academicYearS2);
+				Date accountingDateS1 = CragsiLogic.getFirstSemesterAccountingDate(activity, startDateS1, endDateS1);
+				Date accountingDateS2 = CragsiLogic.getSecondSemesterAccountingDate(activity, startDateS2, endDateS2);
 
 				// Retrieve the collaborator account
 				Account collaboratorAccount = CragsiLogic.getCollaboratorAccount(activity, accounts);
@@ -161,36 +161,38 @@ public class CragsiLoader {
 				double costS1 = activity.getTotalS1() * activityPrice.getPrice();
 				double costS2 = activity.getTotalS2() * activityPrice.getPrice();
 				
-				// Calculate accounting labels
-				String activityLabel = CragsiLogic.getActivityLabel(activity, collaboratorAccount);
-				String accountingLabelS1 = activityLabel + " (" + academicYearS1 + ")";
-				String accountingLabelS2 = activityLabel + " (" + academicYearS2 + ")";
+				// Retrieve accounting label
+				String accountingLabel = CragsiLogic.getAccountingLabel(activity, collaboratorAccount, academicYearS1, academicYearS2);
 				
 				// Generate first semester accountings, but only if the activity has enough amount and is within the semester date range
-				if (costS1 > 0 && !accountingDateS1.before(startS1) && !accountingDateS1.after(endS1)) {
+				if (costS1 > 0 && !accountingDateS1.before(startDateS1) && !accountingDateS1.after(endDateS1)) {
 
 					// Collaborator accountings
-					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, collaboratorAccount, accountingLabelS1, costS1));
-					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, salaryAccount, accountingLabelS1, costS1));
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, collaboratorAccount, accountingLabel, costS1));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, salaryAccount, accountingLabel, costS1));
+					
 					sequenceId++;
 
 					// Project accounting
-					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, projectAccount, accountingLabelS1, costS1));
-					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, allProjectsAccount, accountingLabelS1, costS1));
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, projectAccount, accountingLabel, costS1));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS1, journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, costS1));
+					
 					sequenceId++;
 				}
 
 				// Generate second semester accountings, but only if the activity has enough amount and is within the semester date range
-				if (costS2 > 0 && !accountingDateS2.before(startS2) && !accountingDateS2.after(endS2)) {
+				if (costS2 > 0 && !accountingDateS2.before(startDateS2) && !accountingDateS2.after(endDateS2)) {
 
 					// Collaborator accountings
-					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, collaboratorAccount, accountingLabelS2, costS2));
-					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, salaryAccount, accountingLabelS2, costS2));
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, collaboratorAccount, accountingLabel, costS2));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, salaryAccount, accountingLabel, costS2));
+					
 					sequenceId++;
 
 					// Project accounting
-					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, projectAccount, accountingLabelS2, costS2));
-					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, allProjectsAccount, accountingLabelS2, costS2));
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, projectAccount, accountingLabel, costS2));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, accountingDateS2, journalIdS2, periodIdS2, allProjectsAccount, accountingLabel, costS2));
+					
 					sequenceId++;
 				}
 			}
@@ -217,10 +219,18 @@ public class CragsiLoader {
 
 		for (AGFLine afgLine : AGFLineDao.findAll()) {
 			
-			try {				
+			try {
+				
+				// Retrieve project account
 				Account projectAccount = CragsiLogic.getProjectAccount(afgLine, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, afgLine.getLibelle(), afgLine.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, afgLine.getLibelle(), afgLine.getAmount()));
+				
+				// Retrieve accounting label
+				String accountingLabel = CragsiLogic.getAccountingLabel(afgLine);
+				
+				// Create debit/credit accountings line
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, afgLine.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, accountingLabel, afgLine.getAmount()));
+				
 				sequenceId++;
 			}
 			catch(IntegrityException e1) {
@@ -247,9 +257,17 @@ public class CragsiLoader {
 		for (Financial financial : FinancialDao.findAll()) {
 
 			try {
+				
+				// Retrieve project account
 				Account projectAccount = CragsiLogic.getProjectAccount(financial, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, allProjectsAccount, financial.getLibelle(), financial.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, projectAccount, financial.getLibelle(), financial.getAmount()));
+				
+				// Retrieve accounting label
+				String accountingLabel = CragsiLogic.getAccountingLabel(financial);
+
+				// Create debit/credit accountings line
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, financial.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, financial.getDate(), journalIdS1, periodIdS1, projectAccount, accountingLabel, financial.getAmount()));
+				
 				sequenceId++;
 			}
 			catch(IntegrityException e1) {
@@ -276,9 +294,16 @@ public class CragsiLoader {
 		for (Partner partner : PartnerDao.findAll()) {
 
 			try {
+
+				// Retrieve project account
 				Account projectAccount = CragsiLogic.getProjectAccount(partner, accounts);
-				accountings.add(CragsiLogic.createDebitEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, allProjectsAccount, partner.getName(), partner.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, projectAccount, partner.getName(), partner.getAmount()));
+				
+				// Retrieve accounting label
+				String accountingLabel = CragsiLogic.getAccountingLabel(partner);
+
+				// Create debit/credit accountings line
+				accountings.add(CragsiLogic.createDebitEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, partner.getAmount()));
+				accountings.add(CragsiLogic.createCreditEntry(sequenceId, partner.getDate(), journalIdS1, periodIdS1, projectAccount, accountingLabel, partner.getAmount()));
 				sequenceId++;
 			}
 			catch(IntegrityException e1) {

@@ -32,7 +32,7 @@ public class PartnerDao {
 		List<Partner> partnerList = new ArrayList<>();
 		
 		// Execute the query
-		String query = PropertyUtils.getProperty("FINANCIAL_QUERY");
+		String query = PropertyUtils.getProperty("PARTNER_QUERY");
 		ResultSet result = ConnectionUtils.getConnection().createStatement().executeQuery(query);
 		
 		while (result.next()) {
