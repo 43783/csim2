@@ -4,7 +4,7 @@
     <!-- script properties -->
 
 	<property name="name" value="cragsi"/>
-    <property name="version" value="1.0.0"/>
+    <property name="version" value="1.0.1"/>
 	<property name="author" value="Eric Harth"/>
 	<property name="base.dir" value="."/>
 	<property name="dist.dir" location="dist"/>
