@@ -217,19 +217,30 @@ public class CragsiLoader {
 
 		LOGGER.info("Generating AGF accounting...");
 
-		for (AGFLine afgLine : AGFLineDao.findAll()) {
+		for (AGFLine agfLine : AGFLineDao.findAll()) {
 			
 			try {
 				
 				// Retrieve project account
-				Account projectAccount = CragsiLogic.getProjectAccount(afgLine, accounts);
+				Account projectAccount = CragsiLogic.getProjectAccount(agfLine, accounts);
 				
 				// Retrieve accounting label
-				String accountingLabel = CragsiLogic.getAccountingLabel(afgLine);
-				
-				// Create debit/credit accountings line
-				accountings.add(CragsiLogic.createDebitEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, afgLine.getAmount()));
-				accountings.add(CragsiLogic.createCreditEntry(sequenceId, afgLine.getDate(), journalIdS1, periodIdS1, projectAccount, accountingLabel, afgLine.getAmount()));
+				String accountingLabel = CragsiLogic.getAccountingLabel(agfLine);
+
+				// Check if amount is negative
+				if (agfLine.getAmount() < 0) {
+					
+					// Handle negative amount accountings
+					double agfAmount = Math.abs(agfLine.getAmount());
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, agfLine.getDate(), journalIdS1, periodIdS1, projectAccount, accountingLabel, agfAmount));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, agfLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, agfAmount));
+				}
+				else {
+					
+					// Handle positive amount accountings
+					accountings.add(CragsiLogic.createDebitEntry(sequenceId, agfLine.getDate(), journalIdS1, periodIdS1, allProjectsAccount, accountingLabel, agfLine.getAmount()));
+					accountings.add(CragsiLogic.createCreditEntry(sequenceId, agfLine.getDate(), journalIdS1, periodIdS1, projectAccount, accountingLabel, agfLine.getAmount()));
+				}
 				
 				sequenceId++;
 			}
