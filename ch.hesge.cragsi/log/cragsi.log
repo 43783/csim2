@@ -1,13 +1,13 @@
-2015-11-22 14:21:05.448 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '26883' is already closed
-2015-11-22 14:21:05.453 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '46805' is not yet started
-2015-11-22 14:21:05.489 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
-2015-11-22 14:21:05.501 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '51723' has no start date
-2015-11-22 14:21:05.504 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40124' is already closed
-2015-11-22 14:21:05.507 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
-2015-11-22 14:21:05.542 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '28830' is already closed
-2015-11-22 14:21:05.547 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40903' is already closed
-2015-11-22 14:21:05.564 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
-2015-11-22 14:21:05.573 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '48245' is already closed
-2015-11-22 14:21:05.596 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40988' is already closed
-2015-11-22 14:21:05.601 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '44065' is already closed
-2015-11-22 14:21:05.608 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - missing account for collaborator 'Dina Vishnyakova' with contract 'Assistant-e de recherche HES'
+2015-11-25 11:43:43.652 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '26883' is already closed
+2015-11-25 11:43:43.656 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '46805' is not yet started
+2015-11-25 11:43:43.685 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
+2015-11-25 11:43:43.699 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '51723' has no start date
+2015-11-25 11:43:43.702 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40124' is already closed
+2015-11-25 11:43:43.703 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
+2015-11-25 11:43:43.840 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '28830' is already closed
+2015-11-25 11:43:43.844 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40903' is already closed
+2015-11-25 11:43:43.863 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '39477' is already closed
+2015-11-25 11:43:43.874 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '48245' is already closed
+2015-11-25 11:43:43.898 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '40988' is already closed
+2015-11-25 11:43:43.902 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - project with code '44065' is already closed
+2015-11-25 11:43:43.909 [main] ERROR ch.hesge.cragsi.loader.CragsiLoader - missing account for collaborator 'Dina Vishnyakova' with contract 'Assistant-e de recherche HES'
