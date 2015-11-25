@@ -147,7 +147,7 @@ public class CragsiLogic {
 	 * @return an accounting label
 	 */
 	public static String getAccountingLabel(AGFLine agfLine) {
-		return agfLine.getLibelle() + " (AGP)";
+		return agfLine.getLibelle() + " (AGF)";
 	}
 	
 	/**

@@ -48,8 +48,8 @@ public class AccountingDao {
 		csvOutput.write("line_id/account_id/id");
 		csvOutput.write("line_id/date");
 		csvOutput.write("line_id/name");
-		csvOutput.write("line_id/credit");
 		csvOutput.write("line_id/debit");
+		csvOutput.write("line_id/credit");
 		csvOutput.write("line_id/journal_id/id");
 		csvOutput.write("line_id/period_id/id");
 		csvOutput.endRecord();			
