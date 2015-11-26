@@ -137,7 +137,7 @@ public class CragsiLogic {
 		// Add academic years
 		label += String.format(" (FDC %04d-%04d)", academicYearS1, academicYearS2);
 		
-		return label;
+		return "\"" + label + "\"";
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class CragsiLogic {
 	 * @return an accounting label
 	 */
 	public static String getAccountingLabel(AGFLine agfLine) {
-		return agfLine.getLibelle() + " (AGF)";
+		return "\"" + agfLine.getLibelle() + " (AGF)" + "\"";
 	}
 	
 	/**
@@ -157,7 +157,7 @@ public class CragsiLogic {
 	 * @return an accounting label
 	 */
 	public static String getAccountingLabel(Financial financial) {
-		return financial.getLibelle() + " (AGP)";
+		return "\"" + financial.getLibelle() + " (AGP)" + "\"";
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class CragsiLogic {
 	 * @return an accounting label
 	 */
 	public static String getAccountingLabel(Partner partner) {
-		return partner.getName() + " (AGP)";
+		return "\"" + partner.getName() + " (AGP)" + "\"";
 	}
 
 	/**
